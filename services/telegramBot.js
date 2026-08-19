@@ -59,6 +59,12 @@ function initTelegramBot() {
       await sendRulesMessage(ctx);
     });
 
+    // Comando /postar (Dispara um post aleatório imediato com mídia)
+    bot.command('postar', async (ctx) => {
+      await triggerRandomPost(ctx.chat.id);
+    });
+
+
     // Resposta a cliques em botões (callbacks)
     bot.on('callback_query:data', async (ctx) => {
       const data = ctx.callbackQuery.data;
@@ -261,6 +267,94 @@ async function sendBroadcastWithMedia(targetChatId, folderName, caption, inlineK
   }
 }
 
+// Lista de Cópias Dinâmicas de Alta Conversão
+const dynamicTemplates = [
+  {
+    caption: 
+      '🚀 *DO REGIME PARCIAL AO NÍVEL EXECUTIVO* 💸\n\n' +
+      'Começar no regime parcial com frotas de entrada (NX-101) é o primeiro passo de todo grande operador no TAXINEXO.\n\n' +
+      'Mais de 40 operadores tiveram seus contratos atualizados para níveis superiores de alta demanda, desbloqueando rendimentos diários de até R$ 720,00 direto na carteira Pix!\n\n' +
+      '🔑 *O SEGREDO DA ESCALA NO TAXINEXO:*\n' +
+      '• Comece com a frota que cabe no seu bolso.\n' +
+      '• Mantenha seu check-in diário ativo.\n' +
+      '• Reinvista seus rendimentos para subir de nível e faturar no automático.\n\n' +
+      'As frotas de Miami e Nova York já estão nas ruas rodando por você.\n\n' +
+      '📱 *Acesse seu painel e ative seu veículo agora:*',
+    buttons: [
+      [{ text: '🚗 Ativar Minha Frota Agora', url: appUrl + '/' }],
+      [{ text: '📱 Fazer Check-in Diário', url: appUrl + '/' }]
+    ]
+  },
+  {
+    caption: 
+      '💸 *[RELATÓRIO DE OPERAÇÃO] RENDIMENTOS DE TURNO CREDITADOS!* 🚗⚡\n\n' +
+      'O ciclo de viagens das frotas autônomas em Miami acaba de ser finalizado e os lucros já foram creditados na carteira dos operadores!\n\n' +
+      '📊 *DESEMPENHO DO TURNO:*\n' +
+      '• Tesla Robotaxi (NX-101): Viagens urbanas concluídas\n' +
+      '• Tesla Cybercab (NX-707): Operação em alta demanda (+18% de eficiência)\n' +
+      '• Waymo Autonomous (NX-303): Rotas executivas finalizadas\n\n' +
+      'Seu rendimento de hoje já está disponível para saque ou para reinvestir na subida de nível.\n\n' +
+      '📲 *Abra seu painel e veja seu saldo crescendo:*',
+    buttons: [
+      [{ text: '💰 Ver Meu Saldo no App', url: appUrl + '/' }],
+      [{ text: '🚗 Ver Frotas Disponíveis', url: appUrl + '/' }]
+    ]
+  },
+  {
+    caption: 
+      '⚡ *[LOTE DE SAQUES PIX APROVADO] DINHEIRO NA CONTA DOS OPERADORES!* 💳💸\n\n' +
+      'Mais um lote de solicitações de saque foi processado e enviado via Pix direto para as contas bancárias dos operadores ativos!\n\n' +
+      '🏆 *O TAXINEXO NÃO PARA:*\n' +
+      '• Saques a partir de R$ 30,00\n' +
+      '• Liquidação instantânea via Pix\n' +
+      '• Sem taxas abusivas ou burocracia\n\n' +
+      'Trabalho autônomo com tecnologia de verdade: o robô roda nas ruas e o lucro cai na sua conta todos os dias.\n\n' +
+      'Parabéns a todos os operadores que já garantiram o seu Pix de hoje! 🚀\n\n' +
+      '📱 *Solicite seu saque ou ative sua frota no app:*',
+    buttons: [
+      [{ text: '💳 Solicitar Saque Pix', url: appUrl + '/' }],
+      [{ text: '📱 Acessar Plataforma', url: appUrl + '/' }]
+    ]
+  },
+  {
+    caption: 
+      '🌙 *[FECHAMENTO DE CICLO] ÚLTIMAS VAGAS DE FROTAS PARA AMANHÃ!* 🚗⏳\n\n' +
+      'O ciclo operacional de hoje está se encerrando com mais de 98% das frotas em operação contínua.\n\n' +
+      '🚨 *ATENÇÃO:* As vagas para contratação das categorias de maior rendimento estão se esgotando:\n' +
+      '🔥 Tesla Cybercab (NX-707) ➔ Restam poucas unidades\n' +
+      '👑 NIO Executive Fleet (NX-606) ➔ Última cota disponível para o turno da manhã\n\n' +
+      'Quem ativa o contrato ainda hoje já acorda com os primeiros rendimentos sendo contabilizados no ciclo de amanhã cedo!\n\n' +
+      'Não durma no ponto enquanto a inteligência artificial trabalha por você.\n\n' +
+      '👉 *ATIVE SUA FROTA AGORA:*',
+    buttons: [
+      [{ text: '🚗 Garantir Minha Frota Agora', url: appUrl + '/' }]
+    ]
+  },
+  {
+    caption: 
+      '🎁 *[BÔNUS DIÁRIO LIBERADO] RESGATE SEU CHECK-IN NO APP!* ⚡\n\n' +
+      'Operadores ativos já podem acessar o aplicativo e resgatar o bônus de check-in diário gratuito!\n\n' +
+      '💡 *Dica de Operador:* Mantenha sua sequência diária de check-in ativa para aumentar seus bônus e acelerar sua subida de nível nas frotas autônomas.\n\n' +
+      '📱 *Resgate seu bônus agora:*',
+    buttons: [
+      [{ text: '🎁 Resgatar Bônus de Check-in', url: appUrl + '/' }],
+      [{ text: '🚗 Ver Frotas Disponíveis', url: appUrl + '/' }]
+    ]
+  }
+];
+
+/**
+ * Dispara um post aleatório com foto/vídeo da pasta 01_bom_dia
+ */
+async function triggerRandomPost(targetChatId) {
+  const chatId = targetChatId || groupChatId || process.env.TELEGRAM_CHAT_ID;
+  if (!chatId) return;
+
+  const template = dynamicTemplates[Math.floor(Math.random() * dynamicTemplates.length)];
+  console.log(`[TELEGRAM RANDOM POST] Disparando post aleatório para o grupo: ${chatId}...`);
+  await sendBroadcastWithMedia(chatId, '01_bom_dia', template.caption, template.buttons);
+}
+
 // Inicia os agendamentos se o groupChatId ou TELEGRAM_CHAT_ID estiver definido
 function startDailySchedule() {
   const targetChatId = groupChatId || process.env.TELEGRAM_CHAT_ID;
@@ -271,91 +365,37 @@ function startDailySchedule() {
 
   console.log(`[TELEGRAM SCHEDULER] Grade de postagens automáticas com mídias ativada para o grupo: ${targetChatId}`);
 
-  // 1. Manhã - 09:00 (Do Regime Parcial ao Nível Executivo + Foto/Vídeo de Bom Dia)
+  // Disparo Contínuo a cada 45 minutos
+  cron.schedule('*/45 * * * *', async () => {
+    console.log('[TELEGRAM CRON] Disparando rotação aleatória contínua (a cada 45 min)...');
+    await triggerRandomPost(targetChatId);
+  }, { timezone: 'America/Sao_Paulo' });
+
+  // 1. Manhã - 09:00
   cron.schedule('0 9 * * *', async () => {
     console.log('[TELEGRAM CRON] Disparando mensagem das 09:00 com mídia...');
-    const caption = 
-      '🚀 *BOM DIA! DO REGIME PARCIAL AO NÍVEL EXECUTIVO* 💸\n\n' +
-      'Começar no regime parcial com frotas de entrada (NX-101) é o primeiro passo de todo grande operador no TAXINEXO.\n\n' +
-      'Hoje pela manhã, mais de 40 operadores tiveram seus contratos atualizados para níveis superiores de alta demanda, desbloqueando rendimentos diários de até R$ 720,00 direto na carteira Pix!\n\n' +
-      '🔑 *O SEGREDO DA ESCALA NO TAXINEXO:*\n' +
-      '• Comece com a frota que cabe no seu bolso.\n' +
-      '• Mantenha seu check-in diário ativo.\n' +
-      '• Reinvista seus rendimentos para subir de nível e faturar no automático.\n\n' +
-      'As frotas de Miami e Nova York já estão nas ruas rodando por você.\n\n' +
-      '📱 *Acesse seu painel e ative seu veículo agora:*';
-
-    const buttons = [
-      [{ text: '🚗 Ativar Minha Frota Agora', url: appUrl + '/' }],
-      [{ text: '📱 Fazer Check-in Diário', url: appUrl + '/' }]
-    ];
-
-    await sendBroadcastWithMedia(targetChatId, '01_bom_dia', caption, buttons);
+    await sendBroadcastWithMedia(targetChatId, '01_bom_dia', dynamicTemplates[0].caption, dynamicTemplates[0].buttons);
   }, { timezone: 'America/Sao_Paulo' });
 
-  // 2. Meio-dia - 12:30 (Rendimentos do Primeiro Turno + Print/Vídeo de Operação)
+  // 2. Meio-dia - 12:30
   cron.schedule('30 12 * * *', async () => {
     console.log('[TELEGRAM CRON] Disparando mensagem das 12:30 com mídia...');
-    const caption = 
-      '💸 *[RELATÓRIO DO MEIO-DIA] RENDIMENTOS DO 1º TURNO CREDITADOS!* 🚗⚡\n\n' +
-      'O primeiro ciclo de viagens das frotas autônomas em Miami acaba de ser finalizado e os lucros já foram creditados na carteira dos operadores!\n\n' +
-      '📊 *DESEMPENHO DO TURNO:*\n' +
-      '• Tesla Robotaxi (NX-101): Viagens urbanas concluídas\n' +
-      '• Tesla Cybercab (NX-707): Operação em alta demanda (+18% de eficiência)\n' +
-      '• Waymo Autonomous (NX-303): Rotas executivas finalizadas\n\n' +
-      'Seu rendimento de hoje já está disponível para saque ou para reinvestir na subida de nível.\n\n' +
-      '📲 *Abra seu painel e veja seu saldo crescendo:*';
-
-    const buttons = [
-      [{ text: '💰 Ver Meu Saldo no App', url: appUrl + '/' }],
-      [{ text: '🚗 Ver Frotas Disponíveis', url: appUrl + '/' }]
-    ];
-
-    await sendBroadcastWithMedia(targetChatId, '01_bom_dia', caption, buttons);
+    await sendBroadcastWithMedia(targetChatId, '01_bom_dia', dynamicTemplates[1].caption, dynamicTemplates[1].buttons);
   }, { timezone: 'America/Sao_Paulo' });
 
-  // 3. Tarde - 16:00 (Comprovante de Saques Pix Aprovados + Print de Pix)
+  // 3. Tarde - 16:00
   cron.schedule('0 16 * * *', async () => {
     console.log('[TELEGRAM CRON] Disparando mensagem das 16:00 com mídia...');
-    const caption = 
-      '⚡ *[LOTE DE SAQUES PIX APROVADO] DINHEIRO NA CONTA DOS OPERADORES!* 💳💸\n\n' +
-      'Mais um lote de solicitações de saque foi processado e enviado via Pix direto para as contas bancárias dos operadores ativos!\n\n' +
-      '🏆 *O TAXINEXO NÃO PARA:*\n' +
-      '• Saques a partir de R$ 30,00\n' +
-      '• Liquidação instantânea via Pix\n' +
-      '• Sem taxas abusivas ou burocracia\n\n' +
-      'Trabalho autônomo com tecnologia de verdade: o robô roda nas ruas e o lucro cai na sua conta todos os dias.\n\n' +
-      'Parabéns a todos os operadores que já garantiram o seu Pix de hoje! 🚀\n\n' +
-      '📱 *Solicite seu saque ou ative sua frota no app:*';
-
-    const buttons = [
-      [{ text: '💳 Solicitar Saque Pix', url: appUrl + '/' }],
-      [{ text: '📱 Acessar Plataforma', url: appUrl + '/' }]
-    ];
-
-    await sendBroadcastWithMedia(targetChatId, '01_bom_dia', caption, buttons);
+    await sendBroadcastWithMedia(targetChatId, '01_bom_dia', dynamicTemplates[2].caption, dynamicTemplates[2].buttons);
   }, { timezone: 'America/Sao_Paulo' });
 
-  // 4. Noite - 20:00 (Fechamento de Ciclo & Urgência de Vagas)
+  // 4. Noite - 20:00
   cron.schedule('0 20 * * *', async () => {
     console.log('[TELEGRAM CRON] Disparando mensagem das 20:00 com mídia...');
-    const caption = 
-      '🌙 *[FECHAMENTO DE CICLO] ÚLTIMAS VAGAS DE FROTAS PARA AMANHÃ!* 🚗⏳\n\n' +
-      'O ciclo operacional de hoje está se encerrando com mais de 98% das frotas em operação contínua.\n\n' +
-      '🚨 *ATENÇÃO:* As vagas para contratação das categorias de maior rendimento estão se esgotando:\n' +
-      '🔥 Tesla Cybercab (NX-707) ➔ Restam poucas unidades\n' +
-      '👑 NIO Executive Fleet (NX-606) ➔ Última cota disponível para o turno da manhã\n\n' +
-      'Quem ativa o contrato ainda hoje já acorda com os primeiros rendimentos sendo contabilizados no ciclo de amanhã cedo!\n\n' +
-      'Não durma no ponto enquanto a inteligência artificial trabalha por você.\n\n' +
-      '👉 *ATIVE SUA FROTA AGORA:*';
-
-    const buttons = [
-      [{ text: '🚗 Garantir Minha Frota Agora', url: appUrl + '/' }]
-    ];
-
-    await sendBroadcastWithMedia(targetChatId, '01_bom_dia', caption, buttons);
+    await sendBroadcastWithMedia(targetChatId, '01_bom_dia', dynamicTemplates[3].caption, dynamicTemplates[3].buttons);
   }, { timezone: 'America/Sao_Paulo' });
 }
+
 
 // Inicia os agendamentos se o groupChatId estiver definido
 if (groupChatId || process.env.TELEGRAM_CHAT_ID) {

@@ -5,6 +5,7 @@ const {
   updateContract,
   createTransaction
 } = require('../database');
+const { broadcastDailySettlement } = require('./telegramBot');
 
 /**
  * Motor de liquidação diária: percorre todos os contratos ativos
@@ -50,6 +51,10 @@ async function processDailySettlement() {
     }
 
     console.log(`[SETTLEMENT] Processados ${settlementsProcessed} contratos. Total creditado: R$ ${totalCredited.toFixed(2)}`);
+
+    if (settlementsProcessed > 0) {
+      broadcastDailySettlement({ settlementsProcessed, totalCredited });
+    }
   } catch (err) {
     console.error('[SETTLEMENT ERROR]:', err);
   }
@@ -58,4 +63,5 @@ async function processDailySettlement() {
 }
 
 module.exports = { processDailySettlement };
+
 

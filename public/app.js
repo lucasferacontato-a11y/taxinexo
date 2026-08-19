@@ -16,7 +16,85 @@ const appState = {
   theme: 'dark',
   currentFilter: 'all',
   activeVehicles: [],
-  products: [],
+    products: [
+    {
+      id: 'NX-101',
+      name: 'Tesla Robotaxi Model 3',
+      category: 'economy',
+      status: 'Disponível',
+      price: 150.00,
+      dailyReturn: 14.50,
+      periodDays: 30,
+      checkoutUrl: 'https://pagamento.pricipiaskins.site/checkout/212187584:1',
+      description: 'Veículo elétrico autônomo para corridas urbanas diárias.'
+    },
+    {
+      id: 'NX-202',
+      name: 'Baidu Apollo RT6',
+      category: 'popular',
+      status: 'Alta Demanda',
+      price: 350.00,
+      dailyReturn: 36.00,
+      periodDays: 45,
+      checkoutUrl: 'https://pagamento.pricipiaskins.site/checkout/212187589:1',
+      description: 'Robotaxi com 38 sensores LiDAR e IA de nível 4 integrada.'
+    },
+    {
+      id: 'NX-707',
+      name: 'Tesla Cybercab Next-Gen',
+      category: 'popular',
+      status: 'Alta Demanda',
+      price: 600.00,
+      dailyReturn: 68.00,
+      periodDays: 40,
+      checkoutUrl: 'https://pagamento.pricipiaskins.site/checkout/212187590:1',
+      description: 'Frota de carregamento por indução e operação 24/7 sem volante.'
+    },
+    {
+      id: 'NX-404',
+      name: 'Cruise Origin Autonomous',
+      category: 'popular',
+      status: 'Alta Demanda',
+      price: 900.00,
+      dailyReturn: 105.00,
+      periodDays: 45,
+      checkoutUrl: 'https://pagamento.pricipiaskins.site/checkout/212187597:1',
+      description: 'Lançadeira autônoma espaçosa para transporte compartilhado.'
+    },
+    {
+      id: 'NX-303',
+      name: 'Waymo Autonomous Van',
+      category: 'vip',
+      status: 'VIP',
+      price: 1500.00,
+      dailyReturn: 185.00,
+      periodDays: 60,
+      checkoutUrl: 'https://pagamento.pricipiaskins.site/checkout/212187598:1',
+      description: 'Van autônoma de alta capacidade operando em rotas corporativas.'
+    },
+    {
+      id: 'NX-505',
+      name: 'Zoox Urban Bi-Directional',
+      category: 'vip',
+      status: 'VIP',
+      price: 2800.00,
+      dailyReturn: 360.00,
+      periodDays: 60,
+      checkoutUrl: 'https://pagamento.pricipiaskins.site/checkout/212187602:1',
+      description: 'Veículo bidirecional com tração nas 4 rodas para tráfego denso.'
+    },
+    {
+      id: 'NX-606',
+      name: 'NIO Autonomous Executive Fleet',
+      category: 'vip',
+      status: 'VIP',
+      price: 5000.00,
+      dailyReturn: 720.00,
+      periodDays: 90,
+      checkoutUrl: 'https://pagamento.pricipiaskins.site/checkout/212187611:1',
+      description: 'Frota executiva premium com troca de bateria em 3 min.'
+    }
+  ],
   team: {
     totalMembers: 14,
     activeMembers: 8,
@@ -478,47 +556,57 @@ async function processWithdraw() {
   closeModal('modal-withdraw');
 }
 
-async function hireVehicle(productId) {
+function hireVehicle(productId) {
   const prod = appState.products.find(p => p.id === productId);
   if (!prod) return;
 
+  // Se o saldo for menor que o preço do plano
   if (appState.balance < prod.price) {
     if (prod.checkoutUrl) {
-      if (confirm(`Saldo em carteira insuficiente!\n\nDeseja pagar R$ ${formatCurrency(prod.price)} agora no Pix seguro Cartpanda Pay?`)) {
+      if (confirm(`Saldo em carteira insuficiente! (Você possui R$ ${formatCurrency(appState.balance)} e o plano custa R$ ${formatCurrency(prod.price)}).
+
+Deseja pagar R$ ${formatCurrency(prod.price)} agora no Pix Seguro do Cartpanda Pay?`)) {
         window.open(prod.checkoutUrl, '_blank');
         return;
       }
     }
-    alert(`Saldo insuficiente! Você possui R$ ${formatCurrency(appState.balance)} e o contrato custa R$ ${formatCurrency(prod.price)}.\n\nPor favor, faça uma recarga via Pix.`);
     openModal('modal-deposit');
     return;
   }
 
-  if (confirm(`Confirmar contratação de ${prod.name} por R$ ${formatCurrency(prod.price)}?\n\nRendimento Diário: + R$ ${formatCurrency(prod.dailyReturn)}\nDuração: ${prod.periodDays} dias`)) {
-    const res = await apiRequest('/fleet/hire', 'POST', { productId });
+  if (confirm(`Confirmar contratação de ${prod.name} por R$ ${formatCurrency(prod.price)}?
 
-    if (res && res.contract) {
-      appState.balance = res.newBalance;
-      appState.activeVehicles.unshift({
-        id: res.contract.id,
-        name: res.contract.productName,
-        dailyEarned: res.contract.dailyReturn,
-        daysLeft: res.contract.daysRemaining,
-        totalDays: res.contract.totalDays,
-        status: res.contract.status
-      });
-
-      const balanceEl = document.getElementById('user-balance');
-      if (balanceEl && appState.balanceVisible) balanceEl.textContent = formatCurrency(appState.balance);
-
-      renderActiveVehicles();
-      alert('🎉 Contrato gravado no Banco de Dados! Rendimentos serão creditados diariamente pelo motor do servidor.');
-      switchTab('home');
-    } else if (res && res.error) {
-      alert(`Erro: ${res.error}`);
-    }
+Rendimento Diário: + R$ ${formatCurrency(prod.dailyReturn)}
+Duração: ${prod.periodDays} dias`)) {
+    hireVehicleWithBalance(prod);
   }
 }
+
+async function hireVehicleWithBalance(prod) {
+  const res = await apiRequest('/fleet/hire', 'POST', { productId: prod.id });
+
+  if (res && res.contract) {
+    appState.balance = res.newBalance;
+    appState.activeVehicles.unshift({
+      id: res.contract.id,
+      name: res.contract.productName,
+      dailyEarned: res.contract.dailyReturn,
+      daysLeft: res.contract.daysRemaining,
+      totalDays: res.contract.totalDays,
+      status: res.contract.status
+    });
+
+    const balanceEl = document.getElementById('user-balance');
+    if (balanceEl && appState.balanceVisible) balanceEl.textContent = formatCurrency(appState.balance);
+
+    renderActiveVehicles();
+    alert('🎉 Contrato ativado com sucesso! Rendimentos serão creditados diariamente.');
+    switchTab('home');
+  } else if (res && res.error) {
+    alert(`Erro: ${res.error}`);
+  }
+}
+
 
 async function claimCheckin() {
   const btn = document.getElementById('btn-process-checkin');

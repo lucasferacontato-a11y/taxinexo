@@ -21,7 +21,7 @@ const defaultData = {
       createdAt: new Date().toISOString()
     }
   ],
-  products: [
+    products: [
     {
       id: 'NX-101',
       name: 'Tesla Robotaxi Model 3',
@@ -30,6 +30,7 @@ const defaultData = {
       price: 150.00,
       dailyReturn: 14.50,
       periodDays: 30,
+      checkoutUrl: 'https://pagamento.pricipiaskins.site/checkout/212187584:1',
       description: 'Veículo elétrico autônomo para corridas urbanas diárias.'
     },
     {
@@ -40,6 +41,7 @@ const defaultData = {
       price: 350.00,
       dailyReturn: 36.00,
       periodDays: 45,
+      checkoutUrl: 'https://pagamento.pricipiaskins.site/checkout/212187589:1',
       description: 'Robotaxi com 38 sensores LiDAR e IA de nível 4 integrada.'
     },
     {
@@ -50,6 +52,7 @@ const defaultData = {
       price: 600.00,
       dailyReturn: 68.00,
       periodDays: 40,
+      checkoutUrl: 'https://pagamento.pricipiaskins.site/checkout/212187590:1',
       description: 'Frota de carregamento por indução e operação 24/7 sem volante.'
     },
     {
@@ -60,6 +63,7 @@ const defaultData = {
       price: 900.00,
       dailyReturn: 105.00,
       periodDays: 45,
+      checkoutUrl: 'https://pagamento.pricipiaskins.site/checkout/212187597:1',
       description: 'Lançadeira autônoma espaçosa para transporte compartilhado.'
     },
     {
@@ -70,7 +74,8 @@ const defaultData = {
       price: 1500.00,
       dailyReturn: 185.00,
       periodDays: 60,
-      description: 'Van autônoma de alta capacidade operando em Miami e San Francisco.'
+      checkoutUrl: 'https://pagamento.pricipiaskins.site/checkout/212187598:1',
+      description: 'Van autônoma de alta capacidade operando em rotas corporativas.'
     },
     {
       id: 'NX-505',
@@ -80,6 +85,7 @@ const defaultData = {
       price: 2800.00,
       dailyReturn: 360.00,
       periodDays: 60,
+      checkoutUrl: 'https://pagamento.pricipiaskins.site/checkout/212187602:1',
       description: 'Veículo bidirecional com tração nas 4 rodas para tráfego denso.'
     },
     {
@@ -90,7 +96,8 @@ const defaultData = {
       price: 5000.00,
       dailyReturn: 720.00,
       periodDays: 90,
-      description: 'Frota executiva de inteligência artificial com troca de bateria em 3 min.'
+      checkoutUrl: 'https://pagamento.pricipiaskins.site/checkout/212187611:1',
+      description: 'Frota executiva premium com troca de bateria em 3 min.'
     }
   ],
   contracts: [

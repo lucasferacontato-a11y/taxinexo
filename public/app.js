@@ -196,8 +196,10 @@ async function loadUserData() {
   renderProducts();
   renderActiveVehicles();
   renderTeamData();
+  renderReferralCard();
   updateCategoryCounts();
 }
+
 
 function updateUserHeader(user) {
   const greetingEl = document.getElementById('user-greeting');
@@ -217,8 +219,9 @@ function updateUserHeader(user) {
   if (profilePhone) profilePhone.textContent = `+55 ${user.phone}`;
 
   const inviteInput = document.getElementById('invite-code');
-  if (inviteInput) inviteInput.value = user.inviteCode || 'NEXO8843';
+  if (inviteInput) inviteInput.value = getAffiliateLink();
 }
+
 
 function updateCategoryCounts() {
   const countAll = document.getElementById('count-all');
@@ -404,7 +407,101 @@ function renderTeamData() {
       <p>${lvl.members} membros ativos • R$ ${formatCurrency(lvl.generated)} gerados</p>
     </div>
   `).join('');
+
+  renderReferralCard();
 }
+
+function getAffiliateLink() {
+  const code = (appState.user && appState.user.inviteCode) ? appState.user.inviteCode : 'NEXO8843';
+  const origin = window.location.origin;
+  const path = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1);
+  return `${origin}${path}login.html?ref=${code}`;
+}
+
+function renderReferralCard() {
+  const container = document.getElementById('referral-box-container');
+  if (!container) return;
+
+  const hasActiveContract = appState.activeVehicles && appState.activeVehicles.length > 0;
+  const code = (appState.user && appState.user.inviteCode) ? appState.user.inviteCode : 'NEXO8843';
+  const fullLink = getAffiliateLink();
+
+  if (!hasActiveContract) {
+    // ESTADO BLOQUEADO: Usuário ainda não ativou nenhum contrato
+    container.innerHTML = `
+      <div class="referral-box locked-affiliate" style="text-align: center; border: 1px dashed rgba(250, 219, 95, 0.4); background: rgba(250, 219, 95, 0.05); padding: 24px 18px; border-radius: var(--radius-md);">
+        <div style="width: 48px; height: 48px; border-radius: 50%; background: rgba(250, 219, 95, 0.15); display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; color: var(--accent-gold); font-size: 22px;">
+          <i class="fa-solid fa-lock"></i>
+        </div>
+        <h4 style="color: #fff; font-size: 16px; margin-bottom: 6px; font-weight: 700;">Código de Afiliado Bloqueado</h4>
+        <p style="font-size: 13px; color: var(--text-muted); line-height: 1.5; margin-bottom: 16px; max-width: 340px; margin-left: auto; margin-right: auto;">
+          Para liberar seu link de indicação e receber até <strong>10% de comissão diária</strong> em 3 níveis, ative sua primeira frota autônoma.
+        </p>
+        <button class="btn btn-primary" onclick="switchTab('products')" style="padding: 10px 22px; font-size: 13px; font-weight: 700; display: inline-flex; align-items: center; gap: 8px;">
+          <i class="fa-solid fa-bolt"></i> Ativar Minha Primeira Frota
+        </button>
+      </div>
+    `;
+  } else {
+    // ESTADO LIBERADO: Usuário possui contrato ativo
+    container.innerHTML = `
+      <div class="referral-box unlocked-affiliate" style="border: 1px solid var(--border-bright); background: rgba(0, 240, 255, 0.04); padding: 20px 16px; border-radius: var(--radius-md);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+          <span class="ref-title" style="color: var(--primary); font-weight: 700; font-size: 13px;">
+            <i class="fa-solid fa-circle-check" style="color: var(--accent-green);"></i> Seu Link de Afiliado Oficial
+          </span>
+          <span style="font-size: 11px; background: rgba(0, 255, 136, 0.15); color: var(--accent-green); padding: 3px 8px; border-radius: 12px; font-weight: 700;">Liberado</span>
+        </div>
+        
+        <div class="copy-field" style="margin-bottom: 10px;">
+          <input type="text" id="invite-code" value="${fullLink}" readonly aria-label="Link de convite" style="font-size: 12px; font-family: monospace;">
+          <button class="btn-copy" id="btn-copy" onclick="copyInviteCode()" aria-label="Copiar link direto" style="min-width: 95px;">
+            <i class="fa-regular fa-copy"></i> <span id="copy-text">Copiar Link</span>
+          </button>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--text-muted); flex-wrap: wrap; gap: 6px;">
+          <span>Código: <strong style="color: #fff; font-family: monospace;">${code}</strong></span>
+          <a href="https://api.whatsapp.com/send?text=${encodeURIComponent('🚀 Acesse o TAXINEXO comigo e receba rendimentos diários com frotas de táxis autônomos! Cadastre-se pelo meu link oficial: ' + fullLink)}" target="_blank" style="color: var(--accent-green); text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 4px;">
+            <i class="fa-brands fa-whatsapp" style="font-size: 15px;"></i> Compartilhar no WhatsApp
+          </a>
+        </div>
+        
+        <div class="copy-feedback" id="copy-feedback" style="display: none; color: var(--accent-green); font-size: 11px; margin-top: 8px; text-align: center;">
+          <i class="fa-solid fa-check"></i> Link direto com seu código de convite copiado com sucesso!
+        </div>
+      </div>
+    `;
+  }
+}
+
+function copyInviteCode() {
+  const fullLink = getAffiliateLink();
+  const btn = document.getElementById('btn-copy');
+  const copyText = document.getElementById('copy-text');
+  const feedback = document.getElementById('copy-feedback');
+
+  navigator.clipboard.writeText(fullLink).then(() => {
+    if (btn) btn.classList.add('success');
+    if (copyText) copyText.textContent = 'Copiado!';
+    if (feedback) {
+      feedback.style.display = 'block';
+      setTimeout(() => { feedback.style.display = 'none'; }, 3000);
+    }
+    setTimeout(() => {
+      if (btn) btn.classList.remove('success');
+      if (copyText) copyText.textContent = 'Copiar Link';
+    }, 2500);
+  }).catch(() => {
+    const input = document.getElementById('invite-code');
+    if (input) {
+      input.select();
+      document.execCommand('copy');
+      if (copyText) copyText.textContent = 'Copiado!';
+    }
+  });
+}
+
 
 function hireVehicle(productId) {
   const prod = appState.products.find(p => p.id === productId);

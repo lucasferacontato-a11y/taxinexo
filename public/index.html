@@ -174,17 +174,20 @@
           <p>Construa sua rede e receba bônus de contrato em 3 níveis.</p>
         </div>
 
-        <!-- Referral Link Card -->
-        <div class="referral-box">
-          <span class="ref-title">Seu Código de Convite</span>
-          <div class="copy-field">
-            <input type="text" id="invite-code" value="NEXO8843" readonly aria-label="Código de convite">
-            <button class="btn-copy" id="btn-copy" onclick="copyInviteCode()" aria-label="Copiar código">
-              <i class="fa-regular fa-copy"></i> <span id="copy-text">Copiar</span>
-            </button>
+        <!-- Referral Link Card (Dinâmico: Bloqueado ou Liberado) -->
+        <div id="referral-box-container">
+          <div class="referral-box">
+            <span class="ref-title">Seu Código de Convite</span>
+            <div class="copy-field">
+              <input type="text" id="invite-code" value="Carregando..." readonly aria-label="Código de convite">
+              <button class="btn-copy" id="btn-copy" onclick="copyInviteCode()" aria-label="Copiar link direto">
+                <i class="fa-regular fa-copy"></i> <span id="copy-text">Copiar Link</span>
+              </button>
+            </div>
+            <div class="copy-feedback" id="copy-feedback" style="display: none;">Link copiado com sucesso!</div>
           </div>
-          <div class="copy-feedback" id="copy-feedback">Código copiado para a área de transferência!</div>
         </div>
+
 
         <!-- Team Stats -->
         <div class="team-metrics-grid" id="team-metrics-container"></div>

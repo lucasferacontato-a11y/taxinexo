@@ -604,6 +604,21 @@
         btn.innerHTML = '<span>Criar Conta e Começar</span> <i class="fa-solid fa-bolt"></i>';
       }
     }
+
+    // Auto-preenchimento do Código de Indicação via URL (?ref=CODIGO)
+    window.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const refCode = urlParams.get('ref') || urlParams.get('r') || urlParams.get('convite');
+      if (refCode) {
+        const regInviteInput = document.getElementById('reg-invite');
+        if (regInviteInput) {
+          regInviteInput.value = refCode.trim();
+          // Muda automaticamente para a aba de cadastro
+          switchAuthTab('register');
+          showAlert(`🤝 Código de convite "${refCode.trim()}" aplicado com sucesso!`, 'success');
+        }
+      }
+    });
   </script>
 </body>
 </html>

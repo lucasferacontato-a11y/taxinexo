@@ -365,11 +365,12 @@ function startDailySchedule() {
 
   console.log(`[TELEGRAM SCHEDULER] Grade de postagens automáticas com mídias ativada para o grupo: ${targetChatId}`);
 
-  // Disparo Contínuo a cada 45 minutos
-  cron.schedule('*/45 * * * *', async () => {
-    console.log('[TELEGRAM CRON] Disparando rotação aleatória contínua (a cada 45 min)...');
+  // Disparo Contínuo a cada 5 minutos
+  cron.schedule('*/5 * * * *', async () => {
+    console.log('[TELEGRAM CRON] Disparando rotação aleatória contínua (a cada 5 min)...');
     await triggerRandomPost(targetChatId);
   }, { timezone: 'America/Sao_Paulo' });
+
 
   // 1. Manhã - 09:00
   cron.schedule('0 9 * * *', async () => {

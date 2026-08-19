@@ -1,5 +1,6 @@
 require('dotenv').config();
-const TelegramBot = require('node-telegram-bot-api');
+const RawTelegramBot = require('node-telegram-bot-api');
+const TelegramBot = typeof RawTelegramBot === 'function' ? RawTelegramBot : (RawTelegramBot.default || RawTelegramBot);
 
 const token = process.env.TELEGRAM_BOT_TOKEN || '';
 const groupChatId = process.env.TELEGRAM_CHAT_ID || '';
@@ -16,6 +17,7 @@ function initTelegramBot() {
   try {
     bot = new TelegramBot(token, { polling: true });
     console.log('[TELEGRAM BOT] Bot do Telegram iniciado com sucesso!');
+
 
     // Comando /start
     bot.onText(/\/start/, (msg) => {

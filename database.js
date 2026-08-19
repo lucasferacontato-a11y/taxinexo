@@ -101,70 +101,12 @@ const defaultProducts = [
 ];
 
 const defaultData = {
-  users: [
-    {
-      id: 'usr_8843',
-      operatorName: 'Operador #8843',
-      phone: '11987654321',
-      passwordHash: bcrypt.hashSync('123456', 10),
-      inviteCode: 'NEXO8843',
-      referredBy: null,
-      balance: 1250.80,
-      totalDeposited: 1500.00,
-      totalWithdrawn: 249.20,
-      vipLevel: 'VIP 1',
-      lastCheckinDate: null,
-      createdAt: new Date().toISOString()
-    }
-  ],
+  users: [],
   products: defaultProducts,
-  contracts: [
-    {
-      id: 'CTR-9912',
-      userId: 'usr_8843',
-      productId: 'NX-202',
-      productName: 'Robotaxi Apollo RT6',
-      dailyReturn: 38.00,
-      totalDays: 45,
-      daysRemaining: 24,
-      status: 'Em corrida',
-      startDate: new Date(Date.now() - 21 * 86400000).toISOString(),
-      lastSettlement: new Date().toISOString()
-    },
-    {
-      id: 'CTR-3341',
-      userId: 'usr_8843',
-      productId: 'NX-101',
-      productName: 'Tesla Model 3 Fleet',
-      dailyReturn: 15.50,
-      totalDays: 30,
-      daysRemaining: 5,
-      status: 'Em corrida',
-      startDate: new Date(Date.now() - 25 * 86400000).toISOString(),
-      lastSettlement: new Date().toISOString()
-    }
-  ],
-  transactions: [
-    {
-      id: 'TX-1001',
-      userId: 'usr_8843',
-      type: 'deposit',
-      amount: 1500.00,
-      status: 'approved',
-      description: 'Recarga Pix Confirmada',
-      createdAt: new Date(Date.now() - 30 * 86400000).toISOString()
-    },
-    {
-      id: 'TX-1002',
-      userId: 'usr_8843',
-      type: 'contract',
-      amount: -350.00,
-      status: 'approved',
-      description: 'Contratação Robotaxi Apollo RT6',
-      createdAt: new Date(Date.now() - 21 * 86400000).toISOString()
-    }
-  ]
+  contracts: [],
+  transactions: []
 };
+
 
 // ==========================================
 // LOCAL FILE SYSTEM HELPERS (FALLBACK)

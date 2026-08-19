@@ -661,26 +661,49 @@
         const res = await adminFetch('/users');
         const users = await res.json();
 
-        tbody.innerHTML = users.map(u => `
-          <tr>
-            <td>
-              <strong style="color: #fff;">${u.operatorName}</strong><br>
-              <span style="font-size: 10px; color: var(--accent-gold); font-family: monospace;">Convite: ${u.inviteCode}</span>
-            </td>
-            <td><span style="color: var(--text-muted); font-size: 12px;">${u.phone}</span></td>
-            <td><strong style="color: var(--primary); font-size: 14px;">R$ ${formatCurrency(u.balance)}</strong></td>
-            <td><span style="font-size: 12px; color: #fff;">${u.activeContractsCount} frotas</span></td>
-            <td style="text-align: right;">
-              <button class="btn-row-action btn-row-approve" onclick="adjustUserBalance('${u.id}', '${u.operatorName}')" style="font-size: 11px;">
-                <i class="fa-solid fa-plus-minus"></i> Ajustar
-              </button>
-            </td>
-          </tr>
-        `).join('');
+        if (users.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--text-muted); padding: 30px;">Nenhum operador cadastrado ainda.<br><span style="font-size: 11px;">Novos cadastros feitos no aplicativo aparecerão aqui em tempo real.</span></td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = users.map(u => {
+          const hasDeposited = u.hasDeposited || (u.totalDeposited > 0) || (u.balance > 0);
+          const dateStr = u.createdAt ? new Date(u.createdAt).toLocaleDateString('pt-BR') : '-';
+
+          return `
+            <tr>
+              <td>
+                <strong style="color: #fff; font-size: 14px;">${u.operatorName}</strong><br>
+                <span style="font-size: 11px; color: var(--accent-gold); font-family: monospace;">Convite: ${u.inviteCode}</span>
+              </td>
+              <td>
+                <span style="color: var(--text-muted); font-size: 13px;">${u.phone}</span><br>
+                <span style="font-size: 10px; color: #64748b;">Desde: ${dateStr}</span>
+              </td>
+              <td>
+                <strong style="color: var(--primary); font-size: 14px; font-family: 'Space Grotesk', sans-serif;">
+                  R$ ${formatCurrency(u.balance)}
+                </strong><br>
+                <span class="status-pill ${hasDeposited ? 'approved' : 'pending'}" style="font-size: 9px; padding: 2px 6px; margin-top: 2px;">
+                  ${hasDeposited ? 'Depositou' : 'Sem Depósito'}
+                </span>
+              </td>
+              <td>
+                <span style="font-size: 12px; color: #fff; font-weight: 600;">${u.activeContractsCount} frotas</span>
+              </td>
+              <td style="text-align: right;">
+                <button class="btn-row-action btn-row-approve" onclick="adjustUserBalance('${u.id}', '${u.operatorName}')" style="font-size: 11px;">
+                  <i class="fa-solid fa-plus-minus"></i> Ajustar Saldo
+                </button>
+              </td>
+            </tr>
+          `;
+        }).join('');
       } catch (err) {
         tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: #ef4444; padding: 20px;">Erro ao carregar usuários.</td></tr>';
       }
     }
+
 
     async function adjustUserBalance(userId, userName) {
       const amountStr = prompt('Informe o valor para adicionar (+) ou subtrair (-) do saldo de ' + userName + ':\n(Exemplo: 100 para creditar ou -50 para debitar)');

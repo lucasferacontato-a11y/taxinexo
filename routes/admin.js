@@ -144,15 +144,21 @@ router.get('/users', async (req, res) => {
       const activeContracts = userContracts.filter(c => c.status === 'Em corrida');
       return {
         id: u.id,
-        operatorName: u.operatorName,
+        operatorName: u.operatorName || `Operador #${u.id}`,
         phone: u.phone,
-        balance: u.balance,
-        vipLevel: u.vipLevel,
+        balance: parseFloat(u.balance || 0),
+        totalDeposited: parseFloat(u.totalDeposited || 0),
+        totalWithdrawn: parseFloat(u.totalWithdrawn || 0),
+        vipLevel: u.vipLevel || 'VIP 1',
         inviteCode: u.inviteCode,
         activeContractsCount: activeContracts.length,
-        createdAt: u.createdAt
+        hasDeposited: Boolean((u.totalDeposited && u.totalDeposited > 0) || (u.balance && u.balance > 0)),
+        createdAt: u.createdAt || new Date().toISOString()
       };
     }));
+
+    // Ordena cadastros mais recentes primeiro
+    usersList.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
     res.json(usersList);
   } catch (err) {
@@ -160,6 +166,7 @@ router.get('/users', async (req, res) => {
     res.status(500).json({ error: 'Erro ao listar usuários.' });
   }
 });
+
 
 // Ajustar Saldo de Usuário
 router.post('/users/:id/adjust-balance', async (req, res) => {

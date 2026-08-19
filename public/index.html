@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>TAXINEXO - Gestão de Frotas Autônomas</title>
+  <!-- PWA & Apple Web App Meta Tags -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#05070A">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="TAXINEXO">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+
+  <div class="app-container">
+
+    <!-- Top Status Bar & Header -->
+    <header class="app-header" role="banner">
+      <div class="user-badge" tabindex="0" role="region" aria-label="Informações do operador">
+        <div class="avatar-wrapper" aria-hidden="true">
+          <div class="avatar">
+            <i class="fa-solid fa-user-astronaut"></i>
+          </div>
+          <span class="status-indicator online" title="Status: Online"></span>
+        </div>
+        <div class="user-info">
+          <span class="user-name" id="user-greeting">Olá, <br><strong>Operador #8843</strong></span>
+          <span class="user-level"><i class="fa-solid fa-bolt"></i> Nível VIP 1</span>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button class="icon-btn" id="btn-notification" aria-label="Ver Notificações">
+          <i class="fa-regular fa-bell"></i>
+          <span class="badge-dot pulse"></span>
+        </button>
+        <button class="icon-btn" id="btn-theme-toggle" aria-label="Alternar Tema">
+          <i class="fa-solid fa-moon"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="app-content">
+
+      <!-- ================= ABA 1: INÍCIO (DASHBOARD) ================= -->
+      <section id="tab-home" class="tab-pane active" role="tabpanel">
+        
+        <!-- Card de Saldo e Finanças -->
+        <div class="balance-card">
+          <div class="balance-header">
+            <span class="label">Saldo Disponível</span>
+            <button class="btn-eye" id="toggle-balance" aria-label="Ocultar saldo">
+              <i class="fa-regular fa-eye"></i>
+            </button>
+          </div>
+          <div class="balance-amount">
+            <span class="currency">R$</span>
+            <span class="value" id="user-balance">0,00</span>
+          </div>
+          <div class="balance-stats">
+            <div class="stat-item">
+              <span class="stat-label">Rendimento Hoje</span>
+              <span class="stat-value positive">+ R$ 42,50</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Total Acumulado</span>
+              <span class="stat-value">R$ 3.840,00</span>
+            </div>
+          </div>
+          <div class="balance-actions">
+            <button class="btn btn-primary" onclick="openModal('modal-deposit')">
+              <i class="fa-solid fa-arrow-down-to-bracket"></i> Recarga Pix
+            </button>
+            <button class="btn btn-secondary" onclick="openModal('modal-withdraw')">
+              <i class="fa-solid fa-arrow-up-from-bracket"></i> Saque
+            </button>
+          </div>
+        </div>
+
+        <!-- Ações Rápidas -->
+        <div class="quick-grid">
+          <button class="quick-card" onclick="openModal('modal-checkin')" aria-label="Fazer Check-in Diário">
+            <div class="quick-icon icon-gold"><i class="fa-solid fa-calendar-check"></i></div>
+            <span>Check-in</span>
+          </button>
+          <button class="quick-card" onclick="switchTab('team')" aria-label="Ver Minha Equipe">
+            <div class="quick-icon icon-blue"><i class="fa-solid fa-users"></i></div>
+            <span>Rede</span>
+          </button>
+          <button class="quick-card" onclick="switchTab('products')" aria-label="Ver Frotas Disponíveis">
+            <div class="quick-icon icon-green"><i class="fa-solid fa-car-side"></i></div>
+            <span>Frotas</span>
+          </button>
+          <button class="quick-card" onclick="openModal('modal-support')" aria-label="Falar com Suporte">
+            <div class="quick-icon icon-purple"><i class="fa-solid fa-headset"></i></div>
+            <span>Suporte</span>
+          </button>
+        </div>
+
+        <!-- Banner Promocional / Status da Frota -->
+        <div class="fleet-banner">
+          <div class="banner-content">
+            <span class="tag">Operação Autônoma</span>
+            <h3>Frotas em Miami & NY</h3>
+            <p>Contratos de inteligência automotiva com liquidação diária.</p>
+          </div>
+          <i class="fa-solid fa-microchip banner-bg-icon float-anim"></i>
+        </div>
+
+        <!-- Resumo dos Veículos em Operação -->
+        <div class="section-heading">
+          <h4>Meus Veículos Ativos (<span id="active-count">0</span>)</h4>
+          <button class="btn-link" onclick="switchTab('products')">Ver todos</button>
+        </div>
+
+        <!-- Container Dinâmico -->
+        <div class="active-vehicles-list" id="active-vehicles-container"></div>
+
+      </section>
+
+      <!-- ================= ABA 2: FROTAS & PRODUTOS ================= -->
+      <section id="tab-products" class="tab-pane" role="tabpanel">
+        <div class="pane-header">
+          <h3>Frotas Disponíveis</h3>
+          <p>Selecione um veículo autônomo para iniciar seu contrato.</p>
+        </div>
+
+        <!-- Barra de Filtros (Chips com Contadores) -->
+        <div class="filter-scroll" role="toolbar" aria-label="Filtrar categorias">
+          <button class="filter-chip active" onclick="filterProducts('all')">
+            <i class="fa-solid fa-layer-group"></i> Todos (<span id="count-all">7</span>)
+          </button>
+          <button class="filter-chip" onclick="filterProducts('popular')">
+            <i class="fa-solid fa-fire"></i> Alta Demanda (<span id="count-popular">3</span>)
+          </button>
+          <button class="filter-chip" onclick="filterProducts('vip')">
+            <i class="fa-solid fa-crown"></i> VIP Elite (<span id="count-vip">3</span>)
+          </button>
+          <button class="filter-chip" onclick="filterProducts('economy')">
+            <i class="fa-solid fa-leaf"></i> Econômicos (<span id="count-economy">1</span>)
+          </button>
+        </div>
+
+        <div class="product-grid" id="product-list-container"></div>
+      </section>
+
+      <!-- ================= ABA 3: EQUIPE / CONVITES ================= -->
+      <section id="tab-team" class="tab-pane" role="tabpanel">
+        <div class="pane-header">
+          <h3>Programa de Afiliados</h3>
+          <p>Construa sua rede e receba bônus de contrato em 3 níveis.</p>
+        </div>
+
+        <!-- Referral Link Card -->
+        <div class="referral-box">
+          <span class="ref-title">Seu Código de Convite</span>
+          <div class="copy-field">
+            <input type="text" id="invite-code" value="NEXO8843" readonly aria-label="Código de convite">
+            <button class="btn-copy" id="btn-copy" onclick="copyInviteCode()" aria-label="Copiar código">
+              <i class="fa-regular fa-copy"></i> <span id="copy-text">Copiar</span>
+            </button>
+          </div>
+          <div class="copy-feedback" id="copy-feedback">Código copiado para a área de transferência!</div>
+        </div>
+
+        <!-- Team Stats -->
+        <div class="team-metrics-grid" id="team-metrics-container"></div>
+
+        <!-- Team Levels -->
+        <div class="team-levels" id="team-levels-container" style="margin-top: 16px;"></div>
+      </section>
+
+      <!-- ================= ABA 4: PERFIL & CONTA ================= -->
+      <section id="tab-profile" class="tab-pane" role="tabpanel">
+        <div class="profile-card">
+          <div class="avatar-large" aria-hidden="true">
+            <i class="fa-solid fa-user-gear"></i>
+          </div>
+          <h4>Operador #8843</h4>
+          <span class="phone">+55 (11) 98765-4321</span>
+          <span class="account-badge"><i class="fa-solid fa-circle-check"></i> Conta Verificada</span>
+        </div>
+
+        <div class="menu-list" role="menu">
+          <a href="#" class="menu-item" role="menuitem" onclick="openModal('modal-deposit'); return false;">
+            <i class="fa-solid fa-wallet"></i>
+            <span>Histórico Financeiro</span>
+            <i class="fa-solid fa-chevron-right arrow"></i>
+          </a>
+          <a href="#" class="menu-item" role="menuitem" onclick="openModal('modal-withdraw'); return false;">
+            <i class="fa-solid fa-building-columns"></i>
+            <span>Chave Pix de Saque</span>
+            <i class="fa-solid fa-chevron-right arrow"></i>
+          </a>
+          <a href="#" class="menu-item" role="menuitem" onclick="alert('Módulo de Segurança em desenvolvimento.'); return false;">
+            <i class="fa-solid fa-shield-halved"></i>
+            <span>Segurança e Senhas</span>
+            <i class="fa-solid fa-chevron-right arrow"></i>
+          </a>
+          <a href="#" class="menu-item" role="menuitem" onclick="alert('Abrindo chat de suporte...'); return false;">
+            <i class="fa-solid fa-circle-question"></i>
+            <span>Central de Ajuda</span>
+            <i class="fa-solid fa-chevron-right arrow"></i>
+          </a>
+          <a href="#" class="menu-item logout" role="menuitem" onclick="handleLogout(); return false;">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            <span>Encerrar Sessão</span>
+          </a>
+        </div>
+        
+        <div class="app-version">
+          <span>Taxinexo v1.0.4-beta</span>
+        </div>
+      </section>
+
+    </main>
+
+    
+    <!-- PWA Install Banner (Apenas se não estiver instalado) -->
+    <div id="pwa-install-banner" class="pwa-install-card" style="display: none;">
+      <div class="pwa-icon"><i class="fa-solid fa-cloud-arrow-down"></i></div>
+      <div class="pwa-info">
+        <strong>Instalar App TAXINEXO</strong>
+        <span>Acesso rápido direto da tela de início</span>
+      </div>
+      <button id="btn-pwa-install" class="btn-pwa-action" onclick="triggerPWAInstall()">Instalar</button>
+      <button class="btn-pwa-close" onclick="dismissPWAInstall()">&times;</button>
+    </div>
+
+    <!-- Bottom Navigation Bar -->
+    <nav class="bottom-nav">
+      <button class="nav-btn active" onclick="switchTab('home')" aria-label="Ir para Início">
+        <div class="nav-icon-wrapper"><i class="fa-solid fa-house"></i></div>
+        <span>Início</span>
+      </button>
+      <button class="nav-btn" onclick="switchTab('products')" aria-label="Ir para Frotas">
+        <div class="nav-icon-wrapper"><i class="fa-solid fa-car"></i></div>
+        <span>Frotas</span>
+      </button>
+      <button class="nav-btn" onclick="switchTab('team')" aria-label="Ir para Equipe">
+        <div class="nav-icon-wrapper"><i class="fa-solid fa-users"></i></div>
+        <span>Equipe</span>
+      </button>
+      <button class="nav-btn" onclick="switchTab('profile')" aria-label="Ir para Conta">
+        <div class="nav-icon-wrapper"><i class="fa-solid fa-user"></i></div>
+        <span>Conta</span>
+      </button>
+    </nav>
+
+    <!-- ================= MODAIS DE AÇÃO ================= -->
+
+        <!-- Modal Depósito Pix com Gerador Real de QrCode -->
+    <div id="modal-deposit" class="modal" role="dialog" aria-modal="true" onclick="closeModalOutside(event, 'modal-deposit')">
+      <div class="modal-content">
+        
+        <!-- Vista 1: Seleção de Valor -->
+        <div id="deposit-step-select">
+          <div class="modal-header">
+            <h4><i class="fa-solid fa-bolt-lightning" style="color: var(--primary);"></i> Recarga via Pix</h4>
+            <button class="btn-close" onclick="closeModal('modal-deposit')" aria-label="Fechar">&times;</button>
+          </div>
+          <div class="modal-body">
+            <label class="modal-label">Selecione ou digite o valor da recarga:</label>
+            <div class="preset-amounts" role="group">
+              <button type="button" class="preset-btn" onclick="setDepositAmount(50)">R$ 50</button>
+              <button type="button" class="preset-btn active" onclick="setDepositAmount(100)">R$ 100</button>
+              <button type="button" class="preset-btn" onclick="setDepositAmount(300)">R$ 300</button>
+              <button type="button" class="preset-btn" onclick="setDepositAmount(1000)">R$ 1.000</button>
+            </div>
+            
+            <div class="input-currency-wrapper">
+              <span class="currency-prefix">R$</span>
+              <input type="number" id="deposit-input" value="100" placeholder="Outro valor (Mínimo R$ 20)" min="20">
+            </div>
+
+            <button id="btn-process-deposit" class="btn btn-primary btn-block" onclick="processDeposit()">
+              <i class="fa-solid fa-qrcode"></i> Gerar QrCode Pix
+            </button>
+          </div>
+        </div>
+
+        <!-- Vista 2: QrCode Pix Real Gerado -->
+        <div id="deposit-step-qrcode" style="display: none;">
+          <div class="modal-header">
+            <h4><i class="fa-solid fa-qrcode" style="color: var(--primary);"></i> Pagamento Pix</h4>
+            <button class="btn-close" onclick="closeModal('modal-deposit')" aria-label="Fechar">&times;</button>
+          </div>
+          <div class="modal-body text-center">
+            
+            <!-- Timer Regressivo -->
+            <div class="pix-timer-box">
+              <i class="fa-regular fa-clock"></i> Expira em: <strong id="pix-countdown">15:00</strong>
+            </div>
+
+            <!-- Canvas Real do QrCode -->
+            <div class="qrcode-wrapper">
+              <div id="qrcode-canvas"></div>
+            </div>
+
+            <div class="pix-amount-tag">
+              Valor: <strong id="pix-val-tag">R$ 100,00</strong>
+            </div>
+
+            <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 12px;">
+              Abra o app do seu banco e escolha <strong>Pagar com Pix</strong> (Escanear ou Copia e Cola).
+            </p>
+
+            <!-- Campo Pix Copia e Cola -->
+            <div class="copy-field" style="margin-bottom: 14px;">
+              <input type="text" id="pix-payload-input" readonly>
+              <button class="btn-copy" id="btn-copy-pix" onclick="copyPixCode()">
+                <i class="fa-regular fa-copy"></i> <span id="pix-copy-txt">Copiar</span>
+              </button>
+            </div>
+
+            <!-- Botão de Simulação Instantânea ou Voltar -->
+            <button class="btn btn-primary btn-block" onclick="simulateInstantPayment()" style="margin-bottom: 8px;">
+              <i class="fa-solid fa-circle-check"></i> Já fiz o pagamento
+            </button>
+            
+            <button class="btn btn-secondary btn-block" onclick="resetDepositView()">
+              Alterar Valor
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Modal Saque -->
+    <div id="modal-withdraw" class="modal" onclick="closeModalOutside(event, 'modal-withdraw')">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4>Solicitar Saque</h4>
+          <button class="btn-close" onclick="closeModal('modal-withdraw')" aria-label="Fechar">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p class="modal-info">Saldo disponível: <strong id="withdraw-available" style="color: var(--accent-green);">R$ 0,00</strong></p>
+          <label>Chave Pix cadastrada (CPF/Telefone/Email):</label>
+          <input type="text" id="withdraw-key" placeholder="Insira sua Chave Pix">
+          <label>Valor do Saque (R$):</label>
+          <input type="number" id="withdraw-amount" placeholder="Mínimo R$ 30,00">
+          <button id="btn-process-withdraw" class="btn btn-primary btn-block" onclick="processWithdraw()">
+            Confirmar Saque
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Check-in Diário -->
+    <div id="modal-checkin" class="modal" onclick="closeModalOutside(event, 'modal-checkin')">
+      <div class="modal-content text-center">
+        <div class="modal-header">
+          <h4>Recompensa Diária</h4>
+          <button class="btn-close" onclick="closeModal('modal-checkin')" aria-label="Fechar">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="reward-icon bounce-anim"><i class="fa-solid fa-gift"></i></div>
+          <p style="margin-bottom: 20px; color: var(--text-muted);">Faça check-in diário para ganhar bônus operacionais.</p>
+          <button id="btn-process-checkin" class="btn btn-primary btn-block" onclick="claimCheckin()">
+            Resgatar Bônus
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    // Registro do Service Worker
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then(reg => console.log('[PWA] Service Worker registrado com sucesso! Escopo:', reg.scope))
+          .catch(err => console.error('[PWA] Falha ao registrar Service Worker:', err));
+      });
+    }
+
+    // Captura evento de instalação nativo
+    let deferredPrompt = null;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      const banner = document.getElementById('pwa-install-banner');
+      if (banner && !localStorage.getItem('pwa_dismissed')) {
+        banner.style.display = 'flex';
+      }
+    });
+
+    function triggerPWAInstall() {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+          if (choiceResult.outcome === 'accepted') {
+            console.log('[PWA] Usuário aceitou a instalação');
+          }
+          deferredPrompt = null;
+          document.getElementById('pwa-install-banner').style.display = 'none';
+        });
+      }
+    }
+
+    function dismissPWAInstall() {
+      document.getElementById('pwa-install-banner').style.display = 'none';
+      localStorage.setItem('pwa_dismissed', 'true');
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TAXINEXO - Centro de Comando Administrativo</title>
+  <link rel="stylesheet" href="style_refatorado.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      background: #030508;
+      min-height: 100vh;
+      display: block;
+      padding: 24px;
+    }
+
+    .admin-wrapper {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* Admin Header */
+    .admin-top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--bg-card);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 16px 24px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-glow);
+    }
+
+    .admin-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .admin-logo-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      transform: rotate(45deg);
+      background: var(--primary-gradient);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
+    }
+
+    .admin-logo-icon i {
+      transform: rotate(-45deg);
+      color: #000;
+      font-size: 16px;
+    }
+
+    .admin-title-group h2 {
+      font-size: 18px;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .admin-title-group span {
+      font-size: 11px;
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .admin-top-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* Grid de Métricas */
+    .admin-metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    .admin-metric-card {
+      background: var(--bg-card);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow-glow);
+    }
+
+    .admin-metric-card .card-icon {
+      position: absolute;
+      right: 18px;
+      top: 18px;
+      font-size: 28px;
+      opacity: 0.2;
+      color: var(--primary);
+    }
+
+    .admin-metric-card .label {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 600;
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .admin-metric-card .value {
+      font-size: 24px;
+      font-weight: 800;
+      font-family: 'Space Grotesk', monospace;
+      color: #fff;
+    }
+
+    .admin-metric-card .value.green {
+      color: var(--accent-green);
+      text-shadow: 0 0 12px rgba(0, 255, 136, 0.4);
+    }
+
+    .admin-metric-card .value.cyan {
+      color: var(--primary);
+      text-shadow: 0 0 12px rgba(0, 240, 255, 0.4);
+    }
+
+    /* Two Columns Layout */
+    .admin-grid-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 28px;
+    }
+
+    @media (max-width: 900px) {
+      .admin-grid-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Table Panels */
+    .admin-panel {
+      background: var(--bg-card);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: var(--shadow-glow);
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .panel-header h3 {
+      font-size: 16px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Modern Admin Tables */
+    .admin-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    .admin-table th {
+      text-align: left;
+      padding: 10px 12px;
+      color: var(--text-muted);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .admin-table td {
+      padding: 14px 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      color: var(--text-main);
+      font-weight: 500;
+    }
+
+    .admin-table tr:hover td {
+      background: rgba(0, 240, 255, 0.03);
+    }
+
+    /* Action Buttons in Table */
+    .btn-action-group {
+      display: flex;
+      gap: 6px;
+    }
+
+    .btn-approve {
+      background: rgba(0, 255, 136, 0.15);
+      border: 1px solid rgba(0, 255, 136, 0.3);
+      color: var(--accent-green);
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-approve:hover {
+      background: var(--accent-green);
+      color: #000;
+    }
+
+    .btn-reject {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #f87171;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-reject:hover {
+      background: #ef4444;
+      color: #fff;
+    }
+
+    /* Engine Control Card */
+    .engine-box {
+      background: linear-gradient(135deg, rgba(0, 240, 255, 0.08) 0%, rgba(0, 102, 255, 0.12) 100%);
+      border: 1px solid var(--primary);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    .engine-info h4 {
+      font-size: 16px;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .engine-info p {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="admin-wrapper">
+
+    <!-- Top Bar -->
+    <header class="admin-top-bar">
+      <div class="admin-brand">
+        <div class="admin-logo-icon">
+          <i class="fa-solid fa-shield-halved"></i>
+        </div>
+        <div class="admin-title-group">
+          <h2>TAXINEXO <span>// BACKOFFICE ADMIN</span></h2>
+          <span>Ambiente de Controle Central</span>
+        </div>
+      </div>
+
+      <div class="admin-top-actions">
+        <a href="index_refatorado.html" class="btn btn-secondary" style="padding: 8px 16px; font-size: 12px; text-decoration: none;">
+          <i class="fa-solid fa-mobile-screen"></i> Ver App Operador
+        </a>
+        <button class="btn btn-primary" onclick="loadAllAdminData()" style="padding: 8px 16px; font-size: 12px;">
+          <i class="fa-solid fa-rotate"></i> Atualizar
+        </button>
+      </div>
+    </header>
+
+    <!-- Motor de Liquidação Automática -->
+    <div class="engine-box">
+      <div class="engine-info">
+        <h4><i class="fa-solid fa-microchip" style="color: var(--primary);"></i> Motor de Liquidação Diária dos Veículos</h4>
+        <p>Calcula rendimentos dos contratos ativos, atualiza dias restantes e distribui comissões de rede.</p>
+      </div>
+      <button class="btn btn-primary" id="btn-settle-engine" onclick="triggerSettlement()" style="padding: 12px 24px;">
+        <i class="fa-solid fa-play"></i> Rodar Ciclo de Liquidação Agora
+      </button>
+    </div>
+
+    <!-- Grid de Métricas Globais -->
+    <div class="admin-metrics-grid">
+      <div class="admin-metric-card">
+        <i class="fa-solid fa-wallet card-icon"></i>
+        <span class="label">Total Depositado (Pix)</span>
+        <span class="value green" id="metric-deposits">R$ 0,00</span>
+      </div>
+      <div class="admin-metric-card">
+        <i class="fa-solid fa-arrow-up-right-from-square card-icon"></i>
+        <span class="label">Total Pago em Saques</span>
+        <span class="value" id="metric-withdrawals">R$ 0,00</span>
+      </div>
+      <div class="admin-metric-card">
+        <i class="fa-solid fa-coins card-icon"></i>
+        <span class="label">Saldo Total em Custódia</span>
+        <span class="value cyan" id="metric-custody">R$ 0,00</span>
+      </div>
+      <div class="admin-metric-card">
+        <i class="fa-solid fa-car-side card-icon"></i>
+        <span class="label">Contratos Ativos / Frotas</span>
+        <span class="value" id="metric-contracts">0</span>
+      </div>
+      <div class="admin-metric-card">
+        <i class="fa-solid fa-users card-icon"></i>
+        <span class="label">Operadores Cadastrados</span>
+        <span class="value cyan" id="metric-users">0</span>
+      </div>
+    </div>
+
+    <!-- Painéis em 2 Colunas -->
+    <div class="admin-grid-layout">
+      
+      <!-- Painel 1: Fila de Saques Pendentes -->
+      <section class="admin-panel">
+        <div class="panel-header">
+          <h3>
+            <i class="fa-solid fa-clock-rotate-left" style="color: var(--accent-gold);"></i> 
+            Fila de Saques (<span id="withdrawals-count">0</span>)
+          </h3>
+        </div>
+
+        <div style="overflow-x: auto;">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Operador</th>
+                <th>Chave Pix</th>
+                <th>Valor</th>
+                <th>Status</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody id="withdrawals-table-body">
+              <tr>
+                <td colspan="5" style="text-align: center; color: var(--text-muted);">Carregando solicitações...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Painel 2: Operadores & Saldos -->
+      <section class="admin-panel">
+        <div class="panel-header">
+          <h3>
+            <i class="fa-solid fa-users" style="color: var(--primary);"></i> 
+            Operadores Cadastrados
+          </h3>
+        </div>
+
+        <div style="overflow-x: auto;">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Nome / ID</th>
+                <th>Telefone</th>
+                <th>Saldo</th>
+                <th>Contratos</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody id="users-table-body">
+              <tr>
+                <td colspan="5" style="text-align: center; color: var(--text-muted);">Carregando operadores...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </div>
+
+  </div>
+
+  <script>
+    (window.location.hostname === 'localhost' && window.location.port === '8080') ? 'http://localhost:3000/api/admin' : '/api/admin'
+
+    const formatCurrency = (val) => {
+      return new Intl.NumberFormat('pt-BR', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }).format(val || 0);
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadAllAdminData();
+    });
+
+    async function loadAllAdminData() {
+      await Promise.all([
+        loadMetrics(),
+        loadWithdrawals(),
+        loadUsers()
+      ]);
+    }
+
+    async function loadMetrics() {
+      try {
+        const res = await fetch(`${API_BASE}/metrics`);
+        const data = await res.json();
+
+        document.getElementById('metric-deposits').textContent = `R$ ${formatCurrency(data.totalDeposits)}`;
+        document.getElementById('metric-withdrawals').textContent = `R$ ${formatCurrency(data.totalWithdrawals)}`;
+        document.getElementById('metric-custody').textContent = `R$ ${formatCurrency(data.totalCustodyBalance)}`;
+        document.getElementById('metric-contracts').textContent = data.activeContracts;
+        document.getElementById('metric-users').textContent = data.totalUsers;
+        document.getElementById('withdrawals-count').textContent = data.pendingWithdrawalsCount;
+      } catch (err) {
+        console.error('Erro ao carregar métricas:', err);
+      }
+    }
+
+    async function loadWithdrawals() {
+      const tbody = document.getElementById('withdrawals-table-body');
+      try {
+        const res = await fetch(`${API_BASE}/withdrawals`);
+        const list = await res.json();
+
+        if (list.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--text-muted); padding: 20px;">Nenhuma solicitação de saque no momento.</td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = list.map(w => {
+          const absAmount = Math.abs(w.amount);
+          const isPending = w.status === 'pending';
+
+          return `
+            <tr>
+              <td><strong>${w.userName}</strong><br><span style="font-size: 11px; color: var(--text-muted);">${w.userPhone}</span></td>
+              <td><span style="font-family: monospace; color: var(--primary);">${w.pixKey || 'N/A'}</span></td>
+              <td><strong style="color: var(--accent-green);">R$ ${formatCurrency(absAmount)}</strong></td>
+              <td>
+                <span class="status-badge ${isPending ? 'hot' : 'available'}" style="font-size: 10px;">
+                  ${isPending ? 'Pendente' : (w.status === 'approved' ? 'Aprovado' : 'Rejeitado')}
+                </span>
+              </td>
+              <td>
+                ${isPending ? `
+                  <div class="btn-action-group">
+                    <button class="btn-approve" onclick="approveWithdrawal('${w.id}')"><i class="fa-solid fa-check"></i> Aprovar</button>
+                    <button class="btn-reject" onclick="rejectWithdrawal('${w.id}')"><i class="fa-solid fa-xmark"></i> Rejeitar</button>
+                  </div>
+                ` : '<span style="color: var(--text-muted); font-size: 11px;">Finalizado</span>'}
+              </td>
+            </tr>
+          `;
+        }).join('');
+      } catch (err) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: #ef4444;">Erro ao carregar saques.</td></tr>';
+      }
+    }
+
+    async function approveWithdrawal(id) {
+      if (confirm('Confirmar aprovação deste saque?')) {
+        await fetch(`${API_BASE}/withdrawals/${id}/approve`, { method: 'POST' });
+        alert('✅ Saque aprovado com sucesso!');
+        loadAllAdminData();
+      }
+    }
+
+    async function rejectWithdrawal(id) {
+      if (confirm('Rejeitar este saque e estornar o saldo para o operador?')) {
+        await fetch(`${API_BASE}/withdrawals/${id}/reject`, { method: 'POST' });
+        alert('❌ Saque rejeitado. Saldo estornado!');
+        loadAllAdminData();
+      }
+    }
+
+    async function loadUsers() {
+      const tbody = document.getElementById('users-table-body');
+      try {
+        const res = await fetch(`${API_BASE}/users`);
+        const users = await res.json();
+
+        tbody.innerHTML = users.map(u => `
+          <tr>
+            <td><strong>${u.operatorName}</strong><br><span style="font-size: 10px; color: var(--accent-gold);">Cód: ${u.inviteCode}</span></td>
+            <td>${u.phone}</td>
+            <td><strong style="color: var(--primary);">R$ ${formatCurrency(u.balance)}</strong></td>
+            <td>${u.activeContractsCount} veículos</td>
+            <td>
+              <button class="btn-approve" onclick="adjustUserBalance('${u.id}', '${u.operatorName}')" style="font-size: 10px; padding: 4px 8px;">
+                <i class="fa-solid fa-plus-minus"></i> Ajustar Saldo
+              </button>
+            </td>
+          </tr>
+        `).join('');
+      } catch (err) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: #ef4444;">Erro ao carregar usuários.</td></tr>';
+      }
+    }
+
+    async function adjustUserBalance(userId, userName) {
+      const amountStr = prompt(`Informe o valor para adicionar (+) ou subtrair (-) do saldo de ${userName}:\n(Ex: 100 ou -50)`);
+      if (!amountStr) return;
+
+      const amount = parseFloat(amountStr);
+      if (isNaN(amount)) return alert('Valor inválido!');
+
+      await fetch(`${API_BASE}/users/${userId}/adjust-balance`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ amount })
+      });
+
+      alert(`Saldo de ${userName} atualizado com sucesso!`);
+      loadAllAdminData();
+    }
+
+    async function triggerSettlement() {
+      const btn = document.getElementById('btn-settle-engine');
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processando liquidação...';
+
+      try {
+        const res = await fetch(`${API_BASE}/settle`, { method: 'POST' });
+        const data = await res.json();
+        alert(`🚀 Liquidação Concluída!\n\nContratos Processados: ${data.settlementsProcessed}\nTotal Creditado: R$ ${formatCurrency(data.totalCredited)}`);
+        loadAllAdminData();
+      } catch (err) {
+        alert('Erro ao executar motor.');
+      }
+
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fa-solid fa-play"></i> Rodar Ciclo de Liquidação Agora';
+    }
+  </script>
+</body>
+</html>

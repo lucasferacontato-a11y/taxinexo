@@ -1,0 +1,22 @@
+{
+  "name": "TAXINEXO - Frotas Autônomas",
+  "short_name": "TAXINEXO",
+  "description": "Sistema de Gestão de Frotas de Veículos Autônomos e Inteligência Artificial",
+  "start_url": "./index_refatorado.html",
+  "display": "standalone",
+  "background_color": "#05070A",
+  "theme_color": "#05070A",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "./apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "./favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    }
+  ]
+}

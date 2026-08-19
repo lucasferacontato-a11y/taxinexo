@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>TAXINEXO - Acesso à Plataforma</title>
+  <link rel="stylesheet" href="style_refatorado.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* Estilos específicos da tela de Autenticação */
+    .auth-container {
+      width: 100%;
+      max-width: 440px;
+      padding: 30px 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      z-index: 10;
+    }
+
+    .brand-hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .brand-logo-diamond {
+      width: 60px;
+      height: 60px;
+      border-radius: 16px;
+      transform: rotate(45deg);
+      background: var(--primary-gradient);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 18px;
+      box-shadow: 0 0 25px rgba(0, 240, 255, 0.5);
+    }
+
+    .brand-logo-diamond i {
+      transform: rotate(-45deg);
+      font-size: 26px;
+      color: #000;
+    }
+
+    .brand-title {
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .brand-title span {
+      color: var(--primary);
+    }
+
+    .brand-sub {
+      font-size: 12px;
+      color: var(--text-muted);
+      letter-spacing: 0.5px;
+    }
+
+    /* Auth Box */
+    .auth-box {
+      width: 100%;
+      background: var(--bg-card);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: var(--shadow-glow);
+    }
+
+    /* Tab Switcher */
+    .auth-tabs {
+      display: flex;
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 4px;
+      margin-bottom: 22px;
+    }
+
+    .auth-tab-btn {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      background: none;
+      color: var(--text-muted);
+      font-weight: 700;
+      font-size: 13px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .auth-tab-btn.active {
+      background: var(--primary-gradient);
+      color: #000;
+      box-shadow: 0 0 10px rgba(0, 240, 255, 0.35);
+    }
+
+    /* Form Fields */
+    .form-group {
+      margin-bottom: 16px;
+      position: relative;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .input-with-icon {
+      position: relative;
+    }
+
+    .input-with-icon i.field-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    .input-with-icon input {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid var(--border-color);
+      padding: 12px 40px 12px 38px;
+      border-radius: var(--radius-md);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    .input-with-icon input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(0, 240, 255, 0.2);
+    }
+
+    .btn-toggle-pwd {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    /* Error / Success Toast */
+    .auth-alert {
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      display: none;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .auth-alert.error {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #f87171;
+      display: flex;
+    }
+
+    .auth-alert.success {
+      background: rgba(0, 255, 136, 0.15);
+      border: 1px solid rgba(0, 255, 136, 0.3);
+      color: var(--accent-green);
+      display: flex;
+    }
+
+    .form-pane {
+      display: none;
+    }
+
+    .form-pane.active {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .invite-tag-preview {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      color: var(--accent-gold);
+      background: rgba(250, 219, 95, 0.1);
+      padding: 2px 8px;
+      border-radius: 10px;
+      margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="auth-container">
+
+    <!-- Logo & Hero -->
+    <div class="brand-hero">
+      <div class="brand-logo-diamond">
+        <i class="fa-solid fa-satellite-dish"></i>
+      </div>
+      <h1 class="brand-title">TAXI<span>NEXO</span></h1>
+      <p class="brand-sub">Sistema de Gestão de Frotas Autônomas</p>
+    </div>
+
+    <!-- Auth Card -->
+    <div class="auth-box">
+
+      <!-- Switcher Tabs -->
+      <div class="auth-tabs" role="tablist">
+        <button class="auth-tab-btn active" id="tab-login-btn" onclick="switchAuthTab('login')">
+          <i class="fa-solid fa-right-to-bracket"></i> Entrar
+        </button>
+        <button class="auth-tab-btn" id="tab-register-btn" onclick="switchAuthTab('register')">
+          <i class="fa-solid fa-user-plus"></i> Criar Conta
+        </button>
+      </div>
+
+      <!-- Alert Box -->
+      <div class="auth-alert" id="auth-alert" role="alert"></div>
+
+      <!-- 1. Formulário de Login -->
+      <form id="form-login" class="form-pane active" onsubmit="handleLoginSubmit(event)">
+        
+        <div class="form-group">
+          <label class="form-label" for="login-phone">Número de Telefone (WhatsApp):</label>
+          <div class="input-with-icon">
+            <i class="fa-solid fa-phone field-icon"></i>
+            <input type="tel" id="login-phone" placeholder="(11) 98765-4321" required autofocus autocomplete="tel">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="login-password">Senha de Acesso:</label>
+          <div class="input-with-icon">
+            <i class="fa-solid fa-lock field-icon"></i>
+            <input type="password" id="login-password" placeholder="Digite sua senha" required autocomplete="current-password">
+            <button type="button" class="btn-toggle-pwd" onclick="togglePassword('login-password', this)">
+              <i class="fa-regular fa-eye"></i>
+            </button>
+          </div>
+        </div>
+
+        <button type="submit" id="btn-submit-login" class="btn btn-primary btn-block" style="margin-top: 20px;">
+          <span>Acessar Painel</span> <i class="fa-solid fa-arrow-right"></i>
+        </button>
+
+      </form>
+
+      <!-- 2. Formulário de Cadastro -->
+      <form id="form-register" class="form-pane" onsubmit="handleRegisterSubmit(event)">
+        
+        <div class="form-group">
+          <label class="form-label" for="reg-phone">Seu Telefone (WhatsApp):</label>
+          <div class="input-with-icon">
+            <i class="fa-solid fa-phone field-icon"></i>
+            <input type="tel" id="reg-phone" placeholder="(11) 98765-4321" required autocomplete="tel">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="reg-password">Criar Senha de Acesso:</label>
+          <div class="input-with-icon">
+            <i class="fa-solid fa-lock field-icon"></i>
+            <input type="password" id="reg-password" placeholder="Mínimo 6 caracteres" minlength="6" required autocomplete="new-password">
+            <button type="button" class="btn-toggle-pwd" onclick="togglePassword('reg-password', this)">
+              <i class="fa-regular fa-eye"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="reg-invite">Código de Convite (Opcional):</label>
+          <div class="input-with-icon">
+            <i class="fa-solid fa-ticket-simple field-icon"></i>
+            <input type="text" id="reg-invite" placeholder="Ex: NEXO8843" value="">
+          </div>
+          <div class="invite-tag-preview" id="invite-preview" style="display: none;">
+            <i class="fa-solid fa-check"></i> Código de indicação aplicado!
+          </div>
+        </div>
+
+        <button type="submit" id="btn-submit-register" class="btn btn-primary btn-block" style="margin-top: 20px;">
+          <span>Registrar e Começar</span> <i class="fa-solid fa-bolt"></i>
+        </button>
+
+      </form>
+
+    </div>
+
+    <!-- Rodapé -->
+    <div class="app-version" style="margin-top: 30px;">
+      <span>TAXINEXO Secure Core v1.0.4</span>
+    </div>
+
+  </div>
+
+  <script>
+    const API_BASE = (window.location.hostname === 'localhost' && window.location.port === '8080')
+  ? 'http://localhost:3000/api' 
+  : '/api';
+
+    // Captura código de convite da URL (ex: login.html?ref=NEXO8843)
+    document.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const ref = urlParams.get('ref') || urlParams.get('invite') || urlParams.get('i');
+      if (ref) {
+        switchAuthTab('register');
+        const inviteInput = document.getElementById('reg-invite');
+        if (inviteInput) {
+          inviteInput.value = ref.toUpperCase();
+          document.getElementById('invite-preview').style.display = 'inline-flex';
+        }
+      }
+
+      // Máscara de Telefone nos inputs
+      ['login-phone', 'reg-phone'].forEach(id => {
+        const input = document.getElementById(id);
+        input?.addEventListener('input', (e) => {
+          let v = e.target.value.replace(/\D/g, '');
+          if (v.length > 11) v = v.substring(0, 11);
+          if (v.length > 6) {
+            e.target.value = `(${v.substring(0,2)}) ${v.substring(2,7)}-${v.substring(7)}`;
+          } else if (v.length > 2) {
+            e.target.value = `(${v.substring(0,2)}) ${v.substring(2)}`;
+          } else if (v.length > 0) {
+            e.target.value = `(${v}`;
+          }
+        });
+      });
+    });
+
+    function switchAuthTab(tab) {
+      document.querySelectorAll('.auth-tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.form-pane').forEach(f => f.classList.remove('active'));
+      hideAlert();
+
+      if (tab === 'login') {
+        document.getElementById('tab-login-btn').classList.add('active');
+        document.getElementById('form-login').classList.add('active');
+      } else {
+        document.getElementById('tab-register-btn').classList.add('active');
+        document.getElementById('form-register').classList.add('active');
+      }
+    }
+
+    function togglePassword(inputId, btn) {
+      const input = document.getElementById(inputId);
+      const icon = btn.querySelector('i');
+      if (input.type === 'password') {
+        input.type = 'text';
+        icon.className = 'fa-regular fa-eye-slash';
+      } else {
+        input.type = 'password';
+        icon.className = 'fa-regular fa-eye';
+      }
+    }
+
+    function showAlert(msg, type = 'error') {
+      const alertBox = document.getElementById('auth-alert');
+      alertBox.textContent = msg;
+      alertBox.className = `auth-alert ${type}`;
+    }
+
+    function hideAlert() {
+      const alertBox = document.getElementById('auth-alert');
+      alertBox.style.display = 'none';
+      alertBox.className = 'auth-alert';
+    }
+
+    async function handleLoginSubmit(e) {
+      e.preventDefault();
+      hideAlert();
+
+      const phone = document.getElementById('login-phone').value;
+      const password = document.getElementById('login-password').value;
+      const btn = document.getElementById('btn-submit-login');
+
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Autenticando...';
+
+      try {
+        const res = await fetch(`${API_BASE}/auth/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ phone, password })
+        });
+
+        const data = await res.json();
+
+        if (res.ok && data.token) {
+          showAlert('Login aprovado! Redirecionando...', 'success');
+          localStorage.setItem('taxinexo_token', data.token);
+          localStorage.setItem('operator_name', data.user.operatorName);
+          setTimeout(() => {
+            window.location.href = 'index_refatorado.html';
+          }, 800);
+        } else {
+          showAlert(data.error || 'Credenciais inválidas.');
+          btn.disabled = false;
+          btn.innerHTML = '<span>Acessar Painel</span> <i class="fa-solid fa-arrow-right"></i>';
+        }
+      } catch (err) {
+        showAlert('Falha na comunicação com o servidor. Verifique se a API está online.');
+        btn.disabled = false;
+        btn.innerHTML = '<span>Acessar Painel</span> <i class="fa-solid fa-arrow-right"></i>';
+      }
+    }
+
+    async function handleRegisterSubmit(e) {
+      e.preventDefault();
+      hideAlert();
+
+      const phone = document.getElementById('reg-phone').value;
+      const password = document.getElementById('reg-password').value;
+      const inviteCode = document.getElementById('reg-invite').value.trim();
+      const btn = document.getElementById('btn-submit-register');
+
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Criando Conta...';
+
+      try {
+        const res = await fetch(`${API_BASE}/auth/register`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ phone, password, inviteCode })
+        });
+
+        const data = await res.json();
+
+        if (res.ok && data.token) {
+          showAlert('🎉 Conta criada com sucesso! Entrando...', 'success');
+          localStorage.setItem('taxinexo_token', data.token);
+          localStorage.setItem('operator_name', data.user.operatorName);
+          setTimeout(() => {
+            window.location.href = 'index_refatorado.html';
+          }, 1000);
+        } else {
+          showAlert(data.error || 'Erro ao registrar conta.');
+          btn.disabled = false;
+          btn.innerHTML = '<span>Registrar e Começar</span> <i class="fa-solid fa-bolt"></i>';
+        }
+      } catch (err) {
+        showAlert('Falha na comunicação com o servidor.');
+        btn.disabled = false;
+        btn.innerHTML = '<span>Registrar e Começar</span> <i class="fa-solid fa-bolt"></i>';
+      }
+    }
+  </script>
+</body>
+</html>

@@ -3,91 +3,134 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>TAXINEXO - Acesso à Plataforma</title>
-  <link rel="stylesheet" href="style_refatorado.css">
+  <title>TAXINEXO - Terminal de Autenticação</title>
+  
+  <!-- PWA & Apple Web App Tags -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#05070A">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  
+  <!-- Estilos & Tipografias -->
+  <link rel="stylesheet" href="style.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
   <style>
-    /* Estilos específicos da tela de Autenticação */
-    .auth-container {
+    body {
+      background-color: #030508;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Fundo com Brilhos Cyberpunk */
+    body::before {
+      content: '';
+      position: absolute;
+      top: 10%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 350px;
+      height: 350px;
+      background: radial-gradient(circle, rgba(0, 240, 255, 0.12) 0%, rgba(0, 102, 255, 0.05) 50%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .auth-wrapper {
       width: 100%;
       max-width: 440px;
-      padding: 30px 24px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      padding: 24px 20px;
       position: relative;
-      z-index: 10;
+      z-index: 1;
     }
 
-    .brand-hero {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+    /* Brand Header */
+    .auth-hero {
       text-align: center;
-      margin-bottom: 28px;
+      margin-bottom: 24px;
     }
 
-    .brand-logo-diamond {
-      width: 60px;
-      height: 60px;
-      border-radius: 16px;
+    .auth-logo-badge {
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
       transform: rotate(45deg);
       background: var(--primary-gradient);
-      display: flex;
+      display: inline-flex;
       align-items: center;
       justify-content: center;
       margin-bottom: 18px;
       box-shadow: 0 0 25px rgba(0, 240, 255, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.4);
     }
 
-    .brand-logo-diamond i {
+    .auth-logo-badge i {
       transform: rotate(-45deg);
-      font-size: 26px;
+      font-size: 22px;
       color: #000;
     }
 
-    .brand-title {
+    .auth-brand-title {
       font-size: 26px;
       font-weight: 800;
       letter-spacing: 1px;
       color: #fff;
+      font-family: 'Space Grotesk', sans-serif;
       margin-bottom: 4px;
     }
 
-    .brand-title span {
+    .auth-brand-title span {
       color: var(--primary);
+      text-shadow: 0 0 15px rgba(0, 240, 255, 0.5);
     }
 
-    .brand-sub {
+    .auth-subtitle {
       font-size: 12px;
       color: var(--text-muted);
       letter-spacing: 0.5px;
     }
 
-    /* Auth Box */
-    .auth-box {
-      width: 100%;
+    /* Glassmorphism Auth Card */
+    .auth-card {
       background: var(--bg-card);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
       border: 1px solid var(--border-color);
       border-radius: var(--radius-lg);
       padding: 24px;
       box-shadow: var(--shadow-glow);
+      position: relative;
+      overflow: hidden;
     }
 
-    /* Tab Switcher */
-    .auth-tabs {
+    .auth-card::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.4), transparent);
+    }
+
+    /* Switcher Tabs */
+    .auth-tabs-nav {
       display: flex;
-      background: rgba(0, 0, 0, 0.35);
+      background: rgba(0, 0, 0, 0.4);
       border: 1px solid var(--border-color);
       border-radius: var(--radius-md);
       padding: 4px;
       margin-bottom: 22px;
+      gap: 4px;
     }
 
-    .auth-tab-btn {
+    .auth-nav-btn {
       flex: 1;
       padding: 10px;
       border: none;
@@ -97,19 +140,24 @@
       font-size: 13px;
       border-radius: var(--radius-sm);
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
       transition: all 0.25s ease;
+      font-family: 'Space Grotesk', sans-serif;
     }
 
-    .auth-tab-btn.active {
+    .auth-nav-btn.active {
       background: var(--primary-gradient);
       color: #000;
-      box-shadow: 0 0 10px rgba(0, 240, 255, 0.35);
+      box-shadow: 0 0 12px rgba(0, 240, 255, 0.4);
+      font-weight: 800;
     }
 
     /* Form Fields */
     .form-group {
       margin-bottom: 16px;
-      position: relative;
     }
 
     .form-label {
@@ -117,27 +165,28 @@
       font-size: 12px;
       font-weight: 600;
       color: var(--text-muted);
-      margin-bottom: 6px;
+      margin-bottom: 8px;
     }
 
-    .input-with-icon {
+    .field-input-box {
       position: relative;
     }
 
-    .input-with-icon i.field-icon {
+    .field-input-box i.input-icon {
       position: absolute;
       left: 14px;
       top: 50%;
       transform: translateY(-50%);
-      color: var(--text-muted);
+      color: var(--primary);
       font-size: 14px;
+      opacity: 0.8;
     }
 
-    .input-with-icon input {
+    .field-input-box input {
       width: 100%;
-      background: rgba(0, 0, 0, 0.35);
+      background: rgba(0, 0, 0, 0.45);
       border: 1px solid var(--border-color);
-      padding: 12px 40px 12px 38px;
+      padding: 13px 42px 13px 40px;
       border-radius: var(--radius-md);
       color: #fff;
       font-size: 14px;
@@ -146,12 +195,12 @@
       transition: all 0.2s ease;
     }
 
-    .input-with-icon input:focus {
+    .field-input-box input:focus {
       border-color: var(--primary);
       box-shadow: 0 0 0 3px rgba(0, 240, 255, 0.2);
     }
 
-    .btn-toggle-pwd {
+    .btn-pwd-eye {
       position: absolute;
       right: 12px;
       top: 50%;
@@ -160,12 +209,17 @@
       border: none;
       color: var(--text-muted);
       cursor: pointer;
-      font-size: 14px;
+      font-size: 15px;
+      padding: 4px;
     }
 
-    /* Error / Success Toast */
-    .auth-alert {
-      padding: 10px 14px;
+    .btn-pwd-eye:hover {
+      color: var(--primary);
+    }
+
+    /* Alert Feedback */
+    .auth-alert-toast {
+      padding: 11px 14px;
       border-radius: var(--radius-sm);
       font-size: 12px;
       font-weight: 600;
@@ -173,118 +227,142 @@
       display: none;
       align-items: center;
       gap: 8px;
+      animation: fadeIn 0.25s ease;
     }
 
-    .auth-alert.error {
+    .auth-alert-toast.error {
       background: rgba(239, 68, 68, 0.15);
-      border: 1px solid rgba(239, 68, 68, 0.3);
+      border: 1px solid rgba(239, 68, 68, 0.4);
       color: #f87171;
       display: flex;
     }
 
-    .auth-alert.success {
+    .auth-alert-toast.success {
       background: rgba(0, 255, 136, 0.15);
-      border: 1px solid rgba(0, 255, 136, 0.3);
+      border: 1px solid rgba(0, 255, 136, 0.4);
       color: var(--accent-green);
       display: flex;
     }
 
-    .form-pane {
+    .form-panel {
       display: none;
     }
 
-    .form-pane.active {
+    .form-panel.active {
       display: block;
-      animation: fadeIn 0.3s ease;
+      animation: fadeIn 0.25s ease;
     }
 
-    .invite-tag-preview {
+    .invite-badge-tag {
       display: inline-flex;
       align-items: center;
-      gap: 4px;
+      gap: 5px;
       font-size: 11px;
       color: var(--accent-gold);
-      background: rgba(250, 219, 95, 0.1);
-      padding: 2px 8px;
-      border-radius: 10px;
-      margin-top: 4px;
+      background: rgba(250, 219, 95, 0.12);
+      border: 1px solid rgba(250, 219, 95, 0.25);
+      padding: 3px 10px;
+      border-radius: 12px;
+      margin-top: 6px;
+      font-weight: 600;
+    }
+
+    /* Trust Badges Footer */
+    .trust-footer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 16px;
+      margin-top: 24px;
+      color: var(--text-muted);
+      font-size: 11px;
+    }
+
+    .trust-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .trust-item i {
+      color: var(--primary);
     }
   </style>
 </head>
 <body>
 
-  <div class="auth-container">
+  <div class="auth-wrapper">
 
-    <!-- Logo & Hero -->
-    <div class="brand-hero">
-      <div class="brand-logo-diamond">
+    <!-- Header & Logo Cyberpunk -->
+    <div class="auth-hero">
+      <div class="auth-logo-badge">
         <i class="fa-solid fa-satellite-dish"></i>
       </div>
-      <h1 class="brand-title">TAXI<span>NEXO</span></h1>
-      <p class="brand-sub">Sistema de Gestão de Frotas Autônomas</p>
+      <h1 class="auth-brand-title">TAXI<span>NEXO</span></h1>
+      <p class="auth-subtitle">Terminal de Gestão de Frotas Autônomas</p>
     </div>
 
-    <!-- Auth Card -->
-    <div class="auth-box">
+    <!-- Card de Autenticação -->
+    <div class="auth-card">
 
-      <!-- Switcher Tabs -->
-      <div class="auth-tabs" role="tablist">
-        <button class="auth-tab-btn active" id="tab-login-btn" onclick="switchAuthTab('login')">
+      <!-- Navegação de Abas -->
+      <div class="auth-tabs-nav" role="tablist">
+        <button class="auth-nav-btn active" id="btn-tab-login" onclick="switchFormTab('login')">
           <i class="fa-solid fa-right-to-bracket"></i> Entrar
         </button>
-        <button class="auth-tab-btn" id="tab-register-btn" onclick="switchAuthTab('register')">
+        <button class="auth-nav-btn" id="btn-tab-register" onclick="switchFormTab('register')">
           <i class="fa-solid fa-user-plus"></i> Criar Conta
         </button>
       </div>
 
-      <!-- Alert Box -->
-      <div class="auth-alert" id="auth-alert" role="alert"></div>
+      <!-- Alerta de Feedback -->
+      <div class="auth-alert-toast" id="auth-alert" role="alert"></div>
 
-      <!-- 1. Formulário de Login -->
-      <form id="form-login" class="form-pane active" onsubmit="handleLoginSubmit(event)">
+      <!-- Formulário 1: Login -->
+      <form id="form-login" class="form-panel active" onsubmit="executeLogin(event)">
         
         <div class="form-group">
-          <label class="form-label" for="login-phone">Número de Telefone (WhatsApp):</label>
-          <div class="input-with-icon">
-            <i class="fa-solid fa-phone field-icon"></i>
+          <label class="form-label" for="login-phone">Telefone do Operador (WhatsApp):</label>
+          <div class="field-input-box">
+            <i class="fa-solid fa-mobile-screen input-icon"></i>
             <input type="tel" id="login-phone" placeholder="(11) 98765-4321" required autofocus autocomplete="tel">
           </div>
         </div>
 
         <div class="form-group">
-          <label class="form-label" for="login-password">Senha de Acesso:</label>
-          <div class="input-with-icon">
-            <i class="fa-solid fa-lock field-icon"></i>
+          <label class="form-label" for="login-password">Senha de Segurança:</label>
+          <div class="field-input-box">
+            <i class="fa-solid fa-shield-halved input-icon"></i>
             <input type="password" id="login-password" placeholder="Digite sua senha" required autocomplete="current-password">
-            <button type="button" class="btn-toggle-pwd" onclick="togglePassword('login-password', this)">
+            <button type="button" class="btn-pwd-eye" onclick="togglePasswordVisibility('login-password', this)">
               <i class="fa-regular fa-eye"></i>
             </button>
           </div>
         </div>
 
-        <button type="submit" id="btn-submit-login" class="btn btn-primary btn-block" style="margin-top: 20px;">
+        <button type="submit" id="btn-login-action" class="btn btn-primary btn-block" style="margin-top: 20px;">
           <span>Acessar Painel</span> <i class="fa-solid fa-arrow-right"></i>
         </button>
 
       </form>
 
-      <!-- 2. Formulário de Cadastro -->
-      <form id="form-register" class="form-pane" onsubmit="handleRegisterSubmit(event)">
+      <!-- Formulário 2: Cadastro -->
+      <form id="form-register" class="form-panel" onsubmit="executeRegister(event)">
         
         <div class="form-group">
-          <label class="form-label" for="reg-phone">Seu Telefone (WhatsApp):</label>
-          <div class="input-with-icon">
-            <i class="fa-solid fa-phone field-icon"></i>
+          <label class="form-label" for="reg-phone">Seu WhatsApp de Acesso:</label>
+          <div class="field-input-box">
+            <i class="fa-solid fa-mobile-screen input-icon"></i>
             <input type="tel" id="reg-phone" placeholder="(11) 98765-4321" required autocomplete="tel">
           </div>
         </div>
 
         <div class="form-group">
-          <label class="form-label" for="reg-password">Criar Senha de Acesso:</label>
-          <div class="input-with-icon">
-            <i class="fa-solid fa-lock field-icon"></i>
+          <label class="form-label" for="reg-password">Criar Senha (Mínimo 6 dígitos):</label>
+          <div class="field-input-box">
+            <i class="fa-solid fa-lock input-icon"></i>
             <input type="password" id="reg-password" placeholder="Mínimo 6 caracteres" minlength="6" required autocomplete="new-password">
-            <button type="button" class="btn-toggle-pwd" onclick="togglePassword('reg-password', this)">
+            <button type="button" class="btn-pwd-eye" onclick="togglePasswordVisibility('reg-password', this)">
               <i class="fa-regular fa-eye"></i>
             </button>
           </div>
@@ -292,49 +370,55 @@
 
         <div class="form-group">
           <label class="form-label" for="reg-invite">Código de Convite (Opcional):</label>
-          <div class="input-with-icon">
-            <i class="fa-solid fa-ticket-simple field-icon"></i>
-            <input type="text" id="reg-invite" placeholder="Ex: NEXO8843" value="">
+          <div class="field-input-box">
+            <i class="fa-solid fa-ticket input-icon"></i>
+            <input type="text" id="reg-invite" placeholder="Ex: NEXO8843">
           </div>
-          <div class="invite-tag-preview" id="invite-preview" style="display: none;">
-            <i class="fa-solid fa-check"></i> Código de indicação aplicado!
+          <div class="invite-badge-tag" id="invite-tag" style="display: none;">
+            <i class="fa-solid fa-circle-check"></i> Código de indicação aplicado!
           </div>
         </div>
 
-        <button type="submit" id="btn-submit-register" class="btn btn-primary btn-block" style="margin-top: 20px;">
-          <span>Registrar e Começar</span> <i class="fa-solid fa-bolt"></i>
+        <button type="submit" id="btn-register-action" class="btn btn-primary btn-block" style="margin-top: 20px;">
+          <span>Criar Conta e Começar</span> <i class="fa-solid fa-bolt"></i>
         </button>
 
       </form>
 
     </div>
 
-    <!-- Rodapé -->
-    <div class="app-version" style="margin-top: 30px;">
-      <span>TAXINEXO Secure Core v1.0.4</span>
+    <!-- Rodapé & Selos de Segurança -->
+    <div class="trust-footer">
+      <div class="trust-item"><i class="fa-solid fa-shield-check"></i> SSL 256-Bit</div>
+      <div class="trust-item"><i class="fa-solid fa-bolt"></i> Pix Instantâneo</div>
+      <div class="trust-item"><i class="fa-solid fa-lock"></i> Dados Criptografados</div>
+    </div>
+
+    <div class="app-version" style="margin-top: 18px; text-align: center;">
+      <span style="font-size: 10px; color: var(--text-muted); font-family: monospace; opacity: 0.6;">TAXINEXO Quantum Core v1.0.5</span>
     </div>
 
   </div>
 
   <script>
     const API_BASE = (window.location.hostname === 'localhost' && window.location.port === '8080')
-  ? 'http://localhost:3000/api' 
-  : '/api';
+      ? 'http://localhost:3000/api' 
+      : '/api';
 
-    // Captura código de convite da URL (ex: login.html?ref=NEXO8843)
     document.addEventListener('DOMContentLoaded', () => {
+      // Captura código de convite da URL (ex: login.html?ref=NEXO8843)
       const urlParams = new URLSearchParams(window.location.search);
       const ref = urlParams.get('ref') || urlParams.get('invite') || urlParams.get('i');
       if (ref) {
-        switchAuthTab('register');
+        switchFormTab('register');
         const inviteInput = document.getElementById('reg-invite');
         if (inviteInput) {
           inviteInput.value = ref.toUpperCase();
-          document.getElementById('invite-preview').style.display = 'inline-flex';
+          document.getElementById('invite-tag').style.display = 'inline-flex';
         }
       }
 
-      // Máscara de Telefone nos inputs
+      // Máscara inteligente para telefones brasileiros
       ['login-phone', 'reg-phone'].forEach(id => {
         const input = document.getElementById(id);
         input?.addEventListener('input', (e) => {
@@ -351,21 +435,21 @@
       });
     });
 
-    function switchAuthTab(tab) {
-      document.querySelectorAll('.auth-tab-btn').forEach(b => b.classList.remove('active'));
-      document.querySelectorAll('.form-pane').forEach(f => f.classList.remove('active'));
+    function switchFormTab(tab) {
+      document.querySelectorAll('.auth-nav-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.form-panel').forEach(f => f.classList.remove('active'));
       hideAlert();
 
       if (tab === 'login') {
-        document.getElementById('tab-login-btn').classList.add('active');
+        document.getElementById('btn-tab-login').classList.add('active');
         document.getElementById('form-login').classList.add('active');
       } else {
-        document.getElementById('tab-register-btn').classList.add('active');
+        document.getElementById('btn-tab-register').classList.add('active');
         document.getElementById('form-register').classList.add('active');
       }
     }
 
-    function togglePassword(inputId, btn) {
+    function togglePasswordVisibility(inputId, btn) {
       const input = document.getElementById(inputId);
       const icon = btn.querySelector('i');
       if (input.type === 'password') {
@@ -378,24 +462,24 @@
     }
 
     function showAlert(msg, type = 'error') {
-      const alertBox = document.getElementById('auth-alert');
-      alertBox.textContent = msg;
-      alertBox.className = `auth-alert ${type}`;
+      const box = document.getElementById('auth-alert');
+      box.textContent = msg;
+      box.className = `auth-alert-toast ${type}`;
     }
 
     function hideAlert() {
-      const alertBox = document.getElementById('auth-alert');
-      alertBox.style.display = 'none';
-      alertBox.className = 'auth-alert';
+      const box = document.getElementById('auth-alert');
+      box.style.display = 'none';
+      box.className = 'auth-alert-toast';
     }
 
-    async function handleLoginSubmit(e) {
+    async function executeLogin(e) {
       e.preventDefault();
       hideAlert();
 
       const phone = document.getElementById('login-phone').value;
       const password = document.getElementById('login-password').value;
-      const btn = document.getElementById('btn-submit-login');
+      const btn = document.getElementById('btn-login-action');
 
       btn.disabled = true;
       btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Autenticando...';
@@ -410,11 +494,10 @@
         const data = await res.json();
 
         if (res.ok && data.token) {
-          showAlert('Login aprovado! Redirecionando...', 'success');
+          showAlert('✅ Autenticado com sucesso! Entrando no painel...', 'success');
           localStorage.setItem('taxinexo_token', data.token);
-          localStorage.setItem('operator_name', data.user.operatorName);
           setTimeout(() => {
-            window.location.href = 'index_refatorado.html';
+            window.location.href = './';
           }, 800);
         } else {
           showAlert(data.error || 'Credenciais inválidas.');
@@ -422,20 +505,20 @@
           btn.innerHTML = '<span>Acessar Painel</span> <i class="fa-solid fa-arrow-right"></i>';
         }
       } catch (err) {
-        showAlert('Falha na comunicação com o servidor. Verifique se a API está online.');
+        showAlert('Falha na comunicação com o servidor.');
         btn.disabled = false;
         btn.innerHTML = '<span>Acessar Painel</span> <i class="fa-solid fa-arrow-right"></i>';
       }
     }
 
-    async function handleRegisterSubmit(e) {
+    async function executeRegister(e) {
       e.preventDefault();
       hideAlert();
 
       const phone = document.getElementById('reg-phone').value;
       const password = document.getElementById('reg-password').value;
       const inviteCode = document.getElementById('reg-invite').value.trim();
-      const btn = document.getElementById('btn-submit-register');
+      const btn = document.getElementById('btn-register-action');
 
       btn.disabled = true;
       btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Criando Conta...';
@@ -450,21 +533,20 @@
         const data = await res.json();
 
         if (res.ok && data.token) {
-          showAlert('🎉 Conta criada com sucesso! Entrando...', 'success');
+          showAlert('🎉 Conta criada com sucesso! Acessando painel...', 'success');
           localStorage.setItem('taxinexo_token', data.token);
-          localStorage.setItem('operator_name', data.user.operatorName);
           setTimeout(() => {
-            window.location.href = 'index_refatorado.html';
+            window.location.href = './';
           }, 1000);
         } else {
           showAlert(data.error || 'Erro ao registrar conta.');
           btn.disabled = false;
-          btn.innerHTML = '<span>Registrar e Começar</span> <i class="fa-solid fa-bolt"></i>';
+          btn.innerHTML = '<span>Criar Conta e Começar</span> <i class="fa-solid fa-bolt"></i>';
         }
       } catch (err) {
         showAlert('Falha na comunicação com o servidor.');
         btn.disabled = false;
-        btn.innerHTML = '<span>Registrar e Começar</span> <i class="fa-solid fa-bolt"></i>';
+        btn.innerHTML = '<span>Criar Conta e Começar</span> <i class="fa-solid fa-bolt"></i>';
       }
     }
   </script>

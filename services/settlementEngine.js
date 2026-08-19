@@ -1,30 +1,40 @@
-const { readDb, writeDb } = require('../database');
+const {
+  getAllActiveContracts,
+  findUserById,
+  updateUser,
+  updateContract,
+  createTransaction
+} = require('../database');
 
 /**
  * Motor de liquidação diária: percorre todos os contratos ativos
  * e credita o ganho diário na carteira dos usuários
  */
-function processDailySettlement() {
-  const db = readDb();
+async function processDailySettlement() {
   let settlementsProcessed = 0;
   let totalCredited = 0;
 
-  db.contracts.forEach(contract => {
-    if (contract.status === 'Em corrida' && contract.daysRemaining > 0) {
-      const user = db.users.find(u => u.id === contract.userId);
-      if (user) {
-        // Credita rendimento
-        user.balance += contract.dailyReturn;
-        contract.daysRemaining -= 1;
-        
-        if (contract.daysRemaining <= 0) {
-          contract.status = 'Finalizado';
-        }
+  try {
+    const activeContracts = await getAllActiveContracts();
 
-        contract.lastSettlement = new Date().toISOString();
+    for (const contract of activeContracts) {
+      const user = await findUserById(contract.userId);
+      if (user) {
+        // Credita rendimento no saldo
+        const newBalance = user.balance + contract.dailyReturn;
+        await updateUser(user.id, { balance: newBalance });
+
+        const remaining = contract.daysRemaining - 1;
+        const newStatus = remaining <= 0 ? 'Finalizado' : contract.status;
+
+        await updateContract(contract.id, {
+          daysRemaining: remaining,
+          status: newStatus,
+          lastSettlement: new Date().toISOString()
+        });
 
         // Registra transação de rendimento
-        db.transactions.unshift({
+        await createTransaction({
           id: `TX-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
           userId: user.id,
           type: 'income',
@@ -38,11 +48,14 @@ function processDailySettlement() {
         totalCredited += contract.dailyReturn;
       }
     }
-  });
 
-  writeDb(db);
-  console.log(`[SETTLEMENT] Processados ${settlementsProcessed} contratos. Total creditado: R$ ${totalCredited.toFixed(2)}`);
+    console.log(`[SETTLEMENT] Processados ${settlementsProcessed} contratos. Total creditado: R$ ${totalCredited.toFixed(2)}`);
+  } catch (err) {
+    console.error('[SETTLEMENT ERROR]:', err);
+  }
+
   return { settlementsProcessed, totalCredited };
 }
 
 module.exports = { processDailySettlement };
+

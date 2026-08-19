@@ -1,149 +1,163 @@
 const express = require('express');
 const router = express.Router();
-const { readDb, writeDb } = require('../database');
+const {
+  getGlobalMetrics,
+  getAllTransactions,
+  findTransactionById,
+  updateTransaction,
+  getAllUsers,
+  findUserById,
+  updateUser,
+  getContractsByUserId,
+  createTransaction
+} = require('../database');
 const { processDailySettlement } = require('../services/settlementEngine');
 
 // Métricas Globais da Plataforma
-router.get('/metrics', (req, res) => {
-  const db = readDb();
-  
-  const totalUsers = db.users.length;
-  const totalDeposits = db.transactions
-    .filter(t => t.type === 'deposit' && t.status === 'approved')
-    .reduce((acc, t) => acc + t.amount, 0);
-
-  const totalWithdrawals = db.transactions
-    .filter(t => t.type === 'withdraw' && t.status === 'approved')
-    .reduce((acc, t) => acc + Math.abs(t.amount), 0);
-
-  const pendingWithdrawalsCount = db.transactions
-    .filter(t => t.type === 'withdraw' && t.status === 'pending').length;
-
-  const activeContracts = db.contracts.filter(c => c.status === 'Em corrida').length;
-  const totalCustodyBalance = db.users.reduce((acc, u) => acc + u.balance, 0);
-
-  res.json({
-    totalUsers,
-    totalDeposits,
-    totalWithdrawals,
-    pendingWithdrawalsCount,
-    activeContracts,
-    totalCustodyBalance
-  });
+router.get('/metrics', async (req, res) => {
+  try {
+    const metrics = await getGlobalMetrics();
+    res.json(metrics);
+  } catch (err) {
+    console.error('[ADMIN ERROR /metrics]:', err);
+    res.status(500).json({ error: 'Erro ao carregar métricas administrativas.' });
+  }
 });
 
 // Listar Solicitações de Saque
-router.get('/withdrawals', (req, res) => {
-  const db = readDb();
-  const withdrawals = db.transactions
-    .filter(t => t.type === 'withdraw')
-    .map(w => {
-      const user = db.users.find(u => u.id === w.userId);
-      return {
-        ...w,
-        userName: user ? user.operatorName : 'Usuário Desconhecido',
-        userPhone: user ? user.phone : 'N/A'
-      };
-    });
-
-  res.json(withdrawals);
+router.get('/withdrawals', async (req, res) => {
+  try {
+    const allTx = await getAllTransactions();
+    const withdrawals = allTx.filter(t => t.type === 'withdraw');
+    res.json(withdrawals);
+  } catch (err) {
+    console.error('[ADMIN ERROR /withdrawals]:', err);
+    res.status(500).json({ error: 'Erro ao listar saques.' });
+  }
 });
 
 // Aprovar Saque
-router.post('/withdrawals/:id/approve', (req, res) => {
-  const { id } = req.params;
-  const db = readDb();
-  const tx = db.transactions.find(t => t.id === id);
+router.post('/withdrawals/:id/approve', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const tx = await findTransactionById(id);
 
-  if (!tx) {
-    return res.status(404).json({ error: 'Transação não encontrada.' });
+    if (!tx) {
+      return res.status(404).json({ error: 'Transação não encontrada.' });
+    }
+
+    const updatedTx = await updateTransaction(id, {
+      status: 'approved',
+      approvedAt: new Date().toISOString()
+    });
+
+    res.json({ message: 'Saque aprovado com sucesso!', tx: updatedTx });
+  } catch (err) {
+    console.error('[ADMIN ERROR /withdrawals/:id/approve]:', err);
+    res.status(500).json({ error: 'Erro ao aprovar saque.' });
   }
-
-  tx.status = 'approved';
-  tx.approvedAt = new Date().toISOString();
-  writeDb(db);
-
-  res.json({ message: 'Saque aprovado com sucesso!', tx });
 });
 
 // Rejeitar Saque (Estorna saldo para o usuário)
-router.post('/withdrawals/:id/reject', (req, res) => {
-  const { id } = req.params;
-  const db = readDb();
-  const tx = db.transactions.find(t => t.id === id);
+router.post('/withdrawals/:id/reject', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const tx = await findTransactionById(id);
 
-  if (!tx) {
-    return res.status(404).json({ error: 'Transação não encontrada.' });
+    if (!tx) {
+      return res.status(404).json({ error: 'Transação não encontrada.' });
+    }
+
+    const updatedTx = await updateTransaction(id, {
+      status: 'rejected',
+      rejectedAt: new Date().toISOString()
+    });
+
+    // Devolve o saldo ao usuário
+    const user = await findUserById(tx.userId);
+    if (user) {
+      const refundAmount = Math.abs(tx.amount);
+      await updateUser(user.id, {
+        balance: user.balance + refundAmount,
+        totalWithdrawn: Math.max(0, user.totalWithdrawn - refundAmount)
+      });
+    }
+
+    res.json({ message: 'Saque rejeitado e saldo estornado ao usuário!', tx: updatedTx });
+  } catch (err) {
+    console.error('[ADMIN ERROR /withdrawals/:id/reject]:', err);
+    res.status(500).json({ error: 'Erro ao rejeitar saque.' });
   }
-
-  tx.status = 'rejected';
-  tx.rejectedAt = new Date().toISOString();
-
-  // Devolve o saldo ao usuário
-  const user = db.users.find(u => u.id === tx.userId);
-  if (user) {
-    user.balance += Math.abs(tx.amount);
-  }
-
-  writeDb(db);
-
-  res.json({ message: 'Saque rejeitado e saldo estornado ao usuário!', tx });
 });
 
 // Listar Usuários
-router.get('/users', (req, res) => {
-  const db = readDb();
-  const usersList = db.users.map(u => {
-    const userContracts = db.contracts.filter(c => c.userId === u.id && c.status === 'Em corrida');
-    return {
-      id: u.id,
-      operatorName: u.operatorName,
-      phone: u.phone,
-      balance: u.balance,
-      vipLevel: u.vipLevel,
-      inviteCode: u.inviteCode,
-      activeContractsCount: userContracts.length,
-      createdAt: u.createdAt
-    };
-  });
+router.get('/users', async (req, res) => {
+  try {
+    const users = await getAllUsers();
+    const usersList = await Promise.all(users.map(async (u) => {
+      const userContracts = await getContractsByUserId(u.id);
+      const activeContracts = userContracts.filter(c => c.status === 'Em corrida');
+      return {
+        id: u.id,
+        operatorName: u.operatorName,
+        phone: u.phone,
+        balance: u.balance,
+        vipLevel: u.vipLevel,
+        inviteCode: u.inviteCode,
+        activeContractsCount: activeContracts.length,
+        createdAt: u.createdAt
+      };
+    }));
 
-  res.json(usersList);
+    res.json(usersList);
+  } catch (err) {
+    console.error('[ADMIN ERROR /users]:', err);
+    res.status(500).json({ error: 'Erro ao listar usuários.' });
+  }
 });
 
 // Ajustar Saldo de Usuário
-router.post('/users/:id/adjust-balance', (req, res) => {
-  const { id } = req.params;
-  const { amount } = req.body;
-  const numAmount = parseFloat(amount);
+router.post('/users/:id/adjust-balance', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { amount } = req.body;
+    const numAmount = parseFloat(amount);
 
-  const db = readDb();
-  const user = db.users.find(u => u.id === id);
+    const user = await findUserById(id);
+    if (!user) {
+      return res.status(404).json({ error: 'Usuário não encontrado.' });
+    }
 
-  if (!user) {
-    return res.status(404).json({ error: 'Usuário não encontrado.' });
+    const newBalance = user.balance + numAmount;
+    await updateUser(user.id, { balance: newBalance });
+
+    await createTransaction({
+      id: `ADJ-${Date.now()}`,
+      userId: user.id,
+      type: 'adjustment',
+      amount: numAmount,
+      status: 'approved',
+      description: `Ajuste Administrativo de Saldo (${numAmount > 0 ? '+' : ''} R$ ${numAmount.toFixed(2)})`,
+      createdAt: new Date().toISOString()
+    });
+
+    res.json({ message: 'Saldo ajustado com sucesso!', newBalance: newBalance });
+  } catch (err) {
+    console.error('[ADMIN ERROR /users/:id/adjust-balance]:', err);
+    res.status(500).json({ error: 'Erro ao ajustar saldo.' });
   }
-
-  user.balance += numAmount;
-
-  db.transactions.unshift({
-    id: `ADJ-${Date.now()}`,
-    userId: user.id,
-    type: 'adjustment',
-    amount: numAmount,
-    status: 'approved',
-    description: `Ajuste Administrativo de Saldo (${numAmount > 0 ? '+' : ''} R$ ${numAmount.toFixed(2)})`,
-    createdAt: new Date().toISOString()
-  });
-
-  writeDb(db);
-
-  res.json({ message: 'Saldo ajustado com sucesso!', newBalance: user.balance });
 });
 
 // Disparar Liquidação Diária Manualmente
-router.post('/settle', (req, res) => {
-  const result = processDailySettlement();
-  res.json({ message: 'Ciclo de liquidação diária concluído!', ...result });
+router.post('/settle', async (req, res) => {
+  try {
+    const result = await processDailySettlement();
+    res.json({ message: 'Ciclo de liquidação diária concluído!', ...result });
+  } catch (err) {
+    console.error('[ADMIN ERROR /settle]:', err);
+    res.status(500).json({ error: 'Erro ao processar liquidação.' });
+  }
 });
 
 module.exports = router;
+

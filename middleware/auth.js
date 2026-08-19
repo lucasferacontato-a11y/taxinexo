@@ -1,9 +1,9 @@
 const jwt = require('jsonwebtoken');
-const { readDb } = require('../database');
+const { findUserById } = require('../database');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'taxinexo_super_secure_jwt_secret_2026';
 
-function authMiddleware(req, res, next) {
+async function authMiddleware(req, res, next) {
   const authHeader = req.headers['authorization'];
   if (!authHeader) {
     return res.status(401).json({ error: 'Token de autenticação não fornecido.' });
@@ -12,8 +12,7 @@ function authMiddleware(req, res, next) {
   const token = authHeader.replace('Bearer ', '').trim();
   try {
     const decoded = jwt.verify(token, JWT_SECRET);
-    const db = readDb();
-    const user = db.users.find(u => u.id === decoded.userId);
+    const user = await findUserById(decoded.userId);
     
     if (!user) {
       return res.status(401).json({ error: 'Usuário inválido ou não encontrado.' });
@@ -27,3 +26,4 @@ function authMiddleware(req, res, next) {
 }
 
 module.exports = { authMiddleware, JWT_SECRET };
+

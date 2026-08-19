@@ -1,6 +1,8 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const { initDb } = require('./database');
 const { processDailySettlement } = require('./services/settlementEngine');
 
 const app = express();
@@ -31,14 +33,27 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(publicDir, 'index.html'));
 });
 
-// Inicia Cron Job de Liquidação Diária (a cada 60 minutos)
-setInterval(() => {
-  console.log('[CRON] Executando ciclo de liquidação diária...');
-  processDailySettlement();
-}, 60 * 60 * 1000);
+// Inicialização com Banco de Dados
+async function startServer() {
+  try {
+    await initDb();
 
-app.listen(PORT, HOST, () => {
-  console.log(`=================================================`);
-  console.log(`🚀 TAXINEXO Online rodando na porta ${PORT} no host ${HOST}`);
-  console.log(`=================================================`);
-});
+    // Inicia Cron Job de Liquidação Diária (a cada 60 minutos)
+    setInterval(() => {
+      console.log('[CRON] Executando ciclo de liquidação diária...');
+      processDailySettlement();
+    }, 60 * 60 * 1000);
+
+    app.listen(PORT, HOST, () => {
+      console.log(`=================================================`);
+      console.log(`🚀 TAXINEXO Online rodando na porta ${PORT} no host ${HOST}`);
+      console.log(`=================================================`);
+    });
+  } catch (err) {
+    console.error('Falha crítica ao iniciar o servidor:', err);
+    process.exit(1);
+  }
+}
+
+startServer();
+

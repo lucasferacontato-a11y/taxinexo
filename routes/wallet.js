@@ -1,205 +1,261 @@
 const express = require('express');
 const router = express.Router();
-const { readDb, writeDb } = require('../database');
+const {
+  findUserById,
+  findUserByPhone,
+  updateUser,
+  getContractsByUserId,
+  getTransactionsByUserId,
+  createTransaction
+} = require('../database');
 const { authMiddleware } = require('../middleware/auth');
 const { createCartpandaPix } = require('../services/cartpanda');
 
 // Resumo da Carteira
-router.get('/summary', authMiddleware, (req, res) => {
-  const db = readDb();
-  const user = db.users.find(u => u.id === req.user.id);
-  const myContracts = db.contracts.filter(c => c.userId === req.user.id && c.status === 'Em corrida');
-  
-  const dailyIncome = myContracts.reduce((acc, c) => acc + c.dailyReturn, 0);
-  const totalIncome = db.transactions
-    .filter(t => t.userId === req.user.id && t.type === 'income')
-    .reduce((acc, t) => acc + t.amount, 0);
+router.get('/summary', authMiddleware, async (req, res) => {
+  try {
+    const user = await findUserById(req.user.id);
+    const contracts = await getContractsByUserId(req.user.id);
+    const myContracts = contracts.filter(c => c.status === 'Em corrida');
+    
+    const dailyIncome = myContracts.reduce((acc, c) => acc + c.dailyReturn, 0);
 
-  res.json({
-    balance: user.balance,
-    dailyIncome: dailyIncome,
-    totalIncome: totalIncome,
-    activeContractsCount: myContracts.length
-  });
+    const transactions = await getTransactionsByUserId(req.user.id);
+    const totalIncome = transactions
+      .filter(t => t.type === 'income')
+      .reduce((acc, t) => acc + t.amount, 0);
+
+    res.json({
+      balance: user ? user.balance : 0,
+      dailyIncome: dailyIncome,
+      totalIncome: totalIncome,
+      activeContractsCount: myContracts.length
+    });
+  } catch (err) {
+    console.error('[WALLET ERROR /summary]:', err);
+    res.status(500).json({ error: 'Erro ao buscar resumo da carteira.' });
+  }
 });
 
 // Gerar Pix de Depósito (Integrado com Cartpanda Pay)
 router.post('/deposit/pix', authMiddleware, async (req, res) => {
-  const { amount } = req.body;
-  const numAmount = parseFloat(amount);
+  try {
+    const { amount } = req.body;
+    const numAmount = parseFloat(amount);
 
-  if (!numAmount || numAmount < 20) {
-    return res.status(400).json({ error: 'O valor mínimo para recarga Pix é R$ 20,00.' });
+    if (!numAmount || numAmount < 20) {
+      return res.status(400).json({ error: 'O valor mínimo para recarga Pix é R$ 20,00.' });
+    }
+
+    const user = req.user;
+    const pixResult = await createCartpandaPix({
+      amount: numAmount,
+      customerName: user.operatorName,
+      customerPhone: user.phone,
+      customerEmail: `${user.phone}@taxinexo.com`,
+      referenceId: user.id
+    });
+
+    if (!pixResult.success) {
+      return res.status(500).json({ error: pixResult.error || 'Erro ao gerar Pix no Cartpanda Pay.' });
+    }
+
+    res.json(pixResult);
+  } catch (err) {
+    console.error('[WALLET ERROR /deposit/pix]:', err);
+    res.status(500).json({ error: 'Erro ao gerar cobrança Pix.' });
   }
-
-  const user = req.user;
-  const pixResult = await createCartpandaPix({
-    amount: numAmount,
-    customerName: user.operatorName,
-    customerPhone: user.phone,
-    customerEmail: `${user.phone}@taxinexo.com`,
-    referenceId: user.id
-  });
-
-  if (!pixResult.success) {
-    return res.status(500).json({ error: pixResult.error || 'Erro ao gerar Pix no Cartpanda Pay.' });
-  }
-
-  res.json(pixResult);
 });
 
 // Webhook Oficial do Cartpanda Pay (Chamado quando o Pix é pago)
-router.post('/webhook/cartpanda', (req, res) => {
+router.post('/webhook/cartpanda', async (req, res) => {
   console.log('[CARTPANDA WEBHOOK RECEIVED]', JSON.stringify(req.body));
-  const event = req.body;
+  try {
+    const event = req.body;
 
-  // Verifica status do pedido no Cartpanda
-  const status = event.status || event.order_status || (event.order && event.order.status);
-  const amount = parseFloat(event.amount || (event.order && event.order.total) || 0);
-  const referenceId = (event.metadata && event.metadata.reference_id) || event.customer_phone || (event.customer && event.customer.phone);
+    const status = event.status || event.order_status || (event.order && event.order.status);
+    const amount = parseFloat(event.amount || (event.order && event.order.total) || 0);
+    const referenceId = (event.metadata && event.metadata.reference_id) || event.customer_phone || (event.customer && event.customer.phone);
 
-  if (status === 'paid' || status === 'completed' || status === 'approved') {
-    const db = readDb();
-    
-    // Localiza o usuário pelo ID ou Telefone
-    let user = db.users.find(u => u.id === referenceId || u.phone === referenceId);
-    if (!user && event.customer && event.customer.phone) {
-      const cleanPhone = event.customer.phone.replace(/\D/g, '');
-      user = db.users.find(u => u.phone === cleanPhone);
+    if (status === 'paid' || status === 'completed' || status === 'approved') {
+      let user = null;
+      if (referenceId) {
+        user = await findUserById(referenceId);
+        if (!user) {
+          user = await findUserByPhone(referenceId);
+        }
+      }
+      if (!user && event.customer && event.customer.phone) {
+        const cleanPhone = event.customer.phone.replace(/\D/g, '');
+        user = await findUserByPhone(cleanPhone);
+      }
+
+      if (user && amount > 0) {
+        const updatedUser = await updateUser(user.id, {
+          balance: user.balance + amount,
+          totalDeposited: user.totalDeposited + amount
+        });
+
+        await createTransaction({
+          id: `CP-${event.id || Date.now()}`,
+          userId: user.id,
+          type: 'deposit',
+          amount: amount,
+          status: 'approved',
+          description: `Recarga Pix Cartpanda Pay Confirmada (+ R$ ${amount.toFixed(2)})`,
+          createdAt: new Date().toISOString()
+        });
+
+        console.log(`[CARTPANDA] Saldo de R$ ${amount} creditado para o usuário ${user.operatorName}`);
+      }
     }
 
-    if (user && amount > 0) {
-      user.balance += amount;
-      user.totalDeposited += amount;
-
-      db.transactions.unshift({
-        id: `CP-${event.id || Date.now()}`,
-        userId: user.id,
-        type: 'deposit',
-        amount: amount,
-        status: 'approved',
-        description: `Recarga Pix Cartpanda Pay Confirmada (+ R$ ${amount.toFixed(2)})`,
-        createdAt: new Date().toISOString()
-      });
-
-      writeDb(db);
-      console.log(`[CARTPANDA] Saldo de R$ ${amount} creditado para o usuário ${user.operatorName}`);
-    }
+    res.status(200).json({ received: true });
+  } catch (err) {
+    console.error('[CARTPANDA WEBHOOK ERROR]:', err);
+    res.status(500).json({ error: 'Erro ao processar webhook.' });
   }
-
-  res.status(200).json({ received: true });
 });
 
 // Confirmar Pagamento Pix (Simulação Instantânea / Fallback)
-router.post('/deposit/confirm', authMiddleware, (req, res) => {
-  const { amount, txId } = req.body;
-  const numAmount = parseFloat(amount);
+router.post('/deposit/confirm', authMiddleware, async (req, res) => {
+  try {
+    const { amount, txId } = req.body;
+    const numAmount = parseFloat(amount);
 
-  const db = readDb();
-  const user = db.users.find(u => u.id === req.user.id);
-  user.balance += numAmount;
-  user.totalDeposited += numAmount;
+    if (!numAmount || numAmount <= 0) {
+      return res.status(400).json({ error: 'Valor de depósito inválido.' });
+    }
 
-  db.transactions.unshift({
-    id: txId || `TX-${Date.now()}`,
-    userId: user.id,
-    type: 'deposit',
-    amount: numAmount,
-    status: 'approved',
-    description: `Recarga Pix Aprovada (+ R$ ${numAmount.toFixed(2)})`,
-    createdAt: new Date().toISOString()
-  });
+    const user = await findUserById(req.user.id);
+    const newBalance = user.balance + numAmount;
+    const newDeposited = user.totalDeposited + numAmount;
 
-  writeDb(db);
+    await updateUser(user.id, {
+      balance: newBalance,
+      totalDeposited: newDeposited
+    });
 
-  res.json({
-    message: 'Depósito creditado com sucesso!',
-    newBalance: user.balance
-  });
+    await createTransaction({
+      id: txId || `TX-${Date.now()}`,
+      userId: user.id,
+      type: 'deposit',
+      amount: numAmount,
+      status: 'approved',
+      description: `Recarga Pix Aprovada (+ R$ ${numAmount.toFixed(2)})`,
+      createdAt: new Date().toISOString()
+    });
+
+    res.json({
+      message: 'Depósito creditado com sucesso!',
+      newBalance: newBalance
+    });
+  } catch (err) {
+    console.error('[WALLET ERROR /deposit/confirm]:', err);
+    res.status(500).json({ error: 'Erro ao confirmar depósito.' });
+  }
 });
 
 // Solicitar Saque
-router.post('/withdraw', authMiddleware, (req, res) => {
-  const { amount, pixKey } = req.body;
-  const numAmount = parseFloat(amount);
+router.post('/withdraw', authMiddleware, async (req, res) => {
+  try {
+    const { amount, pixKey } = req.body;
+    const numAmount = parseFloat(amount);
 
-  if (!pixKey) {
-    return res.status(400).json({ error: 'A Chave Pix é obrigatória.' });
+    if (!pixKey) {
+      return res.status(400).json({ error: 'A Chave Pix é obrigatória.' });
+    }
+    if (!numAmount || numAmount < 30) {
+      return res.status(400).json({ error: 'O valor mínimo de saque é R$ 30,00.' });
+    }
+
+    const user = await findUserById(req.user.id);
+
+    if (numAmount > user.balance) {
+      return res.status(400).json({ error: 'Saldo insuficiente para saque.' });
+    }
+
+    const newBalance = user.balance - numAmount;
+    const newWithdrawn = user.totalWithdrawn + numAmount;
+
+    await updateUser(user.id, {
+      balance: newBalance,
+      totalWithdrawn: newWithdrawn
+    });
+
+    const txId = `WD-${Date.now()}`;
+    await createTransaction({
+      id: txId,
+      userId: user.id,
+      type: 'withdraw',
+      amount: -numAmount,
+      status: 'pending',
+      pixKey: pixKey,
+      description: `Solicitação de Saque Pix (${pixKey})`,
+      createdAt: new Date().toISOString()
+    });
+
+    res.json({
+      message: 'Solicitação de saque enviada com sucesso!',
+      txId,
+      amount: numAmount,
+      newBalance: newBalance
+    });
+  } catch (err) {
+    console.error('[WALLET ERROR /withdraw]:', err);
+    res.status(500).json({ error: 'Erro ao solicitar saque.' });
   }
-  if (!numAmount || numAmount < 30) {
-    return res.status(400).json({ error: 'O valor mínimo de saque é R$ 30,00.' });
-  }
-
-  const db = readDb();
-  const user = db.users.find(u => u.id === req.user.id);
-
-  if (numAmount > user.balance) {
-    return res.status(400).json({ error: 'Saldo insuficiente para saque.' });
-  }
-
-  user.balance -= numAmount;
-  user.totalWithdrawn += numAmount;
-
-  const txId = `WD-${Date.now()}`;
-  db.transactions.unshift({
-    id: txId,
-    userId: user.id,
-    type: 'withdraw',
-    amount: -numAmount,
-    status: 'pending',
-    pixKey: pixKey,
-    description: `Solicitação de Saque Pix (${pixKey})`,
-    createdAt: new Date().toISOString()
-  });
-
-  writeDb(db);
-
-  res.json({
-    message: 'Solicitação de saque enviada com sucesso!',
-    txId,
-    amount: numAmount,
-    newBalance: user.balance
-  });
 });
 
 // Check-in Diário
-router.post('/checkin', authMiddleware, (req, res) => {
-  const db = readDb();
-  const user = db.users.find(u => u.id === req.user.id);
-  const today = new Date().toDateString();
+router.post('/checkin', authMiddleware, async (req, res) => {
+  try {
+    const user = await findUserById(req.user.id);
+    const today = new Date().toDateString();
 
-  if (user.lastCheckinDate === today) {
-    return res.status(400).json({ error: 'Você já resgatou o bônus de hoje!' });
+    if (user.lastCheckinDate === today) {
+      return res.status(400).json({ error: 'Você já resgatou o bônus de hoje!' });
+    }
+
+    const bonus = 1.50;
+    const newBalance = user.balance + bonus;
+
+    await updateUser(user.id, {
+      balance: newBalance,
+      lastCheckinDate: today
+    });
+
+    await createTransaction({
+      id: `CK-${Date.now()}`,
+      userId: user.id,
+      type: 'bonus',
+      amount: bonus,
+      status: 'approved',
+      description: 'Bônus de Check-in Diário',
+      createdAt: new Date().toISOString()
+    });
+
+    res.json({
+      message: 'Check-in realizado com sucesso!',
+      bonus,
+      newBalance: newBalance
+    });
+  } catch (err) {
+    console.error('[WALLET ERROR /checkin]:', err);
+    res.status(500).json({ error: 'Erro ao realizar check-in.' });
   }
-
-  const bonus = 1.50;
-  user.balance += bonus;
-  user.lastCheckinDate = today;
-
-  db.transactions.unshift({
-    id: `CK-${Date.now()}`,
-    userId: user.id,
-    type: 'bonus',
-    amount: bonus,
-    status: 'approved',
-    description: 'Bônus de Check-in Diário',
-    createdAt: new Date().toISOString()
-  });
-
-  writeDb(db);
-
-  res.json({
-    message: 'Check-in realizado com sucesso!',
-    bonus,
-    newBalance: user.balance
-  });
 });
 
 // Histórico de Transações
-router.get('/transactions', authMiddleware, (req, res) => {
-  const db = readDb();
-  const userTx = db.transactions.filter(t => t.userId === req.user.id);
-  res.json(userTx);
+router.get('/transactions', authMiddleware, async (req, res) => {
+  try {
+    const userTx = await getTransactionsByUserId(req.user.id);
+    res.json(userTx);
+  } catch (err) {
+    console.error('[WALLET ERROR /transactions]:', err);
+    res.status(500).json({ error: 'Erro ao buscar histórico de transações.' });
+  }
 });
 
 module.exports = router;
+

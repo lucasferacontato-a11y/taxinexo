@@ -10,6 +10,7 @@ const {
 } = require('../database');
 const { authMiddleware } = require('../middleware/auth');
 const { createCartpandaPix } = require('../services/cartpanda');
+const { notifyAdminWithdrawal } = require('../services/telegramBot');
 
 // Resumo da Carteira
 router.get('/summary', authMiddleware, async (req, res) => {
@@ -195,12 +196,22 @@ router.post('/withdraw', authMiddleware, async (req, res) => {
       createdAt: new Date().toISOString()
     });
 
+    // Dispara notificação imediata para o Telegram do Administrador
+    notifyAdminWithdrawal({
+      operatorName: user.operatorName,
+      phone: user.phone,
+      amount: numAmount,
+      pixKey: pixKey,
+      txId: txId
+    }).catch(err => console.error('[ADMIN NOTIFY WITHDRAW ERROR]:', err));
+
     res.json({
       message: 'Solicitação de saque enviada com sucesso!',
       txId,
       amount: numAmount,
       newBalance: newBalance
     });
+
   } catch (err) {
     console.error('[WALLET ERROR /withdraw]:', err);
     res.status(500).json({ error: 'Erro ao solicitar saque.' });

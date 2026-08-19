@@ -6,6 +6,11 @@ const groupChatId = process.env.TELEGRAM_CHAT_ID || '';
 const appUrl = process.env.APP_URL || 'https://taxinexo.onrender.com';
 
 let bot = null;
+const adminChatIds = new Set();
+if (process.env.ADMIN_TELEGRAM_CHAT_ID) {
+  adminChatIds.add(process.env.ADMIN_TELEGRAM_CHAT_ID);
+}
+
 
 function initTelegramBot() {
   if (!token || token.trim() === '') {
@@ -62,6 +67,23 @@ function initTelegramBot() {
     // Comando /postar (Dispara um post aleatório imediato com mídia)
     bot.command('postar', async (ctx) => {
       await triggerRandomPost(ctx.chat.id);
+    });
+
+    // Comando /admin (Registra o Telegram do dono para receber alertas de saque)
+    bot.command(['admin', 'alerta', 'notificacoes'], async (ctx) => {
+      adminChatIds.add(String(ctx.chat.id));
+      await ctx.reply(
+        '👑 *MODO ADMINISTRADOR ATIVADO!*\n\n' +
+        'Seu Telegram foi registrado com sucesso. Você receberá notificações instantâneas aqui no privado sempre que qualquer cliente solicitar um saque Pix.',
+        {
+          parse_mode: 'Markdown',
+          reply_markup: {
+            inline_keyboard: [
+              [{ text: '🖥️ Acessar Painel de Controle', url: appUrl + '/admin.html' }]
+            ]
+          }
+        }
+      );
     });
 
 
@@ -438,7 +460,61 @@ async function broadcastDailySettlement({ settlementsProcessed, totalCredited })
   }
 }
 
-module.exports = { initTelegramBot, broadcastDailySettlement, startDailySchedule, sendBroadcastWithMedia, triggerRandomPost };
+/**
+ * Envia notificação privada ao Administrador sobre novo pedido de saque Pix
+ */
+async function notifyAdminWithdrawal({ operatorName, phone, amount, pixKey, txId }) {
+  if (!token) return;
+  const format = (v) => new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2 }).format(v);
+  const now = new Date().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' });
+
+  const msg =
+    '🚨 *[NOVA SOLICITAÇÃO DE SAQUE PIX]* 💸\n\n' +
+    '👤 *Operador:* ' + (operatorName || 'Não identificado') + '\n' +
+    '📱 *Telefone:* ' + (phone || '-') + '\n' +
+    '💰 *Valor Solicitado:* `R$ ' + format(amount) + '`\n' +
+    '🔑 *Chave Pix:* `' + pixKey + '`\n' +
+    '🆔 *Transação:* `' + txId + '`\n' +
+    '⏰ *Horário:* ' + now + '\n\n' +
+    '👉 *Ação:* Copie a Chave Pix acima, realize a transferência no seu banco e aprove a transação no painel administrativo.';
+
+  const targets = Array.from(adminChatIds);
+  // Se nenhum admin privado estiver registrado, notifica o chat do grupo como fallback
+  if (targets.length === 0 && (groupChatId || process.env.TELEGRAM_CHAT_ID)) {
+    targets.push(groupChatId || process.env.TELEGRAM_CHAT_ID);
+  }
+
+  for (const chatId of targets) {
+    try {
+      await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chat_id: chatId,
+          text: msg,
+          parse_mode: 'Markdown',
+          reply_markup: {
+            inline_keyboard: [
+              [{ text: '🖥️ Abrir Painel de Saques', url: appUrl + '/admin.html' }]
+            ]
+          }
+        })
+      });
+      console.log(`[TELEGRAM ADMIN NOTIFY] Alerta de saque enviado para chat ${chatId}`);
+    } catch (err) {
+      console.error('[ADMIN NOTIFY ERROR]:', err.message);
+    }
+  }
+}
+
+module.exports = {
+  initTelegramBot,
+  broadcastDailySettlement,
+  startDailySchedule,
+  sendBroadcastWithMedia,
+  triggerRandomPost,
+  notifyAdminWithdrawal
+};
 
 
 

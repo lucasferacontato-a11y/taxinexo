@@ -13,8 +13,34 @@ const {
 } = require('../database');
 const { processDailySettlement } = require('../services/settlementEngine');
 
+const ADMIN_KEY = process.env.ADMIN_KEY || process.env.ADMIN_PASSWORD || 'NEXO@ADMIN2026';
+
+// Rota para validar a Chave de Administrador
+router.post('/auth/verify', (req, res) => {
+  const { key } = req.body;
+  if (key && key.trim() === ADMIN_KEY) {
+    return res.json({ authenticated: true, message: 'Acesso administrativo concedido.' });
+  }
+  return res.status(401).json({ authenticated: false, error: 'Chave de Administrador inválida.' });
+});
+
+// Middleware de Proteção para todas as rotas administrativas
+function adminAuthMiddleware(req, res, next) {
+  const authHeader = req.headers['x-admin-key'] || req.headers['authorization'];
+  const key = authHeader ? authHeader.replace('Bearer ', '').trim() : '';
+
+  if (key && key === ADMIN_KEY) {
+    return next();
+  }
+
+  return res.status(401).json({ error: 'Acesso não autorizado. Chave de Administrador necessária.' });
+}
+
+router.use(adminAuthMiddleware);
+
 // Métricas Globais da Plataforma
 router.get('/metrics', async (req, res) => {
+
   try {
     const metrics = await getGlobalMetrics();
     res.json(metrics);

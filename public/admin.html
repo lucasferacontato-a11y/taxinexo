@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TAXINEXO - Centro de Comando Administrativo</title>
-  <link rel="stylesheet" href="style_refatorado.css">
+  <link rel="stylesheet" href="style.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
@@ -15,10 +15,75 @@
       padding: 24px;
     }
 
+    /* Admin Auth Gate Overlay */
+    .admin-auth-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(3, 5, 8, 0.95);
+      backdrop-filter: blur(20px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 99999;
+      padding: 20px;
+    }
+
+    .admin-auth-card {
+      background: #0a0e17;
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      box-shadow: 0 0 40px rgba(0, 240, 255, 0.25);
+      border-radius: 16px;
+      padding: 32px;
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .admin-auth-icon {
+      width: 56px;
+      height: 56px;
+      background: linear-gradient(135deg, #00f0ff 0%, #0066ff 100%);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      box-shadow: 0 0 25px rgba(0, 240, 255, 0.5);
+    }
+
+    .admin-auth-icon i {
+      font-size: 24px;
+      color: #000;
+    }
+
+    .admin-auth-input {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 10px;
+      padding: 14px 16px;
+      color: #fff;
+      font-size: 15px;
+      margin: 16px 0;
+      outline: none;
+      box-sizing: border-box;
+      text-align: center;
+      letter-spacing: 2px;
+    }
+
+    .admin-auth-input:focus {
+      border-color: #00f0ff;
+      box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+    }
+
     .admin-wrapper {
       max-width: 1200px;
       margin: 0 auto;
     }
+
 
     /* Admin Header */
     .admin-top-bar {
@@ -281,11 +346,14 @@
       </div>
 
       <div class="admin-top-actions">
-        <a href="index_refatorado.html" class="btn btn-secondary" style="padding: 8px 16px; font-size: 12px; text-decoration: none;">
+        <a href="index.html" class="btn btn-secondary" style="padding: 8px 16px; font-size: 12px; text-decoration: none;">
           <i class="fa-solid fa-mobile-screen"></i> Ver App Operador
         </a>
         <button class="btn btn-primary" onclick="loadAllAdminData()" style="padding: 8px 16px; font-size: 12px;">
           <i class="fa-solid fa-rotate"></i> Atualizar
+        </button>
+        <button class="btn btn-secondary" onclick="adminLogout()" style="padding: 8px 16px; font-size: 12px; border-color: rgba(239, 68, 68, 0.4); color: #f87171;">
+          <i class="fa-solid fa-lock"></i> Bloquear
         </button>
       </div>
     </header>
@@ -395,6 +463,25 @@
 
   </div>
 
+  <!-- Modal de Autenticação / Chave de Segurança Admin -->
+  <div id="admin-auth-modal" class="admin-auth-overlay" style="display: none;">
+    <div class="admin-auth-card">
+      <div class="admin-auth-icon">
+        <i class="fa-solid fa-key"></i>
+      </div>
+      <h3 style="color: #fff; font-size: 18px; margin-bottom: 8px;">Acesso Restrito ao Gestor</h3>
+      <p style="color: var(--text-muted); font-size: 13px;">Informe a Chave Mestre de Segurança para desbloquear o Centro de Comando.</p>
+      
+      <form onsubmit="handleAdminLogin(event)">
+        <input type="password" id="admin-key-input" class="admin-auth-input" placeholder="Digite a Chave Admin" required autocomplete="current-password" autofocus>
+        <div id="admin-auth-error" style="color: #ef4444; font-size: 12px; margin-bottom: 12px; display: none;">Chave incorreta. Tente novamente.</div>
+        <button type="submit" id="btn-admin-login" class="btn btn-primary" style="width: 100%; padding: 12px; font-weight: 700;">
+          <i class="fa-solid fa-unlock"></i> Desbloquear Painel
+        </button>
+      </form>
+    </div>
+  </div>
+
   <script>
     const API_BASE = (window.location.hostname === 'localhost' && window.location.port === '8080') ? 'http://localhost:3000/api/admin' : '/api/admin';
 
@@ -405,21 +492,113 @@
       }).format(val || 0);
     };
 
+    function getStoredAdminKey() {
+      return sessionStorage.getItem('taxinexo_admin_key') || localStorage.getItem('taxinexo_admin_key') || '';
+    }
+
+    function showAuthModal() {
+      document.getElementById('admin-auth-modal').style.display = 'flex';
+      const input = document.getElementById('admin-key-input');
+      if (input) {
+        input.value = '';
+        input.focus();
+      }
+    }
+
+    function hideAuthModal() {
+      document.getElementById('admin-auth-modal').style.display = 'none';
+      document.getElementById('admin-auth-error').style.display = 'none';
+    }
+
+    async function handleAdminLogin(e) {
+      e.preventDefault();
+      const input = document.getElementById('admin-key-input');
+      const errEl = document.getElementById('admin-auth-error');
+      const btn = document.getElementById('btn-admin-login');
+      const key = input.value.trim();
+
+      if (!key) return;
+
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Validando...';
+      errEl.style.display = 'none';
+
+      try {
+        const res = await fetch(`${API_BASE}/auth/verify`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ key })
+        });
+
+        if (res.ok) {
+          sessionStorage.setItem('taxinexo_admin_key', key);
+          hideAuthModal();
+          loadAllAdminData();
+        } else {
+          errEl.style.display = 'block';
+          input.focus();
+        }
+      } catch (err) {
+        errEl.textContent = 'Erro ao conectar ao servidor.';
+        errEl.style.display = 'block';
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-unlock"></i> Desbloquear Painel';
+      }
+    }
+
+    function adminLogout() {
+      sessionStorage.removeItem('taxinexo_admin_key');
+      localStorage.removeItem('taxinexo_admin_key');
+      showAuthModal();
+    }
+
+    async function adminFetch(endpoint, options = {}) {
+      const key = getStoredAdminKey();
+      if (!key) {
+        showAuthModal();
+        throw new Error('Chave admin necessária');
+      }
+
+      options.headers = {
+        ...options.headers,
+        'x-admin-key': key
+      };
+
+      const res = await fetch(`${API_BASE}${endpoint}`, options);
+
+      if (res.status === 401) {
+        adminLogout();
+        throw new Error('Não autorizado');
+      }
+
+      return res;
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
-      loadAllAdminData();
+      const key = getStoredAdminKey();
+      if (!key) {
+        showAuthModal();
+      } else {
+        loadAllAdminData();
+      }
     });
 
     async function loadAllAdminData() {
-      await Promise.all([
-        loadMetrics(),
-        loadWithdrawals(),
-        loadUsers()
-      ]);
+      try {
+        await Promise.all([
+          loadMetrics(),
+          loadWithdrawals(),
+          loadUsers()
+        ]);
+      } catch (err) {
+        // Redireciona para o modal se falhar auth
+      }
     }
 
     async function loadMetrics() {
       try {
-        const res = await fetch(`${API_BASE}/metrics`);
+        const res = await adminFetch('/metrics');
         const data = await res.json();
 
         document.getElementById('metric-deposits').textContent = `R$ ${formatCurrency(data.totalDeposits)}`;
@@ -436,7 +615,7 @@
     async function loadWithdrawals() {
       const tbody = document.getElementById('withdrawals-table-body');
       try {
-        const res = await fetch(`${API_BASE}/withdrawals`);
+        const res = await adminFetch('/withdrawals');
         const list = await res.json();
 
         if (list.length === 0) {
@@ -476,7 +655,7 @@
 
     async function approveWithdrawal(id) {
       if (confirm('Confirmar aprovação deste saque?')) {
-        await fetch(`${API_BASE}/withdrawals/${id}/approve`, { method: 'POST' });
+        await adminFetch(`/withdrawals/${id}/approve`, { method: 'POST' });
         alert('✅ Saque aprovado com sucesso!');
         loadAllAdminData();
       }
@@ -484,7 +663,7 @@
 
     async function rejectWithdrawal(id) {
       if (confirm('Rejeitar este saque e estornar o saldo para o operador?')) {
-        await fetch(`${API_BASE}/withdrawals/${id}/reject`, { method: 'POST' });
+        await adminFetch(`/withdrawals/${id}/reject`, { method: 'POST' });
         alert('❌ Saque rejeitado. Saldo estornado!');
         loadAllAdminData();
       }
@@ -493,7 +672,7 @@
     async function loadUsers() {
       const tbody = document.getElementById('users-table-body');
       try {
-        const res = await fetch(`${API_BASE}/users`);
+        const res = await adminFetch('/users');
         const users = await res.json();
 
         tbody.innerHTML = users.map(u => `
@@ -521,7 +700,7 @@
       const amount = parseFloat(amountStr);
       if (isNaN(amount)) return alert('Valor inválido!');
 
-      await fetch(`${API_BASE}/users/${userId}/adjust-balance`, {
+      await adminFetch(`/users/${userId}/adjust-balance`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ amount })
@@ -537,7 +716,7 @@
       btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processando liquidação...';
 
       try {
-        const res = await fetch(`${API_BASE}/settle`, { method: 'POST' });
+        const res = await adminFetch('/settle', { method: 'POST' });
         const data = await res.json();
         alert(`🚀 Liquidação Concluída!\n\nContratos Processados: ${data.settlementsProcessed}\nTotal Creditado: R$ ${formatCurrency(data.totalCredited)}`);
         loadAllAdminData();
@@ -551,3 +730,4 @@
   </script>
 </body>
 </html>
+

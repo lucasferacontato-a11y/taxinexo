@@ -483,6 +483,12 @@ async function hireVehicle(productId) {
   if (!prod) return;
 
   if (appState.balance < prod.price) {
+    if (prod.checkoutUrl) {
+      if (confirm(`Saldo em carteira insuficiente!\n\nDeseja pagar R$ ${formatCurrency(prod.price)} agora no Pix seguro Cartpanda Pay?`)) {
+        window.open(prod.checkoutUrl, '_blank');
+        return;
+      }
+    }
     alert(`Saldo insuficiente! Você possui R$ ${formatCurrency(appState.balance)} e o contrato custa R$ ${formatCurrency(prod.price)}.\n\nPor favor, faça uma recarga via Pix.`);
     openModal('modal-deposit');
     return;

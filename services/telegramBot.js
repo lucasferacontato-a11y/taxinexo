@@ -437,7 +437,8 @@ async function broadcastDailySettlement({ settlementsProcessed, totalCredited })
   }
 }
 
-module.exports = { initTelegramBot, broadcastDailySettlement, startDailySchedule, sendBroadcastWithMedia };
+module.exports = { initTelegramBot, broadcastDailySettlement, startDailySchedule, sendBroadcastWithMedia, triggerRandomPost };
+
 
 
 

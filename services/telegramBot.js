@@ -167,7 +167,69 @@ async function sendRulesMessage(ctx) {
   });
 }
 
+const fs = require('fs');
+const path = require('path');
 const cron = require('node-cron');
+const { InputFile } = require('node-telegram-bot-api');
+
+/**
+ * Envia uma mensagem com foto, vídeo ou texto para o grupo
+ */
+async function sendBroadcastWithMedia(targetChatId, folderName, caption, inlineKeyboard) {
+  if (!bot || !targetChatId) return;
+
+  const mediaDir = path.join(__dirname, '..', 'media', folderName);
+  let mediaFile = null;
+
+  try {
+    if (fs.existsSync(mediaDir)) {
+      const files = fs.readdirSync(mediaDir).filter(f => /\.(jpg|jpeg|png|mp4)$/i.test(f));
+      if (files.length > 0) {
+        const randomName = files[Math.floor(Math.random() * files.length)];
+        mediaFile = path.join(mediaDir, randomName);
+      }
+    }
+  } catch (err) {
+    console.error(`[MEDIA SEARCH ERROR in ${folderName}]:`, err.message);
+  }
+
+  const options = {
+    parse_mode: 'Markdown',
+    reply_markup: {
+      inline_keyboard: inlineKeyboard
+    }
+  };
+
+  try {
+    if (mediaFile) {
+      const isVideo = /\.mp4$/i.test(mediaFile);
+      if (isVideo) {
+        console.log(`[TELEGRAM MEDIA] Enviando vídeo (${mediaFile}) para o grupo...`);
+        await bot.api.sendVideo(targetChatId, new InputFile(mediaFile), {
+          caption,
+          ...options
+        });
+      } else {
+        console.log(`[TELEGRAM MEDIA] Enviando foto (${mediaFile}) para o grupo...`);
+        await bot.api.sendPhoto(targetChatId, new InputFile(mediaFile), {
+          caption,
+          ...options
+        });
+      }
+    } else {
+      console.log(`[TELEGRAM TEXT] Enviando mensagem de texto para o grupo...`);
+      await bot.api.sendMessage(targetChatId, caption, options);
+    }
+  } catch (err) {
+    console.error(`[BROADCAST SEND ERROR]:`, err.message);
+    // Fallback para envio de texto caso envio de mídia falhe
+    try {
+      await bot.api.sendMessage(targetChatId, caption, options);
+    } catch (e) {
+      console.error(`[BROADCAST FALLBACK ERROR]:`, e.message);
+    }
+  }
+}
 
 // Função para iniciar os agendamentos automáticos diários
 function startDailySchedule() {
@@ -177,12 +239,12 @@ function startDailySchedule() {
     return;
   }
 
-  console.log(`[TELEGRAM SCHEDULER] Grade de postagens automáticas ativada para o grupo: ${targetChatId}`);
+  console.log(`[TELEGRAM SCHEDULER] Grade de postagens automáticas com mídias ativada para o grupo: ${targetChatId}`);
 
-  // 1. Manhã - 09:00 (Do Regime Parcial ao Nível Executivo)
+  // 1. Manhã - 09:00 (Do Regime Parcial ao Nível Executivo + Foto/Vídeo de Bom Dia)
   cron.schedule('0 9 * * *', async () => {
-    console.log('[TELEGRAM CRON] Disparando mensagem das 09:00...');
-    const msg = 
+    console.log('[TELEGRAM CRON] Disparando mensagem das 09:00 com mídia...');
+    const caption = 
       '🚀 *BOM DIA! DO REGIME PARCIAL AO NÍVEL EXECUTIVO* 💸\n\n' +
       'Começar no regime parcial com frotas de entrada (NX-101) é o primeiro passo de todo grande operador no TAXINEXO.\n\n' +
       'Hoje pela manhã, mais de 40 operadores tiveram seus contratos atualizados para níveis superiores de alta demanda, desbloqueando rendimentos diários de até R$ 720,00 direto na carteira Pix!\n\n' +
@@ -193,25 +255,18 @@ function startDailySchedule() {
       'As frotas de Miami e Nova York já estão nas ruas rodando por você.\n\n' +
       '📱 *Acesse seu painel e ative seu veículo agora:*';
 
-    try {
-      await bot.api.sendMessage(targetChatId, msg, {
-        parse_mode: 'Markdown',
-        reply_markup: {
-          inline_keyboard: [
-            [{ text: '🚗 Ativar Minha Frota Agora', url: appUrl + '/' }],
-            [{ text: '📱 Fazer Check-in Diário', url: appUrl + '/' }]
-          ]
-        }
-      });
-    } catch (e) {
-      console.error('[CRON 09:00 ERROR]:', e.message);
-    }
+    const buttons = [
+      [{ text: '🚗 Ativar Minha Frota Agora', url: appUrl + '/' }],
+      [{ text: '📱 Fazer Check-in Diário', url: appUrl + '/' }]
+    ];
+
+    await sendBroadcastWithMedia(targetChatId, '01_bom_dia', caption, buttons);
   }, { timezone: 'America/Sao_Paulo' });
 
-  // 2. Meio-dia - 12:30 (Rendimentos do Primeiro Turno)
+  // 2. Meio-dia - 12:30 (Rendimentos do Primeiro Turno + Print/Vídeo de Operação)
   cron.schedule('30 12 * * *', async () => {
-    console.log('[TELEGRAM CRON] Disparando mensagem das 12:30...');
-    const msg = 
+    console.log('[TELEGRAM CRON] Disparando mensagem das 12:30 com mídia...');
+    const caption = 
       '💸 *[RELATÓRIO DO MEIO-DIA] RENDIMENTOS DO 1º TURNO CREDITADOS!* 🚗⚡\n\n' +
       'O primeiro ciclo de viagens das frotas autônomas em Miami acaba de ser finalizado e os lucros já foram creditados na carteira dos operadores!\n\n' +
       '📊 *DESEMPENHO DO TURNO:*\n' +
@@ -221,25 +276,18 @@ function startDailySchedule() {
       'Seu rendimento de hoje já está disponível para saque ou para reinvestir na subida de nível.\n\n' +
       '📲 *Abra seu painel e veja seu saldo crescendo:*';
 
-    try {
-      await bot.api.sendMessage(targetChatId, msg, {
-        parse_mode: 'Markdown',
-        reply_markup: {
-          inline_keyboard: [
-            [{ text: '💰 Ver Meu Saldo no App', url: appUrl + '/' }],
-            [{ text: '🚗 Ver Frotas Disponíveis', url: appUrl + '/' }]
-          ]
-        }
-      });
-    } catch (e) {
-      console.error('[CRON 12:30 ERROR]:', e.message);
-    }
+    const buttons = [
+      [{ text: '💰 Ver Meu Saldo no App', url: appUrl + '/' }],
+      [{ text: '🚗 Ver Frotas Disponíveis', url: appUrl + '/' }]
+    ];
+
+    await sendBroadcastWithMedia(targetChatId, 'provas', caption, buttons);
   }, { timezone: 'America/Sao_Paulo' });
 
-  // 3. Tarde - 16:00 (Comprovante de Saques Pix Aprovados)
+  // 3. Tarde - 16:00 (Comprovante de Saques Pix Aprovados + Print de Pix)
   cron.schedule('0 16 * * *', async () => {
-    console.log('[TELEGRAM CRON] Disparando mensagem das 16:00...');
-    const msg = 
+    console.log('[TELEGRAM CRON] Disparando mensagem das 16:00 com mídia...');
+    const caption = 
       '⚡ *[LOTE DE SAQUES PIX APROVADO] DINHEIRO NA CONTA DOS OPERADORES!* 💳💸\n\n' +
       'Mais um lote de solicitações de saque foi processado e enviado via Pix direto para as contas bancárias dos operadores ativos!\n\n' +
       '🏆 *O TAXINEXO NÃO PARA:*\n' +
@@ -250,25 +298,18 @@ function startDailySchedule() {
       'Parabéns a todos os operadores que já garantiram o seu Pix de hoje! 🚀\n\n' +
       '📱 *Solicite seu saque ou ative sua frota no app:*';
 
-    try {
-      await bot.api.sendMessage(targetChatId, msg, {
-        parse_mode: 'Markdown',
-        reply_markup: {
-          inline_keyboard: [
-            [{ text: '💳 Solicitar Saque Pix', url: appUrl + '/' }],
-            [{ text: '📱 Acessar Plataforma', url: appUrl + '/' }]
-          ]
-        }
-      });
-    } catch (e) {
-      console.error('[CRON 16:00 ERROR]:', e.message);
-    }
+    const buttons = [
+      [{ text: '💳 Solicitar Saque Pix', url: appUrl + '/' }],
+      [{ text: '📱 Acessar Plataforma', url: appUrl + '/' }]
+    ];
+
+    await sendBroadcastWithMedia(targetChatId, 'provas', caption, buttons);
   }, { timezone: 'America/Sao_Paulo' });
 
   // 4. Noite - 20:00 (Fechamento de Ciclo & Urgência de Vagas)
   cron.schedule('0 20 * * *', async () => {
-    console.log('[TELEGRAM CRON] Disparando mensagem das 20:00...');
-    const msg = 
+    console.log('[TELEGRAM CRON] Disparando mensagem das 20:00 com mídia...');
+    const caption = 
       '🌙 *[FECHAMENTO DE CICLO] ÚLTIMAS VAGAS DE FROTAS PARA AMANHÃ!* 🚗⏳\n\n' +
       'O ciclo operacional de hoje está se encerrando com mais de 98% das frotas em operação contínua.\n\n' +
       '🚨 *ATENÇÃO:* As vagas para contratação das categorias de maior rendimento estão se esgotando:\n' +
@@ -278,18 +319,11 @@ function startDailySchedule() {
       'Não durma no ponto enquanto a inteligência artificial trabalha por você.\n\n' +
       '👉 *ATIVE SUA FROTA AGORA:*';
 
-    try {
-      await bot.api.sendMessage(targetChatId, msg, {
-        parse_mode: 'Markdown',
-        reply_markup: {
-          inline_keyboard: [
-            [{ text: '🚗 Garantir Minha Frota Agora', url: appUrl + '/' }]
-          ]
-        }
-      });
-    } catch (e) {
-      console.error('[CRON 20:00 ERROR]:', e.message);
-    }
+    const buttons = [
+      [{ text: '🚗 Garantir Minha Frota Agora', url: appUrl + '/' }]
+    ];
+
+    await sendBroadcastWithMedia(targetChatId, '01_bom_dia', caption, buttons);
   }, { timezone: 'America/Sao_Paulo' });
 }
 
@@ -327,7 +361,8 @@ async function broadcastDailySettlement({ settlementsProcessed, totalCredited })
   }
 }
 
-module.exports = { initTelegramBot, broadcastDailySettlement, startDailySchedule };
+module.exports = { initTelegramBot, broadcastDailySettlement, startDailySchedule, sendBroadcastWithMedia };
+
 
 
 

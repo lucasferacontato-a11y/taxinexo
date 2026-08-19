@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { readDb, writeDb } = require('../database');
 const { authMiddleware } = require('../middleware/auth');
+const { createCartpandaPix } = require('../services/cartpanda');
 
 // Resumo da Carteira
 router.get('/summary', authMiddleware, (req, res) => {
@@ -22,8 +23,8 @@ router.get('/summary', authMiddleware, (req, res) => {
   });
 });
 
-// Gerar Pix de Depósito
-router.post('/deposit/pix', authMiddleware, (req, res) => {
+// Gerar Pix de Depósito (Integrado com Cartpanda Pay)
+router.post('/deposit/pix', authMiddleware, async (req, res) => {
   const { amount } = req.body;
   const numAmount = parseFloat(amount);
 
@@ -31,18 +32,65 @@ router.post('/deposit/pix', authMiddleware, (req, res) => {
     return res.status(400).json({ error: 'O valor mínimo para recarga Pix é R$ 20,00.' });
   }
 
-  const txId = `PIX-${Date.now()}`;
-  const pixCopyPaste = `00020126360014BR.GOV.BCB.PIX0114taxinexo8843520400005303986540${numAmount.toFixed(2)}5802BR5908TAXINEXO6009SAOPAULO62070503***6304`;
-
-  res.json({
-    txId,
+  const user = req.user;
+  const pixResult = await createCartpandaPix({
     amount: numAmount,
-    pixCopyPaste,
-    expiresInSeconds: 900
+    customerName: user.operatorName,
+    customerPhone: user.phone,
+    customerEmail: `${user.phone}@taxinexo.com`,
+    referenceId: user.id
   });
+
+  if (!pixResult.success) {
+    return res.status(500).json({ error: pixResult.error || 'Erro ao gerar Pix no Cartpanda Pay.' });
+  }
+
+  res.json(pixResult);
 });
 
-// Confirmar Pagamento Pix (Webhook ou Simulação Instantânea)
+// Webhook Oficial do Cartpanda Pay (Chamado quando o Pix é pago)
+router.post('/webhook/cartpanda', (req, res) => {
+  console.log('[CARTPANDA WEBHOOK RECEIVED]', JSON.stringify(req.body));
+  const event = req.body;
+
+  // Verifica status do pedido no Cartpanda
+  const status = event.status || event.order_status || (event.order && event.order.status);
+  const amount = parseFloat(event.amount || (event.order && event.order.total) || 0);
+  const referenceId = (event.metadata && event.metadata.reference_id) || event.customer_phone || (event.customer && event.customer.phone);
+
+  if (status === 'paid' || status === 'completed' || status === 'approved') {
+    const db = readDb();
+    
+    // Localiza o usuário pelo ID ou Telefone
+    let user = db.users.find(u => u.id === referenceId || u.phone === referenceId);
+    if (!user && event.customer && event.customer.phone) {
+      const cleanPhone = event.customer.phone.replace(/\D/g, '');
+      user = db.users.find(u => u.phone === cleanPhone);
+    }
+
+    if (user && amount > 0) {
+      user.balance += amount;
+      user.totalDeposited += amount;
+
+      db.transactions.unshift({
+        id: `CP-${event.id || Date.now()}`,
+        userId: user.id,
+        type: 'deposit',
+        amount: amount,
+        status: 'approved',
+        description: `Recarga Pix Cartpanda Pay Confirmada (+ R$ ${amount.toFixed(2)})`,
+        createdAt: new Date().toISOString()
+      });
+
+      writeDb(db);
+      console.log(`[CARTPANDA] Saldo de R$ ${amount} creditado para o usuário ${user.operatorName}`);
+    }
+  }
+
+  res.status(200).json({ received: true });
+});
+
+// Confirmar Pagamento Pix (Simulação Instantânea / Fallback)
 router.post('/deposit/confirm', authMiddleware, (req, res) => {
   const { amount, txId } = req.body;
   const numAmount = parseFloat(amount);

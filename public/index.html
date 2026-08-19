@@ -97,11 +97,28 @@
             <div class="quick-icon icon-green"><i class="fa-solid fa-car-side"></i></div>
             <span>Frotas</span>
           </button>
-          <button class="quick-card" onclick="openModal('modal-support')" aria-label="Falar com Suporte">
-            <div class="quick-icon icon-purple"><i class="fa-solid fa-headset"></i></div>
-            <span>Suporte</span>
-          </button>
+          <a href="https://t.me/+VRCCsj-SJHQwNmE5" target="_blank" rel="noopener noreferrer" class="quick-card" aria-label="Falar com Suporte e Grupo Telegram" style="text-decoration: none;">
+            <div class="quick-icon icon-purple" style="background: rgba(34, 158, 217, 0.15); border-color: rgba(34, 158, 217, 0.4); color: #229ED9;"><i class="fa-brands fa-telegram"></i></div>
+            <span>Telegram</span>
+          </a>
         </div>
+
+        <!-- Banner Comunidade Telegram VIP -->
+        <a href="https://t.me/+VRCCsj-SJHQwNmE5" target="_blank" rel="noopener noreferrer" class="telegram-banner-card" style="text-decoration: none; display: flex; align-items: center; justify-content: space-between; background: linear-gradient(135deg, rgba(34, 158, 217, 0.18) 0%, rgba(0, 102, 255, 0.12) 100%); border: 1px solid rgba(34, 158, 217, 0.45); border-radius: var(--radius-lg); padding: 16px; margin-bottom: 20px; box-shadow: 0 0 20px rgba(34, 158, 217, 0.25); transition: all 0.25s ease;">
+          <div style="display: flex; align-items: center; gap: 14px;">
+            <div style="width: 44px; height: 44px; border-radius: 12px; background: #229ED9; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 15px rgba(34, 158, 217, 0.6); flex-shrink: 0;">
+              <i class="fa-brands fa-telegram" style="color: #fff; font-size: 24px;"></i>
+            </div>
+            <div>
+              <span style="font-size: 10px; font-weight: 700; color: #229ED9; text-transform: uppercase; letter-spacing: 0.5px; display: block;">Comunidade VIP Oficial</span>
+              <strong style="color: #fff; font-size: 14px; display: block; margin-top: 2px;">Grupo de Operadores</strong>
+              <span style="font-size: 11px; color: var(--text-muted);">Avisos, rendimentos e networking</span>
+            </div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 6px; background: rgba(34, 158, 217, 0.25); border: 1px solid rgba(34, 158, 217, 0.6); padding: 8px 12px; border-radius: 8px; color: #fff; font-size: 11px; font-weight: 700; flex-shrink: 0;">
+            <span>Entrar</span> <i class="fa-solid fa-arrow-right"></i>
+          </div>
+        </a>
 
         <!-- Banner Promocional / Status da Frota -->
         <div class="fleet-banner">
@@ -188,6 +205,11 @@
         </div>
 
         <div class="menu-list" role="menu">
+          <a href="https://t.me/+VRCCsj-SJHQwNmE5" target="_blank" rel="noopener noreferrer" class="menu-item telegram" role="menuitem" style="border-color: rgba(34, 158, 217, 0.4); background: rgba(34, 158, 217, 0.1);">
+            <i class="fa-brands fa-telegram" style="color: #229ED9; font-size: 20px;"></i>
+            <span style="color: #fff; font-weight: 700;">Grupo Oficial no Telegram</span>
+            <i class="fa-solid fa-arrow-up-right-from-square arrow" style="color: #229ED9;"></i>
+          </a>
           <a href="#" class="menu-item" role="menuitem" onclick="openModal('modal-deposit'); return false;">
             <i class="fa-solid fa-wallet"></i>
             <span>Histórico Financeiro</span>
@@ -198,14 +220,9 @@
             <span>Chave Pix de Saque</span>
             <i class="fa-solid fa-chevron-right arrow"></i>
           </a>
-          <a href="#" class="menu-item" role="menuitem" onclick="alert('Módulo de Segurança em desenvolvimento.'); return false;">
-            <i class="fa-solid fa-shield-halved"></i>
-            <span>Segurança e Senhas</span>
-            <i class="fa-solid fa-chevron-right arrow"></i>
-          </a>
-          <a href="#" class="menu-item" role="menuitem" onclick="alert('Abrindo chat de suporte...'); return false;">
-            <i class="fa-solid fa-circle-question"></i>
-            <span>Central de Ajuda</span>
+          <a href="https://t.me/+VRCCsj-SJHQwNmE5" target="_blank" rel="noopener noreferrer" class="menu-item" role="menuitem">
+            <i class="fa-solid fa-circle-question" style="color: var(--primary);"></i>
+            <span>Central de Ajuda & Suporte</span>
             <i class="fa-solid fa-chevron-right arrow"></i>
           </a>
           <a href="#" class="menu-item logout" role="menuitem" onclick="handleLogout(); return false;">
@@ -218,6 +235,7 @@
           <span>Taxinexo v1.0.4-beta</span>
         </div>
       </section>
+
 
     </main>
 

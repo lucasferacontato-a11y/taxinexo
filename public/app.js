@@ -28,7 +28,7 @@ const appState = {
       price: 150.00,
       dailyReturn: 14.50,
       periodDays: 30,
-      checkoutUrl: 'https://pagamento.pricipiaskins.site/checkout/212187584:1',
+      checkoutUrl: 'login.html',
       description: 'Veículo elétrico autônomo para corridas urbanas diárias.'
     },
     {
@@ -39,7 +39,7 @@ const appState = {
       price: 350.00,
       dailyReturn: 36.00,
       periodDays: 45,
-      checkoutUrl: 'https://pagamento.pricipiaskins.site/checkout/212187589:1',
+      checkoutUrl: 'login.html',
       description: 'Robotaxi com 38 sensores LiDAR e IA de nível 4 integrada.'
     },
     {
@@ -50,7 +50,7 @@ const appState = {
       price: 600.00,
       dailyReturn: 68.00,
       periodDays: 40,
-      checkoutUrl: 'https://pagamento.pricipiaskins.site/checkout/212187590:1',
+      checkoutUrl: 'login.html',
       description: 'Frota de carregamento por indução e operação 24/7 sem volante.'
     },
     {
@@ -61,7 +61,7 @@ const appState = {
       price: 900.00,
       dailyReturn: 105.00,
       periodDays: 45,
-      checkoutUrl: 'https://pagamento.pricipiaskins.site/checkout/212187597:1',
+      checkoutUrl: 'login.html',
       description: 'Lançadeira autônoma espaçosa para transporte compartilhado.'
     },
     {
@@ -72,7 +72,7 @@ const appState = {
       price: 1500.00,
       dailyReturn: 185.00,
       periodDays: 60,
-      checkoutUrl: 'https://pagamento.pricipiaskins.site/checkout/212187598:1',
+      checkoutUrl: 'login.html',
       description: 'Van autônoma de alta capacidade operando em rotas corporativas.'
     },
     {
@@ -83,7 +83,7 @@ const appState = {
       price: 2800.00,
       dailyReturn: 360.00,
       periodDays: 60,
-      checkoutUrl: 'https://pagamento.pricipiaskins.site/checkout/212187602:1',
+      checkoutUrl: 'login.html',
       description: 'Veículo bidirecional com tração nas 4 rodas para tráfego denso.'
     },
     {
@@ -94,7 +94,7 @@ const appState = {
       price: 5000.00,
       dailyReturn: 720.00,
       periodDays: 90,
-      checkoutUrl: 'https://pagamento.pricipiaskins.site/checkout/212187611:1',
+      checkoutUrl: 'login.html',
       description: 'Frota executiva premium com troca de bateria em 3 min.'
     }
   ],

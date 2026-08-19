@@ -4,7 +4,8 @@ const path = require('path');
 const { processDailySettlement } = require('./services/settlementEngine');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 10000;
+const HOST = '0.0.0.0';
 
 app.use(cors());
 app.use(express.json());
@@ -25,7 +26,7 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'online', service: 'TAXINEXO Cloud API', timestamp: new Date().toISOString() });
 });
 
-// Redireciona qualquer outra rota para o index.html (SPA Fallback)
+// Fallback para SPA e arquivos HTML
 app.get('*', (req, res) => {
   res.sendFile(path.join(publicDir, 'index.html'));
 });
@@ -36,9 +37,8 @@ setInterval(() => {
   processDailySettlement();
 }, 60 * 60 * 1000);
 
-app.listen(PORT, () => {
+app.listen(PORT, HOST, () => {
   console.log(`=================================================`);
-  console.log(`🚀 TAXINEXO Online rodando na porta ${PORT}`);
-  console.log(`📱 App PWA: http://localhost:${PORT}/`);
+  console.log(`🚀 TAXINEXO Online rodando na porta ${PORT} no host ${HOST}`);
   console.log(`=================================================`);
 });

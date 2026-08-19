@@ -98,6 +98,14 @@ function initTelegramBot() {
       }
     });
 
+    // Auto-detecção do Grupo ao receber qualquer mensagem
+    bot.on('message', (ctx) => {
+      if (ctx.chat && (ctx.chat.type === 'group' || ctx.chat.type === 'supergroup')) {
+        console.log(`[TELEGRAM] Grupo detectado! ID: ${ctx.chat.id} | Título: ${ctx.chat.title}`);
+      }
+    });
+
+
     // Inicia escuta
     bot.startPolling();
     console.log('[TELEGRAM BOT] Bot @taxinexo_oficial_bot escutando mensagens em tempo real!');

@@ -29,10 +29,16 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'online', service: 'TAXINEXO Cloud API', timestamp: new Date().toISOString() });
 });
 
+// Rotas Amigáveis para Landing Page / Presell (Meta Ads)
+app.get(['/presell', '/apresentacao', '/start', '/como-funciona'], (req, res) => {
+  res.sendFile(path.join(publicDir, 'presell.html'));
+});
+
 // Fallback para SPA e arquivos HTML
 app.get('*', (req, res) => {
   res.sendFile(path.join(publicDir, 'index.html'));
 });
+
 
 // Inicialização com Banco de Dados
 async function startServer() {

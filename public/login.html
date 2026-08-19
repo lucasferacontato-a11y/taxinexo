@@ -7,7 +7,7 @@
   
   <!-- PWA & Apple Web App Tags -->
   <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#05070A">
+  <meta name="theme-color" content="#030508">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -20,8 +20,8 @@
   
   <style>
     :root {
-      --bg-main: #05070A;
-      --bg-card: rgba(13, 17, 28, 0.85);
+      --bg-main: #030508;
+      --bg-card: rgba(13, 17, 28, 0.90);
       --primary: #00F0FF;
       --primary-gradient: linear-gradient(135deg, #00F0FF 0%, #0066FF 100%);
       --accent-gold: #FADB5F;
@@ -43,10 +43,10 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    body {
+    html, body {
       background-color: #030508 !important;
-      background: radial-gradient(circle at 50% 20%, #0a1120 0%, #030508 80%) !important;
-      color: var(--text-main) !important;
+      background: radial-gradient(circle at 50% 20%, #0b1528 0%, #030508 80%) !important;
+      color: #F1F5F9 !important;
       min-height: 100vh;
       display: flex;
       justify-content: center;
@@ -60,12 +60,6 @@
       max-width: 420px;
       position: relative;
       z-index: 1;
-      animation: fadeIn 0.4s ease-out;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(12px); }
-      to { opacity: 1; transform: translateY(0); }
     }
 
     /* Brand Header */
@@ -91,7 +85,7 @@
     .auth-logo-badge i {
       transform: rotate(-45deg);
       font-size: 24px;
-      color: #000;
+      color: #000000;
     }
 
     .auth-brand-title {
@@ -140,7 +134,7 @@
     /* Switcher Tabs */
     .auth-tabs-nav {
       display: flex;
-      background: rgba(0, 0, 0, 0.5);
+      background: rgba(0, 0, 0, 0.6);
       border: 1px solid var(--border-color);
       border-radius: var(--radius-md);
       padding: 4px;
@@ -168,7 +162,7 @@
 
     .auth-nav-btn.active {
       background: var(--primary-gradient);
-      color: #000;
+      color: #000000;
       box-shadow: 0 0 15px rgba(0, 240, 255, 0.5);
       font-weight: 800;
     }
@@ -202,7 +196,7 @@
 
     .field-input-box input {
       width: 100%;
-      background: rgba(0, 0, 0, 0.6) !important;
+      background: rgba(0, 0, 0, 0.7) !important;
       border: 1px solid var(--border-color) !important;
       padding: 13px 42px 13px 40px !important;
       border-radius: var(--radius-md) !important;
@@ -261,7 +255,7 @@
 
     .btn-primary {
       background: var(--primary-gradient);
-      color: #000 !important;
+      color: #000000 !important;
       border: 1px solid rgba(255, 255, 255, 0.4);
       box-shadow: 0 4px 18px rgba(0, 240, 255, 0.45);
     }
@@ -284,15 +278,15 @@
     }
 
     .auth-alert-toast.error {
-      background: rgba(239, 68, 68, 0.18);
-      border: 1px solid rgba(239, 68, 68, 0.5);
+      background: rgba(239, 68, 68, 0.2);
+      border: 1px solid rgba(239, 68, 68, 0.6);
       color: #fca5a5;
       display: flex;
     }
 
     .auth-alert-toast.success {
-      background: rgba(0, 255, 136, 0.18);
-      border: 1px solid rgba(0, 255, 136, 0.5);
+      background: rgba(0, 255, 136, 0.2);
+      border: 1px solid rgba(0, 255, 136, 0.6);
       color: var(--accent-green);
       display: flex;
     }
@@ -471,7 +465,7 @@
         }
       }
 
-      // Máscara inteligente para telefones brasileiros
+      // Máscara de telefone
       ['login-phone', 'reg-phone'].forEach(id => {
         const input = document.getElementById(id);
         input?.addEventListener('input', (e) => {
@@ -547,11 +541,11 @@
         const data = await res.json();
 
         if (res.ok && data.token) {
-          showAlert('✅ Autenticado com sucesso! Entrando no painel...', 'success');
+          showAlert('✅ Autenticado com sucesso! Entrando...', 'success');
           localStorage.setItem('taxinexo_token', data.token);
           setTimeout(() => {
             window.location.href = './';
-          }, 600);
+          }, 500);
         } else {
           showAlert(data.error || 'Credenciais inválidas.');
           btn.disabled = false;

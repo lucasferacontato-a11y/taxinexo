@@ -396,7 +396,7 @@
   </div>
 
   <script>
-    (window.location.hostname === 'localhost' && window.location.port === '8080') ? 'http://localhost:3000/api/admin' : '/api/admin'
+    const API_BASE = (window.location.hostname === 'localhost' && window.location.port === '8080') ? 'http://localhost:3000/api/admin' : '/api/admin';
 
     const formatCurrency = (val) => {
       return new Intl.NumberFormat('pt-BR', {

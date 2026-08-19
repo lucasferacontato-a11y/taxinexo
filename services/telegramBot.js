@@ -311,7 +311,7 @@ function startDailySchedule() {
       [{ text: '🚗 Ver Frotas Disponíveis', url: appUrl + '/' }]
     ];
 
-    await sendBroadcastWithMedia(targetChatId, 'provas', caption, buttons);
+    await sendBroadcastWithMedia(targetChatId, '01_bom_dia', caption, buttons);
   }, { timezone: 'America/Sao_Paulo' });
 
   // 3. Tarde - 16:00 (Comprovante de Saques Pix Aprovados + Print de Pix)
@@ -333,7 +333,7 @@ function startDailySchedule() {
       [{ text: '📱 Acessar Plataforma', url: appUrl + '/' }]
     ];
 
-    await sendBroadcastWithMedia(targetChatId, 'provas', caption, buttons);
+    await sendBroadcastWithMedia(targetChatId, '01_bom_dia', caption, buttons);
   }, { timezone: 'America/Sao_Paulo' });
 
   // 4. Noite - 20:00 (Fechamento de Ciclo & Urgência de Vagas)

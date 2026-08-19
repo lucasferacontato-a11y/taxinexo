@@ -170,13 +170,12 @@ async function sendRulesMessage(ctx) {
 const fs = require('fs');
 const path = require('path');
 const cron = require('node-cron');
-const { InputFile } = require('node-telegram-bot-api');
 
 /**
- * Envia uma mensagem com foto, vídeo ou texto para o grupo
+ * Envia mensagem com Foto, Vídeo ou Texto via Telegram API nativo
  */
 async function sendBroadcastWithMedia(targetChatId, folderName, caption, inlineKeyboard) {
-  if (!bot || !targetChatId) return;
+  if (!token || !targetChatId) return;
 
   const mediaDir = path.join(__dirname, '..', 'media', folderName);
   let mediaFile = null;
@@ -193,45 +192,76 @@ async function sendBroadcastWithMedia(targetChatId, folderName, caption, inlineK
     console.error(`[MEDIA SEARCH ERROR in ${folderName}]:`, err.message);
   }
 
-  const options = {
-    parse_mode: 'Markdown',
-    reply_markup: {
-      inline_keyboard: inlineKeyboard
-    }
-  };
+  const replyMarkupStr = inlineKeyboard ? JSON.stringify({ inline_keyboard: inlineKeyboard }) : null;
 
   try {
     if (mediaFile) {
       const isVideo = /\.mp4$/i.test(mediaFile);
+      const fileBuffer = fs.readFileSync(mediaFile);
+      const formData = new FormData();
+
+      formData.append('chat_id', targetChatId);
+      formData.append('caption', caption);
+      formData.append('parse_mode', 'Markdown');
+      if (replyMarkupStr) formData.append('reply_markup', replyMarkupStr);
+
       if (isVideo) {
-        console.log(`[TELEGRAM MEDIA] Enviando vídeo (${mediaFile}) para o grupo...`);
-        await bot.api.sendVideo(targetChatId, new InputFile(mediaFile), {
-          caption,
-          ...options
+        formData.append('video', new Blob([fileBuffer], { type: 'video/mp4' }), path.basename(mediaFile));
+        console.log(`[TELEGRAM MEDIA] Enviando vídeo (${path.basename(mediaFile)}) para o grupo...`);
+        const res = await fetch(`https://api.telegram.org/bot${token}/sendVideo`, {
+          method: 'POST',
+          body: formData
         });
+        const data = await res.json();
+        if (!data.ok) throw new Error(data.description || 'Erro ao enviar video');
       } else {
-        console.log(`[TELEGRAM MEDIA] Enviando foto (${mediaFile}) para o grupo...`);
-        await bot.api.sendPhoto(targetChatId, new InputFile(mediaFile), {
-          caption,
-          ...options
+        const ext = path.extname(mediaFile).toLowerCase();
+        const mimeType = ext === '.png' ? 'image/png' : 'image/jpeg';
+        formData.append('photo', new Blob([fileBuffer], { type: mimeType }), path.basename(mediaFile));
+        console.log(`[TELEGRAM MEDIA] Enviando foto (${path.basename(mediaFile)}) para o grupo...`);
+        const res = await fetch(`https://api.telegram.org/bot${token}/sendPhoto`, {
+          method: 'POST',
+          body: formData
         });
+        const data = await res.json();
+        if (!data.ok) throw new Error(data.description || 'Erro ao enviar foto');
       }
     } else {
       console.log(`[TELEGRAM TEXT] Enviando mensagem de texto para o grupo...`);
-      await bot.api.sendMessage(targetChatId, caption, options);
+      const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chat_id: targetChatId,
+          text: caption,
+          parse_mode: 'Markdown',
+          reply_markup: inlineKeyboard ? { inline_keyboard: inlineKeyboard } : undefined
+        })
+      });
+      const data = await res.json();
+      if (!data.ok) throw new Error(data.description || 'Erro ao enviar mensagem');
     }
   } catch (err) {
     console.error(`[BROADCAST SEND ERROR]:`, err.message);
-    // Fallback para envio de texto caso envio de mídia falhe
+    // Fallback: tenta enviar só texto
     try {
-      await bot.api.sendMessage(targetChatId, caption, options);
+      await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chat_id: targetChatId,
+          text: caption,
+          parse_mode: 'Markdown',
+          reply_markup: inlineKeyboard ? { inline_keyboard: inlineKeyboard } : undefined
+        })
+      });
     } catch (e) {
       console.error(`[BROADCAST FALLBACK ERROR]:`, e.message);
     }
   }
 }
 
-// Função para iniciar os agendamentos automáticos diários
+// Inicia os agendamentos se o groupChatId ou TELEGRAM_CHAT_ID estiver definido
 function startDailySchedule() {
   const targetChatId = groupChatId || process.env.TELEGRAM_CHAT_ID;
   if (!targetChatId) {
@@ -328,7 +358,7 @@ function startDailySchedule() {
 }
 
 // Inicia os agendamentos se o groupChatId estiver definido
-if (groupChatId) {
+if (groupChatId || process.env.TELEGRAM_CHAT_ID) {
   startDailySchedule();
 }
 
@@ -337,7 +367,7 @@ if (groupChatId) {
  */
 async function broadcastDailySettlement({ settlementsProcessed, totalCredited }) {
   const targetChatId = groupChatId || process.env.TELEGRAM_CHAT_ID;
-  if (!bot || !targetChatId) return;
+  if (!token || !targetChatId) return;
 
   const format = (v) => new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2 }).format(v);
   const msg = 
@@ -348,13 +378,19 @@ async function broadcastDailySettlement({ settlementsProcessed, totalCredited })
     'Verifique seu saldo atualizado no aplicativo:';
 
   try {
-    await bot.api.sendMessage(targetChatId, msg, {
-      parse_mode: 'Markdown',
-      reply_markup: {
-        inline_keyboard: [
-          [{ text: '📱 Ver Meu Saldo no App', url: appUrl + '/' }]
-        ]
-      }
+    await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        chat_id: targetChatId,
+        text: msg,
+        parse_mode: 'Markdown',
+        reply_markup: {
+          inline_keyboard: [
+            [{ text: '📱 Ver Meu Saldo no App', url: appUrl + '/' }]
+          ]
+        }
+      })
     });
   } catch (e) {
     console.error('[TELEGRAM BROADCAST ERROR]:', e.message);
@@ -362,6 +398,7 @@ async function broadcastDailySettlement({ settlementsProcessed, totalCredited })
 }
 
 module.exports = { initTelegramBot, broadcastDailySettlement, startDailySchedule, sendBroadcastWithMedia };
+
 
 
 

@@ -55,12 +55,31 @@ router.get('/withdrawals', async (req, res) => {
   try {
     const allTx = await getAllTransactions();
     const withdrawals = allTx.filter(t => t.type === 'withdraw');
-    res.json(withdrawals);
+    
+    // Enriquece cada saque com o nome e telefone do operador
+    const enrichedWithdrawals = await Promise.all(withdrawals.map(async (t) => {
+      const user = await findUserById(t.userId);
+      return {
+        ...t,
+        userName: user ? user.operatorName : 'Operador #' + t.userId,
+        userPhone: user ? user.phone : 'Não informado'
+      };
+    }));
+
+    // Ordena os pendentes primeiro e por data mais recente
+    enrichedWithdrawals.sort((a, b) => {
+      if (a.status === 'pending' && b.status !== 'pending') return -1;
+      if (a.status !== 'pending' && b.status === 'pending') return 1;
+      return new Date(b.createdAt) - new Date(a.createdAt);
+    });
+
+    res.json(enrichedWithdrawals);
   } catch (err) {
     console.error('[ADMIN ERROR /withdrawals]:', err);
     res.status(500).json({ error: 'Erro ao listar saques.' });
   }
 });
+
 
 // Aprovar Saque
 router.post('/withdrawals/:id/approve', async (req, res) => {

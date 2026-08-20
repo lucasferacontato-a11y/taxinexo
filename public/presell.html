@@ -154,7 +154,115 @@
       .sticky-bar { display: block; }
       body { padding-bottom: 70px; }
     }
+  
+    /* ================= REVIEWS & COMENTÁRIOS ================= */
+    .reviews-section { margin-bottom: 60px; }
+    .reviews-summary-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-bright);
+      border-radius: var(--radius-lg);
+      padding: 30px;
+      margin-bottom: 30px;
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 30px;
+      align-items: center;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    }
+    @media (max-width: 768px) {
+      .reviews-summary-card { grid-template-columns: 1fr; text-align: center; }
+    }
+    .score-big { font-size: 52px; font-weight: 900; font-family: 'Space Grotesk', sans-serif; color: #fff; line-height: 1; }
+    .stars-glow { color: #f59e0b; font-size: 18px; letter-spacing: 2px; }
+    .rating-bars { display: flex; flex-direction: column; gap: 8px; }
+    .rating-bar-row { display: flex; align-items: center; gap: 12px; font-size: 12px; color: var(--text-muted); }
+    .rating-bar-track { flex: 1; height: 8px; background: rgba(255, 255, 255, 0.08); border-radius: 4px; overflow: hidden; }
+    .rating-bar-fill { height: 100%; background: linear-gradient(90deg, #f59e0b, #00f0ff); border-radius: 4px; }
+    
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+    .review-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.3s ease;
+    }
+    .review-card:hover { border-color: var(--primary); transform: translateY(-3px); background: var(--bg-card-hover); box-shadow: 0 10px 25px rgba(0, 240, 255, 0.15); }
+    .review-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; }
+    .reviewer-profile { display: flex; align-items: center; gap: 12px; }
+    .reviewer-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #00f0ff, #0077fe);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      color: #000;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+    .reviewer-name { font-size: 15px; font-weight: 700; color: #fff; line-height: 1.2; }
+    .reviewer-location { font-size: 11px; color: var(--text-muted); }
+    .verified-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      color: var(--accent-green);
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 12px;
+      margin-top: 4px;
+    }
+    .review-text { font-size: 13.5px; color: #d1d5db; line-height: 1.6; margin-bottom: 16px; flex: 1; }
+    .review-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 12px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    .review-fleet-tag { color: var(--primary); font-weight: 600; font-size: 11px; }
+    .review-likes { display: flex; align-items: center; gap: 5px; cursor: pointer; color: var(--text-muted); transition: all 0.2s; background: none; border: none; font-size: 12px; }
+    .review-likes:hover, .review-likes.liked { color: #f43f5e; }
+
+    /* New Comment Form Box */
+    .new-comment-card {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px dashed var(--border-bright);
+      border-radius: var(--radius-lg);
+      padding: 26px;
+      margin-top: 20px;
+    }
+    .comment-input, .comment-textarea {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+      color: #fff;
+      font-size: 14px;
+      outline: none;
+      margin-bottom: 12px;
+      box-sizing: border-box;
+    }
+    .comment-input:focus, .comment-textarea:focus { border-color: var(--primary); }
   </style>
+
 </head>
 <body>
 
@@ -538,6 +646,267 @@
     </section>
 
 
+    
+    <!-- ================= SEÇÃO DE AVALIAÇÕES E COMENTÁRIOS ================= -->
+    <section class="reviews-section">
+      <div class="section-title-wrap">
+        <span class="section-tag">// DEPOIMENTOS & RESULTADOS REAIS</span>
+        <h2 class="section-title">Avaliações de Quem Já Opera na TAXINEXO</h2>
+        <p style="color: var(--text-muted); max-width: 700px; margin: 10px auto 0 auto; font-size: 15px;">
+          Veja o que operadores de todo o Brasil estão falando sobre os rendimentos diários e a agilidade nos saques Pix.
+        </p>
+      </div>
+
+      <!-- Resumo Geral de Pontuação -->
+      <div class="reviews-summary-card">
+        <div style="text-align: center;">
+          <div class="score-big">4.9</div>
+          <div class="stars-glow" style="margin: 8px 0;">
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+          </div>
+          <div style="font-size: 13px; color: var(--text-muted); font-weight: 600;">Baseado em 1.482 avaliações</div>
+          <div class="verified-badge" style="margin-top: 10px;">
+            <i class="fa-solid fa-shield-check"></i> 100% Verificado via Pix
+          </div>
+        </div>
+
+        <div class="rating-bars">
+          <div class="rating-bar-row">
+            <span>5 estrelas</span>
+            <div class="rating-bar-track"><div class="rating-bar-fill" style="width: 94%;"></div></div>
+            <span>94%</span>
+          </div>
+          <div class="rating-bar-row">
+            <span>4 estrelas</span>
+            <div class="rating-bar-track"><div class="rating-bar-fill" style="width: 5%;"></div></div>
+            <span>5%</span>
+          </div>
+          <div class="rating-bar-row">
+            <span>3 estrelas</span>
+            <div class="rating-bar-track"><div class="rating-bar-fill" style="width: 1%;"></div></div>
+            <span>1%</span>
+          </div>
+          <div class="rating-bar-row">
+            <span>2 estrelas</span>
+            <div class="rating-bar-track"><div class="rating-bar-fill" style="width: 0%;"></div></div>
+            <span>0%</span>
+          </div>
+          <div class="rating-bar-row">
+            <span>1 estrela</span>
+            <div class="rating-bar-track"><div class="rating-bar-fill" style="width: 0%;"></div></div>
+            <span>0%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Grid de Comentários / Avaliações -->
+      <div class="reviews-grid" id="reviews-feed">
+
+        <!-- Comentário 1 -->
+        <div class="review-card">
+          <div>
+            <div class="review-header">
+              <div class="reviewer-profile">
+                <div class="reviewer-avatar" style="background: linear-gradient(135deg, #00f0ff, #0077fe);">MR</div>
+                <div>
+                  <div class="reviewer-name">Marcelo Ribeiro</div>
+                  <div class="reviewer-location">São Paulo, SP • <span style="color: var(--accent-green);">Operador Ativo</span></div>
+                  <div class="verified-badge"><i class="fa-solid fa-circle-check"></i> Saque Pix R$ 1.080,00 Recebido</div>
+                </div>
+              </div>
+              <div class="stars-glow" style="font-size: 13px;">
+                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+              </div>
+            </div>
+            <p class="review-text">
+              "Comecei com o Apollo RT6 de R$ 350 pra testar. O rendimento de R$ 36 todo dia caiu certinho na minha conta. Ontem fiz meu primeiro saque de mais de R$ 1.000 e caiu na hora via Pix. Já reinvesti no Cybercab de R$ 600!"
+            </p>
+          </div>
+          <div class="review-footer">
+            <span class="review-fleet-tag"><i class="fa-solid fa-car"></i> Frota: Baidu Apollo RT6</span>
+            <button class="review-likes" onclick="likeReview(this, 142)"><i class="fa-solid fa-heart"></i> <span>142</span></button>
+          </div>
+        </div>
+
+        <!-- Comentário 2 -->
+        <div class="review-card">
+          <div>
+            <div class="review-header">
+              <div class="reviewer-profile">
+                <div class="reviewer-avatar" style="background: linear-gradient(135deg, #fadb5f, #f59e0b);">JF</div>
+                <div>
+                  <div class="reviewer-name">Juliana Fontes</div>
+                  <div class="reviewer-location">Belo Horizonte, MG • <span style="color: var(--accent-gold);">Líder Prata</span></div>
+                  <div class="verified-badge"><i class="fa-solid fa-circle-check"></i> 8 Frotas Ativas</div>
+                </div>
+              </div>
+              <div class="stars-glow" style="font-size: 13px;">
+                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+              </div>
+            </div>
+            <p class="review-text">
+              "O programa de afiliados é sensacional. Convidei 5 amigos da minha família e já destravei o nível Prata com bônus de R$ 100 extra. As comissões de 10% entram automaticamente quando eles ativam os carros. Melhor plataforma que já usei!"
+            </p>
+          </div>
+          <div class="review-footer">
+            <span class="review-fleet-tag"><i class="fa-solid fa-crown"></i> Nível: Líder Prata</span>
+            <button class="review-likes" onclick="likeReview(this, 98)"><i class="fa-solid fa-heart"></i> <span>98</span></button>
+          </div>
+        </div>
+
+        <!-- Comentário 3 -->
+        <div class="review-card">
+          <div>
+            <div class="review-header">
+              <div class="reviewer-profile">
+                <div class="reviewer-avatar" style="background: linear-gradient(135deg, #10b981, #059669);">RC</div>
+                <div>
+                  <div class="reviewer-name">Rodrigo Castro M.</div>
+                  <div class="reviewer-location">Curitiba, PR • <span style="color: var(--accent-green);">Operador VIP</span></div>
+                  <div class="verified-badge"><i class="fa-solid fa-circle-check"></i> Saque Pix R$ 3.700,00 Recebido</div>
+                </div>
+              </div>
+              <div class="stars-glow" style="font-size: 13px;">
+                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+              </div>
+            </div>
+            <p class="review-text">
+              "Peguei o Waymo Autonomous de R$ 1.500 no mês passado. R$ 185 por dia limpos sem eu precisar fazer nada. O suporte no Telegram responde super rápido e a liquidação das 00h é no relógio suíço. 10/10 recomendo!"
+            </p>
+          </div>
+          <div class="review-footer">
+            <span class="review-fleet-tag"><i class="fa-solid fa-car"></i> Frota: Waymo Autonomous Van</span>
+            <button class="review-likes" onclick="likeReview(this, 215)"><i class="fa-solid fa-heart"></i> <span>215</span></button>
+          </div>
+        </div>
+
+        <!-- Comentário 4 -->
+        <div class="review-card">
+          <div>
+            <div class="review-header">
+              <div class="reviewer-profile">
+                <div class="reviewer-avatar" style="background: linear-gradient(135deg, #a855f7, #6366f1);">VT</div>
+                <div>
+                  <div class="reviewer-name">Vanessa Toledo</div>
+                  <div class="reviewer-location">Rio de Janeiro, RJ • <span style="color: var(--accent-green);">Operadora Ativa</span></div>
+                  <div class="verified-badge"><i class="fa-solid fa-circle-check"></i> Check-in Diário Ativo</div>
+                </div>
+              </div>
+              <div class="stars-glow" style="font-size: 13px;">
+                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+              </div>
+            </div>
+            <p class="review-text">
+              "Não entendo nada de mecânica ou carros, mas o sistema é super simples. É só criar a conta, escolher o modelo e ver o saldo render todos os dias. Até o bônus diário de check-in gratuito ajuda a acumular saldo!"
+            </p>
+          </div>
+          <div class="review-footer">
+            <span class="review-fleet-tag"><i class="fa-solid fa-car"></i> Frota: Tesla Model 3</span>
+            <button class="review-likes" onclick="likeReview(this, 76)"><i class="fa-solid fa-heart"></i> <span>76</span></button>
+          </div>
+        </div>
+
+        <!-- Comentário 5 -->
+        <div class="review-card">
+          <div>
+            <div class="review-header">
+              <div class="reviewer-profile">
+                <div class="reviewer-avatar" style="background: linear-gradient(135deg, #ec4899, #8b5cf6);">ES</div>
+                <div>
+                  <div class="reviewer-name">Eduardo Siqueira</div>
+                  <div class="reviewer-location">Goiânia, GO • <span style="color: var(--accent-gold);">Supervisor Ouro</span></div>
+                  <div class="verified-badge"><i class="fa-solid fa-circle-check"></i> Equipe com 22 Operadores</div>
+                </div>
+              </div>
+              <div class="stars-glow" style="font-size: 13px;">
+                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+              </div>
+            </div>
+            <p class="review-text">
+              "A transparência da plataforma é o grande diferencial. Tudo fica registrado no extrato: rendimentos dos carros, comissão de cada indicado e comprovante dos saques. Já estou com 2 Cruise Origin rodando."
+            </p>
+          </div>
+          <div class="review-footer">
+            <span class="review-fleet-tag"><i class="fa-solid fa-car"></i> Frota: Cruise Origin Autonomous</span>
+            <button class="review-likes" onclick="likeReview(this, 189)"><i class="fa-solid fa-heart"></i> <span>189</span></button>
+          </div>
+        </div>
+
+        <!-- Comentário 6 -->
+        <div class="review-card">
+          <div>
+            <div class="review-header">
+              <div class="reviewer-profile">
+                <div class="reviewer-avatar" style="background: linear-gradient(135deg, #06b6d4, #3b82f6);">CL</div>
+                <div>
+                  <div class="reviewer-name">Carlos Lima Jr.</div>
+                  <div class="reviewer-location">Fortaleza, CE • <span style="color: var(--accent-green);">Operador Master</span></div>
+                  <div class="verified-badge"><i class="fa-solid fa-circle-check"></i> Saque Pix R$ 7.200,00 Recebido</div>
+                </div>
+              </div>
+              <div class="stars-glow" style="font-size: 13px;">
+                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+              </div>
+            </div>
+            <p class="review-text">
+              "Operei no plano NIO Executive e o retorno diário de R$ 720/dia é surreal de bom. Saquei sem burocracia nenhuma e o dinheiro já caiu na minha conta bancária. Podem entrar sem medo!"
+            </p>
+          </div>
+          <div class="review-footer">
+            <span class="review-fleet-tag"><i class="fa-solid fa-crown"></i> Frota: NIO Executive Master</span>
+            <button class="review-likes" onclick="likeReview(this, 310)"><i class="fa-solid fa-heart"></i> <span>310</span></button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Formulário Interativo de Comentário / Avaliação -->
+      <div class="new-comment-card">
+        <h3 style="font-size: 18px; color: #fff; margin-bottom: 6px;">
+          <i class="fa-solid fa-comment-dots" style="color: var(--primary);"></i> Já é operador? Deixe sua Avaliação
+        </h3>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">
+          Sua opinião é fundamental para a comunidade e ajuda novos operadores a conhecerem a TAXINEXO.
+        </p>
+
+        <form id="comment-form" onsubmit="submitReview(event)">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <input type="text" id="review-author" class="comment-input" placeholder="Seu Nome Completo ou Apelido" required>
+            <input type="text" id="review-city" class="comment-input" placeholder="Sua Cidade / Estado (Ex: Campinas, SP)" required>
+          </div>
+          
+          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+            <span style="font-size: 13px; color: var(--text-muted);">Sua Nota:</span>
+            <div style="color: #f59e0b; font-size: 18px; cursor: pointer;" id="star-rating-select">
+              <i class="fa-solid fa-star" onclick="setRating(1)"></i>
+              <i class="fa-solid fa-star" onclick="setRating(2)"></i>
+              <i class="fa-solid fa-star" onclick="setRating(3)"></i>
+              <i class="fa-solid fa-star" onclick="setRating(4)"></i>
+              <i class="fa-solid fa-star" onclick="setRating(5)"></i>
+            </div>
+            <span id="rating-text" style="font-size: 12px; color: var(--accent-gold); font-weight: 700;">Excelente (5/5)</span>
+          </div>
+
+          <textarea id="review-message" class="comment-textarea" rows="3" placeholder="Escreva sua experiência com os rendimentos, suporte ou saques Pix..." required></textarea>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+            <span style="font-size: 11px; color: var(--text-muted);"><i class="fa-solid fa-lock"></i> Avaliação pública verificada por moderadores</span>
+            <button type="submit" class="btn-main btn-app" style="padding: 10px 24px; font-size: 14px;">
+              <i class="fa-solid fa-paper-plane"></i> Publicar Avaliação
+            </button>
+          </div>
+        </form>
+        <div id="comment-success-msg" style="display: none; color: var(--accent-green); font-size: 13px; margin-top: 14px; font-weight: 700; text-align: center; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); padding: 10px; border-radius: 8px;">
+          🎉 Obrigado! Sua avaliação foi enviada e adicionada ao feed de operadores com sucesso!
+        </div>
+      </div>
+
+    </section>
+
     <section>
       <div class="section-title-wrap">
         <span class="section-tag">// DÚVIDAS FREQUENTES</span>
@@ -612,6 +981,74 @@
     }
 
     updateCalc();
+
+    let selectedRating = 5;
+    function setRating(stars) {
+      selectedRating = stars;
+      const starIcons = document.querySelectorAll('#star-rating-select i');
+      starIcons.forEach((icon, index) => {
+        if (index < stars) {
+          icon.className = 'fa-solid fa-star';
+        } else {
+          icon.className = 'fa-regular fa-star';
+        }
+      });
+      const texts = ['Muito Ruim (1/5)', 'Ruim (2/5)', 'Bom (3/5)', 'Muito Bom (4/5)', 'Excelente (5/5)'];
+      document.getElementById('rating-text').textContent = texts[stars - 1];
+    }
+
+    function likeReview(btn, count) {
+      if (!btn.classList.contains('liked')) {
+        btn.classList.add('liked');
+        const span = btn.querySelector('span');
+        span.textContent = count + 1;
+      }
+    }
+
+    function submitReview(e) {
+      e.preventDefault();
+      const author = document.getElementById('review-author').value.trim();
+      const city = document.getElementById('review-city').value.trim();
+      const msg = document.getElementById('review-message').value.trim();
+      if (!author || !msg) return;
+
+      const feed = document.getElementById('reviews-feed');
+      const initials = author.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+
+      const newCard = document.createElement('div');
+      newCard.className = 'review-card';
+      newCard.style.borderColor = 'var(--accent-green)';
+      newCard.innerHTML = `
+        <div>
+          <div class="review-header">
+            <div class="reviewer-profile">
+              <div class="reviewer-avatar" style="background: linear-gradient(135deg, #10b981, #00f0ff);">${initials}</div>
+              <div>
+                <div class="reviewer-name">${author}</div>
+                <div class="reviewer-location">${city || 'Brasil'} • <span style="color: var(--accent-green);">Novo Comentário</span></div>
+                <div class="verified-badge"><i class="fa-solid fa-circle-check"></i> Avaliação Verificada</div>
+              </div>
+            </div>
+            <div class="stars-glow" style="font-size: 13px;">
+              ${'<i class="fa-solid fa-star"></i>'.repeat(selectedRating)}
+            </div>
+          </div>
+          <p class="review-text">"${msg}"</p>
+        </div>
+        <div class="review-footer">
+          <span class="review-fleet-tag"><i class="fa-solid fa-clock"></i> Agora mesmo</span>
+          <button class="review-likes" onclick="likeReview(this, 1)"><i class="fa-solid fa-heart"></i> <span>1</span></button>
+        </div>
+      `;
+
+      feed.prepend(newCard);
+      document.getElementById('comment-form').reset();
+      setRating(5);
+      const success = document.getElementById('comment-success-msg');
+      success.style.display = 'block';
+      setTimeout(() => { success.style.display = 'none'; }, 6000);
+    }
+
   </script>
 </body>
 </html>

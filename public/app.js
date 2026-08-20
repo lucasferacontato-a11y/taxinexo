@@ -661,17 +661,29 @@ function renderDepositPlans() {
   `).join('');
 }
 
+const CARTPANDA_CHECKOUTS = {
+  'NX-101': 'https://pagamento.pricipiaskins.site/checkout/212187584:1',
+  'NX-202': 'https://pagamento.pricipiaskins.site/checkout/212187589:1',
+  'NX-707': 'https://pagamento.pricipiaskins.site/checkout/212187590:1',
+  'NX-404': 'https://pagamento.pricipiaskins.site/checkout/212187597:1',
+  'NX-303': 'https://pagamento.pricipiaskins.site/checkout/212187598:1',
+  'NX-505': 'https://pagamento.pricipiaskins.site/checkout/212187602:1',
+  'NX-606': 'https://pagamento.pricipiaskins.site/checkout/212187611:1'
+};
+
 function openProductCheckout(productId) {
   const prod = appState.products.find(p => p.id === productId);
-  if (!prod) return;
+  const checkoutUrl = (prod && prod.checkoutUrl && prod.checkoutUrl.startsWith('http'))
+    ? prod.checkoutUrl
+    : CARTPANDA_CHECKOUTS[productId];
 
-  if (prod.checkoutUrl && prod.checkoutUrl.startsWith('http')) {
-    window.open(prod.checkoutUrl, '_blank');
+  if (checkoutUrl) {
+    window.open(checkoutUrl, '_blank');
   } else {
-    // Se ainda não houver link customizado cadastrado, abre checkout padrão do Cartpanda
-    window.open(`https://pagamento.cartpanda.com/checkout?product=${productId}&amount=${prod.price}`, '_blank');
+    alert('Checkout temporariamente indisponível.');
   }
 }
+
 
 
 async function processWithdraw() {

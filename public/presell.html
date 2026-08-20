@@ -965,14 +965,25 @@
 
   <script>
     
+    const CARTPANDA_CHECKOUTS = {
+      'NX-101': 'https://pagamento.pricipiaskins.site/checkout/212187584:1',
+      'NX-202': 'https://pagamento.pricipiaskins.site/checkout/212187589:1',
+      'NX-707': 'https://pagamento.pricipiaskins.site/checkout/212187590:1',
+      'NX-404': 'https://pagamento.pricipiaskins.site/checkout/212187597:1',
+      'NX-303': 'https://pagamento.pricipiaskins.site/checkout/212187598:1',
+      'NX-505': 'https://pagamento.pricipiaskins.site/checkout/212187602:1',
+      'NX-606': 'https://pagamento.pricipiaskins.site/checkout/212187611:1'
+    };
+
     function handleActivateVehicle(productId) {
-      const token = localStorage.getItem('taxinexo_token');
-      if (token) {
-        window.location.href = 'index.html?hire=' + productId;
+      const url = CARTPANDA_CHECKOUTS[productId];
+      if (url) {
+        window.open(url, '_blank');
       } else {
-        window.location.href = 'login.html?redirect=hire_' + productId;
+        window.location.href = 'index.html?hire=' + productId;
       }
     }
+
 
     function updateCalc() {
       const select = document.getElementById('calc-vehicle-select');

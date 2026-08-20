@@ -438,9 +438,45 @@
 
     </div>
 
+    <!-- Panel 3: Gerenciador de Links de Checkout (Cartpanda / Gateways) -->
+    <section class="panel-card" style="margin-bottom: 40px;">
+      <div class="panel-head">
+        <h2>
+          <i class="fa-solid fa-link" style="color: var(--accent-green);"></i> 
+          Gerenciador de Links de Checkout dos Planos (Cartpanda / Gateway)
+        </h2>
+        <button class="btn-adm btn-adm-secondary" style="padding: 6px 12px; font-size: 11px;" onclick="loadAdminProducts()">
+          <i class="fa-solid fa-arrows-rotate"></i> Atualizar Links
+        </button>
+      </div>
+      <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 16px;">
+        Insira aqui os links de checkout do seu gateway de pagamento (Cartpanda Pay) para cada plano. Ao salvar, os botões de contratação no app e no site redirecionarão imediatamente para o link configurado.
+      </p>
+
+      <div class="table-responsive">
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th style="width: 25%;">Plano / Veículo</th>
+              <th style="width: 15%;">Preço</th>
+              <th style="width: 15%;">Retorno</th>
+              <th style="width: 35%;">Link de Checkout (URL)</th>
+              <th style="width: 10%; text-align: right;">Ação</th>
+            </tr>
+          </thead>
+          <tbody id="products-table-body">
+            <tr>
+              <td colspan="5" style="text-align: center; color: var(--text-muted); padding: 30px;">Carregando planos...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
   </div>
 
   <script>
+
     const API_BASE = '/api/admin';
 
     const formatCurrency = (val) => {
@@ -547,12 +583,14 @@
         await Promise.all([
           loadMetrics(),
           loadWithdrawals(),
-          loadUsers()
+          loadUsers(),
+          loadAdminProducts()
         ]);
       } catch (err) {
         console.error('Erro ao carregar dados do admin:', err);
       }
     }
+
 
     async function loadMetrics() {
       try {
@@ -739,6 +777,73 @@
       btn.disabled = false;
       btn.innerHTML = '<i class="fa-solid fa-play"></i> Rodar Liquidação Agora';
     }
+
+    async function loadAdminProducts() {
+      const tbody = document.getElementById('products-table-body');
+      try {
+        const res = await adminFetch('/products');
+        const products = await res.json();
+
+        tbody.innerHTML = products.map(p => `
+          <tr>
+            <td>
+              <strong style="color: #fff; font-size: 14px;">${p.name}</strong><br>
+              <span style="font-size: 10px; background: rgba(0, 240, 255, 0.15); color: var(--primary); padding: 2px 6px; border-radius: 8px; font-weight: 700;">${p.id}</span>
+            </td>
+            <td>
+              <strong style="color: #fff; font-size: 14px;">R$ ${formatCurrency(p.price)}</strong>
+            </td>
+            <td>
+              <strong style="color: var(--accent-green); font-size: 13px;">+ R$ ${formatCurrency(p.dailyReturn)}/dia</strong><br>
+              <span style="font-size: 10px; color: #64748b;">${p.periodDays} dias</span>
+            </td>
+            <td>
+              <input type="text" id="checkout-url-${p.id}" value="${p.checkoutUrl || ''}" placeholder="https://pagamento.cartpanda.com/checkout/..." style="width: 100%; background: #070d18; border: 1px solid var(--border); color: #fff; padding: 8px 12px; border-radius: var(--radius-sm); font-size: 12px; font-family: monospace;">
+            </td>
+            <td style="text-align: right;">
+              <button class="btn-row-action btn-row-approve" id="btn-save-prod-${p.id}" onclick="saveProductCheckoutUrl('${p.id}')" style="font-size: 11px;">
+                <i class="fa-solid fa-floppy-disk"></i> Salvar
+              </button>
+            </td>
+          </tr>
+        `).join('');
+      } catch (err) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: #ef4444; padding: 20px;">Erro ao carregar lista de planos.</td></tr>';
+      }
+    }
+
+    async function saveProductCheckoutUrl(productId) {
+      const input = document.getElementById('checkout-url-' + productId);
+      const btn = document.getElementById('btn-save-prod-' + productId);
+      const newUrl = input ? input.value.trim() : '';
+
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+      }
+
+      try {
+        const res = await adminFetch('/products/' + productId, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ checkoutUrl: newUrl })
+        });
+
+        if (res.ok) {
+          alert('✅ Link de checkout do plano ' + productId + ' salvo com sucesso!');
+          loadAdminProducts();
+        } else {
+          alert('Erro ao salvar link do plano.');
+        }
+      } catch (err) {
+        alert('Erro ao conectar ao servidor.');
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Salvar';
+        }
+      }
+    }
   </script>
 </body>
-</html>
+</html>

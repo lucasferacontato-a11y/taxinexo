@@ -9,8 +9,13 @@ const {
   findUserById,
   updateUser,
   getContractsByUserId,
-  createTransaction
+  createTransaction,
+  getAllProducts,
+  findProductById,
+  updateProduct
 } = require('../database');
+
+
 const { processDailySettlement } = require('../services/settlementEngine');
 
 const ADMIN_KEY = process.env.ADMIN_KEY || process.env.ADMIN_PASSWORD || 'NEXO@ADMIN2026';
@@ -200,16 +205,35 @@ router.post('/users/:id/adjust-balance', async (req, res) => {
   }
 });
 
-// Disparar Liquidação Diária Manualmente
-router.post('/settle', async (req, res) => {
+// Listar Produtos / Planos para Gestão de Links de Checkout
+router.get('/products', async (req, res) => {
   try {
-    const result = await processDailySettlement();
-    res.json({ message: 'Ciclo de liquidação diária concluído!', ...result });
+    const products = await getAllProducts();
+    res.json(products);
   } catch (err) {
-    console.error('[ADMIN ERROR /settle]:', err);
-    res.status(500).json({ error: 'Erro ao processar liquidação.' });
+    console.error('[ADMIN ERROR /products]:', err);
+    res.status(500).json({ error: 'Erro ao listar produtos.' });
+  }
+});
+
+// Atualizar Link de Checkout / Preço de um Produto
+router.put('/products/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { checkoutUrl, price, dailyReturn, status } = req.body;
+
+    const updated = await updateProduct(id, { checkoutUrl, price, dailyReturn, status });
+    if (!updated) {
+      return res.status(404).json({ error: 'Produto não encontrado.' });
+    }
+
+    res.json({ message: 'Produto atualizado com sucesso!', product: updated });
+  } catch (err) {
+    console.error('[ADMIN ERROR /products/:id]:', err);
+    res.status(500).json({ error: 'Erro ao atualizar produto.' });
   }
 });
 
 module.exports = router;
+
 

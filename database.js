@@ -447,7 +447,52 @@ async function findProductById(id) {
   return db.products.find(p => p.id === id) || null;
 }
 
+async function updateProduct(id, fields) {
+  if (isPostgres) {
+    const setClauses = [];
+    const values = [];
+    let idx = 1;
+
+    if (fields.checkoutUrl !== undefined) {
+      setClauses.push(`checkout_url = $${idx++}`);
+      values.push(fields.checkoutUrl);
+    }
+    if (fields.price !== undefined) {
+      setClauses.push(`price = $${idx++}`);
+      values.push(fields.price);
+    }
+    if (fields.dailyReturn !== undefined) {
+      setClauses.push(`daily_return = $${idx++}`);
+      values.push(fields.dailyReturn);
+    }
+    if (fields.name !== undefined) {
+      setClauses.push(`name = $${idx++}`);
+      values.push(fields.name);
+    }
+    if (fields.status !== undefined) {
+      setClauses.push(`status = $${idx++}`);
+      values.push(fields.status);
+    }
+
+    if (setClauses.length === 0) return await findProductById(id);
+
+    values.push(id);
+    const query = `UPDATE products SET ${setClauses.join(', ')} WHERE id = $${idx} RETURNING *`;
+    const res = await pool.query(query, values);
+    return mapProduct(res.rows[0]);
+  }
+
+  const db = readJsonDb();
+  const prod = db.products.find(p => p.id === id);
+  if (prod) {
+    Object.assign(prod, fields);
+    writeJsonDb(db);
+  }
+  return prod;
+}
+
 // --- CONTRACTS ---
+
 async function getContractsByUserId(userId) {
   if (isPostgres) {
     const res = await pool.query('SELECT * FROM contracts WHERE user_id = $1 ORDER BY start_date DESC', [userId]);
@@ -691,7 +736,9 @@ module.exports = {
   // Products
   getAllProducts,
   findProductById,
+  updateProduct,
   // Contracts
+
   getContractsByUserId,
   getAllActiveContracts,
   createContract,

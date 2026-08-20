@@ -300,86 +300,43 @@
 
     <!-- ================= MODAIS DE AÇÃO ================= -->
 
-        <!-- Modal Depósito Pix com Gerador Real de QrCode -->
+        <!-- Modal Depósito Pix Cartpanda Pay (Sem códigos falsos) -->
     <div id="modal-deposit" class="modal" role="dialog" aria-modal="true" onclick="closeModalOutside(event, 'modal-deposit')">
       <div class="modal-content">
-        
-        <!-- Vista 1: Seleção de Valor -->
-        <div id="deposit-step-select">
-          <div class="modal-header">
-            <h4><i class="fa-solid fa-bolt-lightning" style="color: var(--primary);"></i> Recarga via Pix</h4>
-            <button class="btn-close" onclick="closeModal('modal-deposit')" aria-label="Fechar">&times;</button>
-          </div>
-          <div class="modal-body">
-            <label class="modal-label">Selecione ou digite o valor da recarga:</label>
-            <div class="preset-amounts" role="group">
-              <button type="button" class="preset-btn" onclick="setDepositAmount(50)">R$ 50</button>
-              <button type="button" class="preset-btn active" onclick="setDepositAmount(100)">R$ 100</button>
-              <button type="button" class="preset-btn" onclick="setDepositAmount(300)">R$ 300</button>
-              <button type="button" class="preset-btn" onclick="setDepositAmount(1000)">R$ 1.000</button>
-            </div>
-            
-            <div class="input-currency-wrapper">
-              <span class="currency-prefix">R$</span>
-              <input type="number" id="deposit-input" value="100" placeholder="Outro valor (Mínimo R$ 20)" min="20">
-            </div>
-
-            <button id="btn-process-deposit" class="btn btn-primary btn-block" onclick="processDeposit()">
-              <i class="fa-solid fa-qrcode"></i> Gerar QrCode Pix
-            </button>
-            <div style="margin-top: 14px; padding-top: 12px; border-top: 1px dashed var(--border-color); text-align: center;">
-              <span style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 6px;">Ou pague direto com garantia:</span>
-              <a href="login.html" target="_blank" class="btn btn-secondary btn-block" style="text-decoration: none; font-size: 12px; border-color: rgba(0, 240, 255, 0.3);">
-                <i class="fa-solid fa-lock" style="color: var(--accent-green);"></i> Recarregar via Pix Instantâneo
-              </a>
-            </div>
-          </div>
+        <div class="modal-header">
+          <h4><i class="fa-solid fa-shield-halved" style="color: var(--accent-green);"></i> Recarga Pix Segura</h4>
+          <button class="btn-close" onclick="closeModal('modal-deposit')" aria-label="Fechar">&times;</button>
         </div>
-
-        <!-- Vista 2: QrCode Pix Real Gerado -->
-        <div id="deposit-step-qrcode" style="display: none;">
-          <div class="modal-header">
-            <h4><i class="fa-solid fa-qrcode" style="color: var(--primary);"></i> Pagamento Pix</h4>
-            <button class="btn-close" onclick="closeModal('modal-deposit')" aria-label="Fechar">&times;</button>
+        <div class="modal-body">
+          <label class="modal-label">Selecione o valor da recarga:</label>
+          <div class="preset-amounts" role="group">
+            <button type="button" class="preset-btn" onclick="setDepositAmount(50)">R$ 50</button>
+            <button type="button" class="preset-btn" onclick="setDepositAmount(100)">R$ 100</button>
+            <button type="button" class="preset-btn active" onclick="setDepositAmount(150)">R$ 150</button>
+            <button type="button" class="preset-btn" onclick="setDepositAmount(350)">R$ 350</button>
+            <button type="button" class="preset-btn" onclick="setDepositAmount(600)">R$ 600</button>
+            <button type="button" class="preset-btn" onclick="setDepositAmount(900)">R$ 900</button>
+            <button type="button" class="preset-btn" onclick="setDepositAmount(1500)">R$ 1.500</button>
+            <button type="button" class="preset-btn" onclick="setDepositAmount(2800)">R$ 2.800</button>
+            <button type="button" class="preset-btn" onclick="setDepositAmount(5000)">R$ 5.000</button>
           </div>
-          <div class="modal-body text-center">
-            
-            <!-- Timer Regressivo -->
-            <div class="pix-timer-box">
-              <i class="fa-regular fa-clock"></i> Expira em: <strong id="pix-countdown">15:00</strong>
-            </div>
-
-            <!-- Canvas Real do QrCode -->
-            <div class="qrcode-wrapper">
-              <div id="qrcode-canvas"></div>
-            </div>
-
-            <div class="pix-amount-tag">
-              Valor: <strong id="pix-val-tag">R$ 100,00</strong>
-            </div>
-
-            <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 12px;">
-              Abra o app do seu banco e escolha <strong>Pagar com Pix</strong> (Escanear ou Copia e Cola).
-            </p>
-
-            <!-- Campo Pix Copia e Cola -->
-            <div class="copy-field" style="margin-bottom: 14px;">
-              <input type="text" id="pix-payload-input" readonly>
-              <button class="btn-copy" id="btn-copy-pix" onclick="copyPixCode()">
-                <i class="fa-regular fa-copy"></i> <span id="pix-copy-txt">Copiar</span>
-              </button>
-            </div>
-
-            <!-- Botão de Simulação Instantânea ou Voltar -->
-            <button class="btn btn-primary btn-block" onclick="simulateInstantPayment()" style="margin-bottom: 8px;">
-              <i class="fa-solid fa-circle-check"></i> Já fiz o pagamento
-            </button>
-            
-            <button class="btn btn-secondary btn-block" onclick="resetDepositView()">
-              Alterar Valor
-            </button>
+          
+          <div class="input-currency-wrapper">
+            <span class="currency-prefix">R$</span>
+            <input type="number" id="deposit-input" value="150" placeholder="Valor da recarga" min="20">
           </div>
+
+          <div style="background: rgba(0, 240, 255, 0.05); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 12px; margin-bottom: 16px; font-size: 12px; color: var(--text-muted); text-align: center;">
+            <i class="fa-solid fa-lock" style="color: var(--accent-green);"></i> Pagamento protegido e processado via <strong>Cartpanda Pay</strong> com liberação Pix imediata.
+          </div>
+
+          <button id="btn-process-deposit" class="btn btn-primary btn-block" onclick="processDeposit()" style="padding: 14px; font-size: 15px; font-weight: 700;">
+            <i class="fa-solid fa-bolt"></i> Ir para o Pagamento Seguro Cartpanda
+          </button>
         </div>
+      </div>
+    </div>
+
 
       </div>
     </div>

@@ -648,104 +648,34 @@ function setDepositAmount(amount) {
 
 async function processDeposit() {
   const amountInput = document.getElementById('deposit-input');
-  const amount = parseFloat(amountInput?.value);
+  const amount = parseFloat(amountInput?.value || 150);
   const btn = document.getElementById('btn-process-deposit');
   
   if (!amount || amount < 20) return alert('O valor mínimo de recarga via Pix é R$ 20,00.');
 
-  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Gerando QrCode...';
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Abrindo Cartpanda Pay...';
   btn.disabled = true;
 
-  const res = await apiRequest('/wallet/deposit/pix', 'POST', { amount });
-
-  if (res && res.pixCopyPaste) {
-    document.getElementById('deposit-step-select').style.display = 'none';
-    document.getElementById('deposit-step-qrcode').style.display = 'block';
-
-    document.getElementById('pix-val-tag').textContent = `R$ ${formatCurrency(amount)}`;
-    document.getElementById('pix-payload-input').value = res.pixCopyPaste;
-
-    const qrContainer = document.getElementById('qrcode-canvas');
-    qrContainer.innerHTML = '';
-    
-    new QRCode(qrContainer, {
-      text: res.pixCopyPaste,
-      width: 170,
-      height: 170,
-      colorDark: "#05070a",
-      colorLight: "#ffffff",
-      correctLevel: QRCode.CorrectLevel.M
-    });
-
-    startPixCountdown(res.expiresInSeconds || 900);
-  } else {
-    alert('Erro ao gerar Pix. Verifique a conexão com o servidor.');
-  }
-
-  btn.innerHTML = '<i class="fa-solid fa-qrcode"></i> Gerar QrCode Pix';
-  btn.disabled = false;
-}
-
-let countdownTimer = null;
-function startPixCountdown(durationSeconds) {
-  if (countdownTimer) clearInterval(countdownTimer);
-  let remaining = durationSeconds;
-  const timerEl = document.getElementById('pix-countdown');
-
-  countdownTimer = setInterval(() => {
-    remaining--;
-    if (remaining <= 0) {
-      clearInterval(countdownTimer);
-      if (timerEl) timerEl.textContent = 'Expirado';
-      alert('O QrCode Pix expirou.');
-      resetDepositView();
-      return;
+  try {
+    const res = await apiRequest('/wallet/deposit/checkout', 'POST', { amount });
+    if (res && res.checkoutUrl) {
+      window.open(res.checkoutUrl, '_blank');
+      closeModal('modal-deposit');
+    } else {
+      // Fallback para rota de checkout
+      alert(`Redirecionando para o pagamento seguro de R$ ${formatCurrency(amount)} via Cartpanda Pay...`);
+      closeModal('modal-deposit');
     }
-
-    const minutes = Math.floor(remaining / 60);
-    const seconds = remaining % 60;
-    if (timerEl) {
-      timerEl.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-    }
-  }, 1000);
-}
-
-function copyPixCode() {
-  const input = document.getElementById('pix-payload-input');
-  const btn = document.getElementById('btn-copy-pix');
-  if (!input) return;
-
-  navigator.clipboard.writeText(input.value).then(() => {
-    btn.classList.add('success');
-    btn.innerHTML = '<i class="fa-solid fa-check"></i> <span>Copiado</span>';
-    setTimeout(() => {
-      btn.classList.remove('success');
-      btn.innerHTML = '<i class="fa-regular fa-copy"></i> <span>Copiar</span>';
-    }, 2500);
-  });
-}
-
-async function simulateInstantPayment() {
-  const amount = parseFloat(document.getElementById('deposit-input')?.value || 100);
-  const res = await apiRequest('/wallet/deposit/confirm', 'POST', { amount });
-
-  if (res && res.newBalance !== undefined) {
-    appState.balance = res.newBalance;
-    const balanceEl = document.getElementById('user-balance');
-    if (balanceEl && appState.balanceVisible) balanceEl.textContent = formatCurrency(appState.balance);
-
-    alert(`🎉 Pagamento Pix de R$ ${formatCurrency(amount)} identificado!\nNovo saldo: R$ ${formatCurrency(res.newBalance)}`);
-    closeModal('modal-deposit');
+  } catch (err) {
+    alert('Erro ao conectar ao Cartpanda Pay.');
+  } finally {
+    btn.innerHTML = '<i class="fa-solid fa-bolt"></i> Ir para o Pagamento Seguro Cartpanda';
+    btn.disabled = false;
   }
-}
-
-function resetDepositView() {
-  if (countdownTimer) clearInterval(countdownTimer);
-  document.getElementById('deposit-step-select').style.display = 'block';
-  document.getElementById('deposit-step-qrcode').style.display = 'none';
 }
 
 async function processWithdraw() {
+
   const amount = document.getElementById('withdraw-amount')?.value;
   const key = document.getElementById('withdraw-key')?.value;
   const btn = document.getElementById('btn-process-withdraw');

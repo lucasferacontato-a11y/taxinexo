@@ -300,42 +300,25 @@
 
     <!-- ================= MODAIS DE AÇÃO ================= -->
 
-        <!-- Modal Depósito Pix Cartpanda Pay (Sem códigos falsos) -->
+        <!-- Modal Planos & Gateway Cartpanda Pay -->
     <div id="modal-deposit" class="modal" role="dialog" aria-modal="true" onclick="closeModalOutside(event, 'modal-deposit')">
-      <div class="modal-content">
+      <div class="modal-content" style="max-height: 88vh; display: flex; flex-direction: column;">
         <div class="modal-header">
-          <h4><i class="fa-solid fa-shield-halved" style="color: var(--accent-green);"></i> Recarga Pix Segura</h4>
+          <h4><i class="fa-solid fa-shield-halved" style="color: var(--accent-green);"></i> Escolha seu Plano</h4>
           <button class="btn-close" onclick="closeModal('modal-deposit')" aria-label="Fechar">&times;</button>
         </div>
-        <div class="modal-body">
-          <label class="modal-label">Selecione o valor da recarga:</label>
-          <div class="preset-amounts" role="group">
-            <button type="button" class="preset-btn" onclick="setDepositAmount(50)">R$ 50</button>
-            <button type="button" class="preset-btn" onclick="setDepositAmount(100)">R$ 100</button>
-            <button type="button" class="preset-btn active" onclick="setDepositAmount(150)">R$ 150</button>
-            <button type="button" class="preset-btn" onclick="setDepositAmount(350)">R$ 350</button>
-            <button type="button" class="preset-btn" onclick="setDepositAmount(600)">R$ 600</button>
-            <button type="button" class="preset-btn" onclick="setDepositAmount(900)">R$ 900</button>
-            <button type="button" class="preset-btn" onclick="setDepositAmount(1500)">R$ 1.500</button>
-            <button type="button" class="preset-btn" onclick="setDepositAmount(2800)">R$ 2.800</button>
-            <button type="button" class="preset-btn" onclick="setDepositAmount(5000)">R$ 5.000</button>
-          </div>
+        <div class="modal-body" style="overflow-y: auto; padding-right: 6px;">
+          <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 14px;">
+            Selecione a frota autônoma para ativar com liberação imediata no <strong>Cartpanda Pay</strong>:
+          </p>
           
-          <div class="input-currency-wrapper">
-            <span class="currency-prefix">R$</span>
-            <input type="number" id="deposit-input" value="150" placeholder="Valor da recarga" min="20">
+          <div id="deposit-plans-list" style="display: flex; flex-direction: column; gap: 10px;">
+            <!-- Planos renderizados dinamicamente pelo JavaScript -->
           </div>
-
-          <div style="background: rgba(0, 240, 255, 0.05); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 12px; margin-bottom: 16px; font-size: 12px; color: var(--text-muted); text-align: center;">
-            <i class="fa-solid fa-lock" style="color: var(--accent-green);"></i> Pagamento protegido e processado via <strong>Cartpanda Pay</strong> com liberação Pix imediata.
-          </div>
-
-          <button id="btn-process-deposit" class="btn btn-primary btn-block" onclick="processDeposit()" style="padding: 14px; font-size: 15px; font-weight: 700;">
-            <i class="fa-solid fa-bolt"></i> Ir para o Pagamento Seguro Cartpanda
-          </button>
         </div>
       </div>
     </div>
+
 
 
       </div>

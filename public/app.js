@@ -197,7 +197,9 @@ async function loadUserData() {
   renderActiveVehicles();
   renderTeamData();
   renderReferralCard();
+  renderDepositPlans();
   updateCategoryCounts();
+
 
   // Verifica parâmetro de contratação direta (?hire=NX-101)
   const urlParams = new URLSearchParams(window.location.search);
@@ -517,11 +519,9 @@ function hireVehicle(productId) {
   const prod = appState.products.find(p => p.id === productId);
   if (!prod) return;
 
-  // Se o saldo for menor que o preço do plano
+  // Se o saldo for menor que o preço do plano, abre o checkout do Cartpanda direto para esse plano!
   if (appState.balance < prod.price) {
-    setDepositAmount(prod.price);
-    openModal('modal-deposit');
-    processDeposit();
+    openProductCheckout(productId);
     return;
   }
 
@@ -529,6 +529,7 @@ function hireVehicle(productId) {
     hireVehicleWithBalance(prod);
   }
 }
+
 
 
 async function hireVehicleWithBalance(prod) {
@@ -618,6 +619,8 @@ function openModal(modalId) {
   if (modalId === 'modal-withdraw') {
     const withdrawAvail = document.getElementById('withdraw-available');
     if (withdrawAvail) withdrawAvail.textContent = `R$ ${formatCurrency(appState.balance)}`;
+  } else if (modalId === 'modal-deposit') {
+    renderDepositPlans();
   }
   
   modal.classList.add('open');
@@ -636,43 +639,40 @@ function closeModalOutside(event, modalId) {
   if (event.target.id === modalId) closeModal(modalId);
 }
 
-function setDepositAmount(amount) {
-  const input = document.getElementById('deposit-input');
-  if (input) input.value = amount;
+function renderDepositPlans() {
+  const container = document.getElementById('deposit-plans-list');
+  if (!container) return;
 
-  document.querySelectorAll('.preset-btn').forEach(btn => {
-    const isMatch = btn.textContent.replace(/\D/g, '') === String(amount);
-    btn.classList.toggle('active', isMatch);
-  });
+  container.innerHTML = appState.products.map(p => `
+    <div style="background: rgba(0, 240, 255, 0.04); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 14px 16px; display: flex; justify-content: space-between; align-items: center; gap: 12px; transition: all 0.2s ease;">
+      <div style="flex: 1;">
+        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+          <strong style="color: #fff; font-size: 14px;">${p.name}</strong>
+          <span style="font-size: 10px; background: rgba(0, 240, 255, 0.15); color: var(--primary); padding: 2px 6px; border-radius: 10px; font-weight: 700;">${p.id}</span>
+        </div>
+        <div style="font-size: 12px; color: var(--text-muted); line-height: 1.4;">
+          Contrato: <strong style="color: #fff;">R$ ${formatCurrency(p.price)}</strong> • Retorno: <strong style="color: var(--accent-green);">+ R$ ${formatCurrency(p.dailyReturn)}/dia</strong> (${p.periodDays}d)
+        </div>
+      </div>
+      <button class="btn btn-primary" onclick="openProductCheckout('${p.id}')" style="padding: 9px 16px; font-size: 12px; font-weight: 700; white-space: nowrap; display: inline-flex; align-items: center; gap: 6px;">
+        <i class="fa-solid fa-bolt"></i> Ativar R$ ${formatCurrency(p.price)}
+      </button>
+    </div>
+  `).join('');
 }
 
-async function processDeposit() {
-  const amountInput = document.getElementById('deposit-input');
-  const amount = parseFloat(amountInput?.value || 150);
-  const btn = document.getElementById('btn-process-deposit');
-  
-  if (!amount || amount < 20) return alert('O valor mínimo de recarga via Pix é R$ 20,00.');
+function openProductCheckout(productId) {
+  const prod = appState.products.find(p => p.id === productId);
+  if (!prod) return;
 
-  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Abrindo Cartpanda Pay...';
-  btn.disabled = true;
-
-  try {
-    const res = await apiRequest('/wallet/deposit/checkout', 'POST', { amount });
-    if (res && res.checkoutUrl) {
-      window.open(res.checkoutUrl, '_blank');
-      closeModal('modal-deposit');
-    } else {
-      // Fallback para rota de checkout
-      alert(`Redirecionando para o pagamento seguro de R$ ${formatCurrency(amount)} via Cartpanda Pay...`);
-      closeModal('modal-deposit');
-    }
-  } catch (err) {
-    alert('Erro ao conectar ao Cartpanda Pay.');
-  } finally {
-    btn.innerHTML = '<i class="fa-solid fa-bolt"></i> Ir para o Pagamento Seguro Cartpanda';
-    btn.disabled = false;
+  if (prod.checkoutUrl && prod.checkoutUrl.startsWith('http')) {
+    window.open(prod.checkoutUrl, '_blank');
+  } else {
+    // Se ainda não houver link customizado cadastrado, abre checkout padrão do Cartpanda
+    window.open(`https://pagamento.cartpanda.com/checkout?product=${productId}&amount=${prod.price}`, '_blank');
   }
 }
+
 
 async function processWithdraw() {
 

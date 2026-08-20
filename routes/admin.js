@@ -234,6 +234,18 @@ router.put('/products/:id', async (req, res) => {
   }
 });
 
+// Executar Liquidação Manual de Lucros (Disparado pelo Administrador)
+router.post('/settle', async (req, res) => {
+  try {
+    console.log('[ADMIN] Liquidação manual de lucros iniciada pelo Administrador...');
+    const result = await processDailySettlement();
+    res.json(result);
+  } catch (err) {
+    console.error('[ADMIN ERROR /settle]:', err);
+    res.status(500).json({ error: 'Erro ao executar liquidação manual.' });
+  }
+});
+
 module.exports = router;
 
 

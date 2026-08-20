@@ -3,7 +3,6 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const { initDb } = require('./database');
-const { processDailySettlement } = require('./services/settlementEngine');
 const { initTelegramBot } = require('./services/telegramBot');
 
 const app = express();
@@ -48,11 +47,7 @@ async function startServer() {
     // Inicializa Bot do Telegram (se token estiver presente)
     initTelegramBot();
 
-    // Inicia Cron Job de Liquidação Diária (a cada 60 minutos)
-    setInterval(() => {
-      console.log('[CRON] Executando ciclo de liquidação diária...');
-      processDailySettlement();
-    }, 60 * 60 * 1000);
+    // Liquidação de rendimentos configurada em modo MANUAL (liberação exclusiva pelo Administrador no Painel /admin.html)
 
     app.listen(PORT, HOST, () => {
       console.log(`=================================================`);

@@ -346,11 +346,11 @@
     <!-- Engine Card -->
     <div class="engine-card">
       <div class="engine-info">
-        <h3><i class="fa-solid fa-microchip" style="color: var(--primary);"></i> Motor Autônomo de Liquidação Diária</h3>
-        <p>Processa automaticamente os rendimentos diários dos contratos ativos de frotas e distribui comissões multinível.</p>
+        <h3><i class="fa-solid fa-microchip" style="color: var(--primary);"></i> Liberação Manual de Rendimentos Diários</h3>
+        <p>Os rendimentos dos contratos ativos de frotas só são creditados quando você liberar aqui. Nenhum valor é pago de forma automática.</p>
       </div>
       <button class="btn-adm btn-adm-primary" id="btn-settle-engine" onclick="triggerSettlement()" style="padding: 14px 24px; white-space: nowrap;">
-        <i class="fa-solid fa-play"></i> Rodar Liquidação Agora
+        <i class="fa-solid fa-play"></i> Liberar Rendimentos Diários
       </button>
     </div>
 
@@ -776,6 +776,10 @@
     }
 
     async function triggerSettlement() {
+      if (!confirm('Deseja processar e creditar os rendimentos diários de todos os contratos ativos agora?')) {
+        return;
+      }
+
       const btn = document.getElementById('btn-settle-engine');
       btn.disabled = true;
       btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processando...';
@@ -783,14 +787,14 @@
       try {
         const res = await adminFetch('/settle', { method: 'POST' });
         const data = await res.json();
-        alert('🚀 Liquidação Concluída!\n\nContratos Processados: ' + data.settlementsProcessed + '\nTotal Creditado: R$ ' + formatCurrency(data.totalCredited));
+        alert('🚀 Rendimentos Liberados com Sucesso!\n\nContratos Processados: ' + data.settlementsProcessed + '\nTotal Creditado: R$ ' + formatCurrency(data.totalCredited));
         loadAllAdminData();
       } catch (err) {
-        alert('Erro ao executar motor de liquidação.');
+        alert('Erro ao executar liberação de rendimentos.');
       }
 
       btn.disabled = false;
-      btn.innerHTML = '<i class="fa-solid fa-play"></i> Rodar Liquidação Agora';
+      btn.innerHTML = '<i class="fa-solid fa-play"></i> Liberar Rendimentos Diários';
     }
 
     async function loadAdminProducts() {

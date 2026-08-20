@@ -12,7 +12,8 @@ const {
   createTransaction,
   getAllProducts,
   findProductById,
-  updateProduct
+  updateProduct,
+  getAnalyticsMetrics
 } = require('../database');
 
 
@@ -45,13 +46,30 @@ router.use(adminAuthMiddleware);
 
 // Métricas Globais da Plataforma
 router.get('/metrics', async (req, res) => {
-
   try {
     const metrics = await getGlobalMetrics();
-    res.json(metrics);
+    const analytics = await getAnalyticsMetrics();
+    res.json({
+      ...metrics,
+      todayUniqueVisitors: analytics.todayUniqueVisitors,
+      todayPresellViews: analytics.todayPresellViews,
+      todayAppViews: analytics.todayAppViews,
+      todayTotalViews: analytics.todayTotalViews
+    });
   } catch (err) {
     console.error('[ADMIN ERROR /metrics]:', err);
     res.status(500).json({ error: 'Erro ao carregar métricas administrativas.' });
+  }
+});
+
+// Analytics & Visitantes em Tempo Real
+router.get('/analytics', async (req, res) => {
+  try {
+    const analytics = await getAnalyticsMetrics();
+    res.json(analytics);
+  } catch (err) {
+    console.error('[ADMIN ERROR /analytics]:', err);
+    res.status(500).json({ error: 'Erro ao carregar dados de analytics.' });
   }
 });
 

@@ -207,6 +207,17 @@ async function initDb() {
         approved_at TIMESTAMPTZ,
         rejected_at TIMESTAMPTZ
       );
+
+      CREATE TABLE IF NOT EXISTS page_views (
+        id SERIAL PRIMARY KEY,
+        path VARCHAR(255) NOT NULL,
+        ip_hash VARCHAR(64) NOT NULL,
+        device VARCHAR(32) DEFAULT 'desktop',
+        referrer TEXT,
+        created_at TIMESTAMPTZ DEFAULT NOW()
+      );
+      CREATE INDEX IF NOT EXISTS idx_page_views_created_at ON page_views(created_at);
+      CREATE INDEX IF NOT EXISTS idx_page_views_ip_hash_created ON page_views(ip_hash, created_at);
     `);
 
     // Semeia produtos caso a tabela esteja vazia
@@ -710,6 +721,78 @@ async function getGlobalMetrics() {
   };
 }
 
+// ==========================================
+// ANALYTICS & VISITOR TRACKING
+// ==========================================
+async function recordPageView({ path, ipHash, device, referrer }) {
+  if (isPostgres) {
+    await pool.query(`
+      INSERT INTO page_views (path, ip_hash, device, referrer, created_at)
+      VALUES ($1, $2, $3, $4, NOW())
+    `, [path, ipHash, device || 'desktop', referrer || 'Direto']);
+    return;
+  }
+
+  const db = readJsonDb();
+  if (!db.pageViews) db.pageViews = [];
+  db.pageViews.unshift({
+    id: Date.now(),
+    path,
+    ip_hash: ipHash,
+    device: device || 'desktop',
+    referrer: referrer || 'Direto',
+    created_at: new Date().toISOString()
+  });
+  if (db.pageViews.length > 500) db.pageViews.length = 500;
+  writeJsonDb(db);
+}
+
+async function getAnalyticsMetrics() {
+  if (isPostgres) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const [todayUniq, totalUniq, todayPresell, todayApp, todayTotal, recent] = await Promise.all([
+      pool.query('SELECT COUNT(DISTINCT ip_hash) as count FROM page_views WHERE created_at >= $1', [today.toISOString()]),
+      pool.query('SELECT COUNT(DISTINCT ip_hash) as count FROM page_views'),
+      pool.query("SELECT COUNT(*) as count FROM page_views WHERE created_at >= $1 AND (path LIKE '%presell%' OR path LIKE '%apresentacao%' OR path LIKE '%start%' OR path LIKE '%como-funciona%')", [today.toISOString()]),
+      pool.query("SELECT COUNT(*) as count FROM page_views WHERE created_at >= $1 AND (path = '/' OR path LIKE '%login%' OR path LIKE '%index%')", [today.toISOString()]),
+      pool.query('SELECT COUNT(*) as count FROM page_views WHERE created_at >= $1', [today.toISOString()]),
+      pool.query('SELECT path, device, referrer, created_at FROM page_views ORDER BY created_at DESC LIMIT 25')
+    ]);
+
+    return {
+      todayUniqueVisitors: parseInt(todayUniq.rows[0].count, 10),
+      totalUniqueVisitors: parseInt(totalUniq.rows[0].count, 10),
+      todayPresellViews: parseInt(todayPresell.rows[0].count, 10),
+      todayAppViews: parseInt(todayApp.rows[0].count, 10),
+      todayTotalViews: parseInt(todayTotal.rows[0].count, 10),
+      recentViews: recent.rows
+    };
+  }
+
+  const db = readJsonDb();
+  const pageViews = db.pageViews || [];
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const todayViews = pageViews.filter(v => new Date(v.created_at) >= today);
+  const todayUniqueVisitors = new Set(todayViews.map(v => v.ip_hash)).size;
+  const totalUniqueVisitors = new Set(pageViews.map(v => v.ip_hash)).size;
+  const todayPresellViews = todayViews.filter(v => (v.path || '').includes('presell')).length;
+  const todayAppViews = todayViews.filter(v => v.path === '/' || (v.path || '').includes('login')).length;
+  const todayTotalViews = todayViews.length;
+  const recentViews = pageViews.slice(0, 25);
+
+  return {
+    todayUniqueVisitors,
+    totalUniqueVisitors,
+    todayPresellViews,
+    todayAppViews,
+    todayTotalViews,
+    recentViews
+  };
+}
+
 module.exports = {
   isPostgres,
   initDb,
@@ -725,7 +808,6 @@ module.exports = {
   findProductById,
   updateProduct,
   // Contracts
-
   getContractsByUserId,
   getAllActiveContracts,
   createContract,
@@ -736,6 +818,8 @@ module.exports = {
   findTransactionById,
   createTransaction,
   updateTransaction,
-  // Stats
-  getGlobalMetrics
+  // Stats & Analytics
+  getGlobalMetrics,
+  recordPageView,
+  getAnalyticsMetrics
 };

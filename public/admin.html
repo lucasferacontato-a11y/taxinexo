@@ -357,6 +357,21 @@
     <!-- Metrics Grid -->
     <div class="metrics-grid">
       <div class="metric-card">
+        <i class="fa-solid fa-eye metric-icon" style="color: #a855f7;"></i>
+        <span class="metric-label">Visitantes Únicos Hoje</span>
+        <div class="metric-val" id="metric-visitors" style="color: #c084fc;">0</div>
+      </div>
+      <div class="metric-card">
+        <i class="fa-solid fa-bullseye metric-icon" style="color: var(--accent-green);"></i>
+        <span class="metric-label">Visitas na Presell Hoje</span>
+        <div class="metric-val green" id="metric-presell-views">0</div>
+      </div>
+      <div class="metric-card">
+        <i class="fa-solid fa-mobile-screen metric-icon" style="color: var(--primary);"></i>
+        <span class="metric-label">Visitas no App Hoje</span>
+        <div class="metric-val cyan" id="metric-app-views">0</div>
+      </div>
+      <div class="metric-card">
         <i class="fa-solid fa-wallet metric-icon"></i>
         <span class="metric-label">Total Depositado (Pix)</span>
         <div class="metric-val green" id="metric-deposits">R$ 0,00</div>
@@ -452,6 +467,41 @@
       </section>
 
     </div>
+
+    <!-- Panel: Monitor de Tráfego & Visitantes em Tempo Real -->
+    <section class="panel-card" style="margin-bottom: 24px;">
+      <div class="panel-head">
+        <h2>
+          <i class="fa-solid fa-chart-line" style="color: #a855f7;"></i> 
+          Tráfego & Acessos em Tempo Real
+          <span class="badge-count" id="traffic-count" style="background: rgba(168, 85, 247, 0.2); color: #c084fc;">0 acessos</span>
+        </h2>
+        <button class="btn-adm btn-adm-secondary" style="padding: 6px 12px; font-size: 11px;" onclick="loadAnalytics()">
+          <i class="fa-solid fa-arrows-rotate"></i> Atualizar Tráfego
+        </button>
+      </div>
+      <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 16px;">
+        Monitoramento ao vivo de pessoas reais navegando na sua página de vendas (/presell), tela de cadastro (/login) e aplicativo principal.
+      </p>
+
+      <div class="table-responsive">
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th style="width: 25%;">Horário</th>
+              <th style="width: 30%;">Página Acessada</th>
+              <th style="width: 20%;">Dispositivo</th>
+              <th style="width: 25%;">Origem / Referrer</th>
+            </tr>
+          </thead>
+          <tbody id="traffic-table-body">
+            <tr>
+              <td colspan="4" style="text-align: center; color: var(--text-muted); padding: 25px;">Nenhum acesso registrado hoje ainda.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
 
     <!-- Panel 3: Gerenciador de Links de Checkout (Cartpanda / Gateways) -->
     <section class="panel-card" style="margin-bottom: 40px;">
@@ -597,6 +647,7 @@
       try {
         await Promise.all([
           loadMetrics(),
+          loadAnalytics(),
           loadWithdrawals(),
           loadUsers(),
           loadAdminProducts()
@@ -606,11 +657,18 @@
       }
     }
 
-
     async function loadMetrics() {
       try {
         const res = await adminFetch('/metrics');
         const data = await res.json();
+
+        const visitorsEl = document.getElementById('metric-visitors');
+        const presellEl = document.getElementById('metric-presell-views');
+        const appViewsEl = document.getElementById('metric-app-views');
+
+        if (visitorsEl) visitorsEl.textContent = data.todayUniqueVisitors || 0;
+        if (presellEl) presellEl.textContent = data.todayPresellViews || 0;
+        if (appViewsEl) appViewsEl.textContent = data.todayAppViews || 0;
 
         document.getElementById('metric-deposits').textContent = 'R$ ' + formatCurrency(data.totalDeposits);
         document.getElementById('metric-withdrawals').textContent = 'R$ ' + formatCurrency(data.totalWithdrawals);
@@ -620,6 +678,56 @@
         document.getElementById('withdrawals-count').textContent = data.pendingWithdrawalsCount;
       } catch (err) {
         console.error('Erro ao carregar métricas:', err);
+      }
+    }
+
+    async function loadAnalytics() {
+      const tbody = document.getElementById('traffic-table-body');
+      const countEl = document.getElementById('traffic-count');
+      try {
+        const res = await adminFetch('/analytics');
+        const data = await res.json();
+
+        if (countEl) {
+          countEl.textContent = `${data.todayTotalViews || 0} acessos hoje (${data.todayUniqueVisitors || 0} únicos)`;
+        }
+
+        if (!data.recentViews || data.recentViews.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: var(--text-muted); padding: 25px;">Nenhum acesso registrado ainda. Os acessos aparecerão aqui em tempo real.</td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = data.recentViews.map(v => {
+          const time = v.created_at ? new Date(v.created_at).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) : '-';
+          const isMobile = v.device === 'mobile';
+          const isPresell = (v.path || '').includes('presell') || (v.path || '').includes('apresentacao');
+
+          let pageBadge = `<span style="font-family: monospace; color: var(--primary); font-size: 13px;">${v.path}</span>`;
+          if (isPresell) {
+            pageBadge = `<span style="color: var(--accent-green); font-weight: 600; font-size: 13px;"><i class="fa-solid fa-bullseye"></i> ${v.path} (Página de Vendas)</span>`;
+          } else if (v.path === '/' || (v.path || '').includes('login')) {
+            pageBadge = `<span style="color: #38bdf8; font-weight: 600; font-size: 13px;"><i class="fa-solid fa-mobile-screen"></i> ${v.path} (App / Login)</span>`;
+          }
+
+          const deviceBadge = isMobile
+            ? '<span class="status-pill pending" style="font-size: 11px;"><i class="fa-solid fa-mobile-screen"></i> Celular</span>'
+            : '<span class="status-pill approved" style="font-size: 11px;"><i class="fa-solid fa-desktop"></i> Computador</span>';
+
+          const referrerText = v.referrer && v.referrer !== 'Direto'
+            ? `<span style="font-size: 11px; color: #94a3b8;">${v.referrer}</span>`
+            : '<span style="font-size: 11px; color: var(--text-muted);">Acesso Direto / Anúncio</span>';
+
+          return `
+            <tr>
+              <td><span style="font-family: monospace; color: #fff; font-size: 12px;">${time}</span></td>
+              <td>${pageBadge}</td>
+              <td>${deviceBadge}</td>
+              <td>${referrerText}</td>
+            </tr>
+          `;
+        }).join('');
+      } catch (err) {
+        if (tbody) tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: #ef4444; padding: 20px;">Erro ao carregar tráfego.</td></tr>';
       }
     }
 

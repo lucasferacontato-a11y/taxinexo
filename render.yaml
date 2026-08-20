@@ -8,3 +8,15 @@ services:
     envVars:
       - key: NODE_ENV
         value: production
+      - key: DATABASE_URL
+        value: postgresql://taxinexo_user:lFnKrtjDpDvyvQd61jRLuXEVC23t1Nhm@dpg-da2sqlbl550s73cfp14g-a.oregon-postgres.render.com/taxinexo
+      - key: JWT_SECRET
+        value: taxinexo_super_secure_jwt_secret_2026
+      - key: ADMIN_KEY
+        value: NEXO@ADMIN2026
+      - key: TELEGRAM_BOT_TOKEN
+        value: 8660873777:AAHSks18TNAZhhyvF9zOHM6WLZ0aReHrQjs
+      - key: TELEGRAM_CHAT_ID
+        value: "-1003951417929"
+      - key: APP_URL
+        value: https://taxinexo.onrender.com

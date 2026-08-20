@@ -5,7 +5,7 @@ const bcrypt = require('bcryptjs');
 const { Pool } = require('pg');
 
 const DB_FILE = path.join(__dirname, 'data.json');
-const DATABASE_URL = process.env.DATABASE_URL || '';
+const DATABASE_URL = process.env.DATABASE_URL || 'postgresql://taxinexo_user:lFnKrtjDpDvyvQd61jRLuXEVC23t1Nhm@dpg-da2sqlbl550s73cfp14g-a.oregon-postgres.render.com/taxinexo';
 
 let pool = null;
 const isPostgres = Boolean(DATABASE_URL && DATABASE_URL.trim().length > 0);

@@ -210,31 +210,6 @@ async function initDb() {
       }
     }
 
-    // Semeia usuário padrão de teste caso a tabela esteja vazia
-    const userRes = await client.query('SELECT COUNT(*) FROM users');
-    if (parseInt(userRes.rows[0].count, 10) === 0) {
-      console.log('[DATABASE] Criando usuário de demonstração...');
-      const u = defaultData.users[0];
-      await client.query(`
-        INSERT INTO users (id, operator_name, phone, password_hash, invite_code, balance, total_deposited, total_withdrawn, vip_level, created_at)
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
-      `, [u.id, u.operatorName, u.phone, u.passwordHash, u.inviteCode, u.balance, u.totalDeposited, u.totalWithdrawn, u.vipLevel, u.createdAt]);
-
-      for (const c of defaultData.contracts) {
-        await client.query(`
-          INSERT INTO contracts (id, user_id, product_id, product_name, daily_return, total_days, days_remaining, status, start_date, last_settlement)
-          VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
-        `, [c.id, c.userId, c.productId, c.productName, c.dailyReturn, c.totalDays, c.daysRemaining, c.status, c.startDate, c.lastSettlement]);
-      }
-
-      for (const t of defaultData.transactions) {
-        await client.query(`
-          INSERT INTO transactions (id, user_id, type, amount, status, description, created_at)
-          VALUES ($1, $2, $3, $4, $5, $6, $7)
-        `, [t.id, t.userId, t.type, t.amount, t.status, t.description, t.createdAt]);
-      }
-    }
-
     console.log('[DATABASE] Tabelas PostgreSQL inicializadas com sucesso!');
   } catch (err) {
     console.error('[DATABASE ERROR] Erro na inicialização do PostgreSQL:', err);

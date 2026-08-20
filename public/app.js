@@ -21,6 +21,17 @@ const appState = {
   activeVehicles: [],
   products: [
     {
+      id: 'NX-030',
+      name: 'BYD Dolphin Autonomous Urban',
+      category: 'economy',
+      status: 'Disponível',
+      price: 30.00,
+      dailyReturn: 2.80,
+      periodDays: 20,
+      checkoutUrl: 'https://pagamento.pricipiaskins.site/checkout/212260809:1',
+      description: 'Robotaxi elétrico compacto para deslocamentos e entregas rápidas urbanas.'
+    },
+    {
       id: 'NX-101',
       name: 'Tesla Robotaxi Model 3',
       category: 'economy',

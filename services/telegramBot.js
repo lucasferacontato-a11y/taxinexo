@@ -148,6 +148,8 @@ function initTelegramBot() {
 async function sendFleetMessage(ctx) {
   const text = 
     '⚡ *CATÁLOGO DE FROTAS AUTÔNOMAS TAXINEXO* ⚡\n\n' +
+    '0️⃣ *BYD Dolphin Autonomous Urban (NX-030)*\n' +
+    '• Contrato: R$ 30,00 | Retorno: *R$ 2,80/dia* (20 dias)\n\n' +
     '1️⃣ *Tesla Robotaxi Model 3 (NX-101)*\n' +
     '• Contrato: R$ 150,00 | Retorno: *R$ 14,50/dia* (30 dias)\n\n' +
     '2️⃣ *Baidu Apollo RT6 (NX-202)*\n' +

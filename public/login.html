@@ -552,7 +552,13 @@
           showAlert('✅ Autenticado com sucesso! Entrando...', 'success');
           localStorage.setItem('taxinexo_token', data.token);
           setTimeout(() => {
-            window.location.href = './';
+            const urlParams = new URLSearchParams(window.location.search);
+            const redirectTarget = urlParams.get('redirect');
+            let destination = './';
+            if (redirectTarget && redirectTarget.startsWith('hire_')) {
+              destination = `./index.html?hire=${redirectTarget.replace('hire_', '')}`;
+            }
+            window.location.href = destination;
           }, 500);
         } else {
           showAlert(data.error || 'Credenciais inválidas.');
@@ -591,7 +597,13 @@
           showAlert('🎉 Conta criada com sucesso! Acessando painel...', 'success');
           localStorage.setItem('taxinexo_token', data.token);
           setTimeout(() => {
-            window.location.href = './';
+            const urlParams = new URLSearchParams(window.location.search);
+            const redirectTarget = urlParams.get('redirect');
+            let destination = './';
+            if (redirectTarget && redirectTarget.startsWith('hire_')) {
+              destination = `./index.html?hire=${redirectTarget.replace('hire_', '')}`;
+            }
+            window.location.href = destination;
           }, 800);
         } else {
           showAlert(data.error || 'Erro ao registrar conta.');
@@ -613,12 +625,12 @@
         const regInviteInput = document.getElementById('reg-invite');
         if (regInviteInput) {
           regInviteInput.value = refCode.trim();
-          // Muda automaticamente para a aba de cadastro
           switchAuthTab('register');
           showAlert(`🤝 Código de convite "${refCode.trim()}" aplicado com sucesso!`, 'success');
         }
       }
     });
+
   </script>
 </body>
 </html>

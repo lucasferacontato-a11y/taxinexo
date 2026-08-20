@@ -376,9 +376,9 @@
                 <div class="finance-item"><span>Retorno Total</span><strong class="green">R$ 435,00</strong></div>
               </div>
             </div>
-            <a href="login.html" target="_blank" class="btn-main btn-app" style="width: 100%; justify-content: center; font-size: 14px; padding: 12px;">
+            <button onclick="handleActivateVehicle('NX-101')" class="btn-main btn-app" style="width: 100%; justify-content: center; font-size: 14px; padding: 12px; border: none; cursor: pointer;">
               Ativar por R$ 150 <i class="fa-solid fa-arrow-right"></i>
-            </a>
+            </button>
           </div>
         </div>
 
@@ -401,9 +401,9 @@
                 <div class="finance-item"><span>Retorno Total</span><strong class="green">R$ 1.620,00</strong></div>
               </div>
             </div>
-            <a href="login.html" target="_blank" class="btn-main btn-app" style="width: 100%; justify-content: center; font-size: 14px; padding: 12px;">
+            <button onclick="handleActivateVehicle('NX-202')" class="btn-main btn-app" style="width: 100%; justify-content: center; font-size: 14px; padding: 12px; border: none; cursor: pointer;">
               Ativar por R$ 350 <i class="fa-solid fa-arrow-right"></i>
-            </a>
+            </button>
           </div>
         </div>
 
@@ -426,9 +426,9 @@
                 <div class="finance-item"><span>Retorno Total</span><strong class="green">R$ 2.720,00</strong></div>
               </div>
             </div>
-            <a href="login.html" target="_blank" class="btn-main btn-app" style="width: 100%; justify-content: center; font-size: 14px; padding: 12px; background: linear-gradient(135deg, #00f0ff 0%, #00d26a 100%); color: #000;">
+            <button onclick="handleActivateVehicle('NX-707')" class="btn-main btn-app" style="width: 100%; justify-content: center; font-size: 14px; padding: 12px; background: linear-gradient(135deg, #00f0ff 0%, #00d26a 100%); color: #000; border: none; cursor: pointer;">
               Ativar por R$ 600 <i class="fa-solid fa-arrow-right"></i>
-            </a>
+            </button>
           </div>
         </div>
 
@@ -451,9 +451,9 @@
                 <div class="finance-item"><span>Retorno Total</span><strong class="green">R$ 4.725,00</strong></div>
               </div>
             </div>
-            <a href="login.html" target="_blank" class="btn-main btn-app" style="width: 100%; justify-content: center; font-size: 14px; padding: 12px;">
+            <button onclick="handleActivateVehicle('NX-404')" class="btn-main btn-app" style="width: 100%; justify-content: center; font-size: 14px; padding: 12px; border: none; cursor: pointer;">
               Ativar por R$ 900 <i class="fa-solid fa-arrow-right"></i>
-            </a>
+            </button>
           </div>
         </div>
 
@@ -476,9 +476,9 @@
                 <div class="finance-item"><span>Retorno Total</span><strong class="green">R$ 11.100,00</strong></div>
               </div>
             </div>
-            <a href="login.html" target="_blank" class="btn-main btn-app" style="width: 100%; justify-content: center; font-size: 14px; padding: 12px;">
+            <button onclick="handleActivateVehicle('NX-303')" class="btn-main btn-app" style="width: 100%; justify-content: center; font-size: 14px; padding: 12px; border: none; cursor: pointer;">
               Ativar por R$ 1.500 <i class="fa-solid fa-arrow-right"></i>
-            </a>
+            </button>
           </div>
         </div>
 
@@ -501,9 +501,9 @@
                 <div class="finance-item"><span>Retorno Total</span><strong class="green">R$ 21.600,00</strong></div>
               </div>
             </div>
-            <a href="login.html" target="_blank" class="btn-main btn-app" style="width: 100%; justify-content: center; font-size: 14px; padding: 12px;">
+            <button onclick="handleActivateVehicle('NX-505')" class="btn-main btn-app" style="width: 100%; justify-content: center; font-size: 14px; padding: 12px; border: none; cursor: pointer;">
               Ativar por R$ 2.800 <i class="fa-solid fa-arrow-right"></i>
-            </a>
+            </button>
           </div>
         </div>
 
@@ -526,9 +526,9 @@
                 <div class="finance-item"><span>Retorno Total</span><strong class="green">R$ 64.800,00</strong></div>
               </div>
             </div>
-            <a href="login.html" target="_blank" class="btn-main btn-app" style="width: 100%; justify-content: center; font-size: 14px; padding: 12px; background: linear-gradient(135deg, #f59e0b, #d97706); color: #000;">
+            <button onclick="handleActivateVehicle('NX-606')" class="btn-main btn-app" style="width: 100%; justify-content: center; font-size: 14px; padding: 12px; background: linear-gradient(135deg, #f59e0b, #d97706); color: #000; border: none; cursor: pointer;">
               Ativar por R$ 5.000 <i class="fa-solid fa-crown"></i>
-            </a>
+            </button>
           </div>
         </div>
 
@@ -964,6 +964,16 @@
   </div>
 
   <script>
+    
+    function handleActivateVehicle(productId) {
+      const token = localStorage.getItem('taxinexo_token');
+      if (token) {
+        window.location.href = 'index.html?hire=' + productId;
+      } else {
+        window.location.href = 'login.html?redirect=hire_' + productId;
+      }
+    }
+
     function updateCalc() {
       const select = document.getElementById('calc-vehicle-select');
       const [price, daily, days] = select.value.split('|').map(Number);

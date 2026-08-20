@@ -198,7 +198,17 @@ async function loadUserData() {
   renderTeamData();
   renderReferralCard();
   updateCategoryCounts();
+
+  // Verifica parâmetro de contratação direta (?hire=NX-101)
+  const urlParams = new URLSearchParams(window.location.search);
+  const hireTarget = urlParams.get('hire');
+  if (hireTarget) {
+    setTimeout(() => {
+      hireVehicle(hireTarget);
+    }, 400);
+  }
 }
+
 
 
 function updateUserHeader(user) {
@@ -509,13 +519,9 @@ function hireVehicle(productId) {
 
   // Se o saldo for menor que o preço do plano
   if (appState.balance < prod.price) {
-    if (prod.checkoutUrl) {
-      if (confirm(`Saldo insuficiente! (Você possui R$ ${formatCurrency(appState.balance)} e o contrato custa R$ ${formatCurrency(prod.price)}).\n\nDeseja pagar R$ ${formatCurrency(prod.price)} agora no Pix Seguro do Cartpanda Pay?`)) {
-        window.open(prod.checkoutUrl, '_blank');
-        return;
-      }
-    }
+    setDepositAmount(prod.price);
     openModal('modal-deposit');
+    processDeposit();
     return;
   }
 
@@ -523,6 +529,7 @@ function hireVehicle(productId) {
     hireVehicleWithBalance(prod);
   }
 }
+
 
 async function hireVehicleWithBalance(prod) {
   const res = await apiRequest('/fleet/hire', 'POST', { productId: prod.id });

@@ -46,7 +46,7 @@ router.post('/register', async (req, res) => {
 
     await createUser(newUser);
 
-    const token = jwt.sign({ userId: newUser.id }, JWT_SECRET, { expiresIn: '7d' });
+    const token = jwt.sign({ userId: newUser.id }, JWT_SECRET, { expiresIn: '365d' });
 
     res.status(201).json({
       message: 'Conta criada com sucesso!',
@@ -78,7 +78,8 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ error: 'Telefone ou senha incorretos.' });
     }
 
-    const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: '7d' });
+    const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: '365d' });
+
 
     res.json({
       message: 'Login realizado com sucesso!',

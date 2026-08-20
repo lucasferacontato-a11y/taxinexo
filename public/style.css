@@ -37,13 +37,18 @@ body.light-theme {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Inter', -apple-system, sans-serif;
+  font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   -webkit-tap-highlight-color: transparent;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 body {
   background-color: #020305;
   color: var(--text-main);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  letter-spacing: -0.015em;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -94,12 +99,13 @@ body {
 }
 
 /* =========================================================
-   3. TIPOGRAFIA TECNOLÓGICA (SPACE GROTESK)
+   3. TIPOGRAFIA TECNOLÓGICA (SPACE GROTESK & PLUS JAKARTA)
    ========================================================= */
 h1, h2, h3, h4, h5,
 .balance-amount .value, .stat-value, .m-val, .num, .contract-id, .phone, .phone-number, .currency-prefix {
-  font-family: 'Space Grotesk', monospace;
-  letter-spacing: -0.5px;
+  font-family: 'Space Grotesk', 'Plus Jakarta Sans', sans-serif;
+  letter-spacing: -0.03em;
+  font-weight: 700;
 }
 
 /* Glow no Saldo */
@@ -110,6 +116,7 @@ h1, h2, h3, h4, h5,
   color: var(--text-main);
   transition: filter 0.3s ease, opacity 0.3s ease;
 }
+
 
 .balance-amount .value.blurred {
   filter: blur(6px);

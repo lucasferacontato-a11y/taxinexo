@@ -509,13 +509,60 @@ async function notifyAdminWithdrawal({ operatorName, phone, amount, pixKey, txId
   }
 }
 
+/**
+ * Envia notificação privada ao Administrador sobre novo depósito / contratação Pix confirmado
+ */
+async function notifyAdminDeposit({ operatorName, phone, amount, productName, txId, isAutoHire }) {
+  if (!token) return;
+  const format = (v) => new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2 }).format(v);
+  const now = new Date().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' });
+
+  const msg =
+    '🎉 *[PAGAMENTO PIX CONFIRMADO!]* 💸⚡\n\n' +
+    '👤 *Operador:* ' + (operatorName || 'Não identificado') + '\n' +
+    '📱 *Telefone:* ' + (phone || '-') + '\n' +
+    '💰 *Valor Pago:* `R$ ' + format(amount) + '`\n' +
+    (productName ? ('🚗 *Frota:* ' + productName + '\n') : '') +
+    (isAutoHire ? '⚡ *Status:* Contrato de Frota Ativado Automaticamente!\n' : '💰 *Status:* Saldo Creditado na Carteira!\n') +
+    '🆔 *Transação:* `' + (txId || '-') + '`\n' +
+    '⏰ *Horário:* ' + now;
+
+  const targets = Array.from(adminChatIds);
+  if (targets.length === 0 && (groupChatId || process.env.TELEGRAM_CHAT_ID)) {
+    targets.push(groupChatId || process.env.TELEGRAM_CHAT_ID);
+  }
+
+  for (const chatId of targets) {
+    try {
+      await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chat_id: chatId,
+          text: msg,
+          parse_mode: 'Markdown',
+          reply_markup: {
+            inline_keyboard: [
+              [{ text: '🖥️ Abrir Painel de Gestão', url: appUrl + '/admin.html' }]
+            ]
+          }
+        })
+      });
+      console.log(`[TELEGRAM ADMIN NOTIFY] Alerta de pagamento enviado para chat ${chatId}`);
+    } catch (err) {
+      console.error('[ADMIN NOTIFY DEPOSIT ERROR]:', err.message);
+    }
+  }
+}
+
 module.exports = {
   initTelegramBot,
   broadcastDailySettlement,
   startDailySchedule,
   sendBroadcastWithMedia,
   triggerRandomPost,
-  notifyAdminWithdrawal
+  notifyAdminWithdrawal,
+  notifyAdminDeposit
 };
 
 

@@ -3,14 +3,19 @@ const router = express.Router();
 const {
   findUserById,
   findUserByPhone,
+  findUserByInviteCode,
   updateUser,
   getContractsByUserId,
   getTransactionsByUserId,
-  createTransaction
+  createTransaction,
+  getAllProducts,
+  findProductById,
+  createContract,
+  recordWebhookLog
 } = require('../database');
 const { authMiddleware } = require('../middleware/auth');
 const { createCartpandaPix } = require('../services/cartpanda');
-const { notifyAdminWithdrawal } = require('../services/telegramBot');
+const { notifyAdminWithdrawal, notifyAdminDeposit } = require('../services/telegramBot');
 
 // Resumo da Carteira
 router.get('/summary', authMiddleware, async (req, res) => {
@@ -68,50 +73,234 @@ router.post('/deposit/pix', authMiddleware, async (req, res) => {
   }
 });
 
-// Webhook Oficial do Cartpanda Pay (Chamado quando o Pix é pago)
+// Webhook Oficial do Cartpanda Pay (Chamado quando o Pix / Pedido é pago)
 router.post('/webhook/cartpanda', async (req, res) => {
   console.log('[CARTPANDA WEBHOOK RECEIVED]', JSON.stringify(req.body));
+  const rawBody = req.body || {};
+
   try {
-    const event = req.body;
+    // 1. Extração flexível de Status
+    const status = String(
+      rawBody.status ||
+      rawBody.order_status ||
+      rawBody.financial_status ||
+      (rawBody.order && (rawBody.order.status || rawBody.order.financial_status)) ||
+      (rawBody.event === 'order.paid' ? 'paid' : '')
+    ).toLowerCase();
 
-    const status = event.status || event.order_status || (event.order && event.order.status);
-    const amount = parseFloat(event.amount || (event.order && event.order.total) || 0);
-    const referenceId = (event.metadata && event.metadata.reference_id) || event.customer_phone || (event.customer && event.customer.phone);
+    // 2. Extração de Valor
+    const amount = parseFloat(
+      rawBody.amount ||
+      rawBody.total ||
+      (rawBody.order && (rawBody.order.total || rawBody.order.total_price || rawBody.order.subtotal_price)) ||
+      0
+    );
 
-    if (status === 'paid' || status === 'completed' || status === 'approved') {
-      let user = null;
-      if (referenceId) {
-        user = await findUserById(referenceId);
-        if (!user) {
-          user = await findUserByPhone(referenceId);
-        }
+    // 3. Extração de Dados do Cliente (Telefone, Nome, Email, ID de Referência)
+    const phoneCandidates = [
+      rawBody.phone,
+      rawBody.customer_phone,
+      rawBody.buyer_phone,
+      rawBody.customer && rawBody.customer.phone,
+      rawBody.order && rawBody.order.phone,
+      rawBody.order && rawBody.order.customer && rawBody.order.customer.phone,
+      rawBody.order && rawBody.order.shipping_address && rawBody.order.shipping_address.phone,
+      rawBody.order && rawBody.order.billing_address && rawBody.order.billing_address.phone,
+      rawBody.metadata && rawBody.metadata.reference_id
+    ].filter(Boolean);
+
+    const customerName = 
+      rawBody.customer_name ||
+      rawBody.name ||
+      (rawBody.customer && (rawBody.customer.name || `${rawBody.customer.first_name || ''} ${rawBody.customer.last_name || ''}`.trim())) ||
+      (rawBody.order && rawBody.order.customer && (rawBody.order.customer.name || `${rawBody.order.customer.first_name || ''} ${rawBody.order.customer.last_name || ''}`.trim())) ||
+      'Cliente';
+
+    const customerEmail = 
+      rawBody.customer_email ||
+      rawBody.email ||
+      (rawBody.customer && rawBody.customer.email) ||
+      (rawBody.order && rawBody.order.customer && rawBody.order.customer.email) ||
+      '';
+
+    const isPaid = ['paid', 'completed', 'approved', 'authorized', 'paid_pending_review', 'succeeded'].includes(status);
+
+    if (!isPaid) {
+      await recordWebhookLog({
+        provider: 'cartpanda',
+        eventType: rawBody.event || 'status_update',
+        amount: amount,
+        customerPhone: phoneCandidates[0] || null,
+        customerName: customerName,
+        customerEmail: customerEmail,
+        matchedUserId: null,
+        status: 'ignored',
+        note: `Status não pago: "${status}"`,
+        rawPayload: rawBody
+      });
+      return res.status(200).json({ received: true, note: `Status "${status}" ignorado.` });
+    }
+
+    // 4. Localização do Usuário/Operador
+    let user = null;
+    for (const p of phoneCandidates) {
+      if (String(p).startsWith('usr_')) {
+        user = await findUserById(p);
+        if (user) break;
       }
-      if (!user && event.customer && event.customer.phone) {
-        const cleanPhone = event.customer.phone.replace(/\D/g, '');
-        user = await findUserByPhone(cleanPhone);
-      }
+      user = await findUserByPhone(p);
+      if (user) break;
+    }
 
-      if (user && amount > 0) {
-        const updatedUser = await updateUser(user.id, {
-          balance: user.balance + amount,
-          totalDeposited: user.totalDeposited + amount
-        });
+    if (!user) {
+      console.warn('[CARTPANDA WEBHOOK] Usuário não localizado para os telefones:', phoneCandidates);
+      await recordWebhookLog({
+        provider: 'cartpanda',
+        eventType: rawBody.event || 'order.paid',
+        amount: amount,
+        customerPhone: phoneCandidates[0] || null,
+        customerName: customerName,
+        customerEmail: customerEmail,
+        matchedUserId: null,
+        status: 'user_not_found',
+        note: `Pagamento de R$ ${amount.toFixed(2)} aprovado, mas nenhum operador bateu com os dados.`,
+        rawPayload: rawBody
+      });
+      return res.status(200).json({ received: true, warning: 'Usuário não encontrado.' });
+    }
 
-        await createTransaction({
-          id: `CP-${event.id || Date.now()}`,
-          userId: user.id,
-          type: 'deposit',
-          amount: amount,
-          status: 'approved',
-          description: `Recarga Pix Cartpanda Pay Confirmada (+ R$ ${amount.toFixed(2)})`,
-          createdAt: new Date().toISOString()
-        });
-
-        console.log(`[CARTPANDA] Saldo de R$ ${amount} creditado para o usuário ${user.operatorName}`);
+    // 5. Identificar Produto / Frota pelo valor ou itens
+    const products = await getAllProducts();
+    let matchedProduct = products.find(p => Math.abs(p.price - amount) < 0.01);
+    
+    if (!matchedProduct && rawBody.order && Array.isArray(rawBody.order.line_items)) {
+      for (const item of rawBody.order.line_items) {
+        const itemTitle = (item.title || item.name || '').toLowerCase();
+        matchedProduct = products.find(p => itemTitle.includes(p.id.toLowerCase()) || itemTitle.includes(p.name.toLowerCase()));
+        if (matchedProduct) break;
       }
     }
 
-    res.status(200).json({ received: true });
+    const txId = `CP-${rawBody.id || (rawBody.order && rawBody.order.id) || Date.now()}`;
+    const now = new Date().toISOString();
+
+    // 6. Atualizar total depositado do usuário
+    await updateUser(user.id, {
+      totalDeposited: (user.totalDeposited || 0) + amount
+    });
+
+    // 7. Criar Transação de Depósito
+    await createTransaction({
+      id: txId,
+      userId: user.id,
+      type: 'deposit',
+      amount: amount,
+      status: 'approved',
+      description: `Pagamento Pix Cartpanda Confirmado (+ R$ ${amount.toFixed(2)})`,
+      createdAt: now
+    });
+
+    let autoHired = false;
+    let hiredProductName = null;
+
+    // 8. Ativar Frota Automaticamente se um produto correspondente existir
+    if (matchedProduct) {
+      const contractId = `CTR-${Math.floor(1000 + Math.random() * 9000)}`;
+      await createContract({
+        id: contractId,
+        userId: user.id,
+        productId: matchedProduct.id,
+        productName: matchedProduct.name,
+        dailyReturn: matchedProduct.dailyReturn,
+        totalDays: matchedProduct.periodDays,
+        daysRemaining: matchedProduct.periodDays,
+        status: 'Em corrida',
+        startDate: now,
+        lastSettlement: now
+      });
+
+      await createTransaction({
+        id: `TX-${Date.now()}`,
+        userId: user.id,
+        type: 'contract',
+        amount: -matchedProduct.price,
+        status: 'approved',
+        description: `Contratação Automática de ${matchedProduct.name}`,
+        createdAt: now
+      });
+
+      autoHired = true;
+      hiredProductName = matchedProduct.name;
+
+      // 9. Comissões Multinível para a Rede
+      if (user.referredBy) {
+        const level1User = await findUserById(user.referredBy);
+        if (level1User) {
+          const comm1 = matchedProduct.price * 0.10; // 10%
+          await updateUser(level1User.id, { balance: level1User.balance + comm1 });
+
+          await createTransaction({
+            id: `COMM-${Date.now()}-L1`,
+            userId: level1User.id,
+            type: 'commission',
+            amount: comm1,
+            status: 'approved',
+            description: `Comissão Nível 1 (${user.operatorName}) - ${matchedProduct.name}`,
+            createdAt: now
+          });
+
+          if (level1User.referredBy) {
+            const level2User = await findUserById(level1User.referredBy);
+            if (level2User) {
+              const comm2 = matchedProduct.price * 0.05; // 5%
+              await updateUser(level2User.id, { balance: level2User.balance + comm2 });
+
+              await createTransaction({
+                id: `COMM-${Date.now()}-L2`,
+                userId: level2User.id,
+                type: 'commission',
+                amount: comm2,
+                status: 'approved',
+                description: `Comissão Nível 2 - ${matchedProduct.name}`,
+                createdAt: now
+              });
+            }
+          }
+        }
+      }
+    } else {
+      // Se não corresponde a uma frota exata, credita no saldo para escolha livre
+      await updateUser(user.id, {
+        balance: user.balance + amount
+      });
+    }
+
+    // 10. Notificação Privada ao Administrador via Telegram
+    notifyAdminDeposit({
+      operatorName: user.operatorName,
+      phone: user.phone,
+      amount: amount,
+      productName: hiredProductName,
+      txId: txId,
+      isAutoHire: autoHired
+    }).catch(e => console.error('[TELEGRAM NOTIFY DEPOSIT ERROR]:', e.message));
+
+    // 11. Registrar no Log de Auditoria de Webhooks
+    await recordWebhookLog({
+      provider: 'cartpanda',
+      eventType: rawBody.event || 'order.paid',
+      amount: amount,
+      customerPhone: phoneCandidates[0] || user.phone,
+      customerName: customerName,
+      customerEmail: customerEmail,
+      matchedUserId: user.id,
+      status: 'processed',
+      note: autoHired ? `Frota ${hiredProductName} ativada com sucesso!` : `Saldo de R$ ${amount.toFixed(2)} creditado.`,
+      rawPayload: rawBody
+    });
+
+    console.log(`[CARTPANDA] Sucesso! Operador ${user.operatorName} processado (+ R$ ${amount.toFixed(2)}, autoHire: ${autoHired})`);
+    res.status(200).json({ success: true, user: user.id, autoHired });
   } catch (err) {
     console.error('[CARTPANDA WEBHOOK ERROR]:', err);
     res.status(500).json({ error: 'Erro ao processar webhook.' });

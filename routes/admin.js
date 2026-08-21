@@ -13,7 +13,8 @@ const {
   getAllProducts,
   findProductById,
   updateProduct,
-  getAnalyticsMetrics
+  getAnalyticsMetrics,
+  getWebhookLogs
 } = require('../database');
 
 
@@ -261,6 +262,17 @@ router.post('/settle', async (req, res) => {
   } catch (err) {
     console.error('[ADMIN ERROR /settle]:', err);
     res.status(500).json({ error: 'Erro ao executar liquidação manual.' });
+  }
+});
+
+// Listar Logs de Webhooks (Auditoria Cartpanda)
+router.get('/webhooks', async (req, res) => {
+  try {
+    const logs = await getWebhookLogs(50);
+    res.json(logs);
+  } catch (err) {
+    console.error('[ADMIN ERROR /webhooks]:', err);
+    res.status(500).json({ error: 'Erro ao carregar logs de webhook.' });
   }
 });
 

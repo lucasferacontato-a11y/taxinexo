@@ -218,6 +218,22 @@ async function initDb() {
       );
       CREATE INDEX IF NOT EXISTS idx_page_views_created_at ON page_views(created_at);
       CREATE INDEX IF NOT EXISTS idx_page_views_ip_hash_created ON page_views(ip_hash, created_at);
+
+      CREATE TABLE IF NOT EXISTS webhook_logs (
+        id SERIAL PRIMARY KEY,
+        provider VARCHAR(64) DEFAULT 'cartpanda',
+        event_type VARCHAR(64),
+        amount NUMERIC(14, 2),
+        customer_phone VARCHAR(64),
+        customer_name VARCHAR(128),
+        customer_email VARCHAR(128),
+        matched_user_id VARCHAR(64),
+        status VARCHAR(64),
+        note TEXT,
+        raw_payload JSONB,
+        created_at TIMESTAMPTZ DEFAULT NOW()
+      );
+      CREATE INDEX IF NOT EXISTS idx_webhook_logs_created_at ON webhook_logs(created_at DESC);
     `);
 
     // Semeia produtos caso a tabela esteja vazia
@@ -321,13 +337,73 @@ async function findUserById(id) {
 }
 
 async function findUserByPhone(phone) {
-  const clean = (phone || '').replace(/\D/g, '');
-  if (isPostgres) {
-    const res = await pool.query('SELECT * FROM users WHERE phone = $1 OR phone = $2', [clean, phone]);
-    return mapUser(res.rows[0]);
+  if (!phone) return null;
+  const digits = String(phone).replace(/\D/g, '');
+  if (!digits) return null;
+
+  // Monta conjunto de candidatos
+  const candidates = new Set();
+  candidates.add(digits);
+  candidates.add(String(phone).trim());
+
+  if (digits.startsWith('55') && digits.length >= 10) {
+    candidates.add(digits.substring(2)); // sem 55
+  } else if (!digits.startsWith('55')) {
+    candidates.add('55' + digits); // com 55
   }
+
+  // Tratamento inteligente do 9º dígito móvel
+  const ddd = digits.startsWith('55') ? digits.substring(2, 4) : digits.substring(0, 2);
+  const numberPart = digits.startsWith('55') ? digits.substring(4) : digits.substring(2);
+
+  if (numberPart.length === 8) {
+    const with9 = ddd + '9' + numberPart;
+    candidates.add(with9);
+    candidates.add('55' + with9);
+  } else if (numberPart.length === 9 && numberPart.startsWith('9')) {
+    const without9 = ddd + numberPart.substring(1);
+    candidates.add(without9);
+    candidates.add('55' + without9);
+  }
+
+  const candidateArray = Array.from(candidates);
+
+  if (isPostgres) {
+    // 1. Busca exata por qualquer uma das variações formatadas
+    const res = await pool.query(
+      'SELECT * FROM users WHERE phone = ANY($1::varchar[]) LIMIT 1',
+      [candidateArray]
+    );
+    if (res.rows.length > 0) {
+      return mapUser(res.rows[0]);
+    }
+
+    // 2. Busca por sufixo dos últimos 8 dígitos (garante matching mesmo com divergência de DDD/formato)
+    if (digits.length >= 8) {
+      const suffix = digits.slice(-8);
+      const resSuffix = await pool.query(
+        "SELECT * FROM users WHERE RIGHT(REGEXP_REPLACE(phone, '\\D', '', 'g'), 8) = $1 LIMIT 1",
+        [suffix]
+      );
+      if (resSuffix.rows.length > 0) {
+        return mapUser(resSuffix.rows[0]);
+      }
+    }
+
+    return null;
+  }
+
   const db = readJsonDb();
-  return db.users.find(u => u.phone === clean || u.phone === phone) || null;
+  for (const c of candidateArray) {
+    const found = db.users.find(u => (u.phone || '').replace(/\D/g, '') === c.replace(/\D/g, ''));
+    if (found) return found;
+  }
+  if (digits.length >= 8) {
+    const suffix = digits.slice(-8);
+    const found = db.users.find(u => ((u.phone || '').replace(/\D/g, '')).endsWith(suffix));
+    if (found) return found;
+  }
+  return null;
 }
 
 async function findUserByInviteCode(code) {
@@ -776,7 +852,7 @@ async function getAnalyticsMetrics() {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   const todayViews = pageViews.filter(v => new Date(v.created_at) >= today);
-  const todayUniqueVisitors = new Set(todayViews.map(v => v.ip_hash)).size;
+    const todayUniqueVisitors = new Set(todayViews.map(v => v.ip_hash)).size;
   const totalUniqueVisitors = new Set(pageViews.map(v => v.ip_hash)).size;
   const todayPresellViews = todayViews.filter(v => (v.path || '').includes('presell')).length;
   const todayAppViews = todayViews.filter(v => v.path === '/' || (v.path || '').includes('login')).length;
@@ -791,6 +867,62 @@ async function getAnalyticsMetrics() {
     todayTotalViews,
     recentViews
   };
+}
+
+// ==========================================
+// WEBHOOK LOGS & AUDIT
+// ==========================================
+async function recordWebhookLog({ provider, eventType, amount, customerPhone, customerName, customerEmail, matchedUserId, status, note, rawPayload }) {
+  if (isPostgres) {
+    try {
+      await pool.query(`
+        INSERT INTO webhook_logs (provider, event_type, amount, customer_phone, customer_name, customer_email, matched_user_id, status, note, raw_payload, created_at)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, NOW())
+      `, [
+        provider || 'cartpanda',
+        eventType || 'order.paid',
+        amount || 0,
+        customerPhone || null,
+        customerName || null,
+        customerEmail || null,
+        matchedUserId || null,
+        status || 'received',
+        note || '',
+        JSON.stringify(rawPayload || {})
+      ]);
+    } catch (err) {
+      console.error('[DATABASE ERROR /recordWebhookLog]:', err.message);
+    }
+    return;
+  }
+
+  const db = readJsonDb();
+  if (!db.webhookLogs) db.webhookLogs = [];
+  db.webhookLogs.unshift({
+    id: Date.now(),
+    provider: provider || 'cartpanda',
+    eventType: eventType || 'order.paid',
+    amount: amount || 0,
+    customerPhone,
+    customerName,
+    customerEmail,
+    matchedUserId,
+    status,
+    note,
+    rawPayload,
+    createdAt: new Date().toISOString()
+  });
+  if (db.webhookLogs.length > 300) db.webhookLogs.length = 300;
+  writeJsonDb(db);
+}
+
+async function getWebhookLogs(limit = 50) {
+  if (isPostgres) {
+    const res = await pool.query('SELECT * FROM webhook_logs ORDER BY created_at DESC LIMIT $1', [limit]);
+    return res.rows;
+  }
+  const db = readJsonDb();
+  return (db.webhookLogs || []).slice(0, limit);
 }
 
 module.exports = {
@@ -821,5 +953,8 @@ module.exports = {
   // Stats & Analytics
   getGlobalMetrics,
   recordPageView,
-  getAnalyticsMetrics
+  getAnalyticsMetrics,
+  // Webhooks
+  recordWebhookLog,
+  getWebhookLogs
 };

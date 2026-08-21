@@ -503,6 +503,42 @@
       </div>
     </section>
 
+    <!-- Panel: Logs & Auditoria de Webhooks Cartpanda -->
+    <section class="panel-card" style="margin-bottom: 24px;">
+      <div class="panel-head">
+        <h2>
+          <i class="fa-solid fa-satellite-dish" style="color: var(--primary);"></i> 
+          Auditoria de Webhooks & Pagamentos Cartpanda
+          <span class="badge-count" id="webhooks-count" style="background: rgba(0, 240, 255, 0.15); color: var(--primary);">0 eventos</span>
+        </h2>
+        <button class="btn-adm btn-adm-secondary" style="padding: 6px 12px; font-size: 11px;" onclick="loadWebhooks()">
+          <i class="fa-solid fa-arrows-rotate"></i> Atualizar Logs
+        </button>
+      </div>
+      <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 16px;">
+        Registro em tempo real de todas as requisições de pagamento recebidas do Cartpanda Pay. URL oficial de webhook: <code style="color: var(--primary); background: rgba(0,240,255,0.1); padding: 2px 6px; border-radius: 4px;">https://taxinexo.onrender.com/api/wallet/webhook/cartpanda</code>
+      </p>
+
+      <div class="table-responsive">
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th style="width: 18%;">Data / Hora</th>
+              <th style="width: 15%;">Valor</th>
+              <th style="width: 25%;">Cliente / Telefone</th>
+              <th style="width: 15%;">Status</th>
+              <th style="width: 27%;">Detalhes / Nota</th>
+            </tr>
+          </thead>
+          <tbody id="webhooks-table-body">
+            <tr>
+              <td colspan="5" style="text-align: center; color: var(--text-muted); padding: 25px;">Carregando logs de webhook...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
     <!-- Panel 3: Gerenciador de Links de Checkout (Cartpanda / Gateways) -->
     <section class="panel-card" style="margin-bottom: 40px;">
       <div class="panel-head">
@@ -648,6 +684,7 @@
         await Promise.all([
           loadMetrics(),
           loadAnalytics(),
+          loadWebhooks(),
           loadWithdrawals(),
           loadUsers(),
           loadAdminProducts()
@@ -728,6 +765,58 @@
         }).join('');
       } catch (err) {
         if (tbody) tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: #ef4444; padding: 20px;">Erro ao carregar tráfego.</td></tr>';
+      }
+    }
+
+    async function loadWebhooks() {
+      const tbody = document.getElementById('webhooks-table-body');
+      const countEl = document.getElementById('webhooks-count');
+      try {
+        const res = await adminFetch('/webhooks');
+        const list = await res.json();
+
+        if (countEl) countEl.textContent = `${list.length} eventos`;
+
+        if (!list || list.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--text-muted); padding: 25px;">Nenhum webhook recebido do Cartpanda ainda. As vendas aparecerão aqui instantaneamente.</td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = list.map(w => {
+          const time = w.created_at ? new Date(w.created_at).toLocaleString('pt-BR') : '-';
+          const amt = parseFloat(w.amount || 0);
+          const isOk = w.status === 'processed';
+          const isNotFound = w.status === 'user_not_found';
+          const isIgnored = w.status === 'ignored';
+
+          let statusBadge = `<span class="status-pill approved"><i class="fa-solid fa-check"></i> Processado</span>`;
+          if (isNotFound) {
+            statusBadge = `<span class="status-pill pending" style="color: #f87171; border-color: rgba(239,68,68,0.3); background: rgba(239,68,68,0.1);"><i class="fa-solid fa-triangle-exclamation"></i> Operador Não Localizado</span>`;
+          } else if (isIgnored) {
+            statusBadge = `<span class="status-pill" style="color: var(--text-muted); background: rgba(255,255,255,0.05);">Ignorado</span>`;
+          }
+
+          const customer = w.customer_name || 'Cliente';
+          const phone = w.customer_phone || '-';
+
+          return `
+            <tr>
+              <td><span style="font-family: monospace; color: #fff; font-size: 12px;">${time}</span></td>
+              <td><strong style="color: var(--accent-green); font-size: 14px; font-family: 'Space Grotesk', sans-serif;">R$ ${formatCurrency(amt)}</strong></td>
+              <td>
+                <strong style="color: #fff; font-size: 13px;">${customer}</strong><br>
+                <span style="font-size: 11px; color: var(--text-muted);"><i class="fa-solid fa-phone" style="font-size: 10px;"></i> ${phone}</span>
+              </td>
+              <td>${statusBadge}</td>
+              <td>
+                <span style="font-size: 12px; color: var(--text-muted);">${w.note || '-'}</span>
+                ${w.matched_user_id ? `<br><span style="font-size: 10px; color: var(--primary); font-family: monospace;">Operador: ${w.matched_user_id}</span>` : ''}
+              </td>
+            </tr>
+          `;
+        }).join('');
+      } catch (err) {
+        if (tbody) tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: #ef4444; padding: 20px;">Erro ao carregar logs de webhook.</td></tr>';
       }
     }
 

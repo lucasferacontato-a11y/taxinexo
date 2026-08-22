@@ -159,13 +159,18 @@ router.post('/withdrawals/:id/reject', async (req, res) => {
   }
 });
 
-// Listar Usuários
+// Listar Usuários com Dados de CRM
 router.get('/users', async (req, res) => {
   try {
     const users = await getAllUsers();
     const usersList = await Promise.all(users.map(async (u) => {
       const userContracts = await getContractsByUserId(u.id);
       const activeContracts = userContracts.filter(c => c.status === 'Em corrida');
+      const hasDeposited = Boolean((u.totalDeposited && u.totalDeposited > 0) || (u.balance && u.balance > 0) || activeContracts.length > 0);
+      
+      let defaultStatus = 'new';
+      if (activeContracts.length > 0) defaultStatus = 'active';
+
       return {
         id: u.id,
         operatorName: u.operatorName || `Operador #${u.id}`,
@@ -176,7 +181,9 @@ router.get('/users', async (req, res) => {
         vipLevel: u.vipLevel || 'VIP 1',
         inviteCode: u.inviteCode,
         activeContractsCount: activeContracts.length,
-        hasDeposited: Boolean((u.totalDeposited && u.totalDeposited > 0) || (u.balance && u.balance > 0)),
+        hasDeposited: hasDeposited,
+        crmStatus: u.crmStatus || defaultStatus,
+        crmNotes: u.crmNotes || '',
         createdAt: u.createdAt || new Date().toISOString()
       };
     }));
@@ -191,6 +198,63 @@ router.get('/users', async (req, res) => {
   }
 });
 
+// Atualizar Status do CRM e Notas do Lead
+router.patch('/users/:id/crm', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { crmStatus, crmNotes } = req.body;
+
+    const user = await findUserById(id);
+    if (!user) {
+      return res.status(404).json({ error: 'Usuário não encontrado.' });
+    }
+
+    const updated = await updateUser(id, {
+      crmStatus: crmStatus !== undefined ? crmStatus : user.crmStatus,
+      crmNotes: crmNotes !== undefined ? crmNotes : user.crmNotes
+    });
+
+    res.json({ message: 'Status do CRM atualizado!', user: updated });
+  } catch (err) {
+    console.error('[ADMIN ERROR /users/:id/crm]:', err);
+    res.status(500).json({ error: 'Erro ao atualizar CRM do operador.' });
+  }
+});
+
+// Exportar Lista de Leads / Operadores para CSV (WhatsApp / Meta Ads)
+router.get('/users/export-csv', async (req, res) => {
+  try {
+    const users = await getAllUsers();
+    const headers = ['ID', 'Nome', 'Telefone', 'Telefone_WhatsApp', 'Status_CRM', 'Saldo', 'Frotas_Ativas', 'Data_Cadastro'];
+    const rows = await Promise.all(users.map(async (u) => {
+      const contracts = await getContractsByUserId(u.id);
+      const activeCount = contracts.filter(c => c.status === 'Em corrida').length;
+      const cleanPhone = String(u.phone || '').replace(/\D/g, '');
+      const waPhone = cleanPhone.startsWith('55') ? cleanPhone : `55${cleanPhone}`;
+      const status = u.crmStatus || (activeCount > 0 ? 'active' : 'new');
+      const date = u.createdAt ? new Date(u.createdAt).toISOString() : '';
+
+      return [
+        `"${u.id}"`,
+        `"${(u.operatorName || '').replace(/"/g, '""')}"`,
+        `"${cleanPhone}"`,
+        `"+${waPhone}"`,
+        `"${status}"`,
+        (u.balance || 0).toFixed(2),
+        activeCount,
+        `"${date}"`
+      ].join(';');
+    }));
+
+    const csvContent = [headers.join(';'), ...rows].join('\r\n');
+    res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+    res.setHeader('Content-Disposition', `attachment; filename="taxinexo_leads_${new Date().toISOString().slice(0, 10)}.csv"`);
+    res.send('\uFEFF' + csvContent);
+  } catch (err) {
+    console.error('[ADMIN ERROR /users/export-csv]:', err);
+    res.status(500).json({ error: 'Erro ao exportar CSV.' });
+  }
+});
 
 // Ajustar Saldo de Usuário
 router.post('/users/:id/adjust-balance', async (req, res) => {

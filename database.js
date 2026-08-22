@@ -234,6 +234,9 @@ async function initDb() {
         created_at TIMESTAMPTZ DEFAULT NOW()
       );
       CREATE INDEX IF NOT EXISTS idx_webhook_logs_created_at ON webhook_logs(created_at DESC);
+
+      ALTER TABLE users ADD COLUMN IF NOT EXISTS crm_status VARCHAR(32) DEFAULT 'new';
+      ALTER TABLE users ADD COLUMN IF NOT EXISTS crm_notes TEXT DEFAULT '';
     `);
 
     // Semeia produtos caso a tabela esteja vazia
@@ -271,6 +274,8 @@ function mapUser(row) {
     totalWithdrawn: parseFloat(row.total_withdrawn || 0),
     vipLevel: row.vip_level,
     lastCheckinDate: row.last_checkin_date,
+    crmStatus: row.crm_status || 'new',
+    crmNotes: row.crm_notes || '',
     createdAt: row.created_at
   };
 }
@@ -474,6 +479,14 @@ async function updateUser(id, fields) {
     if (fields.operatorName !== undefined) {
       setClauses.push(`operator_name = $${idx++}`);
       values.push(fields.operatorName);
+    }
+    if (fields.crmStatus !== undefined) {
+      setClauses.push(`crm_status = $${idx++}`);
+      values.push(fields.crmStatus);
+    }
+    if (fields.crmNotes !== undefined) {
+      setClauses.push(`crm_notes = $${idx++}`);
+      values.push(fields.crmNotes);
     }
 
     if (setClauses.length === 0) return await findUserById(id);

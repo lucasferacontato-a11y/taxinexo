@@ -238,6 +238,79 @@
     .btn-row-copy { background: rgba(0, 240, 255, 0.1); border-color: var(--border); color: var(--primary); padding: 4px 8px; font-size: 11px; }
     .btn-row-copy:hover { background: var(--primary); color: #000; }
 
+    /* CRM & WhatsApp Styles */
+    .btn-whatsapp {
+      background: #25D366;
+      color: #000;
+      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 11px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+      box-shadow: 0 0 10px rgba(37, 211, 102, 0.3);
+      white-space: nowrap;
+    }
+    .btn-whatsapp:hover {
+      background: #1eb954;
+      color: #fff;
+      transform: translateY(-1px);
+      box-shadow: 0 0 18px rgba(37, 211, 102, 0.7);
+    }
+    .crm-status-select {
+      background: #070d18;
+      border: 1px solid var(--border);
+      color: #fff;
+      padding: 6px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+    .crm-status-select:focus { border-color: var(--primary); box-shadow: 0 0 10px var(--primary-glow); }
+    .crm-filter-group { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    .crm-filter-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .crm-filter-btn.active, .crm-filter-btn:hover {
+      background: rgba(0, 240, 255, 0.15);
+      border-color: var(--primary);
+      color: #fff;
+    }
+    .crm-search-box {
+      background: #070d18;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: #fff;
+      padding: 8px 14px;
+      font-size: 12px;
+      outline: none;
+      min-width: 240px;
+    }
+    .crm-search-box:focus { border-color: var(--primary); box-shadow: 0 0 10px var(--primary-glow); }
+    .region-badge {
+      font-size: 10px;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.08);
+      color: #cbd5e1;
+      padding: 2px 6px;
+      border-radius: 4px;
+      margin-left: 4px;
+    }
+
     /* Auth Gate Modal */
     .admin-gate-overlay {
       position: fixed;
@@ -398,75 +471,101 @@
       </div>
     </div>
 
-    <!-- Dashboard 2-Column Panels -->
-    <div class="dashboard-grid">
+    <!-- Panel 1: Fila de Saques Pix -->
+    <section class="panel-card" style="margin-bottom: 24px;">
+      <div class="panel-head">
+        <h2>
+          <i class="fa-solid fa-money-bill-transfer" style="color: var(--accent-gold);"></i> 
+          Solicitações de Saque Pix
+          <span class="badge-count" id="withdrawals-count">0</span>
+        </h2>
+        <button class="btn-adm btn-adm-secondary" style="padding: 6px 12px; font-size: 11px;" onclick="loadWithdrawals()">
+          <i class="fa-solid fa-arrows-rotate"></i> Atualizar Saques
+        </button>
+      </div>
 
-      <!-- Panel 1: Fila de Saques Pix -->
-      <section class="panel-card">
-        <div class="panel-head">
+      <div class="table-responsive">
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>Operador</th>
+              <th>Chave Pix</th>
+              <th>Valor</th>
+              <th>Status</th>
+              <th style="text-align: right;">Ações</th>
+            </tr>
+          </thead>
+          <tbody id="withdrawals-table-body">
+            <tr>
+              <td colspan="5" style="text-align: center; color: var(--text-muted); padding: 30px;">Carregando solicitações de saque...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Panel 2: CRM de Operadores & Recuperação WhatsApp -->
+    <section class="panel-card" style="margin-bottom: 24px;">
+      <div class="panel-head" style="flex-wrap: wrap; gap: 12px;">
+        <div>
           <h2>
-            <i class="fa-solid fa-money-bill-transfer" style="color: var(--accent-gold);"></i> 
-            Solicitações de Saque Pix
-            <span class="badge-count" id="withdrawals-count">0</span>
+            <i class="fa-solid fa-users-viewfinder" style="color: #25D366;"></i> 
+            CRM de Operadores & Recuperação WhatsApp
+            <span class="badge-count" id="crm-total-count" style="background: rgba(37, 211, 102, 0.15); color: #25D366;">0 cadastros</span>
           </h2>
-          <button class="btn-adm btn-adm-secondary" style="padding: 6px 12px; font-size: 11px;" onclick="loadWithdrawals()">
-            <i class="fa-solid fa-arrows-rotate"></i> Atualizar
+          <p style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">
+            Gerencie seu funil de vendas, identifique abandonos de cadastro e chame no WhatsApp com 1 clique usando mensagens de conversão prontas.
+          </p>
+        </div>
+        
+        <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+          <button class="btn-adm btn-adm-secondary" onclick="exportLeadsCsv()" style="padding: 8px 14px; font-size: 12px;">
+            <i class="fa-solid fa-file-csv" style="color: var(--accent-green);"></i> Exportar Leads (CSV)
+          </button>
+          <button class="btn-adm btn-adm-primary" onclick="loadUsers()" style="padding: 8px 14px; font-size: 12px;">
+            <i class="fa-solid fa-arrows-rotate"></i> Atualizar CRM
+          </button>
+        </div>
+      </div>
+
+      <!-- CRM Filter & Search Bar -->
+      <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 18px; padding: 14px 16px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: var(--radius-md);">
+        <div class="crm-filter-group">
+          <button class="crm-filter-btn active" id="filter-all" onclick="filterCrmUsers('all')">
+            Todos (<span id="count-crm-all">0</span>)
+          </button>
+          <button class="crm-filter-btn" id="filter-unconverted" onclick="filterCrmUsers('unconverted')" style="border-color: rgba(250, 219, 95, 0.4); color: var(--accent-gold);">
+            🔥 Leads p/ Conversão (<span id="count-crm-unconverted">0</span>)
+          </button>
+          <button class="crm-filter-btn" id="filter-active" onclick="filterCrmUsers('active')" style="border-color: rgba(0, 255, 136, 0.4); color: var(--accent-green);">
+            🟢 Frotas Ativas (<span id="count-crm-active">0</span>)
           </button>
         </div>
 
-        <div class="table-responsive">
-          <table class="custom-table">
-            <thead>
-              <tr>
-                <th>Operador</th>
-                <th>Chave Pix</th>
-                <th>Valor</th>
-                <th>Status</th>
-                <th style="text-align: right;">Ações</th>
-              </tr>
-            </thead>
-            <tbody id="withdrawals-table-body">
-              <tr>
-                <td colspan="5" style="text-align: center; color: var(--text-muted); padding: 30px;">Carregando solicitações de saque...</td>
-              </tr>
-            </tbody>
-          </table>
+        <div>
+          <input type="text" id="crm-search-input" class="crm-search-box" placeholder="🔍 Buscar por nome, telefone ou código..." oninput="handleCrmSearch(this.value)">
         </div>
-      </section>
+      </div>
 
-      <!-- Panel 2: Operadores & Saldos -->
-      <section class="panel-card">
-        <div class="panel-head">
-          <h2>
-            <i class="fa-solid fa-users-gear" style="color: var(--primary);"></i> 
-            Operadores & Saldos
-          </h2>
-          <button class="btn-adm btn-adm-secondary" style="padding: 6px 12px; font-size: 11px;" onclick="loadUsers()">
-            <i class="fa-solid fa-arrows-rotate"></i> Atualizar
-          </button>
-        </div>
-
-        <div class="table-responsive">
-          <table class="custom-table">
-            <thead>
-              <tr>
-                <th>Operador</th>
-                <th>Telefone</th>
-                <th>Saldo Atual</th>
-                <th>Contratos</th>
-                <th style="text-align: right;">Ação</th>
-              </tr>
-            </thead>
-            <tbody id="users-table-body">
-              <tr>
-                <td colspan="5" style="text-align: center; color: var(--text-muted); padding: 30px;">Carregando operadores...</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-    </div>
+      <div class="table-responsive">
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th style="width: 20%;">Operador / Lead</th>
+              <th style="width: 25%;">WhatsApp / Ação Direta</th>
+              <th style="width: 15%;">Saldo & Frota</th>
+              <th style="width: 18%;">Status do Funil CRM</th>
+              <th style="width: 22%; text-align: right;">Ações de Gestão</th>
+            </tr>
+          </thead>
+          <tbody id="users-table-body">
+            <tr>
+              <td colspan="5" style="text-align: center; color: var(--text-muted); padding: 30px;">Carregando dados do CRM...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
 
     <!-- Panel: Monitor de Tráfego & Visitantes em Tempo Real -->
     <section class="panel-card" style="margin-bottom: 24px;">
@@ -905,52 +1004,223 @@
       }
     }
 
+    let crmUsersData = [];
+    let currentCrmFilter = 'all';
+    let currentCrmSearch = '';
+
+    function getDddRegion(phone) {
+      const digits = String(phone || '').replace(/\D/g, '');
+      const clean = digits.startsWith('55') ? digits.substring(2) : digits;
+      const ddd = clean.substring(0, 2);
+      const map = {
+        '11': 'SP', '12': 'SP', '13': 'SP', '14': 'SP', '15': 'SP', '16': 'SP', '17': 'SP', '18': 'SP', '19': 'SP',
+        '21': 'RJ', '22': 'RJ', '24': 'RJ', '27': 'ES', '28': 'ES',
+        '31': 'MG', '32': 'MG', '33': 'MG', '34': 'MG', '35': 'MG', '37': 'MG', '38': 'MG',
+        '41': 'PR', '42': 'PR', '43': 'PR', '44': 'PR', '45': 'PR', '46': 'PR',
+        '47': 'SC', '48': 'SC', '49': 'SC',
+        '51': 'RS', '53': 'RS', '54': 'RS', '55': 'RS',
+        '61': 'DF', '62': 'GO', '64': 'GO', '65': 'MT', '66': 'MT', '67': 'MS', '68': 'AC', '69': 'RO',
+        '71': 'BA', '73': 'BA', '74': 'BA', '75': 'BA', '77': 'BA', '79': 'SE',
+        '81': 'PE', '82': 'AL', '83': 'PB', '84': 'RN', '85': 'CE', '86': 'PI', '87': 'PE', '88': 'CE', '89': 'PI',
+        '91': 'PA', '92': 'AM', '93': 'PA', '94': 'PA', '95': 'RR', '96': 'AP', '97': 'AM', '98': 'MA', '99': 'MA'
+      };
+      return map[ddd] ? `${map[ddd]} (${ddd})` : `DDD ${ddd}`;
+    }
+
     async function loadUsers() {
       const tbody = document.getElementById('users-table-body');
       try {
         const res = await adminFetch('/users');
-        const users = await res.json();
+        crmUsersData = await res.json();
 
-        if (users.length === 0) {
-          tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--text-muted); padding: 30px;">Nenhum operador cadastrado ainda.<br><span style="font-size: 11px;">Novos cadastros feitos no aplicativo aparecerão aqui em tempo real.</span></td></tr>';
-          return;
+        // Atualiza contadores dos badges
+        const total = crmUsersData.length;
+        const unconverted = crmUsersData.filter(u => (u.activeContractsCount === 0 && (!u.totalDeposited || u.totalDeposited === 0))).length;
+        const active = crmUsersData.filter(u => u.activeContractsCount > 0).length;
+
+        const totalBadge = document.getElementById('crm-total-count');
+        const countAll = document.getElementById('count-crm-all');
+        const countUnconverted = document.getElementById('count-crm-unconverted');
+        const countActive = document.getElementById('count-crm-active');
+
+        if (totalBadge) totalBadge.textContent = `${total} contatos`;
+        if (countAll) countAll.textContent = total;
+        if (countUnconverted) countUnconverted.textContent = unconverted;
+        if (countActive) countActive.textContent = active;
+
+        renderCrmTable();
+      } catch (err) {
+        if (tbody) tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: #ef4444; padding: 20px;">Erro ao carregar dados do CRM.</td></tr>';
+      }
+    }
+
+    function renderCrmTable() {
+      const tbody = document.getElementById('users-table-body');
+      if (!tbody) return;
+
+      let filtered = [...crmUsersData];
+
+      // Filtro por categoria
+      if (currentCrmFilter === 'unconverted') {
+        filtered = filtered.filter(u => u.activeContractsCount === 0 && (!u.totalDeposited || u.totalDeposited === 0));
+      } else if (currentCrmFilter === 'active') {
+        filtered = filtered.filter(u => u.activeContractsCount > 0);
+      }
+
+      // Filtro por busca
+      if (currentCrmSearch) {
+        const q = currentCrmSearch.toLowerCase();
+        filtered = filtered.filter(u => 
+          (u.operatorName || '').toLowerCase().includes(q) ||
+          (u.phone || '').toLowerCase().includes(q) ||
+          (u.inviteCode || '').toLowerCase().includes(q) ||
+          (u.crmNotes || '').toLowerCase().includes(q) ||
+          (u.id || '').toLowerCase().includes(q)
+        );
+      }
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--text-muted); padding: 30px;">Nenhum lead ou operador encontrado para este filtro.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(u => {
+        const hasActive = u.activeContractsCount > 0;
+        const hasDeposited = u.hasDeposited || (u.totalDeposited > 0) || (u.balance > 0) || hasActive;
+        const dateStr = u.createdAt ? new Date(u.createdAt).toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' }) : '-';
+
+        // Formatação do Telefone e WhatsApp
+        const digits = String(u.phone || '').replace(/\D/g, '');
+        const cleanPhone = digits.startsWith('55') ? digits : `55${digits}`;
+        const region = getDddRegion(digits);
+
+        // Copy persuasiva pré-formatada para WhatsApp
+        let waMsg = '';
+        if (!hasActive) {
+          waMsg = `Olá ${u.operatorName}! Vi que você concluiu seu cadastro no TAXINEXO hoje. 🚗⚡\n\nLiberamos para você uma vaga na frota de entrada *BYD Dolphin* por apenas *R$ 30,00* com rendimento diário de *R$ 2,80 no Pix*!\n\nGostaria que eu te ajudasse a ativar sua frota agora?`;
+        } else {
+          waMsg = `Olá ${u.operatorName}! Tudo bem? Passando para acompanhar seus rendimentos com a sua frota autônoma no TAXINEXO.\n\nPrecisa de algum suporte ou deseja subir de nível para frotas de maior rendimento?`;
         }
 
-        tbody.innerHTML = users.map(u => {
-          const hasDeposited = u.hasDeposited || (u.totalDeposited > 0) || (u.balance > 0);
-          const dateStr = u.createdAt ? new Date(u.createdAt).toLocaleDateString('pt-BR') : '-';
+        const waUrl = `https://api.whatsapp.com/send?phone=${cleanPhone}&text=${encodeURIComponent(waMsg)}`;
+        const crmStatus = u.crmStatus || (hasActive ? 'active' : 'new');
 
-          return `
-            <tr>
-              <td>
-                <strong style="color: #fff; font-size: 14px;">${u.operatorName}</strong><br>
-                <span style="font-size: 11px; color: var(--accent-gold); font-family: monospace;">Convite: ${u.inviteCode}</span>
-              </td>
-              <td>
-                <span style="color: var(--text-muted); font-size: 13px;">${u.phone}</span><br>
-                <span style="font-size: 10px; color: #64748b;">Desde: ${dateStr}</span>
-              </td>
-              <td>
-                <strong style="color: var(--primary); font-size: 14px; font-family: 'Space Grotesk', sans-serif;">
-                  R$ ${formatCurrency(u.balance)}
-                </strong><br>
-                <span class="status-pill ${hasDeposited ? 'approved' : 'pending'}" style="font-size: 9px; padding: 2px 6px; margin-top: 2px;">
-                  ${hasDeposited ? 'Depositou' : 'Sem Depósito'}
-                </span>
-              </td>
-              <td>
-                <span style="font-size: 12px; color: #fff; font-weight: 600;">${u.activeContractsCount} frotas</span>
-              </td>
-              <td style="text-align: right;">
-                <button class="btn-row-action btn-row-approve" onclick="adjustUserBalance('${u.id}', '${u.operatorName}')" style="font-size: 11px;">
-                  <i class="fa-solid fa-plus-minus"></i> Ajustar Saldo
+        return `
+          <tr>
+            <td>
+              <strong style="color: #fff; font-size: 14px;">${u.operatorName}</strong><br>
+              <div style="display: flex; align-items: center; gap: 6px; margin-top: 3px;">
+                <span style="font-size: 10px; color: var(--accent-gold); font-family: monospace; background: rgba(250,219,95,0.1); padding: 1px 6px; border-radius: 4px;">Convite: ${u.inviteCode}</span>
+                <span style="font-size: 10px; color: #64748b;">${dateStr}</span>
+              </div>
+            </td>
+
+            <td>
+              <div style="display: flex; flex-direction: column; gap: 6px; align-items: flex-start;">
+                <div style="display: flex; align-items: center; gap: 6px;">
+                  <strong style="color: #fff; font-size: 13px; font-family: monospace;">${u.phone}</strong>
+                  <span class="region-badge">${region}</span>
+                </div>
+                <a href="${waUrl}" target="_blank" class="btn-whatsapp" title="Abrir conversa com mensagem de conversão pronta">
+                  <i class="fa-brands fa-whatsapp" style="font-size: 14px;"></i> Chamar no WhatsApp
+                </a>
+              </div>
+            </td>
+
+            <td>
+              <strong style="color: var(--primary); font-size: 14px; font-family: 'Space Grotesk', sans-serif;">
+                R$ ${formatCurrency(u.balance)}
+              </strong><br>
+              <span class="status-pill ${hasActive ? 'approved' : (hasDeposited ? 'pending' : 'rejected')}" style="font-size: 10px; padding: 2px 8px; margin-top: 3px;">
+                ${hasActive ? `<i class="fa-solid fa-car"></i> ${u.activeContractsCount} Frota(s)` : (hasDeposited ? 'Depositou (s/ frota)' : '🔥 Sem Depósito')}
+              </span>
+            </td>
+
+            <td>
+              <select class="crm-status-select" onchange="updateUserCrmStatus('${u.id}', this.value)" style="width: 100%;">
+                <option value="new" ${crmStatus === 'new' ? 'selected' : ''}>🔥 Novo Lead</option>
+                <option value="contacted" ${crmStatus === 'contacted' ? 'selected' : ''}>💬 Contactado (WhatsApp)</option>
+                <option value="negotiating" ${crmStatus === 'negotiating' ? 'selected' : ''}>🤝 Negociando</option>
+                <option value="active" ${crmStatus === 'active' ? 'selected' : ''}>🟢 Convertido / Ativo</option>
+                <option value="lost" ${crmStatus === 'lost' ? 'selected' : ''}>❌ Sem Interesse</option>
+              </select>
+              ${u.crmNotes ? `<div style="font-size: 11px; color: var(--accent-gold); margin-top: 4px; line-height: 1.2;"><i class="fa-solid fa-note-sticky"></i> ${u.crmNotes}</div>` : ''}
+            </td>
+
+            <td style="text-align: right;">
+              <div style="display: flex; justify-content: flex-end; gap: 6px; flex-wrap: wrap;">
+                <button class="btn-row-action btn-row-copy" onclick="updateUserCrmNote('${u.id}', '${(u.crmNotes || '').replace(/'/g, "\\'")}', '${u.operatorName}')" title="Adicionar / Editar Anotação">
+                  <i class="fa-regular fa-comment-dots"></i> Nota
                 </button>
-              </td>
-            </tr>
-          `;
-        }).join('');
+                <button class="btn-row-action btn-row-approve" onclick="adjustUserBalance('${u.id}', '${u.operatorName}')" title="Ajustar Saldo">
+                  <i class="fa-solid fa-plus-minus"></i> Saldo
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function filterCrmUsers(filter) {
+      currentCrmFilter = filter;
+      document.querySelectorAll('.crm-filter-btn').forEach(btn => btn.classList.remove('active'));
+      const activeBtn = document.getElementById(`filter-${filter}`);
+      if (activeBtn) activeBtn.classList.add('active');
+      renderCrmTable();
+    }
+
+    function handleCrmSearch(val) {
+      currentCrmSearch = (val || '').trim();
+      renderCrmTable();
+    }
+
+    async function updateUserCrmStatus(userId, newStatus) {
+      try {
+        await adminFetch(`/users/${userId}/crm`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ crmStatus: newStatus })
+        });
+        const user = crmUsersData.find(u => u.id === userId);
+        if (user) user.crmStatus = newStatus;
       } catch (err) {
-        tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: #ef4444; padding: 20px;">Erro ao carregar usuários.</td></tr>';
+        alert('Erro ao atualizar status do lead.');
+      }
+    }
+
+    async function updateUserCrmNote(userId, currentNote, userName) {
+      const note = prompt(`Anotação de atendimento para ${userName}:\n(Ex: Prometeu ativar amanhã cedo pelo Pix)`, currentNote || '');
+      if (note === null) return;
+
+      try {
+        await adminFetch(`/users/${userId}/crm`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ crmNotes: note })
+        });
+        const user = crmUsersData.find(u => u.id === userId);
+        if (user) user.crmNotes = note;
+        renderCrmTable();
+      } catch (err) {
+        alert('Erro ao salvar anotação do lead.');
+      }
+    }
+
+    async function exportLeadsCsv() {
+      try {
+        const res = await adminFetch('/users/export-csv');
+        const blob = await res.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `taxinexo_leads_${new Date().toISOString().slice(0, 10)}.csv`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+      } catch (err) {
+        alert('Erro ao baixar arquivo CSV de leads.');
       }
     }
 

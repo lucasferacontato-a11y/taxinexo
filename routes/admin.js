@@ -14,13 +14,27 @@ const {
   findProductById,
   updateProduct,
   getAnalyticsMetrics,
-  getWebhookLogs
+  getWebhookLogs,
+  getSystemSettings,
+  updateSystemSetting
 } = require('../database');
-
 
 const { processDailySettlement } = require('../services/settlementEngine');
 
 const ADMIN_KEY = process.env.ADMIN_KEY || process.env.ADMIN_PASSWORD || 'NEXO@ADMIN2026';
+
+// Rota pública para configurações do frontend (WhatsApp, Pixel)
+router.get('/public-settings', async (req, res) => {
+  try {
+    const settings = await getSystemSettings();
+    res.json({
+      whatsappNumber: settings.whatsappNumber,
+      metaPixelId: settings.metaPixelId
+    });
+  } catch (err) {
+    res.status(500).json({ error: 'Erro ao carregar configurações públicas.' });
+  }
+});
 
 // Rota para validar a Chave de Administrador
 router.post('/auth/verify', (req, res) => {
@@ -329,14 +343,30 @@ router.post('/settle', async (req, res) => {
   }
 });
 
-// Listar Logs de Webhooks (Auditoria Cartpanda)
-router.get('/webhooks', async (req, res) => {
+// Obter Configurações do Sistema (Nexus CRM, WhatsApp, Pixel)
+router.get('/settings', async (req, res) => {
   try {
-    const logs = await getWebhookLogs(50);
-    res.json(logs);
+    const settings = await getSystemSettings();
+    res.json(settings);
   } catch (err) {
-    console.error('[ADMIN ERROR /webhooks]:', err);
-    res.status(500).json({ error: 'Erro ao carregar logs de webhook.' });
+    console.error('[ADMIN ERROR /settings]:', err);
+    res.status(500).json({ error: 'Erro ao carregar configurações.' });
+  }
+});
+
+// Atualizar Configurações do Sistema
+router.put('/settings', async (req, res) => {
+  try {
+    const { nexusCrmUrl, whatsappNumber, metaPixelId } = req.body;
+    if (nexusCrmUrl !== undefined) await updateSystemSetting('nexus_crm_url', nexusCrmUrl.trim());
+    if (whatsappNumber !== undefined) await updateSystemSetting('whatsapp_number', whatsappNumber.trim());
+    if (metaPixelId !== undefined) await updateSystemSetting('meta_pixel_id', metaPixelId.trim());
+
+    const updated = await getSystemSettings();
+    res.json({ message: 'Configurações atualizadas com sucesso!', settings: updated });
+  } catch (err) {
+    console.error('[ADMIN ERROR /settings PUT]:', err);
+    res.status(500).json({ error: 'Erro ao salvar configurações.' });
   }
 });
 

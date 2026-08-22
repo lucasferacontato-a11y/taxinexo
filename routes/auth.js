@@ -2,13 +2,13 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { findUserByPhone, findUserByInviteCode, createUser } = require('../database');
+const { findUserByPhone, findUserByInviteCode, createUser, getSystemSettings } = require('../database');
 const { authMiddleware, JWT_SECRET } = require('../middleware/auth');
 
 // Cadastro
 router.post('/register', async (req, res) => {
   try {
-    const { phone, password, inviteCode } = req.body;
+    const { phone, password, inviteCode, utmSource, utmCampaign, utmMedium } = req.body;
 
     if (!phone || !password) {
       return res.status(400).json({ error: 'Telefone e senha são obrigatórios.' });
@@ -41,24 +41,31 @@ router.post('/register', async (req, res) => {
       totalWithdrawn: 0.00,
       vipLevel: 'VIP 1',
       lastCheckinDate: null,
+      utmSource: utmSource || 'meta_ads',
+      utmCampaign: utmCampaign || 'frotas_escala',
+      utmMedium: utmMedium || 'cpc',
       createdAt: new Date().toISOString()
     };
 
     await createUser(newUser);
 
     // Sincroniza novo lead automaticamente com o Nexus CRM (WhatsApp & SDR)
-    const NEXUS_CRM_URL = process.env.NEXUS_CRM_URL || 'https://limitations-sequences-similar-treated.trycloudflare.com';
-    fetch(`${NEXUS_CRM_URL}/api/leads/webhook`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        name: newUser.operatorName,
-        phone: cleanPhone,
-        campaign: 'TaxiNexo App - Cadastro',
-        utm_source: 'taxinexo_app',
-        value: 30.00
-      })
-    }).catch(e => console.warn('[NEXUS CRM SYNC WARNING]:', e.message));
+    getSystemSettings().then(settings => {
+      const crmUrl = settings.nexusCrmUrl || process.env.NEXUS_CRM_URL || 'https://limitations-sequences-similar-treated.trycloudflare.com';
+      fetch(`${crmUrl}/api/leads/webhook`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: newUser.operatorName,
+          phone: cleanPhone,
+          campaign: utmCampaign || 'TaxiNexo - Cadastro Direto',
+          utm_source: utmSource || 'meta_ads',
+          utm_campaign: utmCampaign || 'frotas_escala',
+          utm_medium: utmMedium || 'cpc',
+          value: 30.00
+        })
+      }).catch(e => console.warn('[NEXUS CRM SYNC WARNING]:', e.message));
+    }).catch(() => {});
 
     const token = jwt.sign({ userId: newUser.id }, JWT_SECRET, { expiresIn: '365d' });
 

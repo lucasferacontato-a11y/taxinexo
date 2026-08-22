@@ -593,6 +593,12 @@
       const inviteCode = document.getElementById('reg-invite').value.trim();
       const btn = document.getElementById('btn-register-action');
 
+      // Coleta UTMs salvas da navegação
+      const urlParams = new URLSearchParams(window.location.search);
+      const utmSource = urlParams.get('utm_source') || sessionStorage.getItem('tn_utm_source') || localStorage.getItem('tn_utm_source') || 'meta_ads';
+      const utmCampaign = urlParams.get('utm_campaign') || sessionStorage.getItem('tn_utm_campaign') || localStorage.getItem('tn_utm_campaign') || 'frotas_escala';
+      const utmMedium = urlParams.get('utm_medium') || sessionStorage.getItem('tn_utm_medium') || localStorage.getItem('tn_utm_medium') || 'cpc';
+
       btn.disabled = true;
       btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Criando Conta...';
 
@@ -600,16 +606,19 @@
         const res = await fetch(`${API_BASE}/auth/register`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ phone, password, inviteCode })
+          body: JSON.stringify({ phone, password, inviteCode, utmSource, utmCampaign, utmMedium })
         });
 
         const data = await res.json();
 
         if (res.ok && data.token) {
+          if (window.fbq) {
+            fbq('track', 'CompleteRegistration');
+          }
+
           showAlert('🎉 Conta criada com sucesso! Acessando painel...', 'success');
           localStorage.setItem('taxinexo_token', data.token);
           setTimeout(() => {
-            const urlParams = new URLSearchParams(window.location.search);
             const redirectTarget = urlParams.get('redirect');
             let destination = './';
             if (redirectTarget && redirectTarget.startsWith('hire_')) {
@@ -629,7 +638,7 @@
       }
     }
 
-    // Auto-preenchimento do Código de Indicação via URL (?ref=CODIGO)
+    // Auto-preenchimento do Código de Indicação via URL (?ref=CODIGO) & Meta Pixel
     window.addEventListener('DOMContentLoaded', () => {
       const urlParams = new URLSearchParams(window.location.search);
       const refCode = urlParams.get('ref') || urlParams.get('r') || urlParams.get('convite');
@@ -641,6 +650,22 @@
           showAlert(`🤝 Código de convite "${refCode.trim()}" aplicado com sucesso!`, 'success');
         }
       }
+
+      // Meta Pixel dynamic init
+      fetch('/api/admin/public-settings').then(r => r.json()).then(settings => {
+        if (settings.metaPixelId && !window.fbq) {
+          !function(f,b,e,v,n,t,s)
+          {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+          n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+          if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+          n.queue=[];t=b.createElement(e);t.async=!0;
+          t.src=v;s=b.getElementsByTagName(e)[0];
+          s.parentNode.insertBefore(t,s)}(window, document,'script',
+          'https://connect.facebook.net/en_US/fbevents.js');
+          fbq('init', settings.metaPixelId);
+          fbq('track', 'PageView');
+        }
+      }).catch(() => {});
     });
 
   </script>

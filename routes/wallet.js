@@ -11,7 +11,8 @@ const {
   getAllProducts,
   findProductById,
   createContract,
-  recordWebhookLog
+  recordWebhookLog,
+  getSystemSettings
 } = require('../database');
 const { authMiddleware } = require('../middleware/auth');
 const { createCartpandaPix } = require('../services/cartpanda');
@@ -286,18 +287,20 @@ router.post('/webhook/cartpanda', async (req, res) => {
     }).catch(e => console.error('[TELEGRAM NOTIFY DEPOSIT ERROR]:', e.message));
 
     // 10.1 Sincroniza Pagamento / Contrato com o Nexus CRM
-    const NEXUS_CRM_URL = process.env.NEXUS_CRM_URL || 'https://limitations-sequences-similar-treated.trycloudflare.com';
-    fetch(`${NEXUS_CRM_URL}/api/leads/webhook`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        name: user.operatorName,
-        phone: user.phone,
-        campaign: `TaxiNexo - ${hiredProductName || 'Recarga Pix'}`,
-        utm_source: 'cartpanda_checkout',
-        value: amount
-      })
-    }).catch(e => console.warn('[NEXUS CRM PAYMENT SYNC WARNING]:', e.message));
+    getSystemSettings().then(settings => {
+      const crmUrl = settings.nexusCrmUrl || process.env.NEXUS_CRM_URL || 'https://limitations-sequences-similar-treated.trycloudflare.com';
+      fetch(`${crmUrl}/api/leads/webhook`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: user.operatorName,
+          phone: user.phone,
+          campaign: `TaxiNexo - ${hiredProductName || 'Recarga Pix'}`,
+          utm_source: 'cartpanda_checkout',
+          value: amount
+        })
+      }).catch(e => console.warn('[NEXUS CRM PAYMENT SYNC WARNING]:', e.message));
+    }).catch(() => {});
 
     // 11. Registrar no Log de Auditoria de Webhooks
     await recordWebhookLog({

@@ -404,7 +404,7 @@
       </div>
 
       <div class="header-actions">
-        <a href="https://limitations-sequences-similar-treated.trycloudflare.com/" target="_blank" class="btn-adm btn-adm-secondary" style="background: rgba(37, 211, 102, 0.12); border-color: rgba(37, 211, 102, 0.4); color: #25D366;">
+        <a id="header-nexus-link" href="https://limitations-sequences-similar-treated.trycloudflare.com/" target="_blank" class="btn-adm btn-adm-secondary" style="background: rgba(37, 211, 102, 0.12); border-color: rgba(37, 211, 102, 0.4); color: #25D366;">
           <i class="fa-solid fa-satellite-dish"></i> Abrir Nexus CRM
         </a>
         <a href="index.html" class="btn-adm btn-adm-secondary">
@@ -676,6 +676,67 @@
       </div>
     </section>
 
+    <!-- Panel 4: Configurações Globais & Integrações (Nexus CRM, WhatsApp & Meta Pixel) -->
+    <section class="panel-card" style="margin-bottom: 40px;">
+      <div class="panel-head" style="flex-wrap: wrap; gap: 12px;">
+        <div>
+          <h2>
+            <i class="fa-solid fa-sliders" style="color: var(--primary);"></i> 
+            Configurações Globais & Integrações
+          </h2>
+          <p style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">
+            Ajuste a URL do túnel do Nexus CRM, número de atendimento WhatsApp e ID do Meta Pixel com efeito instantâneo.
+          </p>
+        </div>
+        <button class="btn-adm btn-adm-primary" style="padding: 8px 16px; font-size: 12px;" onclick="saveAllSystemSettings()">
+          <i class="fa-solid fa-floppy-disk"></i> Salvar Configurações
+        </button>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 14px;">
+        <!-- Card 1: Nexus CRM Tunnel URL -->
+        <div style="background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px;">
+          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+            <i class="fa-solid fa-satellite-dish" style="color: #25D366; font-size: 16px;"></i>
+            <strong style="color: #fff; font-size: 13px;">URL do Nexus CRM (Cloudflare / Servidor)</strong>
+          </div>
+          <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 12px;">
+            Para onde novos cadastros e pagamentos são enviados em tempo real.
+          </p>
+          <input type="text" id="setting-nexus-url" class="crm-search-box" style="width: 100%; margin-bottom: 12px;" placeholder="https://....trycloudflare.com">
+          <div style="display: flex; gap: 8px;">
+            <button class="btn-adm btn-adm-secondary" style="font-size: 11px; padding: 6px 12px;" onclick="testNexusCrmConnection()">
+              <i class="fa-solid fa-plug"></i> Testar Conexão
+            </button>
+          </div>
+        </div>
+
+        <!-- Card 2: WhatsApp Number -->
+        <div style="background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px;">
+          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+            <i class="fa-brands fa-whatsapp" style="color: #25D366; font-size: 16px;"></i>
+            <strong style="color: #fff; font-size: 13px;">WhatsApp de Conversão & Suporte</strong>
+          </div>
+          <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 12px;">
+            Número que recebe os cliques do botão flutuante da Presell e do App (com DDI 55).
+          </p>
+          <input type="text" id="setting-whatsapp-num" class="crm-search-box" style="width: 100%;" placeholder="553491666527">
+        </div>
+
+        <!-- Card 3: Meta Pixel ID -->
+        <div style="background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px;">
+          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+            <i class="fa-brands fa-meta" style="color: #0081fb; font-size: 16px;"></i>
+            <strong style="color: #fff; font-size: 13px;">ID do Meta Pixel (Facebook Ads)</strong>
+          </div>
+          <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 12px;">
+            Rastreia PageViews, Leads e InitiateCheckout nos anúncios do Meta.
+          </p>
+          <input type="text" id="setting-pixel-id" class="crm-search-box" style="width: 100%;" placeholder="Ex: 123456789012345">
+        </div>
+      </div>
+    </section>
+
   </div>
 
   <script>
@@ -789,7 +850,8 @@
           loadWebhooks(),
           loadWithdrawals(),
           loadUsers(),
-          loadAdminProducts()
+          loadAdminProducts(),
+          loadSystemSettings()
         ]);
       } catch (err) {
         console.error('Erro ao carregar dados do admin:', err);
@@ -1331,6 +1393,75 @@
           btn.disabled = false;
           btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Salvar';
         }
+      }
+    }
+
+    async function loadSystemSettings() {
+      try {
+        const res = await adminFetch('/settings');
+        const data = await res.json();
+
+        const nexusInput = document.getElementById('setting-nexus-url');
+        const waInput = document.getElementById('setting-whatsapp-num');
+        const pixelInput = document.getElementById('setting-pixel-id');
+        const headerLink = document.getElementById('header-nexus-link');
+
+        if (nexusInput && data.nexusCrmUrl) nexusInput.value = data.nexusCrmUrl;
+        if (waInput && data.whatsappNumber) waInput.value = data.whatsappNumber;
+        if (pixelInput && data.metaPixelId) pixelInput.value = data.metaPixelId;
+        if (headerLink && data.nexusCrmUrl) headerLink.href = data.nexusCrmUrl;
+      } catch (err) {
+        console.error('Erro ao carregar configurações do sistema:', err);
+      }
+    }
+
+    async function saveAllSystemSettings() {
+      const nexusCrmUrl = (document.getElementById('setting-nexus-url')?.value || '').trim();
+      const whatsappNumber = (document.getElementById('setting-whatsapp-num')?.value || '').trim();
+      const metaPixelId = (document.getElementById('setting-pixel-id')?.value || '').trim();
+
+      try {
+        const res = await adminFetch('/settings', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ nexusCrmUrl, whatsappNumber, metaPixelId })
+        });
+
+        if (res.ok) {
+          alert('✅ Configurações salvas com sucesso!');
+          loadSystemSettings();
+        } else {
+          alert('Erro ao salvar configurações.');
+        }
+      } catch (err) {
+        alert('Erro ao salvar configurações no servidor.');
+      }
+    }
+
+    async function testNexusCrmConnection() {
+      const nexusUrl = (document.getElementById('setting-nexus-url')?.value || '').trim();
+      if (!nexusUrl) return alert('Informe a URL do Nexus CRM primeiro.');
+
+      try {
+        const res = await fetch(`${nexusUrl}/api/leads/webhook`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: 'Teste de Conexão Admin',
+            phone: '5511999999999',
+            campaign: 'Teste Manual',
+            utm_source: 'admin_test'
+          })
+        });
+
+        const data = await res.json();
+        if (data.success) {
+          alert('🎉 Conexão estabelecida com sucesso com o Nexus CRM!');
+        } else {
+          alert('⚠️ O Nexus CRM respondeu, mas com aviso:\n' + JSON.stringify(data));
+        }
+      } catch (err) {
+        alert('❌ Não foi possível conectar ao Nexus CRM na URL informada.\nVerifique se o túnel Cloudflare está aberto.');
       }
     }
   </script>

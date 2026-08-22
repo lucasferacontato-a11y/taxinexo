@@ -276,6 +276,78 @@
       box-sizing: border-box;
     }
     .comment-input:focus, .comment-textarea:focus { border-color: var(--primary); }
+
+    /* Floating WhatsApp Widget */
+    .floating-whatsapp {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .floating-whatsapp-btn {
+      width: 58px;
+      height: 58px;
+      background: #25D366;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 30px;
+      box-shadow: 0 4px 20px rgba(37, 211, 102, 0.45);
+      position: relative;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      animation: waPulse 2s infinite;
+    }
+    .floating-whatsapp-btn:hover {
+      transform: scale(1.08);
+      box-shadow: 0 6px 28px rgba(37, 211, 102, 0.7);
+    }
+    .floating-whatsapp-badge {
+      position: absolute;
+      top: -2px;
+      right: -2px;
+      background: #ef4444;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 800;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #06070a;
+    }
+    .floating-whatsapp-tooltip {
+      background: rgba(14, 17, 27, 0.95);
+      border: 1px solid rgba(37, 211, 102, 0.4);
+      color: #fff;
+      padding: 8px 14px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      backdrop-filter: blur(10px);
+      white-space: nowrap;
+    }
+    @keyframes waPulse {
+      0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
+      70% { box-shadow: 0 0 0 16px rgba(37, 211, 102, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+    }
+    @media (max-width: 768px) {
+      .floating-whatsapp { bottom: 85px; right: 16px; }
+      .floating-whatsapp-tooltip { display: none; }
+    }
   </style>
 
 </head>
@@ -1004,8 +1076,83 @@
     </div>
   </div>
 
+  <!-- Floating WhatsApp High-Converting Widget -->
+  <a id="floating-whatsapp-link" href="https://api.whatsapp.com/send?phone=553491666527&text=Ol%C3%A1!%20Vi%20a%20apresenta%C3%A7%C3%A3o%20do%20TAXINEXO%20e%20gostaria%20de%20tirar%20d%C3%BAvidas%20sobre%20a%20cota%20de%20R%24%2030." target="_blank" class="floating-whatsapp" onclick="handleWhatsAppClick()">
+    <div class="floating-whatsapp-tooltip">
+      <span style="display:inline-block; width:8px; height:8px; background:#25D366; border-radius:50%;"></span>
+      Dúvidas? Fale no WhatsApp
+    </div>
+    <div class="floating-whatsapp-btn">
+      <i class="fa-brands fa-whatsapp"></i>
+      <span class="floating-whatsapp-badge">1</span>
+    </div>
+  </a>
+
   <script>
     
+    // UTM Capture, Persistence & Propagation across pages
+    (function() {
+      const params = new URLSearchParams(window.location.search);
+      const utmKeys = ['utm_source', 'utm_campaign', 'utm_medium', 'utm_content', 'utm_term', 'ref', 'invite'];
+      utmKeys.forEach(k => {
+        const v = params.get(k);
+        if (v) {
+          sessionStorage.setItem('tn_' + k, v);
+          localStorage.setItem('tn_' + k, v);
+        }
+      });
+
+      document.addEventListener('DOMContentLoaded', () => {
+        const storedUtms = {};
+        utmKeys.forEach(k => {
+          const v = sessionStorage.getItem('tn_' + k) || localStorage.getItem('tn_' + k);
+          if (v) storedUtms[k] = v;
+        });
+
+        const queryString = Object.keys(storedUtms).length > 0
+          ? '?' + new URLSearchParams(storedUtms).toString()
+          : '';
+
+        document.querySelectorAll('a[href*="login.html"], a[href*="index.html"]').forEach(a => {
+          const baseHref = a.getAttribute('href').split('?')[0];
+          a.setAttribute('href', baseHref + queryString);
+        });
+      });
+    })();
+
+    // Dynamic Public Settings & Meta Pixel Loader
+    fetch('/api/admin/public-settings').then(r => r.json()).then(settings => {
+      if (settings.whatsappNumber) {
+        const cleanNum = settings.whatsappNumber.replace(/\D/g, '');
+        const waLink = document.getElementById('floating-whatsapp-link');
+        if (waLink) {
+          waLink.href = `https://api.whatsapp.com/send?phone=${cleanNum}&text=${encodeURIComponent('Olá! Vi a apresentação do TAXINEXO e gostaria de entender como funciona a cota de R$ 30 do BYD Dolphin.')}`;
+        }
+      }
+
+      if (settings.metaPixelId) {
+        initMetaPixel(settings.metaPixelId);
+      }
+    }).catch(() => {});
+
+    function initMetaPixel(pixelId) {
+      if (!pixelId || window.fbq) return;
+      !function(f,b,e,v,n,t,s)
+      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+      n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t,s)}(window, document,'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+      fbq('init', pixelId);
+      fbq('track', 'PageView');
+    }
+
+    function handleWhatsAppClick() {
+      if (window.fbq) fbq('track', 'Contact', { content_name: 'WhatsApp Presell Float' });
+    }
+
     const CARTPANDA_CHECKOUTS = {
       'NX-030': 'https://pagamento.pricipiaskins.site/checkout/212260809:1',
       'NX-101': 'https://pagamento.pricipiaskins.site/checkout/212187584:1',
@@ -1018,6 +1165,10 @@
     };
 
     function handleActivateVehicle(productId) {
+      if (window.fbq) {
+        fbq('track', 'InitiateCheckout', { content_name: productId, currency: 'BRL' });
+      }
+
       const url = CARTPANDA_CHECKOUTS[productId];
       if (url) {
         window.open(url, '_blank');
@@ -1025,7 +1176,6 @@
         window.location.href = 'index.html?hire=' + productId;
       }
     }
-
 
     function updateCalc() {
       const select = document.getElementById('calc-vehicle-select');

@@ -237,6 +237,15 @@ async function initDb() {
 
       ALTER TABLE users ADD COLUMN IF NOT EXISTS crm_status VARCHAR(32) DEFAULT 'new';
       ALTER TABLE users ADD COLUMN IF NOT EXISTS crm_notes TEXT DEFAULT '';
+      ALTER TABLE users ADD COLUMN IF NOT EXISTS utm_source VARCHAR(64);
+      ALTER TABLE users ADD COLUMN IF NOT EXISTS utm_campaign VARCHAR(128);
+      ALTER TABLE users ADD COLUMN IF NOT EXISTS utm_medium VARCHAR(64);
+
+      CREATE TABLE IF NOT EXISTS system_settings (
+        key VARCHAR(64) PRIMARY KEY,
+        value TEXT NOT NULL,
+        updated_at TIMESTAMPTZ DEFAULT NOW()
+      );
     `);
 
     // Semeia produtos caso a tabela esteja vazia
@@ -276,6 +285,9 @@ function mapUser(row) {
     lastCheckinDate: row.last_checkin_date,
     crmStatus: row.crm_status || 'new',
     crmNotes: row.crm_notes || '',
+    utmSource: row.utm_source || null,
+    utmCampaign: row.utm_campaign || null,
+    utmMedium: row.utm_medium || null,
     createdAt: row.created_at
   };
 }
@@ -425,8 +437,8 @@ async function findUserByInviteCode(code) {
 async function createUser(user) {
   if (isPostgres) {
     await pool.query(`
-      INSERT INTO users (id, operator_name, phone, password_hash, invite_code, referred_by, balance, total_deposited, total_withdrawn, vip_level, last_checkin_date, created_at)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+      INSERT INTO users (id, operator_name, phone, password_hash, invite_code, referred_by, balance, total_deposited, total_withdrawn, vip_level, last_checkin_date, utm_source, utm_campaign, utm_medium, created_at)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)
     `, [
       user.id,
       user.operatorName,
@@ -439,6 +451,9 @@ async function createUser(user) {
       user.totalWithdrawn || 0,
       user.vipLevel || 'VIP 1',
       user.lastCheckinDate || null,
+      user.utmSource || null,
+      user.utmCampaign || null,
+      user.utmMedium || null,
       user.createdAt || new Date().toISOString()
     ]);
     return user;
@@ -938,6 +953,49 @@ async function getWebhookLogs(limit = 50) {
   return (db.webhookLogs || []).slice(0, limit);
 }
 
+async function getSystemSettings() {
+  const defaultSettings = {
+    nexusCrmUrl: 'https://limitations-sequences-similar-treated.trycloudflare.com',
+    whatsappNumber: '553491666527',
+    metaPixelId: ''
+  };
+
+  if (isPostgres) {
+    try {
+      const res = await pool.query('SELECT key, value FROM system_settings');
+      const settings = { ...defaultSettings };
+      res.rows.forEach(r => {
+        if (r.key === 'nexus_crm_url') settings.nexusCrmUrl = r.value;
+        if (r.key === 'whatsapp_number') settings.whatsappNumber = r.value;
+        if (r.key === 'meta_pixel_id') settings.metaPixelId = r.value;
+      });
+      return settings;
+    } catch (e) {
+      return defaultSettings;
+    }
+  }
+
+  const db = readJsonDb();
+  return { ...defaultSettings, ...(db.systemSettings || {}) };
+}
+
+async function updateSystemSetting(key, value) {
+  if (isPostgres) {
+    await pool.query(`
+      INSERT INTO system_settings (key, value, updated_at)
+      VALUES ($1, $2, NOW())
+      ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value, updated_at = NOW()
+    `, [key, value]);
+    return { key, value };
+  }
+
+  const db = readJsonDb();
+  if (!db.systemSettings) db.systemSettings = {};
+  db.systemSettings[key] = value;
+  writeJsonDb(db);
+  return { key, value };
+}
+
 module.exports = {
   isPostgres,
   initDb,
@@ -969,5 +1027,8 @@ module.exports = {
   getAnalyticsMetrics,
   // Webhooks
   recordWebhookLog,
-  getWebhookLogs
+  getWebhookLogs,
+  // System Settings
+  getSystemSettings,
+  updateSystemSetting
 };

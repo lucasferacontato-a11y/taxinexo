@@ -94,13 +94,23 @@ router.get('/withdrawals', async (req, res) => {
     const allTx = await getAllTransactions();
     const withdrawals = allTx.filter(t => t.type === 'withdraw');
     
-    // Enriquece cada saque com o nome e telefone do operador
+    // Enriquece cada saque com o nome, telefone, total depositado e contratos do operador
     const enrichedWithdrawals = await Promise.all(withdrawals.map(async (t) => {
       const user = await findUserById(t.userId);
+      const userContracts = user ? await getContractsByUserId(user.id) : [];
+      const activeContracts = userContracts.filter(c => c.status === 'Em corrida');
+      const totalDeposited = parseFloat(user ? user.totalDeposited || 0 : 0);
+      const hasDeposited = Boolean(totalDeposited > 0 || activeContracts.length > 0);
+
       return {
         ...t,
         userName: user ? user.operatorName : 'Operador #' + t.userId,
-        userPhone: user ? user.phone : 'Não informado'
+        userPhone: user ? user.phone : 'Não informado',
+        userBalance: user ? parseFloat(user.balance || 0) : 0,
+        totalDeposited: totalDeposited,
+        activeContractsCount: activeContracts.length,
+        hasDeposited: hasDeposited,
+        activeContractsNames: activeContracts.map(c => c.productName).join(', ')
       };
     }));
 

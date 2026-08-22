@@ -465,10 +465,15 @@ async function broadcastDailySettlement({ settlementsProcessed, totalCredited })
 /**
  * Envia notificação privada ao Administrador sobre novo pedido de saque Pix
  */
-async function notifyAdminWithdrawal({ operatorName, phone, amount, pixKey, txId }) {
+async function notifyAdminWithdrawal({ operatorName, phone, amount, pixKey, txId, totalDeposited = 0, activeContractsCount = 0 }) {
   if (!token) return;
   const format = (v) => new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2 }).format(v);
   const now = new Date().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' });
+
+  const isDepositor = totalDeposited > 0 || activeContractsCount > 0;
+  const depositStatusText = isDepositor
+    ? '✅ *Depósitos Confirmados:* R$ ' + format(totalDeposited) + ' (' + activeContractsCount + ' frotas ativas)'
+    : '⚠️ *ALERTA:* Operador NUNCA depositou nem ativou frotas!';
 
   const msg =
     '🚨 *[NOVA SOLICITAÇÃO DE SAQUE PIX]* 💸\n\n' +
@@ -476,9 +481,12 @@ async function notifyAdminWithdrawal({ operatorName, phone, amount, pixKey, txId
     '📱 *Telefone:* ' + (phone || '-') + '\n' +
     '💰 *Valor Solicitado:* `R$ ' + format(amount) + '`\n' +
     '🔑 *Chave Pix:* `' + pixKey + '`\n' +
+    '📊 *Status de Depósito:* ' + depositStatusText + '\n' +
     '🆔 *Transação:* `' + txId + '`\n' +
     '⏰ *Horário:* ' + now + '\n\n' +
-    '👉 *Ação:* Copie a Chave Pix acima, realize a transferência no seu banco e aprove a transação no painel administrativo.';
+    (isDepositor 
+      ? '👉 *Ação:* Copie a Chave Pix acima, realize a transferência no seu banco e aprove a transação no painel administrativo.'
+      : '⛔ *ATENÇÃO:* Verifique a legitimidade antes de pagar qualquer valor a este usuário.');
 
   const targets = Array.from(adminChatIds);
   // Se nenhum admin privado estiver registrado, notifica o chat do grupo como fallback

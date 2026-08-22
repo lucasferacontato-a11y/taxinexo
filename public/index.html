@@ -335,6 +335,9 @@
           <button class="btn-close" onclick="closeModal('modal-withdraw')" aria-label="Fechar">&times;</button>
         </div>
         <div class="modal-body">
+          <div id="withdraw-cota-warning" style="display: none; background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.35); border-radius: var(--radius-sm); padding: 10px 12px; margin-bottom: 14px; font-size: 12px; color: #fbbf24; line-height: 1.5;">
+            <i class="fa-solid fa-triangle-exclamation"></i> <strong>Requisito Operacional:</strong> Para solicitar saques via Pix, você precisa ter pelo menos 1 cota de veículo ativa (a partir de R$ 30,00).
+          </div>
           <p class="modal-info">Saldo disponível: <strong id="withdraw-available" style="color: var(--accent-green);">R$ 0,00</strong></p>
           <label>Chave Pix cadastrada (CPF/Telefone/Email):</label>
           <input type="text" id="withdraw-key" placeholder="Insira sua Chave Pix">

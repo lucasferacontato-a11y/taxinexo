@@ -630,6 +630,12 @@ function openModal(modalId) {
   if (modalId === 'modal-withdraw') {
     const withdrawAvail = document.getElementById('withdraw-available');
     if (withdrawAvail) withdrawAvail.textContent = `R$ ${formatCurrency(appState.balance)}`;
+
+    const warnEl = document.getElementById('withdraw-cota-warning');
+    const hasContract = appState.activeVehicles && appState.activeVehicles.length > 0;
+    if (warnEl) {
+      warnEl.style.display = hasContract ? 'none' : 'block';
+    }
   } else if (modalId === 'modal-deposit') {
     renderDepositPlans();
   }
@@ -673,6 +679,7 @@ function renderDepositPlans() {
 }
 
 const CARTPANDA_CHECKOUTS = {
+  'NX-030': 'https://pagamento.pricipiaskins.site/checkout/212260809:1',
   'NX-101': 'https://pagamento.pricipiaskins.site/checkout/212187584:1',
   'NX-202': 'https://pagamento.pricipiaskins.site/checkout/212187589:1',
   'NX-707': 'https://pagamento.pricipiaskins.site/checkout/212187590:1',

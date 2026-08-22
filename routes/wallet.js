@@ -377,9 +377,24 @@ router.post('/withdraw', authMiddleware, async (req, res) => {
     }
 
     const user = await findUserById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ error: 'Usuário não encontrado.' });
+    }
 
     if (numAmount > user.balance) {
       return res.status(400).json({ error: 'Saldo insuficiente para saque.' });
+    }
+
+    // TRAVA DE SEGURANÇA: Verificar se o usuário possui cota ativa ou realizou depósito
+    const userContracts = await getContractsByUserId(user.id);
+    const activeContracts = userContracts.filter(c => c.status === 'Em corrida');
+    const totalDeposited = parseFloat(user.totalDeposited || 0);
+
+    if (totalDeposited < 30 && activeContracts.length === 0) {
+      console.warn(`[SECURITY ALERT] Tentativa de saque bloqueada: Operador ${user.operatorName} (${user.phone}) tentou sacar R$ ${numAmount.toFixed(2)} sem possuir cotas ativas nem depósitos.`);
+      return res.status(403).json({
+        error: 'Para solicitar saques via Pix, você precisa ter pelo menos 1 cota de veículo ativa (a partir de R$ 30,00 da cota de entrada) ou ter realizado recarga inicial.'
+      });
     }
 
     const newBalance = user.balance - numAmount;
@@ -402,13 +417,15 @@ router.post('/withdraw', authMiddleware, async (req, res) => {
       createdAt: new Date().toISOString()
     });
 
-    // Dispara notificação imediata para o Telegram do Administrador
+    // Dispara notificação imediata e detalhada para o Telegram do Administrador
     notifyAdminWithdrawal({
       operatorName: user.operatorName,
       phone: user.phone,
       amount: numAmount,
       pixKey: pixKey,
-      txId: txId
+      txId: txId,
+      totalDeposited: totalDeposited,
+      activeContractsCount: activeContracts.length
     }).catch(err => console.error('[ADMIN NOTIFY WITHDRAW ERROR]:', err));
 
     res.json({

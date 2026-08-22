@@ -1001,12 +1001,20 @@
           const pix = w.pixKey || 'N/A';
           const name = w.userName || ('Operador #' + w.userId);
           const phone = w.userPhone || '-';
+          const hasDeposited = Boolean(w.hasDeposited);
+          const totalDep = parseFloat(w.totalDeposited || 0);
+          const activeContracts = w.activeContractsCount || 0;
+
+          const depositBadge = hasDeposited
+            ? `<div style="margin-top: 4px;"><span style="display:inline-flex; align-items:center; gap:4px; padding: 2px 7px; border-radius: 4px; font-size: 10.5px; background: rgba(16,185,129,0.15); color: #10B981; border: 1px solid rgba(16,185,129,0.4); font-weight:700;"><i class="fa-solid fa-circle-check"></i> Depositou R$ ${formatCurrency(totalDep)} (${activeContracts} frotas)</span></div>`
+            : `<div style="margin-top: 4px;"><span style="display:inline-flex; align-items:center; gap:4px; padding: 2px 7px; border-radius: 4px; font-size: 10.5px; background: rgba(239,68,68,0.22); color: #f87171; border: 1px solid rgba(239,68,68,0.6); font-weight: 800;"><i class="fa-solid fa-triangle-exclamation"></i> ⚠️ NENHUM DEPÓSITO (NÃO PAGAR)</span></div>`;
 
           return `
-            <tr>
+            <tr style="${!hasDeposited && isPending ? 'background: rgba(239,68,68,0.06);' : ''}">
               <td>
                 <strong style="color: #fff; font-size: 14px;">${name}</strong><br>
                 <span style="font-size: 11px; color: var(--text-muted);"><i class="fa-solid fa-phone" style="font-size: 10px;"></i> ${phone}</span>
+                ${depositBadge}
               </td>
               <td>
                 <div style="display: flex; align-items: center; gap: 6px;">
@@ -1030,7 +1038,7 @@
               <td style="text-align: right;">
                 ${isPending ? `
                   <div style="display: flex; justify-content: flex-end; gap: 6px;">
-                    <button class="btn-row-action btn-row-approve" onclick="approveWithdrawal('${w.id}')" title="Marcar como Pago">
+                    <button class="btn-row-action btn-row-approve" onclick="handleAdminApproveWithdrawal('${w.id}', ${hasDeposited})" title="Marcar como Pago">
                       <i class="fa-solid fa-check"></i> Aprovar
                     </button>
                     <button class="btn-row-action btn-row-reject" onclick="rejectWithdrawal('${w.id}')" title="Rejeitar e Estornar">
@@ -1053,8 +1061,18 @@
       });
     }
 
-    async function approveWithdrawal(id) {
-      if (confirm('Confirmar aprovação deste saque?')) {
+    async function handleAdminApproveWithdrawal(id, hasDeposited) {
+      if (!hasDeposited) {
+        const proceed = confirm('⚠️ ATENÇÃO CRÍTICA!\n\nEste operador NUNCA realizou nenhum depósito nem ativou frotas na plataforma (saldo originado de check-in, testes ou ajustes manuais).\n\nTem certeza absoluta de que deseja aprovar o pagamento para este usuário?');
+        if (!proceed) return;
+      } else {
+        if (!confirm('Confirmar aprovação deste saque Pix?')) return;
+      }
+      await approveWithdrawal(id, true);
+    }
+
+    async function approveWithdrawal(id, skipConfirm = false) {
+      if (skipConfirm || confirm('Confirmar aprovação deste saque?')) {
         await adminFetch('/withdrawals/' + id + '/approve', { method: 'POST' });
         alert('✅ Saque aprovado com sucesso!');
         loadAllAdminData();

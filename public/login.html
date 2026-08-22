@@ -15,19 +15,20 @@
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300..800;1,300..800&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800;900&family=Plus+Jakarta+Sans:ital,wght@0,300..800;1,300..800&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
   <style>
     :root {
       --bg-main: #030508;
-      --bg-card: rgba(13, 17, 28, 0.90);
+      --bg-card: rgba(11, 15, 28, 0.85);
       --primary: #00F0FF;
       --primary-gradient: linear-gradient(135deg, #00F0FF 0%, #0066FF 100%);
-      --accent-gold: #FADB5F;
+      --accent-gold: #FFD700;
+      --gold-gradient: linear-gradient(135deg, #FFE066 0%, #F59E0B 50%, #D97706 100%);
       --accent-green: #00FF88;
       --border-color: rgba(0, 240, 255, 0.25);
-      --text-main: #F1F5F9;
+      --text-main: #F8FAFC;
       --text-muted: #94A3B8;
       --radius-lg: 22px;
       --radius-md: 14px;
@@ -49,7 +50,7 @@
     html, body {
       background-color: #030508 !important;
       background: radial-gradient(circle at 50% 20%, #0b1528 0%, #030508 80%) !important;
-      color: #F1F5F9 !important;
+      color: #F8FAFC !important;
       font-family: 'Plus Jakarta Sans', sans-serif;
       letter-spacing: -0.015em;
       min-height: 100vh;
@@ -60,11 +61,9 @@
       overflow-x: hidden;
     }
 
-    h1, h2, h3, h4, .brand-logo span {
-      font-family: 'Space Grotesk', 'Plus Jakarta Sans', sans-serif;
+    h1, h2, h3, h4, .brand-logo span, .auth-brand-title {
+      font-family: 'Outfit', 'Space Grotesk', sans-serif;
       letter-spacing: -0.03em;
-    }
-
     }
 
     .auth-wrapper {
@@ -248,11 +247,13 @@
 
     /* Buttons */
     .btn {
+      position: relative;
+      overflow: hidden;
       width: 100%;
-      padding: 14px;
+      padding: 15px;
       border-radius: var(--radius-md);
       border: none;
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 800;
       cursor: pointer;
       display: flex;
@@ -261,20 +262,37 @@
       gap: 8px;
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      font-family: 'Space Grotesk', sans-serif;
-      transition: all 0.25s ease;
+      font-family: 'Outfit', 'Space Grotesk', sans-serif;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    }
+
+    .btn::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -70%;
+      width: 45%;
+      height: 200%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+      transform: rotate(25deg);
+      animation: btnShimmer 4s infinite cubic-bezier(0.19, 1, 0.22, 1);
+    }
+    @keyframes btnShimmer {
+      0% { left: -70%; }
+      30%, 100% { left: 150%; }
     }
 
     .btn-primary {
       background: var(--primary-gradient);
-      color: #000000 !important;
-      border: 1px solid rgba(255, 255, 255, 0.4);
-      box-shadow: 0 4px 18px rgba(0, 240, 255, 0.45);
+      color: #030508 !important;
+      border: 1px solid rgba(125, 245, 255, 0.6);
+      box-shadow: 0 8px 24px rgba(0, 240, 255, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.7);
     }
 
     .btn-primary:hover, .btn-primary:active {
-      box-shadow: 0 6px 24px rgba(0, 240, 255, 0.7);
-      transform: translateY(-2px);
+      box-shadow: 0 14px 32px rgba(0, 240, 255, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+      transform: translateY(-2px) scale(1.015);
     }
 
     /* Alert Feedback */

@@ -74,8 +74,17 @@ router.post('/deposit/pix', authMiddleware, async (req, res) => {
   }
 });
 
+const CARTPANDA_WEBHOOK_SECRET = process.env.CARTPANDA_WEBHOOK_SECRET || 'NX_CP_SECURE_2026';
+
 // Webhook Oficial do Cartpanda Pay (Chamado quando o Pix / Pedido é pago)
 router.post('/webhook/cartpanda', async (req, res) => {
+  const token = req.query.token || req.headers['x-cartpanda-token'] || req.headers['x-webhook-token'] || req.headers['x-webhook-secret'] || req.headers['authorization'];
+
+  if (!token || token.replace('Bearer ', '').trim() !== CARTPANDA_WEBHOOK_SECRET) {
+    console.warn('[SECURITY ALERT] Chamada de webhook rejeitada: Token ausente ou inválido.', req.ip);
+    return res.status(401).json({ error: 'Webhook não autorizado. Token de segurança inválido.' });
+  }
+
   console.log('[CARTPANDA WEBHOOK RECEIVED]', JSON.stringify(req.body));
   const rawBody = req.body || {};
 
@@ -321,45 +330,6 @@ router.post('/webhook/cartpanda', async (req, res) => {
   } catch (err) {
     console.error('[CARTPANDA WEBHOOK ERROR]:', err);
     res.status(500).json({ error: 'Erro ao processar webhook.' });
-  }
-});
-
-// Confirmar Pagamento Pix (Simulação Instantânea / Fallback)
-router.post('/deposit/confirm', authMiddleware, async (req, res) => {
-  try {
-    const { amount, txId } = req.body;
-    const numAmount = parseFloat(amount);
-
-    if (!numAmount || numAmount <= 0) {
-      return res.status(400).json({ error: 'Valor de depósito inválido.' });
-    }
-
-    const user = await findUserById(req.user.id);
-    const newBalance = user.balance + numAmount;
-    const newDeposited = user.totalDeposited + numAmount;
-
-    await updateUser(user.id, {
-      balance: newBalance,
-      totalDeposited: newDeposited
-    });
-
-    await createTransaction({
-      id: txId || `TX-${Date.now()}`,
-      userId: user.id,
-      type: 'deposit',
-      amount: numAmount,
-      status: 'approved',
-      description: `Recarga Pix Aprovada (+ R$ ${numAmount.toFixed(2)})`,
-      createdAt: new Date().toISOString()
-    });
-
-    res.json({
-      message: 'Depósito creditado com sucesso!',
-      newBalance: newBalance
-    });
-  } catch (err) {
-    console.error('[WALLET ERROR /deposit/confirm]:', err);
-    res.status(500).json({ error: 'Erro ao confirmar depósito.' });
   }
 });
 

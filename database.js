@@ -956,7 +956,7 @@ async function getWebhookLogs(limit = 50) {
 async function getSystemSettings() {
   const defaultSettings = {
     nexusCrmUrl: 'https://limitations-sequences-similar-treated.trycloudflare.com',
-    whatsappNumber: '553491666527',
+    whatsappNumber: '553492019122',
     metaPixelId: ''
   };
 

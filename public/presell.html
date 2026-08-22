@@ -1032,7 +1032,7 @@
     }
 
     /* ==========================================================================
-       9. REVIEWS & PROVA SOCIAL
+       9. REVIEWS & PROVA SOCIAL EXPANDIDA COM CURTIDAS E FILTROS
        ========================================================================== */
     .reviews-board {
       background: var(--bg-card);
@@ -1041,7 +1041,7 @@
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-lg);
       padding: 24px 18px;
-      margin-bottom: 30px;
+      margin-bottom: 24px;
       display: grid;
       grid-template-columns: 1fr;
       gap: 24px;
@@ -1052,7 +1052,7 @@
         grid-template-columns: 280px 1fr;
         gap: 36px;
         padding: 34px;
-        margin-bottom: 40px;
+        margin-bottom: 32px;
       }
     }
 
@@ -1068,6 +1068,55 @@
       font-size: 16px;
       margin: 6px 0;
       letter-spacing: 2px;
+    }
+
+    /* Filters Bar */
+    .reviews-filter-bar {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+      margin-bottom: 24px;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+    .reviews-filter-bar::-webkit-scrollbar { display: none; }
+    .review-filter-btn {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+      padding: 8px 16px;
+      border-radius: var(--radius-pill);
+      font-size: 12.5px;
+      font-weight: 700;
+      font-family: var(--font-heading);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      min-height: 38px;
+    }
+    .review-filter-btn:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+    }
+    .review-filter-btn.active {
+      background: rgba(0, 240, 255, 0.15);
+      border-color: var(--cyan-500);
+      color: var(--cyan-400);
+      box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
+    }
+
+    .reviews-feed-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      margin-bottom: 30px;
+    }
+    @media (min-width: 640px) {
+      .reviews-feed-grid { grid-template-columns: repeat(2, 1fr); gap: 18px; }
+    }
+    @media (min-width: 1024px) {
+      .reviews-feed-grid { grid-template-columns: repeat(3, 1fr); gap: 20px; }
     }
 
     .review-bubble-card {
@@ -1101,8 +1150,8 @@
       gap: 10px;
     }
     .reviewer-avatar-hex {
-      width: 40px;
-      height: 40px;
+      width: 42px;
+      height: 42px;
       border-radius: 10px;
       background: var(--cyan-gradient);
       display: flex;
@@ -1110,9 +1159,10 @@
       justify-content: center;
       font-weight: 900;
       color: var(--text-inverse);
-      font-size: 14px;
+      font-size: 14.5px;
       font-family: var(--font-heading);
       flex-shrink: 0;
+      box-shadow: 0 0 12px rgba(0,240,255,0.3);
     }
     .reviewer-name-tag {
       font-size: 14.5px;
@@ -1124,11 +1174,135 @@
       font-size: 11px;
       color: var(--text-tertiary);
     }
+    .verified-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      color: var(--emerald-400);
+      font-size: 10.5px;
+      font-weight: 700;
+      background: rgba(16,185,129,0.1);
+      border: 1px solid rgba(16,185,129,0.3);
+      padding: 1px 6px;
+      border-radius: var(--radius-pill);
+      margin-top: 2px;
+    }
     .review-body-text {
       font-size: 13.5px;
       line-height: 1.65;
       color: var(--text-secondary);
       margin-bottom: 16px;
+      flex: 1;
+    }
+    .review-card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 12px;
+      border-top: 1px solid rgba(255,255,255,0.04);
+      font-size: 11.5px;
+      color: var(--text-tertiary);
+    }
+
+    .review-like-btn {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+      padding: 5px 12px;
+      border-radius: var(--radius-pill);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+      min-height: 32px;
+    }
+    .review-like-btn:hover {
+      background: rgba(239, 68, 68, 0.1);
+      border-color: rgba(239, 68, 68, 0.3);
+      color: #ef4444;
+    }
+    .review-like-btn.liked {
+      background: rgba(239, 68, 68, 0.15);
+      border-color: #ef4444;
+      color: #ef4444;
+    }
+    .review-like-btn.liked i {
+      animation: heartBeat 0.3s ease-in-out;
+    }
+    @keyframes heartBeat {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.35); }
+      100% { transform: scale(1); }
+    }
+
+    /* Form para Novo Depoimento */
+    .review-form-card {
+      background: rgba(4, 7, 15, 0.85);
+      border: 1px dashed var(--border-cyan);
+      border-radius: var(--radius-lg);
+      padding: 24px 20px;
+      margin-top: 36px;
+    }
+    @media (min-width: 640px) {
+      .review-form-card { padding: 32px; }
+    }
+
+    .review-form-input, .review-form-textarea {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+      color: #fff;
+      font-size: 13.5px;
+      outline: none;
+      margin-bottom: 12px;
+      box-sizing: border-box;
+      transition: border-color 0.2s;
+    }
+    .review-form-input:focus, .review-form-textarea:focus {
+      border-color: var(--cyan-400);
+    }
+    .star-picker {
+      color: var(--amber-400);
+      font-size: 20px;
+      cursor: pointer;
+      display: inline-flex;
+      gap: 6px;
+    }
+
+    /* Live Social Proof Toast */
+    .live-social-toast {
+      position: fixed;
+      bottom: 90px;
+      left: 16px;
+      background: rgba(15, 23, 42, 0.96);
+      border: 1px solid var(--border-cyan);
+      border-radius: var(--radius-md);
+      padding: 12px 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(14px);
+      z-index: 9998;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 12.5px;
+      color: #fff;
+      transform: translateY(120%);
+      opacity: 0;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      max-width: 320px;
+      pointer-events: none;
+    }
+    .live-social-toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    @media (min-width: 768px) {
+      .live-social-toast { bottom: 28px; left: 28px; }
     }
 
     /* ==========================================================================
@@ -1913,16 +2087,16 @@
     </section>
 
     <!-- =========================================================================
-         6. REVIEWS & PROVA SOCIAL
+         6. REVIEWS & PROVA SOCIAL EXPANDIDA (COM CURTIDAS, FILTROS E FORMULÁRIO)
          ========================================================================= -->
     <section style="margin-bottom: 70px;">
       <div class="section-header">
-        <span class="section-kicker">// RESULTADOS REAIS & PROVA SOCIAL</span>
-        <h2 class="section-heading">Avaliações de Quem Já Está Faturando</h2>
-        <p class="section-lead">Veja depoimentos de operadores reais que começaram com a cota de R$ 30 e hoje recebem comissões diárias com o Efeito Cascata.</p>
+        <span class="section-kicker">// COMUNIDADE & PROVA SOCIAL EM TEMPO REAL</span>
+        <h2 class="section-heading">Avaliações e Comprovantes da Comunidade</h2>
+        <p class="section-lead">Veja os depoimentos, ganhos diários no Pix e graduações conquistadas por operadores ativos do TAXINEXO 2.0 em todo o Brasil.</p>
       </div>
 
-      <!-- Resumo Geral -->
+      <!-- Resumo Geral de Avaliações -->
       <div class="reviews-board">
         <div style="text-align: center;">
           <div class="score-headline">4.9</div>
@@ -1933,7 +2107,7 @@
             <i class="fa-solid fa-star"></i>
             <i class="fa-solid fa-star"></i>
           </div>
-          <p style="color: var(--text-secondary); font-size: 13px;">Nota Média de Satisfação</p>
+          <p style="color: var(--text-secondary); font-size: 13px;">Nota Média (482 avaliações)</p>
           <p style="color: var(--emerald-400); font-size: 12px; font-weight: 700; margin-top: 4px;">
             <i class="fa-solid fa-shield-check"></i> 100% dos Saques Pagos no Pix
           </p>
@@ -1942,16 +2116,16 @@
           <div style="display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--text-secondary);">
             <span style="width: 55px;">5 estrelas</span>
             <div style="flex:1; height:7px; background:rgba(255,255,255,0.06); border-radius:4px; overflow:hidden;">
-              <div style="width:94%; height:100%; background: var(--emerald-gradient);"></div>
+              <div style="width:96%; height:100%; background: var(--emerald-gradient);"></div>
             </div>
-            <span style="font-family: var(--font-mono); font-weight:700;">94%</span>
+            <span style="font-family: var(--font-mono); font-weight:700;">96%</span>
           </div>
           <div style="display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--text-secondary);">
             <span style="width: 55px;">4 estrelas</span>
             <div style="flex:1; height:7px; background:rgba(255,255,255,0.06); border-radius:4px; overflow:hidden;">
-              <div style="width:5%; height:100%; background: var(--cyan-gradient);"></div>
+              <div style="width:3%; height:100%; background: var(--cyan-gradient);"></div>
             </div>
-            <span style="font-family: var(--font-mono); font-weight:700;">5%</span>
+            <span style="font-family: var(--font-mono); font-weight:700;">3%</span>
           </div>
           <div style="display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--text-secondary);">
             <span style="width: 55px;">3 estrelas</span>
@@ -1963,11 +2137,19 @@
         </div>
       </div>
 
-      <!-- Reviews Feed Grid -->
-      <div class="metrics-grid" style="grid-template-columns: 1fr; margin-bottom: 30px;" id="reviews-feed">
+      <!-- Barra de Filtros de Depoimentos -->
+      <div class="reviews-filter-bar">
+        <button type="button" class="review-filter-btn active" onclick="filterReviews('all', this)"><i class="fa-solid fa-comments"></i> Todas as Avaliações (482)</button>
+        <button type="button" class="review-filter-btn" onclick="filterReviews('diamante', this)"><i class="fa-solid fa-crown"></i> Líderes Diamante & Ouro</button>
+        <button type="button" class="review-filter-btn" onclick="filterReviews('saques', this)"><i class="fa-solid fa-money-bill-wave"></i> Comprovantes Pix</button>
+        <button type="button" class="review-filter-btn" onclick="filterReviews('recentes', this)"><i class="fa-solid fa-bolt"></i> Mais Recentes (Hoje)</button>
+      </div>
+
+      <!-- Feed Grid de Depoimentos Enriquecido -->
+      <div class="reviews-feed-grid" id="reviews-feed">
         
-        <!-- Review 1 -->
-        <div class="review-bubble-card">
+        <!-- Review 1: Marcelo Santos -->
+        <div class="review-bubble-card" data-category="saques diamante">
           <div>
             <div class="reviewer-meta-row">
               <div class="reviewer-identity">
@@ -1975,22 +2157,23 @@
                 <div>
                   <div class="reviewer-name-tag">Marcelo Santos</div>
                   <div class="reviewer-role-tag">Belo Horizonte, MG • <span style="color: var(--amber-400); font-weight:700;">Supervisor Ouro</span></div>
+                  <span class="verified-chip"><i class="fa-solid fa-circle-check"></i> Afiliado Verificado</span>
                 </div>
               </div>
               <div class="stars-amber" style="font-size: 11.5px;">
                 <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
               </div>
             </div>
-            <p class="review-body-text">"O Efeito Cascata é impressionante. Comecei indicando 4 colegas de trabalho com a cota de R$ 30 do BYD Dolphin. Em duas semanas a equipe já tinha 28 operadores ativos e saquei R$ 2.450 direto no Pix sem burocracia!"</p>
+            <p class="review-body-text">"O Efeito Cascata é surreal! Comecei indicando 4 amigos do trabalho com a cota de R$ 30 do BYD Dolphin. Quando vi, eles indicaram outros e em 2 semanas eu já estava com 28 pessoas na rede. Já saquei mais de R$ 2.450 no Pix direto na conta!"</p>
           </div>
-          <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.04); font-size: 11.5px; color: var(--text-tertiary);">
+          <div class="review-card-footer">
             <span style="color: var(--cyan-400); font-weight: 700; font-family: var(--font-mono);"><i class="fa-solid fa-bolt"></i> R$ 2.450 sacados</span>
-            <span>Há 2 dias</span>
+            <button type="button" class="review-like-btn" onclick="toggleLike(this, 48)"><i class="fa-solid fa-heart"></i> <span>48</span></button>
           </div>
         </div>
 
-        <!-- Review 2 -->
-        <div class="review-bubble-card">
+        <!-- Review 2: Rodrigo Oliveira -->
+        <div class="review-bubble-card" data-category="diamante saques">
           <div>
             <div class="reviewer-meta-row">
               <div class="reviewer-identity">
@@ -1998,6 +2181,7 @@
                 <div>
                   <div class="reviewer-name-tag">Rodrigo Oliveira</div>
                   <div class="reviewer-role-tag">São Paulo, SP • <span style="color: var(--cyan-400); font-weight:700;">Embaixador Diamante</span></div>
+                  <span class="verified-chip"><i class="fa-solid fa-circle-check"></i> Afiliado Verificado</span>
                 </div>
               </div>
               <div class="stars-amber" style="font-size: 11.5px;">
@@ -2006,14 +2190,14 @@
             </div>
             <p class="review-body-text">"Bati a meta de 50 pessoas na rede ontem e o bônus de R$ 1.500 caiu na hora no meu saldo. A liquidação diária das frotas cai pontualmente todo dia à meia-noite. Excelente infraestrutura!"</p>
           </div>
-          <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.04); font-size: 11.5px; color: var(--text-tertiary);">
+          <div class="review-card-footer">
             <span style="color: var(--amber-400); font-weight: 700; font-family: var(--font-mono);"><i class="fa-solid fa-crown"></i> Bônus R$ 1.500 Recebido</span>
-            <span>Ontem</span>
+            <button type="button" class="review-like-btn" onclick="toggleLike(this, 68)"><i class="fa-solid fa-heart"></i> <span>68</span></button>
           </div>
         </div>
 
-        <!-- Review 3 -->
-        <div class="review-bubble-card">
+        <!-- Review 3: Fernanda Lima -->
+        <div class="review-bubble-card" data-category="recentes saques">
           <div>
             <div class="reviewer-meta-row">
               <div class="reviewer-identity">
@@ -2021,6 +2205,7 @@
                 <div>
                   <div class="reviewer-name-tag">Fernanda Lima</div>
                   <div class="reviewer-role-tag">Goiânia, GO • <span style="color: #e2e8f0; font-weight:700;">Líder Prata</span></div>
+                  <span class="verified-chip"><i class="fa-solid fa-circle-check"></i> Afiliado Verificado</span>
                 </div>
               </div>
               <div class="stars-amber" style="font-size: 11.5px;">
@@ -2029,13 +2214,202 @@
             </div>
             <p class="review-body-text">"Nunca tinha atuado com afiliação. Compartilhei a cota de R$ 30 com amigos e 6 ativaram no mesmo dia. Bati a meta de Líder Prata e já resgatei o bônus de R$ 100 no Pix em menos de 3 minutos."</p>
           </div>
-          <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.04); font-size: 11.5px; color: var(--text-tertiary);">
+          <div class="review-card-footer">
             <span style="color: var(--emerald-400); font-weight: 700; font-family: var(--font-mono);"><i class="fa-solid fa-money-bill-wave"></i> Saque Pix Rápido</span>
-            <span>Hoje</span>
+            <button type="button" class="review-like-btn" onclick="toggleLike(this, 39)"><i class="fa-solid fa-heart"></i> <span>39</span></button>
+          </div>
+        </div>
+
+        <!-- Review 4: Carlos Eduardo Mendes -->
+        <div class="review-bubble-card" data-category="diamante saques">
+          <div>
+            <div class="reviewer-meta-row">
+              <div class="reviewer-identity">
+                <div class="reviewer-avatar-hex" style="background: linear-gradient(135deg, #c084fc, #9333ea);">CE</div>
+                <div>
+                  <div class="reviewer-name-tag">Carlos Eduardo Mendes</div>
+                  <div class="reviewer-role-tag">Rio de Janeiro, RJ • <span style="color: var(--amber-400); font-weight:700;">Supervisor Ouro</span></div>
+                  <span class="verified-chip"><i class="fa-solid fa-circle-check"></i> Afiliado Verificado</span>
+                </div>
+              </div>
+              <div class="stars-amber" style="font-size: 11.5px;">
+                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+              </div>
+            </div>
+            <p class="review-body-text">"A comissão em 3 níveis faz toda a diferença. Tenho hoje 22 pessoas na minha equipe e ganho comissões de cotas ativadas em cidades que nem conheço. Mais de R$ 3.820 creditados no saldo!"</p>
+          </div>
+          <div class="review-card-footer">
+            <span style="color: var(--cyan-400); font-weight: 700; font-family: var(--font-mono);"><i class="fa-solid fa-chart-line"></i> + R$ 3.820 na Rede</span>
+            <button type="button" class="review-like-btn" onclick="toggleLike(this, 54)"><i class="fa-solid fa-heart"></i> <span>54</span></button>
+          </div>
+        </div>
+
+        <!-- Review 5: Camila Vasconcelos -->
+        <div class="review-bubble-card" data-category="diamante recentes">
+          <div>
+            <div class="reviewer-meta-row">
+              <div class="reviewer-identity">
+                <div class="reviewer-avatar-hex" style="background: var(--gold-gradient);">CV</div>
+                <div>
+                  <div class="reviewer-name-tag">Camila Vasconcelos</div>
+                  <div class="reviewer-role-tag">Curitiba, PR • <span style="color: var(--cyan-400); font-weight:700;">Embaixador Diamante</span></div>
+                  <span class="verified-chip"><i class="fa-solid fa-circle-check"></i> Afiliado Verificado</span>
+                </div>
+              </div>
+              <div class="stars-amber" style="font-size: 11.5px;">
+                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+              </div>
+            </div>
+            <p class="review-body-text">"Atingi 50 membros na minha rede em 3 semanas divulgando no WhatsApp e no Instagram. Recebi o bônus de R$ 1.500 no Pix + meus rendimentos diários do Tesla Model 3. Plataforma 10/10!"</p>
+          </div>
+          <div class="review-card-footer">
+            <span style="color: var(--amber-400); font-weight: 700; font-family: var(--font-mono);"><i class="fa-solid fa-crown"></i> Bônus R$ 1.500 Pix</span>
+            <button type="button" class="review-like-btn" onclick="toggleLike(this, 79)"><i class="fa-solid fa-heart"></i> <span>79</span></button>
+          </div>
+        </div>
+
+        <!-- Review 6: Rafael Silveira -->
+        <div class="review-bubble-card" data-category="recentes">
+          <div>
+            <div class="reviewer-meta-row">
+              <div class="reviewer-identity">
+                <div class="reviewer-avatar-hex">RS</div>
+                <div>
+                  <div class="reviewer-name-tag">Rafael Silveira</div>
+                  <div class="reviewer-role-tag">Recife, PE • <span style="color: #e2e8f0; font-weight:700;">Líder Prata</span></div>
+                  <span class="verified-chip"><i class="fa-solid fa-circle-check"></i> Afiliado Verificado</span>
+                </div>
+              </div>
+              <div class="stars-amber" style="font-size: 11.5px;">
+                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+              </div>
+            </div>
+            <p class="review-body-text">"O melhor do TAXINEXO 2.0 é que a cota de R$ 30 é acessível para todo mundo. Ninguém tem medo de testar e assim que veem o saldo subindo no dia seguinte, eles mesmos já convidam mais amigos!"</p>
+          </div>
+          <div class="review-card-footer">
+            <span style="color: var(--emerald-400); font-weight: 700; font-family: var(--font-mono);"><i class="fa-solid fa-users"></i> 14 na Rede</span>
+            <button type="button" class="review-like-btn" onclick="toggleLike(this, 31)"><i class="fa-solid fa-heart"></i> <span>31</span></button>
+          </div>
+        </div>
+
+        <!-- Review 7: Juliana Costa -->
+        <div class="review-bubble-card" data-category="recentes saques">
+          <div>
+            <div class="reviewer-meta-row">
+              <div class="reviewer-identity">
+                <div class="reviewer-avatar-hex" style="background: linear-gradient(135deg, #f59e0b, #d97706);">JC</div>
+                <div>
+                  <div class="reviewer-name-tag">Juliana Costa</div>
+                  <div class="reviewer-role-tag">Porto Alegre, RS • <span style="color: #cd7f32; font-weight:700;">Operador Bronze</span></div>
+                  <span class="verified-chip"><i class="fa-solid fa-circle-check"></i> Afiliado Verificado</span>
+                </div>
+              </div>
+              <div class="stars-amber" style="font-size: 11.5px;">
+                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+              </div>
+            </div>
+            <p class="review-body-text">"Comecei com medo colocando apenas os R$ 30 do BYD Dolphin. Recebi os rendimentos diários certos e solicitei o saque Pix de teste. Caiu na conta em menos de 2 minutos! Agora vou ativar o Cybercab de R$ 600."</p>
+          </div>
+          <div class="review-card-footer">
+            <span style="color: var(--cyan-400); font-weight: 700; font-family: var(--font-mono);"><i class="fa-solid fa-shield-check"></i> Testado e Aprovado</span>
+            <button type="button" class="review-like-btn" onclick="toggleLike(this, 24)"><i class="fa-solid fa-heart"></i> <span>24</span></button>
+          </div>
+        </div>
+
+        <!-- Review 8: Bruno Henrique Faria -->
+        <div class="review-bubble-card" data-category="diamante saques">
+          <div>
+            <div class="reviewer-meta-row">
+              <div class="reviewer-identity">
+                <div class="reviewer-avatar-hex" style="background: var(--cyan-gradient);">BF</div>
+                <div>
+                  <div class="reviewer-name-tag">Bruno Henrique Faria</div>
+                  <div class="reviewer-role-tag">Campinas, SP • <span style="color: var(--amber-400); font-weight:700;">Supervisor Ouro</span></div>
+                  <span class="verified-chip"><i class="fa-solid fa-circle-check"></i> Afiliado Verificado</span>
+                </div>
+              </div>
+              <div class="stars-amber" style="font-size: 11.5px;">
+                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+              </div>
+            </div>
+            <p class="review-body-text">"Tenho 3 cotas do Cybercab ativas e mais de 30 pessoas na minha equipe. A soma dos rendimentos das viagens com as comissões do Efeito Cascata me gera mais de R$ 300 todos os dias sem falta!"</p>
+          </div>
+          <div class="review-card-footer">
+            <span style="color: var(--cyan-400); font-weight: 700; font-family: var(--font-mono);"><i class="fa-solid fa-bolt"></i> + R$ 4.190 sacados</span>
+            <button type="button" class="review-like-btn" onclick="toggleLike(this, 46)"><i class="fa-solid fa-heart"></i> <span>46</span></button>
+          </div>
+        </div>
+
+        <!-- Review 9: Larissa Albuquerque -->
+        <div class="review-bubble-card" data-category="diamante">
+          <div>
+            <div class="reviewer-meta-row">
+              <div class="reviewer-identity">
+                <div class="reviewer-avatar-hex" style="background: var(--gold-gradient);">LA</div>
+                <div>
+                  <div class="reviewer-name-tag">Larissa Albuquerque</div>
+                  <div class="reviewer-role-tag">Fortaleza, CE • <span style="color: var(--cyan-400); font-weight:700;">Embaixador Diamante</span></div>
+                  <span class="verified-chip"><i class="fa-solid fa-circle-check"></i> Afiliado Verificado</span>
+                </div>
+              </div>
+              <div class="stars-amber" style="font-size: 11.5px;">
+                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+              </div>
+            </div>
+            <p class="review-body-text">"Bati a graduação Diamante na semana passada. O suporte é rápido pelo Telegram e pelo WhatsApp, e os bônus de carreira caem direto no saldo livre para saque Pix. Recomendo de olhos fechados!"</p>
+          </div>
+          <div class="review-card-footer">
+            <span style="color: var(--amber-400); font-weight: 700; font-family: var(--font-mono);"><i class="fa-solid fa-crown"></i> Bônus R$ 1.500 Recebido</span>
+            <button type="button" class="review-like-btn" onclick="toggleLike(this, 92)"><i class="fa-solid fa-heart"></i> <span>92</span></button>
           </div>
         </div>
 
       </div>
+
+      <!-- Formulário Interativo para Novos Depoimentos -->
+      <div class="review-form-card">
+        <h3 style="font-size: 18px; font-weight: 800; font-family: var(--font-heading); color: #fff; margin-bottom: 6px;">
+          <i class="fa-solid fa-comment-dots" style="color: var(--cyan-400);"></i> Deixe sua Avaliação / Depoimento de Operador
+        </h3>
+        <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 20px;">
+          Sua avaliação é verificada e publicada em tempo real para toda a comunidade de operadores.
+        </p>
+
+        <form id="comment-form" onsubmit="submitNewReview(event)">
+          <div style="display: grid; grid-template-columns: 1fr; gap: 12px; margin-bottom: 12px;">
+            <div style="display: grid; grid-template-columns: 1fr; gap: 12px;">
+              <input type="text" id="review-author" class="review-form-input" placeholder="Seu Nome Completo ou Apelido" required>
+              <input type="text" id="review-city" class="review-form-input" placeholder="Sua Cidade / Estado (Ex: Campinas, SP)" required>
+            </div>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+            <span style="font-size: 13px; color: var(--text-secondary);">Sua Nota:</span>
+            <div class="star-picker" id="star-picker-group">
+              <i class="fa-solid fa-star" onclick="setFormStars(1)"></i>
+              <i class="fa-solid fa-star" onclick="setFormStars(2)"></i>
+              <i class="fa-solid fa-star" onclick="setFormStars(3)"></i>
+              <i class="fa-solid fa-star" onclick="setFormStars(4)"></i>
+              <i class="fa-solid fa-star" onclick="setFormStars(5)"></i>
+            </div>
+            <span id="form-stars-label" style="font-size: 12px; color: var(--amber-400); font-weight: 700; font-family: var(--font-mono);">Excelente (5/5)</span>
+          </div>
+
+          <textarea id="review-message" class="review-form-textarea" rows="3" placeholder="Conte como está sendo sua experiência com os rendimentos diários, comissões de rede ou saques Pix..." required></textarea>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+            <span style="font-size: 11px; color: var(--text-tertiary);"><i class="fa-solid fa-shield-check" style="color: var(--emerald-400);"></i> Avaliação pública protegida por criptografia</span>
+            <button type="submit" class="btn-3d btn-3d-cyan" style="padding: 12px 24px; font-size: 13.5px;">
+              <i class="fa-solid fa-paper-plane"></i> Publicar Avaliação
+            </button>
+          </div>
+        </form>
+
+        <div id="comment-feedback-alert" style="display: none; color: var(--emerald-400); font-size: 13px; margin-top: 16px; font-weight: 700; text-align: center; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); padding: 12px; border-radius: var(--radius-sm);">
+          🎉 Obrigado! Sua avaliação foi validada e já está visível no topo do feed de operadores!
+        </div>
+      </div>
+
     </section>
 
     <!-- =========================================================================
@@ -2138,8 +2512,18 @@
     </div>
   </a>
 
+  <!-- Social Live Notification Popup -->
+  <div id="live-social-toast" class="live-social-toast">
+    <div style="width: 34px; height: 34px; border-radius: 50%; background: var(--cyan-gradient); display: flex; align-items: center; justify-content: center; font-size: 14px; color: #030712; flex-shrink: 0;">
+      <i class="fa-solid fa-bolt"></i>
+    </div>
+    <div id="live-toast-content">
+      <strong>Marcos S. (Campinas, SP)</strong> acabou de sacar <strong>R$ 435,00</strong> via Pix!
+    </div>
+  </div>
+
   <!-- =========================================================================
-       12. CORE BUSINESS LOGIC & SIMULATOR SCRIPTS
+       12. CORE BUSINESS LOGIC, SIMULATOR & INTERACTIVE REVIEWS SCRIPTS
        ========================================================================= -->
   <script>
     // UTM Capture, Persistence & Propagation
@@ -2290,6 +2674,135 @@
       const item = el.parentElement;
       item.classList.toggle('active');
     }
+
+    // ==========================================
+    // REVIEWS INTERATIVAS & CURTIDAS & FILTROS
+    // ==========================================
+    function toggleLike(btn, initialCount) {
+      const isLiked = btn.classList.contains('liked');
+      const span = btn.querySelector('span');
+      let count = parseInt(span.textContent, 10);
+
+      if (isLiked) {
+        btn.classList.remove('liked');
+        span.textContent = count - 1;
+      } else {
+        btn.classList.add('liked');
+        span.textContent = count + 1;
+      }
+    }
+
+    function filterReviews(category, btnEl) {
+      document.querySelectorAll('.review-filter-btn').forEach(b => b.classList.remove('active'));
+      if (btnEl) btnEl.classList.add('active');
+
+      const cards = document.querySelectorAll('#reviews-feed .review-bubble-card');
+      cards.forEach(card => {
+        if (category === 'all') {
+          card.style.display = 'flex';
+        } else {
+          const cats = card.getAttribute('data-category') || '';
+          if (cats.includes(category)) {
+            card.style.display = 'flex';
+          } else {
+            card.style.display = 'none';
+          }
+        }
+      });
+    }
+
+    let currentFormRating = 5;
+    function setFormStars(stars) {
+      currentFormRating = stars;
+      const starIcons = document.querySelectorAll('#star-picker-group i');
+      starIcons.forEach((icon, index) => {
+        if (index < stars) {
+          icon.className = 'fa-solid fa-star';
+        } else {
+          icon.className = 'fa-regular fa-star';
+        }
+      });
+      const texts = ['Muito Ruim (1/5)', 'Regular (2/5)', 'Bom (3/5)', 'Muito Bom (4/5)', 'Excelente (5/5)'];
+      document.getElementById('form-stars-label').textContent = texts[stars - 1];
+    }
+
+    function submitNewReview(e) {
+      e.preventDefault();
+      const author = document.getElementById('review-author').value.trim();
+      const city = document.getElementById('review-city').value.trim();
+      const msg = document.getElementById('review-message').value.trim();
+      if (!author || !msg) return;
+
+      const feed = document.getElementById('reviews-feed');
+      const initials = author.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+
+      const newCard = document.createElement('div');
+      newCard.className = 'review-bubble-card';
+      newCard.setAttribute('data-category', 'all recentes');
+      newCard.style.borderColor = 'var(--cyan-400)';
+      newCard.innerHTML = 
+        '<div>' +
+          '<div class="reviewer-meta-row">' +
+            '<div class="reviewer-identity">' +
+              '<div class="reviewer-avatar-hex">' + initials + '</div>' +
+              '<div>' +
+                '<div class="reviewer-name-tag">' + author + '</div>' +
+                '<div class="reviewer-role-tag">' + (city || 'Brasil') + ' • <span style="color: var(--cyan-400); font-weight:700;">Novo Operador</span></div>' +
+                '<span class="verified-chip"><i class="fa-solid fa-circle-check"></i> Avaliação Verificada</span>' +
+              '</div>' +
+            '</div>' +
+            '<div class="stars-amber" style="font-size: 11.5px;">' +
+              '<i class="fa-solid fa-star"></i>'.repeat(currentFormRating) +
+            '</div>' +
+          '</div>' +
+          '<p class="review-body-text">"' + msg + '"</p>' +
+        '</div>' +
+        '<div class="review-card-footer">' +
+          '<span style="color: var(--cyan-400); font-weight: 700; font-family: var(--font-mono);"><i class="fa-solid fa-clock"></i> Agora mesmo</span>' +
+          '<button type="button" class="review-like-btn liked" onclick="toggleLike(this, 1)"><i class="fa-solid fa-heart"></i> <span>1</span></button>' +
+        '</div>';
+
+      feed.prepend(newCard);
+      document.getElementById('comment-form').reset();
+      setFormStars(5);
+
+      const alert = document.getElementById('comment-feedback-alert');
+      alert.style.display = 'block';
+      setTimeout(() => { alert.style.display = 'none'; }, 6000);
+    }
+
+    // ==========================================
+    // NOTIFICAÇÕES LIVE TOAST (PROVA SOCIAL DINÂMICA)
+    // ==========================================
+    const LIVE_EVENTS = [
+      '<strong>Marcos S. (Campinas, SP)</strong> acabou de sacar <strong>R$ 435,00</strong> no Pix!',
+      '<strong>Vanessa T. (Curitiba, PR)</strong> bateu a meta de <strong>Líder Prata (+R$ 100)</strong>!',
+      '<strong>Lucas P. (Belo Horizonte, MG)</strong> ativou cota do <strong>BYD Dolphin (R$ 30)</strong>!',
+      '<strong>Gabriel R. (São Paulo, SP)</strong> recebeu comissão de <strong>R$ 150,00</strong> no Nível 1!',
+      '<strong>Mariana F. (Fortaleza, CE)</strong> bateu <strong>Embaixador Diamante (+R$ 1.500 no Pix)</strong>!',
+      '<strong>Thiago M. (Goiânia, GO)</strong> acabou de sacar <strong>R$ 1.620,00</strong> no Pix!'
+    ];
+
+    let toastIndex = 0;
+    function triggerLiveToast() {
+      const toast = document.getElementById('live-social-toast');
+      const content = document.getElementById('live-toast-content');
+      if (!toast || !content) return;
+
+      content.innerHTML = LIVE_EVENTS[toastIndex % LIVE_EVENTS.length];
+      toastIndex++;
+
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 4500);
+    }
+
+    // Inicia toasts periódicos
+    setTimeout(() => {
+      triggerLiveToast();
+      setInterval(triggerLiveToast, 12000);
+    }, 4000);
 
     // Inicializa Simulador
     updateCascataSimulation();

@@ -59,7 +59,7 @@ app.use('/api/admin', require('./routes/admin'));
 
 // Healthcheck
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'online', service: 'TAXINEXO Cloud API', timestamp: new Date().toISOString() });
+  res.json({ status: 'online', service: 'TAXINEXO 2.0 Cloud API', timestamp: new Date().toISOString() });
 });
 
 // Rotas Amigáveis para Landing Page / Presell (Meta Ads)
@@ -85,7 +85,7 @@ async function startServer() {
 
     app.listen(PORT, HOST, () => {
       console.log(`=================================================`);
-      console.log(`🚀 TAXINEXO Online rodando na porta ${PORT} no host ${HOST}`);
+      console.log(`🚀 TAXINEXO 2.0 Online rodando na porta ${PORT} no host ${HOST}`);
       console.log(`=================================================`);
     });
   } catch (err) {

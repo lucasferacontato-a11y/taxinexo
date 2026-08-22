@@ -58,7 +58,7 @@ router.post('/register', async (req, res) => {
         body: JSON.stringify({
           name: newUser.operatorName,
           phone: cleanPhone,
-          campaign: utmCampaign || 'TaxiNexo - Cadastro Direto',
+          campaign: utmCampaign || 'TaxiNexo 2.0 - Cadastro Direto',
           utm_source: utmSource || 'meta_ads',
           utm_campaign: utmCampaign || 'frotas_escala',
           utm_medium: utmMedium || 'cpc',

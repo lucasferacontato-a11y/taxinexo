@@ -31,7 +31,7 @@ async function createCartpandaPix({ amount, customerName, customerPhone, custome
       amount: parseFloat(amount),
       currency: 'BRL',
       customer: {
-        name: customerName || 'Operador TAXINEXO',
+        name: customerName || 'Operador TAXINEXO 2.0',
         phone: customerPhone || '11987654321',
         email: customerEmail || 'operador@taxinexo.com'
       },

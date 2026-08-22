@@ -1,8 +1,8 @@
 {
-  "name": "TAXINEXO - Frotas Autônomas",
-  "short_name": "TAXINEXO",
+  "name": "TAXINEXO 2.0 - Frotas Autônomas",
+  "short_name": "TAXINEXO 2.0",
   "description": "Sistema de Gestão de Frotas de Veículos Autônomos e Inteligência Artificial",
-  "start_url": "./index_refatorado.html",
+  "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#05070A",
   "theme_color": "#05070A",

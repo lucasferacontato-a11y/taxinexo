@@ -31,7 +31,7 @@ function initTelegramBot() {
       const firstName = ctx.from && ctx.from.first_name ? ctx.from.first_name : 'Operador';
 
       const welcomeText = 
-        '🚀 *BEM-VINDO AO TAXINEXO* 🤖\n\n' +
+        '🚀 *BEM-VINDO AO TAXINEXO 2.0* 🤖\n\n' +
         'Olá, *' + firstName + '*! Você está no canal oficial de frotas autônomas urbanas.\n\n' +
         '💡 *Como funciona?*\n' +
         '1️⃣ Cadastre-se na plataforma.\n' +
@@ -43,7 +43,7 @@ function initTelegramBot() {
         parse_mode: 'Markdown',
         reply_markup: {
           inline_keyboard: [
-            [{ text: '📱 Acessar Aplicativo TAXINEXO', url: appUrl + '/' }],
+            [{ text: '📱 Acessar Aplicativo TAXINEXO 2.0', url: appUrl + '/' }],
             [
               { text: '🚗 Frotas & Veículos', callback_data: 'cmd_frotas' },
               { text: '💸 Regras de Saque', callback_data: 'cmd_saques' }
@@ -109,7 +109,7 @@ function initTelegramBot() {
 
         const name = member.first_name || 'Operador';
         const msgText = 
-          '👋 *BEM-VINDO À COMUNIDADE TAXINEXO, ' + name + '!* 🚀\n\n' +
+          '👋 *BEM-VINDO À COMUNIDADE TAXINEXO 2.0, ' + name + '!* 🚀\n\n' +
           'Você acaba de entrar no grupo oficial de operadores de frotas autônomas.\n\n' +
           '⚡ *Passo 1:* Acesse o app e crie sua conta.\n' +
           '⚡ *Passo 2:* Faça seu check-in diário e ative seu veículo de alta performance.\n' +
@@ -119,7 +119,7 @@ function initTelegramBot() {
           parse_mode: 'Markdown',
           reply_markup: {
             inline_keyboard: [
-              [{ text: '📱 Acessar App TAXINEXO', url: appUrl + '/login.html' }]
+              [{ text: '📱 Acessar App TAXINEXO 2.0', url: appUrl + '/login.html' }]
             ]
           }
         });
@@ -147,7 +147,7 @@ function initTelegramBot() {
 
 async function sendFleetMessage(ctx) {
   const text = 
-    '⚡ *CATÁLOGO DE FROTAS AUTÔNOMAS TAXINEXO* ⚡\n\n' +
+    '⚡ *CATÁLOGO DE FROTAS AUTÔNOMAS TAXINEXO 2.0* ⚡\n\n' +
     '0️⃣ *BYD Dolphin Autonomous Urban (NX-030)*\n' +
     '• Contrato: R$ 30,00 | Retorno: *R$ 2,80/dia* (20 dias)\n\n' +
     '1️⃣ *Tesla Robotaxi Model 3 (NX-101)*\n' +
@@ -296,9 +296,9 @@ const dynamicTemplates = [
   {
     caption: 
       '🚀 *DO REGIME PARCIAL AO NÍVEL EXECUTIVO* 💸\n\n' +
-      'Começar no regime parcial com frotas de entrada (NX-101) é o primeiro passo de todo grande operador no TAXINEXO.\n\n' +
+      'Começar no regime parcial com frotas de entrada (NX-030 ou NX-101) é o primeiro passo de todo grande operador no TAXINEXO 2.0.\n\n' +
       'Mais de 40 operadores tiveram seus contratos atualizados para níveis superiores de alta demanda, desbloqueando rendimentos diários de até R$ 720,00 direto na carteira Pix!\n\n' +
-      '🔑 *O SEGREDO DA ESCALA NO TAXINEXO:*\n' +
+      '🔑 *O SEGREDO DA ESCALA NO TAXINEXO 2.0:*\n' +
       '• Comece com a frota que cabe no seu bolso.\n' +
       '• Mantenha seu check-in diário ativo.\n' +
       '• Reinvista seus rendimentos para subir de nível e faturar no automático.\n\n' +
@@ -328,7 +328,7 @@ const dynamicTemplates = [
     caption: 
       '⚡ *[LOTE DE SAQUES PIX APROVADO] DINHEIRO NA CONTA DOS OPERADORES!* 💳💸\n\n' +
       'Mais um lote de solicitações de saque foi processado e enviado via Pix direto para as contas bancárias dos operadores ativos!\n\n' +
-      '🏆 *O TAXINEXO NÃO PARA:*\n' +
+      '🏆 *O TAXINEXO 2.0 NÃO PARA:*\n' +
       '• Saques a partir de R$ 30,00\n' +
       '• Liquidação instantânea via Pix\n' +
       '• Sem taxas abusivas ou burocracia\n\n' +
@@ -437,7 +437,7 @@ async function broadcastDailySettlement({ settlementsProcessed, totalCredited })
   const format = (v) => new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2 }).format(v);
   const msg = 
     '🔔 *[LIQUIDAÇÃO DIÁRIA CONCLUÍDA]* 💸\n\n' +
-    'O motor autônomo do TAXINEXO acabou de processar os rendimentos das frotas ativas!\n\n' +
+    'O motor autônomo do TAXINEXO 2.0 acabou de processar os rendimentos das frotas ativas!\n\n' +
     '📊 *Contratos Liquidados:* ' + settlementsProcessed + '\n' +
     '💰 *Total Creditado Hoje:* R$ ' + format(totalCredited) + '\n\n' +
     'Verifique seu saldo atualizado no aplicativo:';

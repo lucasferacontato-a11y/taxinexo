@@ -295,7 +295,7 @@ router.post('/webhook/cartpanda', async (req, res) => {
         body: JSON.stringify({
           name: user.operatorName,
           phone: user.phone,
-          campaign: `TaxiNexo - ${hiredProductName || 'Recarga Pix'}`,
+          campaign: `TaxiNexo 2.0 - ${hiredProductName || 'Recarga Pix'}`,
           utm_source: 'cartpanda_checkout',
           value: amount
         })

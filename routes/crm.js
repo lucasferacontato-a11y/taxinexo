@@ -1,0 +1,341 @@
+const express = require('express');
+const axios = require('axios');
+const db = require('../services/crmDb');
+
+module.exports = function(io) {
+  const router = express.Router();
+
+  // Helper Evolution API client
+  function getEvoClient() {
+    const settings = db.getSettings();
+    return axios.create({
+      baseURL: settings.evolutionApiUrl || 'http://localhost:8080',
+      headers: {
+        'apikey': settings.globalApiKey || 'tartaruga-1-.',
+        'Content-Type': 'application/json'
+      },
+      timeout: 15000
+    });
+  }
+
+  // ---------------- WhatsApp Endpoints ----------------
+  router.get('/whatsapp/status', async (req, res) => {
+    const settings = db.getSettings();
+    const instanceName = req.query.instance || settings.defaultInstance || 'bot_principal';
+    const evo = getEvoClient();
+
+    try {
+      const instancesRes = await evo.get('/instance/fetchInstances');
+      const instanceList = Array.isArray(instancesRes.data) ? instancesRes.data : [];
+      const inst = instanceList.find(i => i.name === instanceName);
+
+      let qrData = null;
+      if (inst && (inst.connectionStatus === 'connecting' || inst.connectionStatus === 'close')) {
+        try {
+          const qrRes = await evo.get(`/instance/connect/${instanceName}`);
+          qrData = qrRes.data;
+        } catch (err) {}
+      }
+
+      return res.json({
+        success: true,
+        instanceName,
+        exists: Boolean(inst),
+        connectionStatus: inst ? inst.connectionStatus : 'not_created',
+        ownerJid: inst ? inst.ownerJid : null,
+        profileName: inst ? inst.profileName : null,
+        profilePicUrl: inst ? inst.profilePicUrl : null,
+        qrcode: qrData
+      });
+    } catch (err) {
+      return res.status(500).json({
+        success: false,
+        error: err.response?.data || err.message,
+        message: 'Não foi possível comunicar com a Evolution API em ' + settings.evolutionApiUrl
+      });
+    }
+  });
+
+  router.post('/whatsapp/connect', async (req, res) => {
+    const { number, instanceName } = req.body;
+    const settings = db.getSettings();
+    const inst = instanceName || settings.defaultInstance || 'bot_principal';
+    const evo = getEvoClient();
+
+    try {
+      const url = number ? `/instance/connect/${inst}?number=${number}` : `/instance/connect/${inst}`;
+      const response = await evo.get(url);
+      if (io) io.emit('whatsapp:qrcode', response.data);
+      return res.json({ success: true, data: response.data });
+    } catch (err) {
+      return res.status(500).json({ success: false, error: err.response?.data || err.message });
+    }
+  });
+
+  router.post('/whatsapp/send', async (req, res) => {
+    const { leadId, phone, text, instanceName } = req.body;
+    if (!text || (!leadId && !phone)) {
+      return res.status(400).json({ success: false, message: 'Dados insuficientes.' });
+    }
+
+    const settings = db.getSettings();
+    const inst = instanceName || settings.defaultInstance || 'bot_principal';
+    let targetPhone = phone;
+    let targetLeadId = leadId;
+
+    if (!targetPhone && targetLeadId) {
+      const lead = db.getLead(targetLeadId);
+      if (lead) targetPhone = lead.phone;
+    }
+
+    if (!targetLeadId && targetPhone) {
+      const cleanPhone = String(targetPhone).replace(/\D/g, '');
+      let lead = db.getLead(cleanPhone);
+      if (!lead) {
+        const created = db.createLead({ phone: cleanPhone, name: 'Lead ' + cleanPhone.slice(-4) });
+        lead = created.lead;
+      }
+      targetLeadId = lead.id;
+    }
+
+    const cleanNumber = String(targetPhone).replace(/\D/g, '');
+    const evo = getEvoClient();
+
+    let cleanedText = text;
+    const crmMatch = text.match(/<crm>([\s\S]*?)<\/crm>/);
+    if (crmMatch) {
+      try {
+        const crmData = JSON.parse(crmMatch[1].trim());
+        const updates = {};
+        if (crmData.estagio_funil) updates.stage = crmData.estagio_funil;
+        if (crmData.temperatura) updates.temperature = crmData.temperatura;
+        if (crmData.score_lead) updates.leadScore = Number(crmData.score_lead);
+        if (crmData.veiculo_interesse) updates.vehicleInterest = crmData.veiculo_interesse;
+        if (crmData.valor_cota) updates.value = Number(crmData.valor_cota);
+        if (crmData.tag_adicionada) {
+          const currentLead = db.getLead(targetLeadId);
+          updates.tags = Array.from(new Set([...(currentLead?.tags || []), crmData.tag_adicionada]));
+        }
+        db.updateLead(targetLeadId, updates);
+      } catch (e) {}
+      cleanedText = text.replace(/<crm>[\s\S]*?<\/crm>/g, '').trim();
+    }
+
+    try {
+      const evoRes = await evo.post(`/message/sendText/${inst}`, {
+        number: cleanNumber,
+        text: cleanedText,
+        delay: 1200
+      });
+
+      const msg = db.addMessage(targetLeadId, {
+        fromMe: true,
+        text: cleanedText,
+        timestamp: new Date().toISOString(),
+        status: 'sent'
+      });
+
+      if (io) {
+        io.emit('chat:message', { leadId: targetLeadId, message: msg });
+        io.emit('leads:update', db.getLeads());
+      }
+
+      return res.json({ success: true, message: msg, evoResponse: evoRes.data });
+    } catch (err) {
+      const msg = db.addMessage(targetLeadId, {
+        fromMe: true,
+        text: text,
+        timestamp: new Date().toISOString(),
+        status: 'error'
+      });
+      if (io) io.emit('chat:message', { leadId: targetLeadId, message: msg });
+      return res.status(500).json({
+        success: false,
+        message: 'Erro ao enviar via WhatsApp Evolution API',
+        error: err.response?.data || err.message,
+        savedLocally: msg
+      });
+    }
+  });
+
+  // ---------------- Webhooks ----------------
+  router.post('/webhook/evolution', async (req, res) => {
+    const { event, instance, data } = req.body || {};
+
+    if (event === 'messages.upsert' && data) {
+      const key = data.key || {};
+      const fromMe = Boolean(key.fromMe);
+      const remoteJid = key.remoteJid || '';
+      
+      if (remoteJid.includes('status@broadcast') || remoteJid.includes('@g.us')) {
+        return res.json({ received: true });
+      }
+
+      const cleanPhone = remoteJid.split('@')[0];
+      const messageContent = data.message?.conversation ||
+        data.message?.extendedTextMessage?.text ||
+        data.message?.imageMessage?.caption ||
+        'Nova mensagem';
+
+      let lead = db.getLead(cleanPhone);
+      if (!lead) {
+        const pushName = data.pushName || ('Lead ' + cleanPhone.slice(-4));
+        const created = db.createLead({
+          phone: cleanPhone,
+          name: pushName,
+          stage: 'novo',
+          tags: ['WhatsApp Orgânico'],
+          lastMessage: messageContent
+        });
+        lead = created.lead;
+      }
+
+      const newMsg = db.addMessage(lead.id, {
+        id: key.id,
+        fromMe,
+        text: messageContent,
+        timestamp: new Date().toISOString(),
+        status: 'read'
+      });
+
+      if (io) {
+        io.emit('chat:message', { leadId: lead.id, message: newMsg });
+        io.emit('leads:update', db.getLeads());
+      }
+    }
+
+    if (event === 'qrcode.updated' && data?.qrcode && io) {
+      io.emit('whatsapp:qrcode', data.qrcode);
+    }
+    if (event === 'connection.update' && io) {
+      io.emit('whatsapp:connection', data);
+    }
+
+    return res.json({ received: true });
+  });
+
+  // Meta Verification & Ads Ingestion
+  router.get('/leads/webhook', (req, res) => {
+    const mode = req.query['hub.mode'];
+    const token = req.query['hub.verify_token'];
+    const challenge = req.query['hub.challenge'];
+    const settings = db.getSettings();
+
+    if (mode === 'subscribe' && (token === settings.webhookToken || token === 'taxinexo_lead_token_2026' || !token)) {
+      return res.status(200).send(challenge);
+    }
+    return res.status(200).send(challenge || 'Webhook active');
+  });
+
+  router.post('/leads/webhook', async (req, res) => {
+    try {
+      const payload = req.body || {};
+      const rawName = payload.name || payload.full_name || payload.nome || payload.first_name || 'Lead Anúncio';
+      const rawPhone = payload.phone || payload.whatsapp || payload.telefone || payload.phone_number || '';
+      const rawEmail = payload.email || payload.mail || '';
+      const campaignName = payload.campaign_name || payload.campanha || payload.ad_name || payload.utm_campaign || 'Meta Ads - Conversão';
+      const utmSource = payload.utm_source || payload.source || 'meta_ads';
+      const utmMedium = payload.utm_medium || 'cpc';
+      const dealValue = Number(payload.value || payload.valor || 30.00);
+
+      const cleanPhone = String(rawPhone).replace(/\D/g, '');
+      if (!cleanPhone || cleanPhone.length < 8) {
+        return res.status(400).json({ success: false, message: 'Telefone inválido.' });
+      }
+
+      const { lead, created } = db.createLead({
+        name: rawName,
+        phone: cleanPhone,
+        email: rawEmail,
+        stage: 'novo',
+        value: dealValue,
+        tags: [utmSource === 'meta_ads' ? 'Meta Ads' : utmSource.toUpperCase(), 'Novo Lead'],
+        campaign: campaignName,
+        utm_source: utmSource,
+        utm_campaign: campaignName,
+        utm_medium: utmMedium,
+        notes: `Lead capturado em ${new Date().toLocaleString('pt-BR')}.`,
+        lastMessage: `Lead cadastrado via ${campaignName}`
+      });
+
+      if (io) {
+        io.emit('leads:new', { lead, isNew: created });
+        io.emit('leads:update', db.getLeads());
+      }
+
+      return res.json({ success: true, message: 'Lead processado com sucesso!', leadId: lead.id, lead });
+    } catch (err) {
+      return res.status(500).json({ success: false, error: err.message });
+    }
+  });
+
+  // ---------------- Leads & CRM CRUD ----------------
+  router.get('/leads', (req, res) => res.json(db.getLeads()));
+  router.get('/leads/:id', (req, res) => {
+    const lead = db.getLead(req.params.id);
+    if (!lead) return res.status(404).json({ error: 'Lead não encontrado' });
+    return res.json(lead);
+  });
+  router.post('/leads', (req, res) => {
+    const { lead } = db.createLead(req.body);
+    if (io) io.emit('leads:update', db.getLeads());
+    return res.json(lead);
+  });
+  router.put('/leads/:id', (req, res) => {
+    const updated = db.updateLead(req.params.id, req.body);
+    if (!updated) return res.status(404).json({ error: 'Lead não encontrado' });
+    if (io) io.emit('leads:update', db.getLeads());
+    return res.json(updated);
+  });
+  router.delete('/leads/:id', (req, res) => {
+    const success = db.deleteLead(req.params.id);
+    if (io) io.emit('leads:update', db.getLeads());
+    return res.json({ success });
+  });
+
+  router.patch('/leads/:id/toggle-bot', (req, res) => {
+    const lead = db.getLead(req.params.id);
+    if (!lead) return res.status(404).json({ error: 'Lead não encontrado' });
+    const updated = db.updateLead(req.params.id, { botPaused: !lead.botPaused });
+    if (io) io.emit('leads:update', db.getLeads());
+    return res.json(updated);
+  });
+
+  router.get('/messages/:leadId', (req, res) => {
+    const messages = db.getMessages(req.params.leadId);
+    db.updateLead(req.params.leadId, { unreadCount: 0 });
+    if (io) io.emit('leads:update', db.getLeads());
+    return res.json(messages);
+  });
+
+  router.get('/stages', (req, res) => res.json(db.getStages()));
+  router.get('/automations', (req, res) => res.json(db.getAutomations()));
+  router.post('/automations', (req, res) => {
+    const auto = db.saveAutomation(req.body);
+    return res.json(auto);
+  });
+  router.patch('/automations/:id/toggle', (req, res) => {
+    const auto = db.toggleAutomation(req.params.id);
+    return res.json(auto);
+  });
+
+  router.get('/analytics', (req, res) => res.json(db.getAnalytics()));
+  router.get('/settings', (req, res) => res.json(db.getSettings()));
+  router.put('/settings', (req, res) => {
+    const updated = db.updateSettings(req.body);
+    return res.json(updated);
+  });
+
+  router.get('/leads/export', (req, res) => {
+    const leads = db.getLeads();
+    let csv = 'ID,Nome,WhatsApp,Email,Etapa,Valor,Campanha,UTM_Source,Criado_Em\n';
+    leads.forEach(l => {
+      csv += `"${l.id}","${l.name}","${l.phone}","${l.email}","${l.stage}","${l.value}","${l.campaign}","${l.utm_source}","${l.createdAt}"\n`;
+    });
+    res.header('Content-Type', 'text/csv');
+    res.attachment(`leads-export-${Date.now()}.csv`);
+    return res.send(csv);
+  });
+
+  return router;
+};

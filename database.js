@@ -955,7 +955,7 @@ async function getWebhookLogs(limit = 50) {
 
 async function getSystemSettings() {
   const defaultSettings = {
-    nexusCrmUrl: 'https://facilities-never-recently-sam.trycloudflare.com',
+    nexusCrmUrl: 'https://taxinexo.onrender.com/crm',
     whatsappNumber: '553492019122',
     metaPixelId: ''
   };

@@ -8,13 +8,14 @@ module.exports = function(io) {
   // Helper Evolution API client
   function getEvoClient() {
     const settings = db.getSettings();
+    const baseURL = process.env.EVOLUTION_API_URL || settings.evolutionApiUrl || 'http://localhost:8080';
     return axios.create({
-      baseURL: settings.evolutionApiUrl || 'http://localhost:8080',
+      baseURL: baseURL,
       headers: {
-        'apikey': settings.globalApiKey || 'tartaruga-1-.',
+        'apikey': settings.globalApiKey || process.env.GLOBAL_API_KEY || 'tartaruga-1-.',
         'Content-Type': 'application/json'
       },
-      timeout: 15000
+      timeout: 10000
     });
   }
 
@@ -27,10 +28,12 @@ module.exports = function(io) {
     try {
       const instancesRes = await evo.get('/instance/fetchInstances');
       const instanceList = Array.isArray(instancesRes.data) ? instancesRes.data : [];
-      const inst = instanceList.find(i => i.name === instanceName);
+      const inst = instanceList.find(i => (i.name === instanceName || i.instance?.instanceName === instanceName));
 
       let qrData = null;
-      if (inst && (inst.connectionStatus === 'connecting' || inst.connectionStatus === 'close')) {
+      let connectionStatus = inst ? (inst.connectionStatus || inst.instance?.status || 'close') : 'not_created';
+
+      if (inst && (connectionStatus === 'connecting' || connectionStatus === 'close')) {
         try {
           const qrRes = await evo.get(`/instance/connect/${instanceName}`);
           qrData = qrRes.data;
@@ -41,17 +44,20 @@ module.exports = function(io) {
         success: true,
         instanceName,
         exists: Boolean(inst),
-        connectionStatus: inst ? inst.connectionStatus : 'not_created',
-        ownerJid: inst ? inst.ownerJid : null,
-        profileName: inst ? inst.profileName : null,
-        profilePicUrl: inst ? inst.profilePicUrl : null,
+        connectionStatus: connectionStatus,
+        ownerJid: inst ? (inst.ownerJid || inst.instance?.owner) : null,
+        profileName: inst ? (inst.profileName || inst.instance?.profileName) : null,
+        profilePicUrl: inst ? (inst.profilePicUrl || inst.instance?.profilePictureUrl) : null,
         qrcode: qrData
       });
     } catch (err) {
-      return res.status(500).json({
+      return res.json({
         success: false,
+        instanceName,
+        exists: false,
+        connectionStatus: 'offline',
         error: err.response?.data || err.message,
-        message: 'Não foi possível comunicar com a Evolution API em ' + settings.evolutionApiUrl
+        message: 'Evolution API não conectada em ' + (process.env.EVOLUTION_API_URL || settings.evolutionApiUrl)
       });
     }
   });
@@ -63,10 +69,27 @@ module.exports = function(io) {
     const evo = getEvoClient();
 
     try {
-      const url = number ? `/instance/connect/${inst}?number=${number}` : `/instance/connect/${inst}`;
-      const response = await evo.get(url);
-      if (io) io.emit('whatsapp:qrcode', response.data);
-      return res.json({ success: true, data: response.data });
+      // Tenta conectar ou criar a instância caso não exista
+      let response;
+      try {
+        const url = number ? `/instance/connect/${inst}?number=${number}` : `/instance/connect/${inst}`;
+        response = await evo.get(url);
+      } catch (connectErr) {
+        if (connectErr.response?.status === 404 || connectErr.response?.data?.status === 404) {
+          // Instância não existe -> cria automaticamente
+          response = await evo.post('/instance/create', {
+            instanceName: inst,
+            qrcode: true,
+            integration: 'WHATSAPP-BAILEYS'
+          });
+        } else {
+          throw connectErr;
+        }
+      }
+
+      const qrCodeData = response.data?.qrcode || response.data?.base64 || response.data;
+      if (io && qrCodeData) io.emit('whatsapp:qrcode', qrCodeData);
+      return res.json({ success: true, data: response.data, qrcode: qrCodeData });
     } catch (err) {
       return res.status(500).json({ success: false, error: err.response?.data || err.message });
     }

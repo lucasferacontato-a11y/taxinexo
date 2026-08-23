@@ -2529,7 +2529,7 @@
     // UTM Capture, Persistence & Propagation
     (function() {
       const params = new URLSearchParams(window.location.search);
-      const utmKeys = ['utm_source', 'utm_campaign', 'utm_medium', 'utm_content', 'utm_term', 'ref', 'invite'];
+      const utmKeys = ['utm_source', 'utm_campaign', 'utm_medium', 'utm_content', 'utm_term', 'src', 'sck', 'ref', 'invite', 'i'];
       utmKeys.forEach(k => {
         const v = params.get(k);
         if (v) {
@@ -2545,13 +2545,26 @@
           if (v) storedUtms[k] = v;
         });
 
-        const queryString = Object.keys(storedUtms).length > 0
-          ? '?' + new URLSearchParams(storedUtms).toString()
-          : '';
+        // Captura parâmetros da URL atual
+        const currentParams = new URLSearchParams(window.location.search);
+        currentParams.forEach((val, key) => {
+          storedUtms[key] = val;
+        });
 
-        document.querySelectorAll('a[href*="login.html"], a[href*="index.html"]').forEach(a => {
+        document.querySelectorAll('a[href*="login.html"]').forEach(a => {
+          const isExplicitLogin = a.textContent.trim().toLowerCase() === 'login';
+          const p = new URLSearchParams(storedUtms);
+          if (!isExplicitLogin && !p.has('tab')) {
+            p.set('tab', 'register');
+          }
           const baseHref = a.getAttribute('href').split('?')[0];
-          a.setAttribute('href', baseHref + queryString);
+          a.setAttribute('href', baseHref + (p.toString() ? '?' + p.toString() : ''));
+        });
+
+        document.querySelectorAll('a[href*="index.html"]').forEach(a => {
+          const p = new URLSearchParams(storedUtms);
+          const baseHref = a.getAttribute('href').split('?')[0];
+          a.setAttribute('href', baseHref + (p.toString() ? '?' + p.toString() : ''));
         });
       });
     })();
@@ -2589,28 +2602,25 @@
       if (window.fbq) fbq('track', 'Contact', { content_name: 'WhatsApp Presell Float' });
     }
 
-    const CARTPANDA_CHECKOUTS = {
-      'NX-030': 'https://pagamento.pricipiaskins.site/checkout/212260809:1',
-      'NX-101': 'https://pagamento.pricipiaskins.site/checkout/212187584:1',
-      'NX-202': 'https://pagamento.pricipiaskins.site/checkout/212187589:1',
-      'NX-707': 'https://pagamento.pricipiaskins.site/checkout/212187590:1',
-      'NX-404': 'https://pagamento.pricipiaskins.site/checkout/212187597:1',
-      'NX-303': 'https://pagamento.pricipiaskins.site/checkout/212187598:1',
-      'NX-505': 'https://pagamento.pricipiaskins.site/checkout/212187602:1',
-      'NX-606': 'https://pagamento.pricipiaskins.site/checkout/212187611:1'
-    };
-
     function handleActivateVehicle(productId) {
       if (window.fbq) {
-        fbq('track', 'InitiateCheckout', { content_name: productId, currency: 'BRL' });
+        fbq('track', 'Lead', { content_name: productId || 'Selecao de Plano Presell' });
       }
 
-      const url = CARTPANDA_CHECKOUTS[productId];
-      if (url) {
-        window.open(url, '_blank');
-      } else {
-        window.location.href = 'index.html?hire=' + productId;
+      // Preserva UTMs e parâmetros de indicação para o cadastro
+      const utmKeys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'src', 'sck', 'ref', 'invite', 'i'];
+      const params = new URLSearchParams(window.location.search);
+      utmKeys.forEach(k => {
+        const v = sessionStorage.getItem('tn_' + k) || localStorage.getItem('tn_' + k);
+        if (v && !params.has(k)) params.set(k, v);
+      });
+
+      params.set('tab', 'register');
+      if (productId) {
+        params.set('plan', productId);
       }
+
+      window.location.href = 'login.html?' + params.toString();
     }
 
     // ==========================================

@@ -491,14 +491,32 @@
       : '/api';
 
     document.addEventListener('DOMContentLoaded', () => {
-      // Captura código de convite da URL (ex: login.html?ref=NEXO8843)
       const urlParams = new URLSearchParams(window.location.search);
-      const ref = urlParams.get('ref') || urlParams.get('invite') || urlParams.get('i');
-      if (ref) {
+
+      // Coleta e persiste parâmetros de UTM e convite
+      const utmKeys = ['utm_source', 'utm_campaign', 'utm_medium', 'utm_content', 'utm_term', 'src', 'sck', 'ref', 'invite', 'i', 'r', 'convite'];
+      utmKeys.forEach(k => {
+        const v = urlParams.get(k);
+        if (v) {
+          sessionStorage.setItem('tn_' + k, v);
+          localStorage.setItem('tn_' + k, v);
+        }
+      });
+
+      const ref = urlParams.get('ref') || urlParams.get('invite') || urlParams.get('i') || urlParams.get('r') || urlParams.get('convite') || sessionStorage.getItem('tn_ref') || localStorage.getItem('tn_ref');
+      const tabParam = urlParams.get('tab') || urlParams.get('action');
+      const planParam = urlParams.get('plan') || urlParams.get('hire');
+
+      // Se solicitado cadastro direto via URL, convite ou seleção de plano na presell
+      if (tabParam === 'register' || tabParam === 'cadastro' || ref || planParam) {
         switchFormTab('register');
+      }
+
+      // Aplica código de convite se existente
+      if (ref) {
         const inviteInput = document.getElementById('reg-invite');
         if (inviteInput) {
-          inviteInput.value = ref.toUpperCase();
+          inviteInput.value = ref.toUpperCase().trim();
           document.getElementById('invite-tag').style.display = 'inline-flex';
         }
       }
@@ -518,6 +536,22 @@
           }
         });
       });
+
+      // Meta Pixel dynamic init
+      fetch('/api/admin/public-settings').then(r => r.json()).then(settings => {
+        if (settings.metaPixelId && !window.fbq) {
+          !function(f,b,e,v,n,t,s)
+          {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+          n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+          if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+          n.queue=[];t=b.createElement(e);t.async=!0;
+          t.src=v;s=b.getElementsByTagName(e)[0];
+          s.parentNode.insertBefore(t,s)}(window, document,'script',
+          'https://connect.facebook.net/en_US/fbevents.js');
+          fbq('init', settings.metaPixelId);
+          fbq('track', 'PageView');
+        }
+      }).catch(() => {});
     });
 
     function switchFormTab(tab) {
@@ -638,7 +672,7 @@
           localStorage.setItem('taxinexo_token', data.token);
           setTimeout(() => {
             const redirectTarget = urlParams.get('redirect');
-            let destination = './';
+            let destination = './index.html';
             if (redirectTarget && redirectTarget.startsWith('hire_')) {
               destination = `./index.html?hire=${redirectTarget.replace('hire_', '')}`;
             }
@@ -655,36 +689,6 @@
         btn.innerHTML = '<span>Criar Conta e Começar</span> <i class="fa-solid fa-bolt"></i>';
       }
     }
-
-    // Auto-preenchimento do Código de Indicação via URL (?ref=CODIGO) & Meta Pixel
-    window.addEventListener('DOMContentLoaded', () => {
-      const urlParams = new URLSearchParams(window.location.search);
-      const refCode = urlParams.get('ref') || urlParams.get('r') || urlParams.get('convite');
-      if (refCode) {
-        const regInviteInput = document.getElementById('reg-invite');
-        if (regInviteInput) {
-          regInviteInput.value = refCode.trim();
-          switchAuthTab('register');
-          showAlert(`🤝 Código de convite "${refCode.trim()}" aplicado com sucesso!`, 'success');
-        }
-      }
-
-      // Meta Pixel dynamic init
-      fetch('/api/admin/public-settings').then(r => r.json()).then(settings => {
-        if (settings.metaPixelId && !window.fbq) {
-          !function(f,b,e,v,n,t,s)
-          {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-          n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-          if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-          n.queue=[];t=b.createElement(e);t.async=!0;
-          t.src=v;s=b.getElementsByTagName(e)[0];
-          s.parentNode.insertBefore(t,s)}(window, document,'script',
-          'https://connect.facebook.net/en_US/fbevents.js');
-          fbq('init', settings.metaPixelId);
-          fbq('track', 'PageView');
-        }
-      }).catch(() => {});
-    });
 
   </script>
 </body>

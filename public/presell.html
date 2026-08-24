@@ -3,81 +3,70 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>TAXINEXO 2.0 — Alavancagem Exponencial & Frotas Autônomas</title>
-  <meta name="description" content="Construa renda passiva diária no Pix com frotas autônomas e o Efeito Cascata em 3 níveis. Comece com cota a partir de R$ 30.">
+  <title>TAXINEXO 2.0 — Frotas Autônomas & Efeito Cascata</title>
+  <meta name="description" content="Construa renda passiva diária no Pix com frotas de veículos autônomos e o Efeito Cascata multinível. Comece a partir de R$ 30,00.">
   
   <!-- Open Graph -->
   <meta property="og:type" content="website">
-  <meta property="og:title" content="TAXINEXO 2.0 — Oportunidade Exponencial & Frotas Autônomas">
-  <meta property="og:description" content="Liquidação diária no Pix, comissões em 3 níveis (15%, 10%, 5%) e bônus de até R$ 1.500. Ative sua cota por R$ 30!">
+  <meta property="og:title" content="TAXINEXO 2.0 — Frotas Autônomas & Efeito Cascata">
+  <meta property="og:description" content="Liquidação diária no Pix, comissões de 15% N1, 10% N2, 5% N3 e bônus de até R$ 10.000 no Pix.">
   <meta property="og:image" content="https://taxinexo.onrender.com/images/tesla_cybercab.jpg">
 
-  <!-- Fontes Geométricas & Ícones -->
+  <!-- Fontes Najaf / Framer: Figtree, Plus Jakarta Sans & Roboto Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600;700;800&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Roboto+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
   <style>
     /* ==========================================================================
-       1. FINTECH / WEB3 DESIGN TOKENS (MOBILE-FIRST BASE)
+       1. NAJAF FRAMER DESIGN SYSTEM TOKENS
        ========================================================================== */
     :root {
-      --bg-base: #07090e;
-      --bg-canvas: #0b0f19;
-      --bg-surface: #0f172a;
-      --bg-card: rgba(15, 23, 42, 0.72);
-      --bg-card-hover: rgba(22, 33, 60, 0.90);
+      --bg-base: #060703;
+      --bg-canvas: #090b0e;
+      --bg-card: rgba(18, 22, 29, 0.72);
+      --bg-card-hover: rgba(26, 32, 42, 0.90);
+      --bg-elevated: #11141b;
 
-      /* Electric & Neon Accents */
-      --cyan-500: #00f0ff;
-      --cyan-400: #38bdf8;
-      --cyan-600: #0284c7;
-      --cyan-glow: rgba(0, 240, 255, 0.35);
-      --cyan-gradient: linear-gradient(135deg, #38bdf8 0%, #00f0ff 50%, #0284c7 100%);
+      /* Signature Najaf Electric Lime */
+      --accent-lime: #9cf35b;
+      --accent-lime-hover: #b4f77a;
+      --accent-lime-glow: rgba(156, 243, 91, 0.35);
+      --accent-lime-muted: rgba(156, 243, 91, 0.12);
+      --accent-lime-gradient: linear-gradient(135deg, #b4f77a 0%, #9cf35b 60%, #76d332 100%);
 
-      /* Emerald Pix Accents */
-      --emerald-400: #34d399;
-      --emerald-500: #10b981;
-      --emerald-glow: rgba(16, 185, 129, 0.35);
-      --emerald-gradient: linear-gradient(135deg, #34d399 0%, #10b981 60%, #059669 100%);
+      /* Secondary Tech Accents */
+      --accent-cyan: #38bdf8;
+      --accent-gold: #fbbf24;
+      --accent-rose: #f43f5e;
+      --accent-purple: #c084fc;
 
-      /* Gold & Amber Accents */
-      --amber-400: #fbbf24;
-      --amber-500: #f59e0b;
-      --amber-glow: rgba(245, 158, 11, 0.35);
-      --gold-gradient: linear-gradient(135deg, #fde68a 0%, #f59e0b 50%, #d97706 100%);
-
-      /* Telegram Brand */
-      --telegram-gradient: linear-gradient(135deg, #38bdf8 0%, #0088cc 100%);
-
-      /* Typography Colors */
-      --text-primary: #f8fafc;
+      /* Typography */
+      --text-primary: #ffffff;
       --text-secondary: #94a3b8;
       --text-tertiary: #64748b;
-      --text-inverse: #030712;
+      --text-inverse: #060703;
 
-      /* Structural Borders */
+      /* Borders & Depth */
       --border-subtle: rgba(255, 255, 255, 0.08);
-      --border-medium: rgba(255, 255, 255, 0.14);
-      --border-cyan: rgba(0, 240, 255, 0.3);
-      --border-emerald: rgba(16, 185, 129, 0.3);
-      --border-gold: rgba(245, 158, 11, 0.35);
+      --border-medium: rgba(255, 255, 255, 0.15);
+      --border-lime: rgba(156, 243, 91, 0.35);
+      --border-lime-subtle: rgba(156, 243, 91, 0.18);
 
-      /* Radius & Shadows */
-      --radius-sm: 8px;
-      --radius-md: 14px;
-      --radius-lg: 20px;
-      --radius-xl: 28px;
+      /* Radii */
       --radius-pill: 9999px;
+      --radius-card: 24px;
+      --radius-inner: 16px;
+      --radius-sm: 10px;
 
       /* Fonts */
-      --font-heading: 'Plus Jakarta Sans', 'Inter', -apple-system, sans-serif;
-      --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-      --font-mono: 'JetBrains Mono', monospace;
+      --font-heading: 'Figtree', 'Plus Jakarta Sans', -apple-system, sans-serif;
+      --font-body: 'Figtree', 'Plus Jakarta Sans', sans-serif;
+      --font-mono: 'Roboto Mono', monospace;
 
-      /* Touch Target */
-      --min-touch-target: 48px;
+      --shadow-card: 0 16px 40px -10px rgba(0, 0, 0, 0.8), 0 0 0 1px var(--border-subtle);
+      --shadow-lime: 0 12px 36px -6px rgba(156, 243, 91, 0.45);
     }
 
     * {
@@ -90,2628 +79,1404 @@
       text-rendering: optimizeLegibility;
     }
 
-    /* Custom Selection & Themed Scrollbars */
     ::selection {
-      background: rgba(0, 240, 255, 0.28);
-      color: #ffffff;
-    }
-    ::-moz-selection {
-      background: rgba(0, 240, 255, 0.28);
+      background: rgba(156, 243, 91, 0.3);
       color: #ffffff;
     }
 
     ::-webkit-scrollbar {
-      width: 8px;
-      height: 8px;
+      width: 7px;
+      height: 7px;
     }
     ::-webkit-scrollbar-track {
-      background: #07090e;
+      background: #060703;
     }
     ::-webkit-scrollbar-thumb {
-      background: rgba(255, 255, 255, 0.16);
+      background: rgba(255, 255, 255, 0.15);
       border-radius: 4px;
     }
     ::-webkit-scrollbar-thumb:hover {
-      background: rgba(0, 240, 255, 0.45);
+      background: var(--accent-lime);
     }
 
     :focus-visible {
-      outline: 2px solid var(--cyan-400);
+      outline: 2px solid var(--accent-lime);
       outline-offset: 3px;
     }
 
-    .num-tabular, .stat-value, .career-cash-prize, .sim-badge-val, .fleet-card-price, .fleet-daily-income {
-      font-variant-numeric: tabular-nums;
-    }
-
     body {
-      background-color: var(--bg-canvas);
+      background-color: var(--bg-base);
       color: var(--text-primary);
       overflow-x: hidden;
-      line-height: 1.65;
-      letter-spacing: -0.015em;
-      padding-bottom: 95px; /* Space for Mobile Sticky Bar */
+      line-height: 1.6;
+      letter-spacing: -0.012em;
+      padding-bottom: 90px;
     }
 
     @media (min-width: 768px) {
-      body {
-        padding-bottom: 0;
-      }
+      body { padding-bottom: 0; }
     }
 
-    /* Ambient High-Tech Lighting */
+    /* Ambient Najaf Glow Mesh */
     body::before {
       content: '';
       position: fixed;
       inset: 0;
       background: 
-        radial-gradient(ellipse 90% 50% at 50% -10%, rgba(0, 240, 255, 0.10) 0%, transparent 65%),
-        radial-gradient(circle 500px at 90% 35%, rgba(16, 185, 129, 0.06) 0%, transparent 70%),
-        radial-gradient(circle 600px at 10% 65%, rgba(245, 158, 11, 0.05) 0%, transparent 70%),
-        radial-gradient(ellipse 80% 40% at 50% 105%, rgba(0, 240, 255, 0.08) 0%, transparent 60%);
+        radial-gradient(circle 800px at 50% -15%, rgba(156, 243, 91, 0.12) 0%, transparent 65%),
+        radial-gradient(circle 600px at 85% 30%, rgba(56, 189, 248, 0.05) 0%, transparent 70%),
+        radial-gradient(circle 700px at 15% 70%, rgba(156, 243, 91, 0.06) 0%, transparent 70%);
       pointer-events: none;
       z-index: 0;
     }
 
     .container {
       width: 100%;
-      max-width: 1140px;
+      max-width: 1160px;
       margin: 0 auto;
-      padding: 0 16px;
+      padding: 0 20px;
       position: relative;
       z-index: 1;
     }
 
     @media (min-width: 640px) {
-      .container { padding: 0 24px; }
+      .container { padding: 0 32px; }
     }
 
     /* ==========================================================================
-       2. TOP TICKER & NAV BAR
+       2. FLOATING ISLAND NAVIGATION (NAJAF STYLE)
        ========================================================================== */
-    .top-ticker {
-      background: rgba(15, 23, 42, 0.95);
-      border-bottom: 1px solid var(--border-subtle);
-      color: var(--text-secondary);
-      padding: 8px 12px;
-      font-size: 11.5px;
-      font-weight: 600;
-      text-align: center;
+    .nav-island-wrapper {
+      position: sticky;
+      top: 16px;
+      z-index: 100;
+      display: flex;
+      justify-content: center;
+      padding: 0 16px;
+    }
+
+    .nav-island {
+      width: 100%;
+      max-width: 980px;
+      height: 60px;
+      background: rgba(14, 17, 23, 0.85);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid var(--border-medium);
+      border-radius: var(--radius-pill);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 6px 12px 6px 20px;
+      box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.7);
+      transition: all 0.3s ease;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text-primary);
+    }
+    .brand-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--accent-lime);
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      backdrop-filter: blur(12px);
-      position: relative;
-      z-index: 50;
+      color: var(--bg-base);
+      font-size: 15px;
+      box-shadow: 0 0 16px var(--accent-lime-glow);
     }
-    @media (min-width: 640px) {
-      .top-ticker { font-size: 12.5px; padding: 10px 16px; gap: 12px; }
-    }
-    .ticker-pill {
-      background: rgba(245, 158, 11, 0.15);
-      border: 1px solid var(--border-gold);
-      color: var(--amber-400);
-      padding: 2px 8px;
-      border-radius: var(--radius-pill);
-      font-size: 10px;
+    .brand-text {
+      font-size: 17px;
       font-weight: 800;
       font-family: var(--font-heading);
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-      flex-shrink: 0;
+      letter-spacing: -0.03em;
+    }
+    .brand-text span {
+      color: var(--accent-lime);
+    }
+    .brand-badge {
+      font-size: 10px;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      background: var(--accent-lime-muted);
+      border: 1px solid var(--border-lime-subtle);
+      color: var(--accent-lime);
+      padding: 1px 7px;
+      border-radius: var(--radius-pill);
+      margin-left: 4px;
     }
 
-    .nav-bar {
-      display: flex;
-      justify-content: space-between;
+    .nav-links {
+      display: none;
       align-items: center;
-      padding: 16px 0;
-      border-bottom: 1px solid var(--border-subtle);
-      position: relative;
-      z-index: 40;
+      gap: 24px;
     }
-    @media (min-width: 640px) {
-      .nav-bar { padding: 22px 0; }
+    @media (min-width: 768px) {
+      .nav-links { display: flex; }
+    }
+    .nav-link-item {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 13.5px;
+      font-weight: 600;
+      transition: color 0.2s ease;
+    }
+    .nav-link-item:hover {
+      color: #fff;
     }
 
-    .brand-logo {
+    .nav-actions {
       display: flex;
       align-items: center;
       gap: 10px;
-      text-decoration: none;
-      color: var(--text-primary);
-      min-height: var(--min-touch-target);
-    }
-    .brand-logo-icon {
-      width: 38px;
-      height: 38px;
-      border-radius: 10px;
-      background: var(--cyan-gradient);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--text-inverse);
-      font-size: 16px;
-      box-shadow: 0 8px 24px -4px rgba(0, 240, 255, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.6);
-      border: 1px solid rgba(255, 255, 255, 0.4);
-      flex-shrink: 0;
-    }
-    .brand-logo h1 {
-      font-size: 19px;
-      font-weight: 900;
-      font-family: var(--font-heading);
-      letter-spacing: -0.04em;
-      display: flex;
-      align-items: center;
-      gap: 3px;
-    }
-    @media (min-width: 640px) {
-      .brand-logo-icon { width: 42px; height: 42px; font-size: 18px; }
-      .brand-logo h1 { font-size: 22px; }
-    }
-    .brand-logo h1 span {
-      background: var(--cyan-gradient);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    .brand-v2-badge {
-      font-size: 9.5px;
-      background: rgba(0, 240, 255, 0.1);
-      border: 1px solid var(--border-cyan);
-      color: var(--cyan-500);
-      padding: 1px 6px;
-      border-radius: 5px;
-      margin-left: 4px;
-      font-family: var(--font-mono);
-      font-weight: 700;
     }
 
-    .nav-btn-telegram {
-      background: rgba(56, 189, 248, 0.1);
-      border: 1px solid rgba(56, 189, 248, 0.3);
-      color: var(--cyan-400);
-      padding: 0 16px;
-      min-height: var(--min-touch-target);
-      border-radius: var(--radius-pill);
+    .btn-pill-login {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-subtle);
+      color: #fff;
       font-size: 13px;
-      font-weight: 700;
+      font-weight: 600;
+      padding: 8px 18px;
+      border-radius: var(--radius-pill);
       text-decoration: none;
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-      backdrop-filter: blur(8px);
+      gap: 6px;
+      transition: all 0.2s ease;
     }
-    .nav-btn-telegram:hover {
-      background: var(--telegram-gradient);
-      color: #fff;
-      border-color: transparent;
-      box-shadow: 0 8px 24px -4px rgba(56, 189, 248, 0.3);
-      transform: translateY(-2px);
+    .btn-pill-login:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: var(--border-medium);
+    }
+
+    .btn-pill-cta {
+      background: var(--accent-lime);
+      color: var(--bg-base);
+      font-size: 13px;
+      font-weight: 800;
+      padding: 8px 20px;
+      border-radius: var(--radius-pill);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.25s ease;
+      box-shadow: 0 0 20px var(--accent-lime-glow);
+    }
+    .btn-pill-cta:hover {
+      background: var(--accent-lime-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 25px rgba(156, 243, 91, 0.6);
     }
 
     /* ==========================================================================
-       3. HERO SECTION (FLUID TYPOGRAPHY & MOBILE-FIRST LAYOUT)
+       3. HERO SECTION
        ========================================================================== */
     .hero-section {
-      padding: 48px 0 36px 0;
+      padding: 70px 0 40px 0;
       text-align: center;
     }
     @media (min-width: 768px) {
-      .hero-section { padding: 80px 0 50px 0; }
+      .hero-section { padding: 90px 0 60px 0; }
     }
 
-    .hero-badge-pill {
+    .hero-pill-badge {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      background: rgba(15, 23, 42, 0.85);
-      border: 1px solid var(--border-cyan);
-      padding: 6px 16px;
+      background: rgba(18, 22, 29, 0.85);
+      border: 1px solid var(--border-lime-subtle);
+      padding: 6px 18px;
       border-radius: var(--radius-pill);
-      color: var(--cyan-400);
-      font-size: 11px;
-      font-weight: 700;
+      font-size: 12px;
       font-family: var(--font-mono);
-      letter-spacing: 0.5px;
-      margin-bottom: 20px;
-      box-shadow: 0 10px 28px -4px rgba(0, 240, 255, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.15);
-      backdrop-filter: blur(16px);
-      max-width: 100%;
-    }
-    @media (min-width: 640px) {
-      .hero-badge-pill { font-size: 12.5px; padding: 8px 22px; margin-bottom: 28px; }
+      font-weight: 700;
+      color: var(--accent-lime);
+      margin-bottom: 24px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
     }
 
-    .hero-badge-dot {
+    .pulse-dot {
       width: 7px;
       height: 7px;
       border-radius: 50%;
-      background: var(--cyan-500);
-      box-shadow: 0 0 8px var(--cyan-500);
-      animation: blinkDot 2s infinite;
-      flex-shrink: 0;
+      background: var(--accent-lime);
+      box-shadow: 0 0 10px var(--accent-lime);
+      animation: pulseAnim 2s infinite;
     }
-    @keyframes blinkDot {
+    @keyframes pulseAnim {
       0%, 100% { opacity: 1; transform: scale(1); }
       50% { opacity: 0.4; transform: scale(0.8); }
     }
 
-    .hero-title {
-      font-size: clamp(28px, 6.5vw, 54px);
-      line-height: 1.15;
+    .hero-heading {
+      font-size: clamp(32px, 6vw, 64px);
+      line-height: 1.08;
       font-weight: 900;
       font-family: var(--font-heading);
       letter-spacing: -0.04em;
-      color: var(--text-primary);
-      margin-bottom: 18px;
-      max-width: 980px;
+      color: #fff;
+      margin-bottom: 22px;
+      max-width: 940px;
       margin-left: auto;
       margin-right: auto;
-      word-break: break-word;
     }
-    .text-gradient-cyan {
-      background: linear-gradient(135deg, #ffffff 0%, #38bdf8 50%, #00f0ff 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+
+    .hero-heading .highlight-lime {
+      color: var(--accent-lime);
+      display: inline-block;
     }
-    .text-gradient-gold {
-      background: var(--gold-gradient);
+    .hero-heading .highlight-gradient {
+      background: linear-gradient(135deg, #ffffff 30%, #94a3b8 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
 
-    .hero-description {
-      font-size: clamp(15px, 2.5vw, 18.5px);
-      line-height: 1.7;
+    .hero-subheading {
+      font-size: clamp(16px, 2.2vw, 20px);
+      line-height: 1.6;
       color: var(--text-secondary);
-      max-width: 820px;
+      max-width: 760px;
       margin: 0 auto 36px auto;
       font-weight: 400;
     }
-    .hero-description strong {
-      color: var(--text-primary);
+    .hero-subheading strong {
+      color: #fff;
       font-weight: 700;
     }
 
-    /* ==========================================================================
-       4. 3D TACTILE BUTTONS (MIN TOUCH TARGET 48PX)
-       ========================================================================== */
-    .cta-group {
+    .hero-cta-group {
       display: flex;
       flex-direction: column;
       gap: 14px;
-      margin-bottom: 48px;
-      width: 100%;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 54px;
     }
     @media (min-width: 640px) {
-      .cta-group {
+      .hero-cta-group {
         flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        gap: 18px;
-        margin-bottom: 64px;
+        gap: 16px;
       }
     }
 
-    .btn-3d {
-      position: relative;
-      overflow: hidden;
-      min-height: var(--min-touch-target);
-      padding: 14px 24px;
-      border-radius: var(--radius-md);
-      font-size: 15px;
+    .btn-hero-primary {
+      background: var(--accent-lime);
+      color: var(--bg-base);
+      font-size: 15.5px;
       font-weight: 800;
       font-family: var(--font-heading);
-      letter-spacing: 0.3px;
+      padding: 16px 36px;
+      border-radius: var(--radius-pill);
       text-decoration: none;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 10px;
-      cursor: pointer;
-      border: 1px solid transparent;
+      box-shadow: var(--shadow-lime);
       transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
       width: 100%;
-      text-align: center;
     }
     @media (min-width: 640px) {
-      .btn-3d {
-        width: auto;
-        padding: 16px 32px;
-        font-size: 15.5px;
-      }
+      .btn-hero-primary { width: auto; }
+    }
+    .btn-hero-primary:hover {
+      background: var(--accent-lime-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 16px 42px -6px rgba(156, 243, 91, 0.6);
     }
 
-    .btn-3d::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 1px;
-      background: rgba(255, 255, 255, 0.45);
-    }
-    .btn-3d::after {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -75%;
-      width: 50%;
-      height: 200%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
-      transform: rotate(25deg);
-      animation: btnShimmer 4.5s infinite cubic-bezier(0.19, 1, 0.22, 1);
-    }
-    @keyframes btnShimmer {
-      0% { left: -75%; }
-      25%, 100% { left: 150%; }
-    }
-
-    .btn-3d-cyan {
-      background: var(--cyan-gradient);
-      color: var(--text-inverse);
-      border-color: rgba(255, 255, 255, 0.35);
-      box-shadow: 0 10px 28px -4px rgba(0, 240, 255, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.7);
-    }
-    .btn-3d-cyan:hover, .btn-3d-cyan:active {
-      transform: translateY(-2px) scale(1.01);
-      box-shadow: 0 14px 38px -4px rgba(0, 240, 255, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.9);
-    }
-
-    .btn-3d-gold {
-      background: var(--gold-gradient);
-      color: var(--text-inverse);
-      border-color: rgba(255, 235, 130, 0.5);
-      box-shadow: 0 10px 28px -4px rgba(245, 158, 11, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.7);
-    }
-    .btn-3d-gold:hover, .btn-3d-gold:active {
-      transform: translateY(-2px) scale(1.01);
-      box-shadow: 0 14px 38px -4px rgba(245, 158, 11, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.9);
-    }
-
-    .btn-3d-secondary {
-      background: rgba(15, 23, 42, 0.85);
-      color: var(--text-primary);
+    .btn-hero-secondary {
+      background: rgba(255, 255, 255, 0.05);
       border: 1px solid var(--border-medium);
-      backdrop-filter: blur(12px);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    }
-    .btn-3d-secondary:hover, .btn-3d-secondary:active {
-      border-color: var(--cyan-400);
       color: #fff;
-      transform: translateY(-2px) scale(1.01);
-      box-shadow: 0 12px 30px rgba(0, 240, 255, 0.25);
+      font-size: 15.5px;
+      font-weight: 700;
+      font-family: var(--font-heading);
+      padding: 16px 32px;
+      border-radius: var(--radius-pill);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: all 0.25s ease;
+      width: 100%;
+    }
+    @media (min-width: 640px) {
+      .btn-hero-secondary { width: auto; }
+    }
+    .btn-hero-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: #fff;
+      transform: translateY(-2px);
     }
 
     /* ==========================================================================
-       5. METRIC HIGHLIGHTS STRIP (RESPONSIVE GRID)
+       4. NAJAF BENTO STATS BAR
        ========================================================================== */
-    .metrics-grid {
+    .bento-stats-grid {
       display: grid;
-      grid-template-columns: 1fr;
+      grid-template-columns: repeat(2, 1fr);
       gap: 12px;
-      margin-bottom: 60px;
-    }
-    @media (min-width: 480px) {
-      .metrics-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+      margin-bottom: 70px;
     }
     @media (min-width: 900px) {
-      .metrics-grid { grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 90px; }
+      .bento-stats-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+      }
     }
 
-    .metric-card {
+    .bento-stat-card {
       background: var(--bg-card);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
       border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-md);
-      padding: 18px;
+      border-radius: var(--radius-card);
+      padding: 24px 20px;
       text-align: left;
       position: relative;
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+      overflow: hidden;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(16px);
     }
-    @media (min-width: 640px) {
-      .metric-card { padding: 22px 20px; }
-    }
-    .metric-card:hover {
-      border-color: var(--border-cyan);
+    .bento-stat-card:hover {
       background: var(--bg-card-hover);
+      border-color: var(--border-lime-subtle);
       transform: translateY(-3px);
-      box-shadow: 0 16px 40px rgba(0, 240, 255, 0.12);
     }
-    .metric-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 10px;
-    }
-    .metric-icon-wrap {
-      width: 36px;
-      height: 36px;
-      border-radius: 9px;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid var(--border-subtle);
+    .stat-badge-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: var(--accent-lime-muted);
+      color: var(--accent-lime);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 15px;
+      font-size: 18px;
+      margin-bottom: 16px;
+      border: 1px solid var(--border-lime-subtle);
     }
-    .metric-value {
-      font-size: 22px;
-      font-weight: 800;
+    .stat-big-val {
+      font-size: clamp(20px, 3vw, 26px);
+      font-weight: 900;
       font-family: var(--font-heading);
-      color: var(--text-primary);
-      letter-spacing: -0.03em;
-      margin-bottom: 2px;
+      color: #fff;
+      line-height: 1.2;
+      margin-bottom: 4px;
+      font-variant-numeric: tabular-nums;
     }
-    @media (min-width: 640px) {
-      .metric-value { font-size: 26px; }
-    }
-    .metric-label {
+    .stat-label-desc {
       font-size: 12.5px;
       color: var(--text-secondary);
       font-weight: 500;
     }
 
     /* ==========================================================================
-       6. SIMULADOR DO EFEITO CASCATA (DASHBOARD FINTECH)
+       5. BENTO SECTION: SIMULADOR DE GANHOS CASCATA
        ========================================================================== */
-    .section-header {
+    .section-wrapper {
+      padding: 50px 0;
+    }
+    .section-header-center {
       text-align: center;
-      margin-bottom: 36px;
+      margin-bottom: 40px;
     }
-    @media (min-width: 768px) {
-      .section-header { margin-bottom: 50px; }
-    }
-    .section-kicker {
+    .section-pill-tag {
       font-size: 11px;
-      font-weight: 800;
       font-family: var(--font-mono);
+      font-weight: 700;
+      color: var(--accent-lime);
       text-transform: uppercase;
-      letter-spacing: 2px;
-      color: var(--cyan-400);
-      display: block;
-      margin-bottom: 8px;
-    }
-    .section-heading {
-      font-size: clamp(24px, 5vw, 38px);
-      font-weight: 900;
-      font-family: var(--font-heading);
-      letter-spacing: -0.035em;
-      color: var(--text-primary);
+      letter-spacing: 1px;
+      background: var(--accent-lime-muted);
+      border: 1px solid var(--border-lime-subtle);
+      padding: 4px 14px;
+      border-radius: var(--radius-pill);
+      display: inline-block;
       margin-bottom: 12px;
     }
-    .section-lead {
-      font-size: clamp(14.5px, 2vw, 16.5px);
+    .section-title {
+      font-size: clamp(26px, 4.5vw, 42px);
+      font-weight: 900;
+      font-family: var(--font-heading);
+      letter-spacing: -0.03em;
+      color: #fff;
+      margin-bottom: 12px;
+    }
+    .section-subtitle {
+      font-size: 15px;
       color: var(--text-secondary);
-      max-width: 680px;
+      max-width: 620px;
       margin: 0 auto;
-      line-height: 1.6;
     }
 
-    .sim-dashboard-container {
-      background: linear-gradient(160deg, rgba(15, 23, 42, 0.92) 0%, rgba(8, 12, 22, 0.98) 100%);
+    .bento-sim-card {
+      background: var(--bg-card);
       border: 1px solid var(--border-medium);
-      border-radius: var(--radius-lg);
-      padding: 20px 16px;
-      margin-bottom: 70px;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(0, 240, 255, 0.08);
-      backdrop-filter: blur(24px);
-      position: relative;
+      border-radius: 32px;
+      padding: 28px 20px;
+      box-shadow: var(--shadow-card);
+      backdrop-filter: blur(20px);
     }
-    @media (min-width: 640px) {
-      .sim-dashboard-container {
-        padding: 34px 28px;
-        border-radius: var(--radius-xl);
-      }
-    }
-    @media (min-width: 960px) {
-      .sim-dashboard-container {
-        padding: 44px;
-        margin-bottom: 100px;
-      }
+    @media (min-width: 768px) {
+      .bento-sim-card { padding: 40px; }
     }
 
-    .sim-dashboard-container::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 10%;
-      right: 10%;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--cyan-500), transparent);
-    }
-    .sim-layout {
+    .sim-layout-grid {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 28px;
-      align-items: center;
+      gap: 32px;
     }
-    @media (min-width: 960px) {
-      .sim-layout {
-        grid-template-columns: 1fr 1.15fr;
-        gap: 40px;
+    @media (min-width: 992px) {
+      .sim-layout-grid {
+        grid-template-columns: 1.2fr 1fr;
+        gap: 48px;
+        align-items: center;
       }
     }
 
-    /* Sliders & Custom Pill Selectors */
-    .sim-control-group {
-      background: rgba(4, 7, 15, 0.65);
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-md);
-      padding: 16px;
-      margin-bottom: 16px;
+    .control-row {
+      margin-bottom: 24px;
     }
-    @media (min-width: 640px) {
-      .sim-control-group { padding: 22px; margin-bottom: 20px; }
-    }
-
-    .sim-label-row {
+    .control-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 12px;
-      font-size: 13.5px;
-      font-weight: 700;
-      font-family: var(--font-heading);
-      color: var(--text-primary);
     }
-    .sim-badge-val {
-      background: rgba(0, 240, 255, 0.12);
-      border: 1px solid var(--border-cyan);
-      color: var(--cyan-400);
+    .control-label {
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .control-value-pill {
+      font-size: 13px;
+      font-family: var(--font-mono);
+      font-weight: 800;
+      background: var(--accent-lime-muted);
+      border: 1px solid var(--border-lime-subtle);
+      color: var(--accent-lime);
       padding: 3px 10px;
       border-radius: var(--radius-pill);
-      font-family: var(--font-mono);
-      font-size: 12.5px;
-      font-weight: 700;
     }
 
-    .fintech-range {
+    /* Range Slider Styling */
+    .najaf-slider {
+      -webkit-appearance: none;
       width: 100%;
       height: 8px;
-      border-radius: 4px;
-      background: #1e293b;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.1);
       outline: none;
-      -webkit-appearance: none;
-      cursor: pointer;
+      transition: background 0.2s;
     }
-    .fintech-range::-webkit-slider-thumb {
+    .najaf-slider::-webkit-slider-thumb {
       -webkit-appearance: none;
       width: 24px;
       height: 24px;
       border-radius: 50%;
-      background: var(--cyan-500);
-      box-shadow: 0 8px 24px -4px rgba(0, 240, 255, 0.35);
-      border: 2px solid #030712;
+      background: var(--accent-lime);
       cursor: pointer;
-      transition: transform 0.2s;
+      box-shadow: 0 0 16px var(--accent-lime-glow);
+      border: 3px solid #060703;
+      transition: transform 0.15s ease;
     }
-    .fintech-range::-webkit-slider-thumb:hover {
-      transform: scale(1.15);
+    .najaf-slider::-webkit-slider-thumb:hover {
+      transform: scale(1.2);
     }
 
-    /* Segmented Pill Selector (Min Touch Target 48px) */
-    .segmented-plans-grid {
+    .segmented-plans {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 8px;
-      margin-top: 8px;
+      margin-top: 10px;
     }
-    @media (min-width: 480px) {
-      .segmented-plans-grid { grid-template-columns: repeat(3, 1fr); }
+    @media (min-width: 640px) {
+      .segmented-plans { grid-template-columns: repeat(4, 1fr); }
     }
-
     .plan-pill-btn {
       background: rgba(255, 255, 255, 0.04);
       border: 1px solid var(--border-subtle);
       color: var(--text-secondary);
+      padding: 10px 8px;
       border-radius: var(--radius-sm);
-      min-height: var(--min-touch-target);
-      padding: 8px 6px;
-      font-size: 11.5px;
+      font-size: 12px;
       font-weight: 700;
-      font-family: var(--font-heading);
       cursor: pointer;
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
       text-align: center;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      gap: 2px;
-    }
-    .plan-pill-btn span.price {
-      font-family: var(--font-mono);
-      font-size: 12.5px;
-      color: var(--text-primary);
+      transition: all 0.2s ease;
     }
     .plan-pill-btn:hover {
       background: rgba(255, 255, 255, 0.08);
-      border-color: var(--border-medium);
       color: #fff;
     }
     .plan-pill-btn.active {
-      background: rgba(0, 240, 255, 0.15);
-      border-color: var(--cyan-500);
-      color: var(--cyan-400);
-      box-shadow: 0 10px 28px -4px rgba(0, 240, 255, 0.3);
-    }
-    .plan-pill-btn.active span.price {
-      color: var(--cyan-400);
-      font-weight: 800;
+      background: var(--accent-lime-muted);
+      border-color: var(--accent-lime);
+      color: var(--accent-lime);
     }
 
-    /* Live Output Board */
-    .sim-output-board {
-      background: rgba(4, 7, 15, 0.95);
-      border: 1px solid var(--border-medium);
-      border-radius: var(--radius-lg);
-      padding: 20px 16px;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
-    }
-    @media (min-width: 640px) {
-      .sim-output-board { padding: 28px; }
-    }
-
-    .board-top-status {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding-bottom: 14px;
-      border-bottom: 1px solid var(--border-subtle);
-      margin-bottom: 16px;
-    }
-    .board-title {
-      font-size: 13.5px;
-      font-weight: 800;
-      font-family: var(--font-heading);
-      color: var(--text-primary);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .board-network-count {
-      background: rgba(16, 185, 129, 0.12);
-      border: 1px solid var(--border-emerald);
-      color: var(--emerald-400);
-      font-size: 11.5px;
-      font-weight: 700;
-      font-family: var(--font-mono);
-      padding: 3px 9px;
-      border-radius: var(--radius-pill);
-    }
-
-    /* Clean Financial Data List */
-    .financial-list-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 11px 0;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-      font-size: 13px;
-    }
-    .financial-list-row .item-label {
-      color: var(--text-secondary);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .financial-list-row .item-value {
-      font-family: var(--font-mono);
-      font-weight: 700;
-      font-size: 14.5px;
-    }
-
-    .sim-rank-box {
-      background: rgba(245, 158, 11, 0.08);
-      border: 1px solid var(--border-gold);
-      border-radius: var(--radius-sm);
-      padding: 12px 14px;
-      margin: 18px 0;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .sim-grand-display {
-      background: linear-gradient(135deg, rgba(0, 240, 255, 0.12) 0%, rgba(16, 185, 129, 0.15) 100%);
-      border: 1px solid var(--border-cyan);
-      border-radius: var(--radius-md);
-      padding: 18px;
+    /* Result Panel */
+    .sim-result-panel {
+      background: linear-gradient(180deg, rgba(24, 29, 38, 0.9) 0%, rgba(14, 17, 23, 0.95) 100%);
+      border: 1px solid var(--border-lime-subtle);
+      border-radius: 24px;
+      padding: 28px 24px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
       text-align: center;
-      margin-top: 18px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.15);
     }
-    .sim-grand-display span {
-      display: block;
-      font-size: 11.5px;
+    .result-rank-badge {
+      font-size: 14px;
       font-weight: 800;
-      font-family: var(--font-heading);
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      color: var(--text-secondary);
-      margin-bottom: 4px;
-    }
-    .sim-grand-display strong {
-      font-size: clamp(28px, 6vw, 38px);
-      font-weight: 900;
-      font-family: var(--font-heading);
-      color: var(--emerald-400);
-      letter-spacing: -0.04em;
-      text-shadow: 0 0 30px var(--emerald-glow);
-      display: block;
-    }
-
-    /* ==========================================================================
-       7. FINANCIAL DATA LISTING — FLEET CARDS (TABLE-PRECISION UI)
-       ========================================================================== */
-    .fleet-cards-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 18px;
-      margin-bottom: 70px;
-    }
-    @media (min-width: 640px) {
-      .fleet-cards-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
-    }
-    @media (min-width: 1024px) {
-      .fleet-cards-grid { grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 100px; }
-    }
-
-    .fleet-fintech-card {
-      background: var(--bg-card);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-    }
-    .fleet-fintech-card:hover {
-      border-color: var(--border-cyan);
-      transform: translateY(-4px);
-      background: var(--bg-card-hover);
-      box-shadow: 0 25px 60px rgba(0, 240, 255, 0.15);
-    }
-    .fleet-fintech-card.highlight-card {
-      border-color: var(--border-gold);
-      box-shadow: 0 20px 50px rgba(245, 158, 11, 0.2);
-    }
-
-    .fleet-media-wrap {
-      height: 180px;
-      background: #0b1120;
-      position: relative;
-      overflow: hidden;
-    }
-    .fleet-media-wrap img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .fleet-fintech-card:hover .fleet-media-wrap img {
-      transform: scale(1.06);
-    }
-    .fleet-code-tag {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      background: rgba(4, 7, 15, 0.85);
-      border: 1px solid var(--border-subtle);
-      color: var(--cyan-400);
-      font-size: 10.5px;
-      font-family: var(--font-mono);
-      font-weight: 700;
-      padding: 3px 8px;
-      border-radius: 6px;
-      backdrop-filter: blur(8px);
-    }
-    .fleet-badge-tier {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      font-size: 10.5px;
-      font-weight: 800;
-      font-family: var(--font-heading);
-      padding: 3px 10px;
+      color: var(--accent-lime);
+      background: var(--accent-lime-muted);
+      border: 1px solid var(--border-lime-subtle);
+      padding: 6px 16px;
       border-radius: var(--radius-pill);
-      letter-spacing: 0.3px;
-      backdrop-filter: blur(8px);
-    }
-    .badge-tier-entry { background: var(--gold-gradient); color: #000; box-shadow: 0 8px 24px -4px rgba(245, 158, 11, 0.3); }
-    .badge-tier-popular { background: linear-gradient(135deg, #ef4444, #dc2626); color: #fff; box-shadow: 0 0 15px rgba(239, 68, 68, 0.5); }
-    .badge-tier-cyan { background: var(--cyan-gradient); color: #000; box-shadow: 0 8px 24px -4px rgba(0, 240, 255, 0.35); }
-    .badge-tier-vip { background: var(--gold-gradient); color: #000; box-shadow: 0 0 20px var(--amber-glow); }
-
-    .fleet-card-body {
-      padding: 20px;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-    .fleet-title {
-      font-size: 18.5px;
-      font-weight: 800;
-      font-family: var(--font-heading);
-      color: var(--text-primary);
-      margin-bottom: 4px;
-    }
-    .fleet-subtitle {
-      font-size: 12.5px;
-      color: var(--text-tertiary);
-      margin-bottom: 16px;
-    }
-
-    /* Structured Financial Table inside Card */
-    .fleet-data-table {
-      background: rgba(4, 7, 15, 0.65);
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-sm);
-      overflow: hidden;
+      display: inline-block;
       margin-bottom: 18px;
     }
-    .data-table-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 9px 12px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-      font-size: 12.5px;
-    }
-    .data-table-row:last-child {
-      border-bottom: none;
-      background: rgba(255, 255, 255, 0.02);
-    }
-    .data-table-row .dt-label {
-      color: var(--text-secondary);
-      font-size: 11.5px;
-      font-weight: 500;
-    }
-    .data-table-row .dt-value {
-      font-family: var(--font-mono);
-      font-weight: 700;
-      color: var(--text-primary);
-      font-size: 13.5px;
-    }
-    .data-table-row .dt-value.green {
-      color: var(--emerald-400);
-    }
-
-    /* ==========================================================================
-       8. PLANO DE CARREIRA E GRADUAÇÕES (FINTECH SPREADSHEET PRECISION)
-       ========================================================================== */
-    .career-grid-layout {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 14px;
-      margin-bottom: 70px;
-    }
-    @media (min-width: 520px) {
-      .career-grid-layout { grid-template-columns: repeat(2, 1fr); gap: 16px; }
-    }
-    @media (min-width: 960px) {
-      .career-grid-layout { grid-template-columns: repeat(4, 1fr); gap: 18px; margin-bottom: 100px; }
-    }
-
-    .career-fintech-card {
-      background: var(--bg-card);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-lg);
-      padding: 24px 18px;
-      text-align: center;
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35);
-      position: relative;
-    }
-    .career-fintech-card:hover {
-      transform: translateY(-4px);
-      border-color: var(--border-cyan);
-      box-shadow: 0 20px 45px rgba(0, 240, 255, 0.12);
-    }
-    .career-fintech-card.tier-diamond {
-      border-color: var(--border-cyan);
-      background: linear-gradient(165deg, rgba(14, 165, 233, 0.12) 0%, rgba(15, 23, 42, 0.95) 100%);
-      box-shadow: 0 8px 24px -4px rgba(56, 189, 248, 0.3);
-    }
-
-    .career-icon-emblem {
-      font-size: 34px;
-      margin-bottom: 12px;
-      filter: drop-shadow(0 4px 10px rgba(0,0,0,0.4));
-    }
-    .career-rank-name {
-      font-size: 18px;
-      font-weight: 800;
-      font-family: var(--font-heading);
-      color: var(--text-primary);
-      margin-bottom: 4px;
-    }
-    .career-rank-rule {
-      font-size: 12px;
-      color: var(--text-tertiary);
-      margin-bottom: 16px;
-      font-family: var(--font-mono);
-    }
-    .career-commission-badge {
-      background: rgba(16, 185, 129, 0.1);
-      border: 1px solid var(--border-emerald);
-      color: var(--emerald-400);
-      font-size: 12px;
-      font-weight: 700;
-      font-family: var(--font-mono);
-      padding: 8px;
-      border-radius: var(--radius-sm);
-      margin-bottom: 10px;
-    }
-    .career-cash-prize {
-      background: var(--gold-gradient);
-      color: var(--text-inverse);
-      font-size: 13.5px;
+    .result-big-number {
+      font-size: clamp(34px, 5vw, 48px);
       font-weight: 900;
       font-family: var(--font-heading);
-      padding: 10px;
-      border-radius: var(--radius-sm);
-      letter-spacing: 0.3px;
-      box-shadow: 0 4px 15px rgba(245, 158, 11, 0.35);
-    }
-
-    /* ==========================================================================
-       9. REVIEWS & PROVA SOCIAL EXPANDIDA COM CURTIDAS E FILTROS
-       ========================================================================== */
-    .reviews-board {
-      background: var(--bg-card);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-lg);
-      padding: 24px 18px;
-      margin-bottom: 24px;
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 24px;
-      align-items: center;
-    }
-    @media (min-width: 768px) {
-      .reviews-board {
-        grid-template-columns: 280px 1fr;
-        gap: 36px;
-        padding: 34px;
-        margin-bottom: 32px;
-      }
-    }
-
-    .score-headline {
-      font-size: 52px;
-      font-weight: 900;
-      font-family: var(--font-heading);
-      color: var(--text-primary);
-      line-height: 1;
-    }
-    .stars-amber {
-      color: var(--amber-400);
-      font-size: 16px;
-      margin: 6px 0;
-      letter-spacing: 2px;
-    }
-
-    /* Filters Bar */
-    .reviews-filter-bar {
-      display: flex;
-      gap: 8px;
-      overflow-x: auto;
-      padding-bottom: 8px;
-      margin-bottom: 24px;
-      scrollbar-width: none;
-      -webkit-overflow-scrolling: touch;
-    }
-    .reviews-filter-bar::-webkit-scrollbar { display: none; }
-    .review-filter-btn {
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid var(--border-subtle);
-      color: var(--text-secondary);
-      padding: 8px 16px;
-      border-radius: var(--radius-pill);
-      font-size: 12.5px;
-      font-weight: 700;
-      font-family: var(--font-heading);
-      cursor: pointer;
-      white-space: nowrap;
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-      min-height: 38px;
-    }
-    .review-filter-btn:hover {
-      background: rgba(255, 255, 255, 0.08);
       color: #fff;
+      line-height: 1.1;
+      margin-bottom: 6px;
+      font-variant-numeric: tabular-nums;
     }
-    .review-filter-btn.active {
-      background: rgba(0, 240, 255, 0.15);
-      border-color: var(--cyan-500);
-      color: var(--cyan-400);
-      box-shadow: 0 10px 28px -4px rgba(0, 240, 255, 0.3);
+    .result-sub {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-bottom: 24px;
+    }
+    .result-breakdown-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 24px;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 14px 10px;
+      border-radius: var(--radius-inner);
+      border: 1px solid var(--border-subtle);
+    }
+    .breakdown-box span {
+      font-size: 10.5px;
+      color: var(--text-tertiary);
+      display: block;
+      font-weight: 600;
+    }
+    .breakdown-box strong {
+      font-size: 14px;
+      color: #fff;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
     }
 
-    .reviews-feed-grid {
+    /* ==========================================================================
+       6. BENTO FLEET CARDS (CATÁLOGO DE FROTAS)
+       ========================================================================== */
+    .fleet-grid {
       display: grid;
       grid-template-columns: 1fr;
       gap: 16px;
-      margin-bottom: 30px;
     }
     @media (min-width: 640px) {
-      .reviews-feed-grid { grid-template-columns: repeat(2, 1fr); gap: 18px; }
+      .fleet-grid { grid-template-columns: repeat(2, 1fr); }
     }
     @media (min-width: 1024px) {
-      .reviews-feed-grid { grid-template-columns: repeat(3, 1fr); gap: 20px; }
+      .fleet-grid { grid-template-columns: repeat(4, 1fr); gap: 18px; }
     }
 
-    .review-bubble-card {
+    .fleet-card {
       background: var(--bg-card);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
       border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-lg);
+      border-radius: 24px;
       padding: 22px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       transition: all 0.3s ease;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(16px);
     }
-    .review-bubble-card:hover {
-      border-color: var(--border-cyan);
-      transform: translateY(-3px);
+    .fleet-card:hover {
       background: var(--bg-card-hover);
-      box-shadow: 0 15px 35px rgba(0, 240, 255, 0.1);
+      border-color: var(--border-lime-subtle);
+      transform: translateY(-4px);
     }
-    .reviewer-meta-row {
+    .fleet-card.highlight {
+      border-color: var(--border-lime);
+      box-shadow: 0 10px 30px -8px rgba(156, 243, 91, 0.25);
+    }
+    .fleet-card.highlight::before {
+      content: 'MAIS POPULAR';
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      font-size: 9.5px;
+      font-family: var(--font-mono);
+      font-weight: 800;
+      background: var(--accent-lime);
+      color: var(--bg-base);
+      padding: 2px 8px;
+      border-radius: var(--radius-pill);
+      letter-spacing: 0.5px;
+    }
+
+    .fleet-code {
+      font-size: 11px;
+      font-family: var(--font-mono);
+      color: var(--accent-lime);
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .fleet-name {
+      font-size: 18px;
+      font-weight: 800;
+      color: #fff;
+      font-family: var(--font-heading);
+      margin-bottom: 12px;
+    }
+    .fleet-specs-row {
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border-subtle);
+      font-size: 12.5px;
+      color: var(--text-secondary);
+    }
+    .fleet-specs-row strong {
+      color: #fff;
+      font-variant-numeric: tabular-nums;
+    }
+    .fleet-price-tag {
+      font-size: 24px;
+      font-weight: 900;
+      font-family: var(--font-heading);
+      color: #fff;
+      margin: 16px 0 14px 0;
+      font-variant-numeric: tabular-nums;
+    }
+    .fleet-price-tag small {
+      font-size: 12px;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    .btn-fleet-checkout {
+      width: 100%;
+      background: var(--accent-lime);
+      color: var(--bg-base);
+      font-size: 13.5px;
+      font-weight: 800;
+      font-family: var(--font-heading);
+      padding: 12px;
+      border-radius: var(--radius-pill);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      border: none;
+    }
+    .btn-fleet-checkout:hover {
+      background: var(--accent-lime-hover);
+      box-shadow: 0 4px 18px rgba(156, 243, 91, 0.5);
+    }
+
+    /* ==========================================================================
+       7. CAREER ROADMAP (6 PATENTES)
+       ========================================================================== */
+    .career-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+    @media (min-width: 640px) {
+      .career-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (min-width: 992px) {
+      .career-grid { grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    }
+
+    .career-bento-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 24px;
+      padding: 24px;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+    .career-bento-card:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--border-medium);
+      transform: translateY(-3px);
+    }
+    .career-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       margin-bottom: 14px;
     }
-    .reviewer-identity {
+    .career-icon-box {
+      font-size: 28px;
+    }
+    .career-bonus-chip {
+      font-size: 11px;
+      font-weight: 800;
+      font-family: var(--font-mono);
+      background: var(--accent-lime-muted);
+      border: 1px solid var(--border-lime-subtle);
+      color: var(--accent-lime);
+      padding: 3px 10px;
+      border-radius: var(--radius-pill);
+    }
+    .career-title {
+      font-size: 17px;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+    .career-rule {
+      font-size: 12.5px;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+    }
+    .career-unlocks {
+      font-size: 12px;
+      font-weight: 700;
+      color: #fff;
+      background: rgba(255, 255, 255, 0.04);
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-subtle);
+    }
+
+    /* ==========================================================================
+       8. FAQ ACCORDION
+       ========================================================================== */
+    .faq-wrapper {
+      max-width: 820px;
+      margin: 0 auto;
+    }
+    .faq-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-inner);
+      margin-bottom: 12px;
+      overflow: hidden;
+      transition: all 0.2s ease;
+    }
+    .faq-header {
+      padding: 18px 20px;
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+    }
+    .faq-header i {
+      transition: transform 0.3s ease;
+      color: var(--accent-lime);
+    }
+    .faq-body {
+      padding: 0 20px 18px 20px;
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      display: none;
+    }
+    .faq-item.open .faq-body {
+      display: block;
+    }
+    .faq-item.open .faq-header i {
+      transform: rotate(180deg);
+    }
+
+    /* ==========================================================================
+       9. LIVE SOCIAL TOAST & STICKY BAR
+       ========================================================================== */
+    .live-toast-bar {
+      position: fixed;
+      bottom: 80px;
+      left: 20px;
+      background: rgba(14, 17, 23, 0.95);
+      border: 1px solid var(--border-lime-subtle);
+      padding: 10px 16px;
+      border-radius: var(--radius-pill);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(16px);
+      z-index: 99;
       display: flex;
       align-items: center;
       gap: 10px;
-    }
-    .reviewer-avatar-hex {
-      width: 42px;
-      height: 42px;
-      border-radius: 10px;
-      background: var(--cyan-gradient);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 900;
-      color: var(--text-inverse);
-      font-size: 14.5px;
-      font-family: var(--font-heading);
-      flex-shrink: 0;
-      box-shadow: 0 10px 28px -4px rgba(0, 240, 255, 0.3);
-    }
-    .reviewer-name-tag {
-      font-size: 14.5px;
-      font-weight: 800;
-      font-family: var(--font-heading);
-      color: var(--text-primary);
-    }
-    .reviewer-role-tag {
-      font-size: 11px;
-      color: var(--text-tertiary);
-    }
-    .verified-chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      color: var(--emerald-400);
-      font-size: 10.5px;
-      font-weight: 700;
-      background: rgba(16,185,129,0.1);
-      border: 1px solid rgba(16,185,129,0.3);
-      padding: 1px 6px;
-      border-radius: var(--radius-pill);
-      margin-top: 2px;
-    }
-    .review-body-text {
-      font-size: 13.5px;
-      line-height: 1.65;
-      color: var(--text-secondary);
-      margin-bottom: 16px;
-      flex: 1;
-    }
-    .review-card-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding-top: 12px;
-      border-top: 1px solid rgba(255,255,255,0.04);
-      font-size: 11.5px;
-      color: var(--text-tertiary);
-    }
-
-    .review-like-btn {
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid var(--border-subtle);
-      color: var(--text-secondary);
-      padding: 5px 12px;
-      border-radius: var(--radius-pill);
       font-size: 12px;
-      font-weight: 700;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      transition: all 0.2s ease;
-      min-height: 32px;
-    }
-    .review-like-btn:hover {
-      background: rgba(239, 68, 68, 0.1);
-      border-color: rgba(239, 68, 68, 0.3);
-      color: #ef4444;
-    }
-    .review-like-btn.liked {
-      background: rgba(239, 68, 68, 0.15);
-      border-color: #ef4444;
-      color: #ef4444;
-    }
-    .review-like-btn.liked i {
-      animation: heartBeat 0.3s ease-in-out;
-    }
-    @keyframes heartBeat {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.35); }
-      100% { transform: scale(1); }
-    }
-
-    /* Form para Novo Depoimento */
-    .review-form-card {
-      background: rgba(4, 7, 15, 0.85);
-      border: 1px dashed var(--border-cyan);
-      border-radius: var(--radius-lg);
-      padding: 24px 20px;
-      margin-top: 36px;
-    }
-    @media (min-width: 640px) {
-      .review-form-card { padding: 32px; }
-    }
-
-    .review-form-input, .review-form-textarea {
-      width: 100%;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-sm);
-      padding: 12px 14px;
       color: #fff;
-      font-size: 13.5px;
-      outline: none;
-      margin-bottom: 12px;
-      box-sizing: border-box;
-      transition: border-color 0.2s;
-    }
-    .review-form-input:focus, .review-form-textarea:focus {
-      border-color: var(--cyan-400);
-    }
-    .star-picker {
-      color: var(--amber-400);
-      font-size: 20px;
-      cursor: pointer;
-      display: inline-flex;
-      gap: 6px;
-    }
-
-    /* Live Social Proof Toast */
-    .live-social-toast {
-      position: fixed;
-      bottom: 90px;
-      left: 16px;
-      background: rgba(15, 23, 42, 0.96);
-      border: 1px solid var(--border-cyan);
-      border-radius: var(--radius-md);
-      padding: 12px 16px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
-      backdrop-filter: blur(14px);
-      z-index: 9998;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 12.5px;
-      color: #fff;
-      transform: translateY(120%);
+      transform: translateY(120px);
       opacity: 0;
       transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-      max-width: 320px;
-      pointer-events: none;
     }
-    .live-social-toast.show {
+    .live-toast-bar.show {
       transform: translateY(0);
       opacity: 1;
     }
-    @media (min-width: 768px) {
-      .live-social-toast { bottom: 28px; left: 28px; }
-    }
 
-    /* ==========================================================================
-       10. FAQ ACCORDION & FINAL HERO
-       ========================================================================== */
-    .faq-accordion-list {
-      max-width: 860px;
-      margin: 0 auto 70px auto;
-    }
-    @media (min-width: 768px) {
-      .faq-accordion-list { margin-bottom: 100px; }
-    }
-
-    .faq-clean-item {
-      background: var(--bg-card);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-md);
-      margin-bottom: 12px;
-      overflow: hidden;
-      transition: all 0.25s ease;
-    }
-    .faq-clean-question {
-      padding: 16px 18px;
-      min-height: var(--min-touch-target);
-      font-size: 15px;
-      font-weight: 700;
-      font-family: var(--font-heading);
-      color: var(--text-primary);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      cursor: pointer;
-      gap: 12px;
-    }
-    @media (min-width: 640px) {
-      .faq-clean-question { padding: 20px 24px; font-size: 16px; }
-    }
-    .faq-clean-question i {
-      color: var(--cyan-400);
-      transition: transform 0.3s ease;
-      flex-shrink: 0;
-    }
-    .faq-clean-answer {
-      padding: 0 18px 18px 18px;
-      font-size: 14px;
-      color: var(--text-secondary);
-      line-height: 1.7;
-      display: none;
-    }
-    @media (min-width: 640px) {
-      .faq-clean-answer { padding: 0 24px 20px 24px; font-size: 14.5px; }
-    }
-    .faq-clean-item.active .faq-clean-answer { display: block; }
-    .faq-clean-item.active .faq-clean-question i { transform: rotate(180deg); }
-
-    .final-conversion-hero {
-      background: linear-gradient(150deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.8) 100%);
-      border: 1.5px solid var(--border-cyan);
-      border-radius: var(--radius-lg);
-      padding: 40px 20px;
-      text-align: center;
-      margin-bottom: 60px;
-      box-shadow: 0 10px 28px -4px rgba(0, 240, 255, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.15);
-      position: relative;
-      overflow: hidden;
-    }
-    @media (min-width: 768px) {
-      .final-conversion-hero {
-        border-radius: var(--radius-xl);
-        padding: 70px 40px;
-        margin-bottom: 90px;
-      }
-    }
-    .final-conversion-hero h2 {
-      font-size: clamp(26px, 5.5vw, 42px);
-      font-weight: 900;
-      font-family: var(--font-heading);
-      letter-spacing: -0.04em;
-      margin-bottom: 14px;
-    }
-    .final-conversion-hero p {
-      font-size: clamp(15px, 2.5vw, 18px);
-      color: var(--text-secondary);
-      max-width: 680px;
-      margin: 0 auto 30px auto;
-    }
-
-    /* ==========================================================================
-       11. FLOATING WHATSAPP & STICKY BOTTOM BAR (MOBILE-FIRST)
-       ========================================================================== */
-    .floating-whatsapp-fintech {
-      position: fixed;
-      bottom: 85px;
-      right: 18px;
-      z-index: 9999;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      text-decoration: none;
-      cursor: pointer;
-    }
-    @media (min-width: 768px) {
-      .floating-whatsapp-fintech {
-        bottom: 28px;
-        right: 28px;
-      }
-    }
-
-    .wa-button-circle {
-      width: 58px;
-      height: 58px;
-      background: #25D366;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-      font-size: 30px;
-      box-shadow: 0 8px 30px rgba(37, 211, 102, 0.55);
-      position: relative;
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-      animation: waPulseEffect 2.2s infinite;
-      border: 1px solid rgba(255, 255, 255, 0.4);
-    }
-    .wa-button-circle:hover {
-      transform: scale(1.08);
-      box-shadow: 0 12px 38px rgba(37, 211, 102, 0.8);
-    }
-    .wa-unread-badge {
-      position: absolute;
-      top: -2px;
-      right: -2px;
-      background: #ef4444;
-      color: #fff;
-      font-size: 10.5px;
-      font-weight: 900;
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: 2px solid #07090e;
-    }
-    .wa-live-tooltip {
-      display: none;
-      background: rgba(15, 23, 42, 0.95);
-      border: 1px solid rgba(37, 211, 102, 0.45);
-      color: #fff;
-      padding: 8px 14px;
-      border-radius: var(--radius-sm);
-      font-size: 12.5px;
-      font-weight: 700;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
-      align-items: center;
-      gap: 8px;
-      backdrop-filter: blur(12px);
-      white-space: nowrap;
-    }
-    @media (min-width: 768px) {
-      .wa-live-tooltip { display: flex; }
-    }
-
-    @keyframes waPulseEffect {
-      0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.75); }
-      70% { box-shadow: 0 0 0 16px rgba(37, 211, 102, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
-    }
-
-    /* Mobile Sticky Bottom Bar */
-    .sticky-bottom-actions {
+    .sticky-bottom-mobile {
       position: fixed;
       bottom: 0;
       left: 0;
       width: 100%;
-      background: rgba(7, 9, 14, 0.96);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
+      background: rgba(6, 7, 3, 0.95);
       border-top: 1px solid var(--border-medium);
-      padding: 10px 16px;
-      display: block;
-      z-index: 999;
-      box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.85);
-    }
-    @media (min-width: 768px) {
-      .sticky-bottom-actions { display: none; }
-    }
-
-    .sticky-actions-inner {
-      max-width: 1080px;
-      margin: 0 auto;
+      padding: 12px 20px;
       display: flex;
       gap: 10px;
-    }
-    .sticky-actions-inner .btn-3d {
-      flex: 1;
-      padding: 12px 14px;
-      font-size: 13px;
-      border-radius: var(--radius-sm);
-    }
-
-    .site-footer {
-      border-top: 1px solid var(--border-subtle);
-      padding: 40px 0 30px 0;
-      text-align: center;
-      font-size: 12.5px;
-      color: var(--text-tertiary);
+      z-index: 100;
+      backdrop-filter: blur(20px);
     }
     @media (min-width: 768px) {
-      .site-footer { padding: 50px 0 50px 0; font-size: 13px; }
+      .sticky-bottom-mobile { display: none; }
     }
-    .footer-nav-links {
+    .sticky-bottom-mobile a {
+      flex: 1;
+      padding: 12px;
+      font-size: 13px;
+      font-weight: 800;
+      border-radius: var(--radius-pill);
+      text-align: center;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .footer-section {
+      border-top: 1px solid var(--border-subtle);
+      padding: 60px 0 40px 0;
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-tertiary);
+    }
+    .footer-links {
       display: flex;
       justify-content: center;
       gap: 20px;
       margin-bottom: 16px;
     }
-    .footer-nav-links a {
+    .footer-links a {
       color: var(--text-secondary);
       text-decoration: none;
-      transition: color 0.2s;
       font-weight: 600;
-      min-height: 44px;
-      display: inline-flex;
-      align-items: center;
+      transition: color 0.2s;
     }
-    .footer-nav-links a:hover {
-      color: var(--cyan-400);
+    .footer-links a:hover {
+      color: var(--accent-lime);
     }
   </style>
 </head>
 <body>
 
-  <!-- Top Announcement Ticker -->
-  <div class="top-ticker">
-    <span class="ticker-pill"><i class="fa-solid fa-bolt"></i> NOVO 2026</span>
-    <span>O Poder do Efeito Cascata TAXINEXO 2.0 foi liberado! Ganhe 15% N1 + 10% N2 + 5% N3 + Bônus de até R$ 10.000 no Pix</span>
-  </div>
-
-  <header class="container">
-    <nav class="nav-bar">
-      <a href="/" class="brand-logo">
-        <div class="brand-logo-icon"><i class="fa-solid fa-bolt"></i></div>
-        <h1>TAXI<span>NEXO</span> <span class="brand-v2-badge">2.0</span></h1>
+  <!-- Floating Island Navigation (Najaf Style) -->
+  <div class="nav-island-wrapper">
+    <nav class="nav-island">
+      <a href="/" class="brand-group">
+        <div class="brand-icon"><i class="fa-solid fa-bolt"></i></div>
+        <div class="brand-text">TAXI<span>NEXO</span> <span class="brand-badge">2.0</span></div>
       </a>
-      <div style="display: flex; align-items: center; gap: 10px;">
-        <a href="/login.html" class="nav-btn-telegram" style="background: rgba(0, 240, 255, 0.12); border-color: var(--border-cyan); color: var(--cyan-400);">
-          <i class="fa-solid fa-arrow-right-to-bracket"></i> <span>Acessar App</span>
-        </a>
-        <a href="https://t.me/+VRCCsj-SJHQwNmE5" target="_blank" class="nav-btn-telegram">
-          <i class="fa-brands fa-telegram"></i> <span>Grupo VIP</span>
+
+      <div class="nav-links">
+        <a href="#simulador" class="nav-link-item">Simulador</a>
+        <a href="#frotas" class="nav-link-item">Frotas</a>
+        <a href="#carreira" class="nav-link-item">Plano de Carreira</a>
+        <a href="#faq" class="nav-link-item">Dúvidas</a>
+      </div>
+
+      <div class="nav-actions">
+        <a href="/login.html" class="btn-pill-login">Acessar App</a>
+        <a href="https://t.me/+VRCCsj-SJHQwNmE5" target="_blank" class="btn-pill-cta">
+          <i class="fa-brands fa-telegram"></i> Grupo VIP
         </a>
       </div>
     </nav>
-  </header>
+  </div>
 
   <main class="container">
     
-    <!-- =========================================================================
-         1. HERO SECTION (FINTECH / WEB3 HOOK)
-         ========================================================================= -->
+    <!-- 1. HERO SECTION -->
     <section class="hero-section">
-      <div class="hero-badge-pill">
-        <span class="hero-badge-dot"></span>
-        <span>A MAIOR OPORTUNIDADE DE RENDA RESIDUAL DE 2026</span>
+      <div class="hero-pill-badge">
+        <span class="pulse-dot"></span>
+        <span>INFRAESTRUTURA DE FROTAS AUTÔNOMAS 2026</span>
       </div>
 
-      <h1 class="hero-title">
-        Essa Oportunidade Vai <span class="text-gradient-gold">Mudar Sua Vida Financeira</span>:<br>
-        Descubra o Poder do <span class="text-gradient-cyan">Efeito Cascata</span> no Pix!
+      <h1 class="hero-heading">
+        Renda Diária no Pix com <br>
+        <span class="highlight-lime">Frotas Autônomas</span> & <span class="highlight-gradient">Efeito Cascata</span>
       </h1>
 
-      <p class="hero-description">
-        Conecte-se à infraestrutura global de frotas autônomas urbanas. Ative sua cota a partir de apenas <strong>R$ 30,00</strong> e construa uma rede de renda passiva automática de <strong>R$ 300 a R$ 5.000+ por dia</strong> direto na sua conta bancária sem precisar ter carro.
+      <p class="hero-subheading">
+        Conecte-se à maior rede de robotaxis autônomos. Ative cotas a partir de <strong>R$ 30,00</strong> e receba rendimentos diários e comissões multinível (<strong>15% / 10% / 5%</strong>) direto no Pix.
       </p>
 
-      <div class="cta-group">
-        <a href="login.html" class="btn-3d btn-3d-cyan">
-          <i class="fa-solid fa-bolt"></i> ATIVAR COTA DE R$ 30 & DESBLOQUEAR AFILIADO
+      <div class="hero-cta-group">
+        <a href="/login.html" class="btn-hero-primary">
+          <i class="fa-solid fa-bolt"></i> Ativar Cota de R$ 30 no Pix
         </a>
-        <a href="#simulador-cascata" class="btn-3d btn-3d-secondary">
-          <i class="fa-solid fa-calculator" style="color: var(--cyan-400); font-size: 18px;"></i> SIMULAR MEUS GANHOS
+        <a href="#simulador" class="btn-hero-secondary">
+          <i class="fa-solid fa-calculator" style="color: var(--accent-lime);"></i> Simular Ganhos em Tempo Real
         </a>
       </div>
 
-      <!-- Metric Highlights Grid -->
-      <div class="metrics-grid">
-        <div class="metric-card">
-          <div class="metric-header">
-            <span class="metric-label">Comissão Nível 1</span>
-            <div class="metric-icon-wrap" style="color: var(--amber-400);"><i class="fa-solid fa-crown"></i></div>
-          </div>
-          <div class="metric-value">15% Direto</div>
-          <div class="metric-label">Liquidação Imediata via Pix</div>
+      <!-- 2. BENTO STATS BAR -->
+      <div class="bento-stats-grid">
+        <div class="bento-stat-card">
+          <div class="stat-badge-icon"><i class="fa-solid fa-money-bill-wave"></i></div>
+          <div class="stat-big-val">R$ 2,80 a R$ 680</div>
+          <div class="stat-label-desc">Rendimento diário por cota</div>
         </div>
 
-        <div class="metric-card">
-          <div class="metric-header">
-            <span class="metric-label">Comissão Nível 2</span>
-            <div class="metric-icon-wrap" style="color: var(--cyan-400);"><i class="fa-solid fa-bolt"></i></div>
-          </div>
-          <div class="metric-value">10% Indireto</div>
-          <div class="metric-label">Multiplicação Automática</div>
+        <div class="bento-stat-card">
+          <div class="stat-badge-icon"><i class="fa-solid fa-car-side"></i></div>
+          <div class="stat-big-val">8 Modelos</div>
+          <div class="stat-label-desc">Frotas autônomas operando</div>
         </div>
 
-        <div class="metric-card">
-          <div class="metric-header">
-            <span class="metric-label">Comissão Nível 3</span>
-            <div class="metric-icon-wrap" style="color: #c084fc;"><i class="fa-solid fa-chart-line"></i></div>
-          </div>
-          <div class="metric-value">5% Residual</div>
-          <div class="metric-label">Renda Passiva em Profundidade</div>
+        <div class="bento-stat-card">
+          <div class="stat-badge-icon"><i class="fa-solid fa-network-wired"></i></div>
+          <div class="stat-big-val">15% • 10% • 5%</div>
+          <div class="stat-label-desc">Comissão em 3 níveis de rede</div>
         </div>
 
-        <div class="metric-card">
-          <div class="metric-header">
-            <span class="metric-label">Bônus de Carreira</span>
-            <div class="metric-icon-wrap" style="color: var(--emerald-400);"><i class="fa-solid fa-sack-dollar"></i></div>
-          </div>
-          <div class="metric-value">Até R$ 1.500</div>
-          <div class="metric-label">Prêmios em Dinheiro Vivo</div>
+        <div class="bento-stat-card">
+          <div class="stat-badge-icon"><i class="fa-solid fa-trophy"></i></div>
+          <div class="stat-big-val">Até R$ 10.000</div>
+          <div class="stat-label-desc">Bônus instantâneos de carreira</div>
         </div>
       </div>
     </section>
 
-    <!-- =========================================================================
-         2. SIMULADOR DO EFEITO CASCATA (DASHBOARD FINTECH)
-         ========================================================================= -->
-    <section class="sim-dashboard-container">
-      <div class="section-header" style="margin-bottom: 28px;">
-        <span class="section-kicker">// SIMULADOR DE ALAVANCAGEM EXPONENCIAL</span>
-        <h2 class="section-heading">Simule Seus Ganhos com o Efeito Cascata</h2>
-        <p class="section-lead">Veja como indicar apenas alguns operadores se multiplica em uma carteira de milhares de reais caindo no seu Pix todos os dias.</p>
+    <!-- 3. SIMULADOR DE GANHOS CASCATA -->
+    <section id="simulador" class="section-wrapper">
+      <div class="section-header-center">
+        <span class="section-pill-tag">// CALCULADORA INTELIGENTE</span>
+        <h2 class="section-title">Simule Sua Alavancagem Financeira</h2>
+        <p class="section-subtitle">Descubra quanto você pode faturar no Pix montando sua equipe e ativando cotas de frotas autônomas.</p>
       </div>
 
-      <div class="sim-layout">
-        
-        <!-- Controls Side -->
-        <div>
-          <!-- Slider 1: Indicados Diretos -->
-          <div class="sim-control-group">
-            <div class="sim-label-row">
-              <span><i class="fa-solid fa-users" style="color: var(--cyan-400); margin-right: 6px;"></i> Seus Indicados Diretos (Nível 1):</span>
-              <span class="sim-badge-val" id="badge-n1-count">5 pessoas</span>
+      <div class="bento-sim-card">
+        <div class="sim-layout-grid">
+          
+          <!-- Controles -->
+          <div>
+            <div class="control-row">
+              <div class="control-header">
+                <span class="control-label"><i class="fa-solid fa-users" style="color: var(--accent-lime);"></i> Indicados Diretos (Nível 1)</span>
+                <span class="control-value-pill" id="badge-n1">5 pessoas</span>
+              </div>
+              <input type="range" min="1" max="25" value="5" class="najaf-slider" id="slider-n1" oninput="updateSim()">
             </div>
-            <input type="range" min="1" max="20" value="5" class="fintech-range" id="slider-n1" oninput="updateCascataSimulation()">
-            <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--text-tertiary); font-family: var(--font-mono); margin-top: 8px;">
-              <span>1 pessoa</span>
-              <span>10 pessoas</span>
-              <span>20 pessoas</span>
+
+            <div class="control-row">
+              <div class="control-header">
+                <span class="control-label"><i class="fa-solid fa-arrows-split-up-and-left" style="color: var(--accent-cyan);"></i> Duplicação por Pessoa (N2 e N3)</span>
+                <span class="control-value-pill" id="badge-dup">3 cada</span>
+              </div>
+              <input type="range" min="1" max="10" value="3" class="najaf-slider" id="slider-dup" oninput="updateSim()">
             </div>
-          </div>
 
-          <!-- Slider 2: Multiplicação -->
-          <div class="sim-control-group">
-            <div class="sim-label-row">
-              <span><i class="fa-solid fa-arrows-split-up-and-left" style="color: var(--emerald-400); margin-right: 6px;"></i> Duplicação Média por Pessoa:</span>
-              <span class="sim-badge-val" id="badge-duplication-count" style="color: var(--emerald-400); border-color: var(--border-emerald); background: rgba(16, 185, 129, 0.1);">3 cada</span>
-            </div>
-            <input type="range" min="1" max="10" value="3" class="fintech-range" id="slider-duplication" oninput="updateCascataSimulation()" style="accent-color: var(--emerald-400);">
-            <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--text-tertiary); font-family: var(--font-mono); margin-top: 8px;">
-              <span>1 cada</span>
-              <span>5 cada</span>
-              <span>10 cada</span>
-            </div>
-          </div>
-
-          <!-- Segmented Custom Buttons: Cota do Veículo -->
-          <div class="sim-control-group" style="margin-bottom: 0;">
-            <div class="sim-label-row">
-              <span><i class="fa-solid fa-car" style="color: var(--amber-400); margin-right: 6px;"></i> Cota Ativada na Equipe:</span>
-            </div>
-            <div class="segmented-plans-grid">
-              <button type="button" class="plan-pill-btn" onclick="selectPlanPill(30, this)">
-                <span>BYD Dolphin</span>
-                <span class="price">R$ 30</span>
-              </button>
-              <button type="button" class="plan-pill-btn active" onclick="selectPlanPill(150, this)">
-                <span>Tesla 3 🔥</span>
-                <span class="price">R$ 150</span>
-              </button>
-              <button type="button" class="plan-pill-btn" onclick="selectPlanPill(350, this)">
-                <span>Baidu RT6</span>
-                <span class="price">R$ 350</span>
-              </button>
-              <button type="button" class="plan-pill-btn" onclick="selectPlanPill(600, this)">
-                <span>Cybercab</span>
-                <span class="price">R$ 600</span>
-              </button>
-              <button type="button" class="plan-pill-btn" onclick="selectPlanPill(1500, this)">
-                <span>Waymo Van</span>
-                <span class="price">R$ 1.500</span>
-              </button>
-              <button type="button" class="plan-pill-btn" onclick="selectPlanPill(5000, this)">
-                <span>NIO Master</span>
-                <span class="price">R$ 5.000</span>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Live Output Board -->
-        <div class="sim-output-board">
-          <div class="board-top-status">
-            <span class="board-title">
-              <i class="fa-solid fa-network-wired" style="color: var(--cyan-400);"></i> Projeção de Carteira
-            </span>
-            <span class="board-network-count" id="badge-total-members">
-              65 operadores na rede
-            </span>
-          </div>
-
-          <div class="financial-list-row">
-            <span class="item-label"><i class="fa-solid fa-circle-dot" style="color: var(--amber-400); font-size: 9px;"></i> Nível 1 (10% Direto):</span>
-            <span class="item-value" id="val-com-n1" style="color: var(--amber-400);">R$ 75,00</span>
-          </div>
-
-          <div class="financial-list-row">
-            <span class="item-label"><i class="fa-solid fa-circle-dot" style="color: var(--cyan-400); font-size: 9px;"></i> Nível 2 (5% Indireto):</span>
-            <span class="item-value" id="val-com-n2" style="color: var(--cyan-400);">R$ 112,50</span>
-          </div>
-
-          <div class="financial-list-row">
-            <span class="item-label"><i class="fa-solid fa-circle-dot" style="color: #c084fc; font-size: 9px;"></i> Nível 3 (2% Profundidade):</span>
-            <span class="item-value" id="val-com-n3" style="color: #c084fc;">R$ 135,00</span>
-          </div>
-
-          <!-- Graduação Conquistada -->
-          <div class="sim-rank-box">
-            <div>
-              <span style="font-size: 11px; color: var(--text-tertiary); display: block;">Graduação Conquistada:</span>
-              <strong id="rank-name" style="font-size: 14.5px; color: #fff; font-family: var(--font-heading);">👑 Embaixador Diamante</strong>
-            </div>
-            <div style="text-align: right;">
-              <span style="font-size: 11px; color: var(--amber-400); display: block; font-weight: 700;">Bônus em Saldo Pix:</span>
-              <strong id="rank-bonus" style="font-size: 15px; color: var(--emerald-400); font-family: var(--font-mono);">+ R$ 1.500,00</strong>
+            <div class="control-row" style="margin-bottom: 0;">
+              <div class="control-header">
+                <span class="control-label"><i class="fa-solid fa-car" style="color: var(--accent-gold);"></i> Plano Médio da Equipe</span>
+              </div>
+              <div class="segmented-plans">
+                <button type="button" class="plan-pill-btn active" onclick="selectPlan(30, this)">BYD (R$ 30)</button>
+                <button type="button" class="plan-pill-btn" onclick="selectPlan(80, this)">Aion (R$ 80)</button>
+                <button type="button" class="plan-pill-btn" onclick="selectPlan(150, this)">Geely (R$ 150)</button>
+                <button type="button" class="plan-pill-btn" onclick="selectPlan(350, this)">Baidu (R$ 350)</button>
+                <button type="button" class="plan-pill-btn" onclick="selectPlan(900, this)">Cruise (R$ 900)</button>
+                <button type="button" class="plan-pill-btn" onclick="selectPlan(1800, this)">Tesla (R$ 1.800)</button>
+                <button type="button" class="plan-pill-btn" onclick="selectPlan(3000, this)">Waymo (R$ 3.000)</button>
+                <button type="button" class="plan-pill-btn" onclick="selectPlan(5000, this)">NIO (R$ 5.000)</button>
+              </div>
             </div>
           </div>
 
-          <!-- Grand Total Display -->
-          <div class="sim-grand-display">
-            <span>Ganhos Totais Estimados no Pix</span>
-            <strong id="val-grand-total">R$ 1.822,50</strong>
-          </div>
+          <!-- Painel de Resultados -->
+          <div class="sim-result-panel">
+            <span class="result-rank-badge" id="sim-rank-badge">🥈 Supervisor Prata</span>
+            <div class="result-big-number" id="sim-total-gain">R$ 382,50</div>
+            <div class="result-sub">Ganhos estimados com comissões + bônus de graduação</div>
 
-          <div style="margin-top: 18px;">
-            <a href="login.html" class="btn-3d btn-3d-cyan" style="width: 100%; font-size: 14px; padding: 14px;">
-              <i class="fa-solid fa-bolt"></i> Criar Conta & Começar Minha Rede Agora
+            <div class="result-breakdown-grid">
+              <div class="breakdown-box">
+                <span>N1 (15%)</span>
+                <strong id="sim-n1-val">R$ 22,50</strong>
+              </div>
+              <div class="breakdown-box">
+                <span>N2 (10%)</span>
+                <strong id="sim-n2-val">R$ 45,00</strong>
+              </div>
+              <div class="breakdown-box">
+                <span>N3 (5%)</span>
+                <strong id="sim-n3-val">R$ 67,50</strong>
+              </div>
+            </div>
+
+            <div style="background: rgba(156, 243, 91, 0.08); border: 1px solid var(--border-lime-subtle); padding: 12px; border-radius: var(--radius-inner); margin-bottom: 20px; font-size: 13px; color: var(--accent-lime); font-weight: 700;">
+              <i class="fa-solid fa-gift"></i> <span id="sim-bonus-text">Bônus de Graduação: + R$ 100,00 no Pix</span>
+            </div>
+
+            <a href="/login.html" class="btn-hero-primary" style="width: 100%;">
+              <i class="fa-solid fa-rocket"></i> Desbloquear Meus Ganhos
             </a>
           </div>
-        </div>
 
-      </div>
-    </section>
-
-    <!-- =========================================================================
-         3. OS 3 PILARES DA MUDANÇA DE VIDA
-         ========================================================================= -->
-    <section style="margin-bottom: 70px;">
-      <div class="section-header">
-        <span class="section-kicker">// A CHAVE DA LIBERDADE FINANCEIRA</span>
-        <h2 class="section-heading">Por Que Essa Oportunidade Muda Tudo?</h2>
-        <p class="section-lead">Enquanto no trabalho tradicional você troca horas por um salário fixo, na TAXINEXO 2.0 você constrói uma engrenagem que trabalha para você 24 horas por dia.</p>
-      </div>
-
-      <div class="metrics-grid" style="grid-template-columns: 1fr;">
-        <div class="metric-card" style="padding: 24px 20px;">
-          <div class="metric-icon-wrap" style="width: 46px; height: 46px; border-radius: 12px; font-size: 20px; color: var(--amber-400); background: rgba(245,158,11,0.1); border-color: var(--border-gold); margin-bottom: 16px;">
-            <i class="fa-solid fa-ticket"></i>
-          </div>
-          <h3 style="font-size: 18px; font-weight: 800; font-family: var(--font-heading); color: #fff; margin-bottom: 8px;">1. Cota de Entrada a R$ 30</h3>
-          <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.65;">
-            Com o <strong>BYD Dolphin por apenas R$ 30,00</strong>, qualquer amigo ou seguidor consegue começar na hora sem hesitar. Isso garante uma taxa de conversão altíssima na sua rede.
-          </p>
-        </div>
-
-        <div class="metric-card" style="padding: 24px 20px;">
-          <div class="metric-icon-wrap" style="width: 46px; height: 46px; border-radius: 12px; font-size: 20px; color: var(--cyan-400); background: rgba(0,240,255,0.1); border-color: var(--border-cyan); margin-bottom: 16px;">
-            <i class="fa-solid fa-chart-pie"></i>
-          </div>
-          <h3 style="font-size: 18px; font-weight: 800; font-family: var(--font-heading); color: #fff; margin-bottom: 8px;">2. Multiplicação Geométrica</h3>
-          <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.65;">
-            Você não precisa de milhares de contatos. Ao convidar 5 pessoas que convidam 5, sua rede atinge rapidamente <strong>150 operadores</strong> gerando comissões diárias no piloto automático.
-          </p>
-        </div>
-
-        <div class="metric-card" style="padding: 24px 20px;">
-          <div class="metric-icon-wrap" style="width: 46px; height: 46px; border-radius: 12px; font-size: 20px; color: var(--emerald-400); background: rgba(16,185,129,0.1); border-color: var(--border-emerald); margin-bottom: 16px;">
-            <i class="fa-solid fa-shield-halved"></i>
-          </div>
-          <h3 style="font-size: 18px; font-weight: 800; font-family: var(--font-heading); color: #fff; margin-bottom: 8px;">3. Lastro Real em Frotas IA</h3>
-          <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.65;">
-            O dinheiro tem lastro comercial real: provém de corridas urbanas operadas 24 horas por dia por frotas inteligentes em polos tecnológicos como Miami e Nova York.
-          </p>
         </div>
       </div>
     </section>
 
-    <!-- =========================================================================
-         4. PLANO DE CARREIRA E GRADUAÇÕES (SPREADSHEET PRECISION)
-         ========================================================================= -->
-    <section>
-      <div class="section-header">
-        <span class="section-kicker">// PLANO DE CARREIRA & BÔNUS EM SALDO</span>
-        <h2 class="section-heading">Metas de Graduação & Prêmios em Dinheiro</h2>
-        <p class="section-lead">Conforme sua base cresce, você desbloqueia prêmios em dinheiro vivo creditados diretamente no seu saldo para saque instantâneo via Pix.</p>
+    <!-- 4. CATÁLOGO DE FROTAS DISPONÍVEIS -->
+    <section id="frotas" class="section-wrapper">
+      <div class="section-header-center">
+        <span class="section-pill-tag">// FROTAS HOMOLOGADAS</span>
+        <h2 class="section-title">Escolha Seu Veículo de Entrada</h2>
+        <p class="section-subtitle">Cotizados para operar 24 horas por dia gerando liquidação diária e saques via Pix.</p>
       </div>
 
-      <div class="career-grid-layout">
+      <div class="fleet-grid">
         
-        <!-- 1. Bronze -->
-        <div class="career-fintech-card">
-          <div class="career-icon-emblem">🥉</div>
-          <div class="career-rank-name">Operador Bronze</div>
-          <div class="career-rank-rule">0 a 4 indicados diretos</div>
-          <div class="career-commission-badge">15% no Nível 1</div>
-          <div style="font-size: 11.5px; color: var(--text-tertiary); padding: 6px;">Check-in diário padrão</div>
+        <!-- BYD Dolphin -->
+        <div class="fleet-card highlight">
+          <div>
+            <div class="fleet-code">NX-030 • ENTRADA</div>
+            <h3 class="fleet-name">BYD Dolphin Mini</h3>
+            <div class="fleet-specs-row"><span>Rendimento:</span> <strong>R$ 2,80/dia</strong></div>
+            <div class="fleet-specs-row"><span>Período:</span> <strong>90 Dias</strong></div>
+            <div class="fleet-specs-row"><span>Retorno Total:</span> <strong style="color: var(--accent-lime);">R$ 252,00</strong></div>
+            <div class="fleet-price-tag">R$ 30,00 <small>/cota</small></div>
+          </div>
+          <button class="btn-fleet-checkout" onclick="openPlanCheckout('NX-030')">
+            <i class="fa-solid fa-bolt"></i> Ativar R$ 30
+          </button>
         </div>
 
-        <!-- 2. Prata -->
-        <div class="career-fintech-card">
-          <div class="career-icon-emblem">🥈</div>
-          <div class="career-rank-name">Supervisor Prata</div>
-          <div class="career-rank-rule">5 indicados diretos ativos</div>
-          <div class="career-commission-badge">15% N1 + 10% N2</div>
-          <div class="career-cash-prize">+ R$ 100,00 no Pix 💰</div>
+        <!-- GAC Aion S -->
+        <div class="fleet-card">
+          <div>
+            <div class="fleet-code">NX-080 • POPULAR</div>
+            <h3 class="fleet-name">GAC Aion S Plus</h3>
+            <div class="fleet-specs-row"><span>Rendimento:</span> <strong>R$ 7,50/dia</strong></div>
+            <div class="fleet-specs-row"><span>Período:</span> <strong>60 Dias</strong></div>
+            <div class="fleet-specs-row"><span>Retorno Total:</span> <strong style="color: var(--accent-lime);">R$ 450,00</strong></div>
+            <div class="fleet-price-tag">R$ 80,00 <small>/cota</small></div>
+          </div>
+          <button class="btn-fleet-checkout" onclick="openPlanCheckout('NX-080')">
+            <i class="fa-solid fa-bolt"></i> Ativar R$ 80
+          </button>
         </div>
 
-        <!-- 3. Ouro -->
-        <div class="career-fintech-card">
-          <div class="career-icon-emblem">🥇</div>
-          <div class="career-rank-name">Gestor Ouro</div>
-          <div class="career-rank-rule">15 membros na equipe</div>
-          <div class="career-commission-badge">15% N1 + 10% N2 + 5% N3</div>
-          <div class="career-cash-prize">+ R$ 300,00 Pix + Saque Diário 🔓</div>
+        <!-- Geely Geometry -->
+        <div class="fleet-card">
+          <div>
+            <div class="fleet-code">NX-150 • PRO</div>
+            <h3 class="fleet-name">Geely Geometry C</h3>
+            <div class="fleet-specs-row"><span>Rendimento:</span> <strong>R$ 15,00/dia</strong></div>
+            <div class="fleet-specs-row"><span>Período:</span> <strong>45 Dias</strong></div>
+            <div class="fleet-specs-row"><span>Retorno Total:</span> <strong style="color: var(--accent-lime);">R$ 675,00</strong></div>
+            <div class="fleet-price-tag">R$ 150,00 <small>/cota</small></div>
+          </div>
+          <button class="btn-fleet-checkout" onclick="openPlanCheckout('NX-150')">
+            <i class="fa-solid fa-bolt"></i> Ativar R$ 150
+          </button>
         </div>
 
-        <!-- 4. Rubi -->
-        <div class="career-fintech-card">
-          <div class="career-icon-emblem">💎</div>
-          <div class="career-rank-name" style="color: #f43f5e;">Diretor Rubi</div>
-          <div class="career-rank-rule">50 membros na equipe</div>
-          <div class="career-commission-badge">N1 a N3 + 2% no Nível 4</div>
-          <div class="career-cash-prize">+ R$ 1.000,00 no Pix 💰</div>
+        <!-- Baidu Apollo -->
+        <div class="fleet-card">
+          <div>
+            <div class="fleet-code">NX-350 • AUTONOMOUS</div>
+            <h3 class="fleet-name">Baidu Apollo RT6</h3>
+            <div class="fleet-specs-row"><span>Rendimento:</span> <strong>R$ 38,00/dia</strong></div>
+            <div class="fleet-specs-row"><span>Período:</span> <strong>35 Dias</strong></div>
+            <div class="fleet-specs-row"><span>Retorno Total:</span> <strong style="color: var(--accent-lime);">R$ 1.330,00</strong></div>
+            <div class="fleet-price-tag">R$ 350,00 <small>/cota</small></div>
+          </div>
+          <button class="btn-fleet-checkout" onclick="openPlanCheckout('NX-350')">
+            <i class="fa-solid fa-bolt"></i> Ativar R$ 350
+          </button>
         </div>
 
-        <!-- 5. Diamante -->
-        <div class="career-fintech-card tier-diamond">
-          <div class="career-icon-emblem">👑</div>
-          <div class="career-rank-name" style="color: var(--cyan-400);">Embaixador Diamante</div>
-          <div class="career-rank-rule">150 membros na equipe</div>
-          <div class="career-commission-badge">N1 a N4 + 1% no Nível 5</div>
-          <div class="career-cash-prize" style="background: var(--cyan-gradient); color: #030712;">+ R$ 3.000,00 no Pix 🏆</div>
+        <!-- Cruise Origin -->
+        <div class="fleet-card">
+          <div>
+            <div class="fleet-code">NX-900 • SHUTTLE</div>
+            <h3 class="fleet-name">Cruise Origin Robobus</h3>
+            <div class="fleet-specs-row"><span>Rendimento:</span> <strong>R$ 110,00/dia</strong></div>
+            <div class="fleet-specs-row"><span>Período:</span> <strong>30 Dias</strong></div>
+            <div class="fleet-specs-row"><span>Retorno Total:</span> <strong style="color: var(--accent-lime);">R$ 3.300,00</strong></div>
+            <div class="fleet-price-tag">R$ 900,00 <small>/cota</small></div>
+          </div>
+          <button class="btn-fleet-checkout" onclick="openPlanCheckout('NX-900')">
+            <i class="fa-solid fa-bolt"></i> Ativar R$ 900
+          </button>
         </div>
 
-        <!-- 6. Black Diamond -->
-        <div class="career-fintech-card tier-diamond" style="border-color: rgba(250, 219, 95, 0.6); box-shadow: 0 12px 32px -4px rgba(245, 158, 11, 0.25);">
-          <div class="career-icon-emblem">⚡</div>
-          <div class="career-rank-name" style="color: var(--accent-gold);">Sócio Black Diamond</div>
-          <div class="career-rank-rule">500 membros na equipe</div>
-          <div class="career-commission-badge">Profundidade Total + Pool Global 1%</div>
-          <div class="career-cash-prize" style="background: var(--gold-gradient); color: #030712;">+ R$ 10.000,00 no Pix 👑</div>
+        <!-- Tesla Cybercab -->
+        <div class="fleet-card">
+          <div>
+            <div class="fleet-code">NX-1800 • AI VISION</div>
+            <h3 class="fleet-name">Tesla Cybercab</h3>
+            <div class="fleet-specs-row"><span>Rendimento:</span> <strong>R$ 230,00/dia</strong></div>
+            <div class="fleet-specs-row"><span>Período:</span> <strong>25 Dias</strong></div>
+            <div class="fleet-specs-row"><span>Retorno Total:</span> <strong style="color: var(--accent-lime);">R$ 5.750,00</strong></div>
+            <div class="fleet-price-tag">R$ 1.800,00 <small>/cota</small></div>
+          </div>
+          <button class="btn-fleet-checkout" onclick="openPlanCheckout('NX-1800')">
+            <i class="fa-solid fa-bolt"></i> Ativar R$ 1.800
+          </button>
+        </div>
+
+        <!-- Waymo One -->
+        <div class="fleet-card">
+          <div>
+            <div class="fleet-code">NX-3000 • ULTRA</div>
+            <h3 class="fleet-name">Waymo One Jaguar</h3>
+            <div class="fleet-specs-row"><span>Rendimento:</span> <strong>R$ 390,00/dia</strong></div>
+            <div class="fleet-specs-row"><span>Período:</span> <strong>20 Dias</strong></div>
+            <div class="fleet-specs-row"><span>Retorno Total:</span> <strong style="color: var(--accent-lime);">R$ 7.800,00</strong></div>
+            <div class="fleet-price-tag">R$ 3.000,00 <small>/cota</small></div>
+          </div>
+          <button class="btn-fleet-checkout" onclick="openPlanCheckout('NX-3000')">
+            <i class="fa-solid fa-bolt"></i> Ativar R$ 3.000
+          </button>
+        </div>
+
+        <!-- NIO Executive -->
+        <div class="fleet-card">
+          <div>
+            <div class="fleet-code">NX-5000 • MASTER</div>
+            <h3 class="fleet-name">NIO ET9 Autonomous</h3>
+            <div class="fleet-specs-row"><span>Rendimento:</span> <strong>R$ 680,00/dia</strong></div>
+            <div class="fleet-specs-row"><span>Período:</span> <strong>15 Dias</strong></div>
+            <div class="fleet-specs-row"><span>Retorno Total:</span> <strong style="color: var(--accent-lime);">R$ 10.200,00</strong></div>
+            <div class="fleet-price-tag">R$ 5.000,00 <small>/cota</small></div>
+          </div>
+          <button class="btn-fleet-checkout" onclick="openPlanCheckout('NX-5000')">
+            <i class="fa-solid fa-bolt"></i> Ativar R$ 5.000
+          </button>
         </div>
 
       </div>
     </section>
 
-    <!-- =========================================================================
-         5. CATÁLOGO DE FROTAS DISPONÍVEIS (DATA TABLES)
-         ========================================================================= -->
-    <section>
-      <div class="section-header">
-        <span class="section-kicker">// FROTAS DISPONÍVEIS</span>
-        <h2 class="section-heading">Veículos Autônomos de Alta Performance</h2>
-        <p class="section-lead">Cada cota ativada opera diariamente gerando rendimentos automáticos com liquidação e saque diário via Pix.</p>
+    <!-- 5. PLANO DE CARREIRA (6 PATENTES) -->
+    <section id="carreira" class="section-wrapper">
+      <div class="section-header-center">
+        <span class="section-pill-tag">// PLANO DE CARREIRA</span>
+        <h2 class="section-title">Suba de Patente e Fature Bônus no Pix</h2>
+        <p class="section-subtitle">Conforme você compartilha a plataforma, novas profundidades de comissão e bônus em dinheiro são liberados imediatamente.</p>
       </div>
 
-      <div class="fleet-cards-grid">
+      <div class="career-grid">
         
-        <!-- 0. NX-030: BYD Dolphin -->
-        <div class="fleet-fintech-card highlight-card">
-          <div class="fleet-media-wrap">
-            <span class="fleet-code-tag">NX-030</span>
-            <span class="fleet-badge-tier badge-tier-entry">🔥 Cota de Entrada</span>
-            <img src="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=600&auto=format&fit=crop&q=80" alt="BYD Dolphin Autonomous">
+        <!-- Bronze -->
+        <div class="career-bento-card">
+          <div class="career-top-row">
+            <span class="career-icon-box">🥉</span>
+            <span class="career-bonus-chip">Iniciante</span>
           </div>
-          <div class="fleet-card-body">
-            <div>
-              <h3 class="fleet-title">BYD Dolphin Urban</h3>
-              <p class="fleet-subtitle">Cota de Entrada • Ideal para Afiliados e Alavancagem</p>
-
-              <div class="fleet-data-table">
-                <div class="data-table-row">
-                  <span class="dt-label">Valor do Contrato</span>
-                  <span class="dt-value" style="color: var(--amber-400);">R$ 30,00</span>
-                </div>
-                <div class="data-table-row">
-                  <span class="dt-label">Rendimento Diário</span>
-                  <span class="dt-value green">+ R$ 2,80 / dia</span>
-                </div>
-                <div class="data-table-row">
-                  <span class="dt-label">Duração da Operação</span>
-                  <span class="dt-value">20 dias</span>
-                </div>
-                <div class="data-table-row">
-                  <span class="dt-label">Retorno Total Estimado</span>
-                  <span class="dt-value green">R$ 56,00</span>
-                </div>
-              </div>
-            </div>
-            <button onclick="handleActivateVehicle('NX-030')" class="btn-3d btn-3d-gold" style="width: 100%; padding: 13px; font-size: 14px;">
-              Ativar Cota por R$ 30 <i class="fa-solid fa-arrow-right"></i>
-            </button>
-          </div>
+          <h3 class="career-title">Operador Bronze</h3>
+          <p class="career-rule">0 a 4 indicados diretos</p>
+          <div class="career-unlocks">🔓 15% no Nível 1</div>
         </div>
 
-        <!-- 1. NX-101: Tesla Model 3 -->
-        <div class="fleet-fintech-card">
-          <div class="fleet-media-wrap">
-            <span class="fleet-code-tag">NX-101</span>
-            <span class="fleet-badge-tier badge-tier-cyan">Regime Parcial</span>
-            <img src="images/tesla_model3.jpg" alt="Tesla Robotaxi Model 3" onerror="this.src='https://images.unsplash.com/photo-1560958089-b8a1929cea89?w=600&auto=format&fit=crop&q=80'">
+        <!-- Prata -->
+        <div class="career-bento-card">
+          <div class="career-top-row">
+            <span class="career-icon-box">🥈</span>
+            <span class="career-bonus-chip">+ R$ 100 Pix</span>
           </div>
-          <div class="fleet-card-body">
-            <div>
-              <h3 class="fleet-title">Tesla Model 3 Robotaxi</h3>
-              <p class="fleet-subtitle">Rotas Metropolitanas • Viagens Urbanas Rápidas</p>
-
-              <div class="fleet-data-table">
-                <div class="data-table-row">
-                  <span class="dt-label">Valor do Contrato</span>
-                  <span class="dt-value">R$ 150,00</span>
-                </div>
-                <div class="data-table-row">
-                  <span class="dt-label">Rendimento Diário</span>
-                  <span class="dt-value green">+ R$ 14,50 / dia</span>
-                </div>
-                <div class="data-table-row">
-                  <span class="dt-label">Duração da Operação</span>
-                  <span class="dt-value">30 dias</span>
-                </div>
-                <div class="data-table-row">
-                  <span class="dt-label">Retorno Total Estimado</span>
-                  <span class="dt-value green">R$ 435,00</span>
-                </div>
-              </div>
-            </div>
-            <button onclick="handleActivateVehicle('NX-101')" class="btn-3d btn-3d-cyan" style="width: 100%; padding: 13px; font-size: 14px;">
-              Ativar por R$ 150 <i class="fa-solid fa-arrow-right"></i>
-            </button>
-          </div>
+          <h3 class="career-title">Supervisor Prata</h3>
+          <p class="career-rule">5 indicados diretos ativos</p>
+          <div class="career-unlocks">🔓 15% N1 + 10% N2</div>
         </div>
 
-        <!-- 2. NX-202: Baidu Apollo RT6 -->
-        <div class="fleet-fintech-card">
-          <div class="fleet-media-wrap">
-            <span class="fleet-code-tag">NX-202</span>
-            <span class="fleet-badge-tier badge-tier-popular">Alta Demanda</span>
-            <img src="images/baidu_apollo.jpg" alt="Baidu Apollo RT6" onerror="this.src='https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=600&auto=format&fit=crop&q=80'">
+        <!-- Ouro -->
+        <div class="career-bento-card">
+          <div class="career-top-row">
+            <span class="career-icon-box">🥇</span>
+            <span class="career-bonus-chip">+ R$ 300 Pix</span>
           </div>
-          <div class="fleet-card-body">
-            <div>
-              <h3 class="fleet-title">Baidu Apollo RT6</h3>
-              <p class="fleet-subtitle">38 Sensores LiDAR • IA Nível 4 Integrada</p>
-
-              <div class="fleet-data-table">
-                <div class="data-table-row">
-                  <span class="dt-label">Valor do Contrato</span>
-                  <span class="dt-value">R$ 350,00</span>
-                </div>
-                <div class="data-table-row">
-                  <span class="dt-label">Rendimento Diário</span>
-                  <span class="dt-value green">+ R$ 36,00 / dia</span>
-                </div>
-                <div class="data-table-row">
-                  <span class="dt-label">Duração da Operação</span>
-                  <span class="dt-value">45 dias</span>
-                </div>
-                <div class="data-table-row">
-                  <span class="dt-label">Retorno Total Estimado</span>
-                  <span class="dt-value green">R$ 1.620,00</span>
-                </div>
-              </div>
-            </div>
-            <button onclick="handleActivateVehicle('NX-202')" class="btn-3d btn-3d-cyan" style="width: 100%; padding: 13px; font-size: 14px;">
-              Ativar por R$ 350 <i class="fa-solid fa-arrow-right"></i>
-            </button>
-          </div>
+          <h3 class="career-title">Gestor Ouro</h3>
+          <p class="career-rule">15 membros na equipe</p>
+          <div class="career-unlocks">🔓 15% + 10% + 5% N3 (Saques Liberados)</div>
         </div>
 
-        <!-- 3. NX-707: Tesla Cybercab -->
-        <div class="fleet-fintech-card" style="border-color: var(--cyan-400);">
-          <div class="fleet-media-wrap">
-            <span class="fleet-code-tag">NX-707</span>
-            <span class="fleet-badge-tier badge-tier-popular">🔥 Mais Popular</span>
-            <img src="images/tesla_cybercab.jpg" alt="Tesla Cybercab Next-Gen" onerror="this.src='https://images.unsplash.com/photo-1536700503339-1e4b06520771?w=600&auto=format&fit=crop&q=80'">
+        <!-- Rubi -->
+        <div class="career-bento-card">
+          <div class="career-top-row">
+            <span class="career-icon-box">💎</span>
+            <span class="career-bonus-chip">+ R$ 1.000 Pix</span>
           </div>
-          <div class="fleet-card-body">
-            <div>
-              <h3 class="fleet-title">Tesla Cybercab Next-Gen</h3>
-              <p class="fleet-subtitle">Autonomia Nível 5 • Indução 24/7 sem Volante</p>
-
-              <div class="fleet-data-table">
-                <div class="data-table-row">
-                  <span class="dt-label">Valor do Contrato</span>
-                  <span class="dt-value">R$ 600,00</span>
-                </div>
-                <div class="data-table-row">
-                  <span class="dt-label">Rendimento Diário</span>
-                  <span class="dt-value green">+ R$ 68,00 / dia</span>
-                </div>
-                <div class="data-table-row">
-                  <span class="dt-label">Duração da Operação</span>
-                  <span class="dt-value">40 dias</span>
-                </div>
-                <div class="data-table-row">
-                  <span class="dt-label">Retorno Total Estimado</span>
-                  <span class="dt-value green">R$ 2.720,00</span>
-                </div>
-              </div>
-            </div>
-            <button onclick="handleActivateVehicle('NX-707')" class="btn-3d btn-3d-cyan" style="width: 100%; padding: 13px; font-size: 14px;">
-              Ativar por R$ 600 <i class="fa-solid fa-arrow-right"></i>
-            </button>
-          </div>
+          <h3 class="career-title">Diretor Rubi</h3>
+          <p class="career-rule">50 membros na equipe</p>
+          <div class="career-unlocks">🔓 N1 a N3 + 2% no Nível 4</div>
         </div>
 
-        <!-- 4. NX-404: Cruise Origin -->
-        <div class="fleet-fintech-card">
-          <div class="fleet-media-wrap">
-            <span class="fleet-code-tag">NX-404</span>
-            <span class="fleet-badge-tier badge-tier-cyan">Executivo</span>
-            <img src="images/cruise_origin.jpg" alt="Cruise Origin" onerror="this.src='https://images.unsplash.com/photo-1550355291-bbee04a92027?w=600&auto=format&fit=crop&q=80'">
+        <!-- Diamante -->
+        <div class="career-bento-card">
+          <div class="career-top-row">
+            <span class="career-icon-box">👑</span>
+            <span class="career-bonus-chip">+ R$ 3.000 Pix</span>
           </div>
-          <div class="fleet-card-body">
-            <div>
-              <h3 class="fleet-title">Cruise Origin Autonomous</h3>
-              <p class="fleet-subtitle">Lançadeira Compartilhada • Rotas Metropolitanas</p>
-
-              <div class="fleet-data-table">
-                <div class="data-table-row">
-                  <span class="dt-label">Valor do Contrato</span>
-                  <span class="dt-value">R$ 900,00</span>
-                </div>
-                <div class="data-table-row">
-                  <span class="dt-label">Rendimento Diário</span>
-                  <span class="dt-value green">+ R$ 105,00 / dia</span>
-                </div>
-                <div class="data-table-row">
-                  <span class="dt-label">Duração da Operação</span>
-                  <span class="dt-value">45 dias</span>
-                </div>
-                <div class="data-table-row">
-                  <span class="dt-label">Retorno Total Estimado</span>
-                  <span class="dt-value green">R$ 4.725,00</span>
-                </div>
-              </div>
-            </div>
-            <button onclick="handleActivateVehicle('NX-404')" class="btn-3d btn-3d-cyan" style="width: 100%; padding: 13px; font-size: 14px;">
-              Ativar por R$ 900 <i class="fa-solid fa-arrow-right"></i>
-            </button>
-          </div>
+          <h3 class="career-title">Embaixador Diamante</h3>
+          <p class="career-rule">150 membros na equipe</p>
+          <div class="career-unlocks">🔓 N1 a N4 + 1% no Nível 5</div>
         </div>
 
-        <!-- 5. NX-303: Waymo Van -->
-        <div class="fleet-fintech-card">
-          <div class="fleet-media-wrap">
-            <span class="fleet-code-tag">NX-303</span>
-            <span class="fleet-badge-tier badge-tier-vip">👑 VIP Corporativo</span>
-            <img src="images/waymo_van.jpg" alt="Waymo Autonomous Van" onerror="this.src='https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=600&auto=format&fit=crop&q=80'">
+        <!-- Black Diamond -->
+        <div class="career-bento-card" style="border-color: var(--accent-lime);">
+          <div class="career-top-row">
+            <span class="career-icon-box">⚡</span>
+            <span class="career-bonus-chip" style="background: var(--accent-lime); color: #000;">+ R$ 10.000 Pix</span>
           </div>
-          <div class="fleet-card-body">
-            <div>
-              <h3 class="fleet-title">Waymo Autonomous Van</h3>
-              <p class="fleet-subtitle">Van Corporativa • Rotas de Aeroportos e Hotéis</p>
-
-              <div class="fleet-data-table">
-                <div class="data-table-row">
-                  <span class="dt-label">Valor do Contrato</span>
-                  <span class="dt-value">R$ 1.500,00</span>
-                </div>
-                <div class="data-table-row">
-                  <span class="dt-label">Rendimento Diário</span>
-                  <span class="dt-value green">+ R$ 185,00 / dia</span>
-                </div>
-                <div class="data-table-row">
-                  <span class="dt-label">Duração da Operação</span>
-                  <span class="dt-value">60 dias</span>
-                </div>
-                <div class="data-table-row">
-                  <span class="dt-label">Retorno Total Estimado</span>
-                  <span class="dt-value green">R$ 11.100,00</span>
-                </div>
-              </div>
-            </div>
-            <button onclick="handleActivateVehicle('NX-303')" class="btn-3d btn-3d-cyan" style="width: 100%; padding: 13px; font-size: 14px;">
-              Ativar por R$ 1.500 <i class="fa-solid fa-arrow-right"></i>
-            </button>
-          </div>
+          <h3 class="career-title">Sócio Black Diamond</h3>
+          <p class="career-rule">500 membros na equipe</p>
+          <div class="career-unlocks">🔓 Profundidade Total + Pool Global 1%</div>
         </div>
 
       </div>
     </section>
 
-    <!-- =========================================================================
-         6. REVIEWS & PROVA SOCIAL EXPANDIDA (COM CURTIDAS, FILTROS E FORMULÁRIO)
-         ========================================================================= -->
-    <section style="margin-bottom: 70px;">
-      <div class="section-header">
-        <span class="section-kicker">// COMUNIDADE & PROVA SOCIAL EM TEMPO REAL</span>
-        <h2 class="section-heading">Avaliações e Comprovantes da Comunidade</h2>
-        <p class="section-lead">Veja os depoimentos, ganhos diários no Pix e graduações conquistadas por operadores ativos do TAXINEXO 2.0 em todo o Brasil.</p>
+    <!-- 6. FAQ ACCORDION -->
+    <section id="faq" class="section-wrapper">
+      <div class="section-header-center">
+        <span class="section-pill-tag">// FAQ</span>
+        <h2 class="section-title">Perguntas Frequentes</h2>
+        <p class="section-subtitle">Tudo o que você precisa saber para começar a operar hoje.</p>
       </div>
 
-      <!-- Resumo Geral de Avaliações -->
-      <div class="reviews-board">
-        <div style="text-align: center;">
-          <div class="score-headline">4.9</div>
-          <div class="stars-amber">
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-          </div>
-          <p style="color: var(--text-secondary); font-size: 13px;">Nota Média (482 avaliações)</p>
-          <p style="color: var(--emerald-400); font-size: 12px; font-weight: 700; margin-top: 4px;">
-            <i class="fa-solid fa-shield-check"></i> 100% dos Saques Pagos no Pix
-          </p>
-        </div>
-        <div style="display: flex; flex-direction: column; gap: 8px;">
-          <div style="display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--text-secondary);">
-            <span style="width: 55px;">5 estrelas</span>
-            <div style="flex:1; height:7px; background:rgba(255,255,255,0.06); border-radius:4px; overflow:hidden;">
-              <div style="width:96%; height:100%; background: var(--emerald-gradient);"></div>
-            </div>
-            <span style="font-family: var(--font-mono); font-weight:700;">96%</span>
-          </div>
-          <div style="display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--text-secondary);">
-            <span style="width: 55px;">4 estrelas</span>
-            <div style="flex:1; height:7px; background:rgba(255,255,255,0.06); border-radius:4px; overflow:hidden;">
-              <div style="width:3%; height:100%; background: var(--cyan-gradient);"></div>
-            </div>
-            <span style="font-family: var(--font-mono); font-weight:700;">3%</span>
-          </div>
-          <div style="display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--text-secondary);">
-            <span style="width: 55px;">3 estrelas</span>
-            <div style="flex:1; height:7px; background:rgba(255,255,255,0.06); border-radius:4px; overflow:hidden;">
-              <div style="width:1%; height:100%; background: #94a3b8;"></div>
-            </div>
-            <span style="font-family: var(--font-mono); font-weight:700;">1%</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Barra de Filtros de Depoimentos -->
-      <div class="reviews-filter-bar">
-        <button type="button" class="review-filter-btn active" onclick="filterReviews('all', this)"><i class="fa-solid fa-comments"></i> Todas as Avaliações (482)</button>
-        <button type="button" class="review-filter-btn" onclick="filterReviews('diamante', this)"><i class="fa-solid fa-crown"></i> Líderes Diamante & Ouro</button>
-        <button type="button" class="review-filter-btn" onclick="filterReviews('saques', this)"><i class="fa-solid fa-money-bill-wave"></i> Comprovantes Pix</button>
-        <button type="button" class="review-filter-btn" onclick="filterReviews('recentes', this)"><i class="fa-solid fa-bolt"></i> Mais Recentes (Hoje)</button>
-      </div>
-
-      <!-- Feed Grid de Depoimentos Enriquecido -->
-      <div class="reviews-feed-grid" id="reviews-feed">
-        
-        <!-- Review 1: Marcelo Santos -->
-        <div class="review-bubble-card" data-category="saques diamante">
-          <div>
-            <div class="reviewer-meta-row">
-              <div class="reviewer-identity">
-                <div class="reviewer-avatar-hex">MS</div>
-                <div>
-                  <div class="reviewer-name-tag">Marcelo Santos</div>
-                  <div class="reviewer-role-tag">Belo Horizonte, MG • <span style="color: var(--amber-400); font-weight:700;">Supervisor Ouro</span></div>
-                  <span class="verified-chip"><i class="fa-solid fa-circle-check"></i> Afiliado Verificado</span>
-                </div>
-              </div>
-              <div class="stars-amber" style="font-size: 11.5px;">
-                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-              </div>
-            </div>
-            <p class="review-body-text">"O Efeito Cascata é surreal! Comecei indicando 4 amigos do trabalho com a cota de R$ 30 do BYD Dolphin. Quando vi, eles indicaram outros e em 2 semanas eu já estava com 28 pessoas na rede. Já saquei mais de R$ 2.450 no Pix direto na conta!"</p>
-          </div>
-          <div class="review-card-footer">
-            <span style="color: var(--cyan-400); font-weight: 700; font-family: var(--font-mono);"><i class="fa-solid fa-bolt"></i> R$ 2.450 sacados</span>
-            <button type="button" class="review-like-btn" onclick="toggleLike(this, 48)"><i class="fa-solid fa-heart"></i> <span>48</span></button>
-          </div>
-        </div>
-
-        <!-- Review 2: Rodrigo Oliveira -->
-        <div class="review-bubble-card" data-category="diamante saques">
-          <div>
-            <div class="reviewer-meta-row">
-              <div class="reviewer-identity">
-                <div class="reviewer-avatar-hex" style="background: var(--gold-gradient);">RO</div>
-                <div>
-                  <div class="reviewer-name-tag">Rodrigo Oliveira</div>
-                  <div class="reviewer-role-tag">São Paulo, SP • <span style="color: var(--cyan-400); font-weight:700;">Embaixador Diamante</span></div>
-                  <span class="verified-chip"><i class="fa-solid fa-circle-check"></i> Afiliado Verificado</span>
-                </div>
-              </div>
-              <div class="stars-amber" style="font-size: 11.5px;">
-                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-              </div>
-            </div>
-            <p class="review-body-text">"Bati a meta de 50 pessoas na rede ontem e o bônus de R$ 1.500 caiu na hora no meu saldo. A liquidação diária das frotas cai pontualmente todo dia à meia-noite. Excelente infraestrutura!"</p>
-          </div>
-          <div class="review-card-footer">
-            <span style="color: var(--amber-400); font-weight: 700; font-family: var(--font-mono);"><i class="fa-solid fa-crown"></i> Bônus R$ 1.500 Recebido</span>
-            <button type="button" class="review-like-btn" onclick="toggleLike(this, 68)"><i class="fa-solid fa-heart"></i> <span>68</span></button>
-          </div>
-        </div>
-
-        <!-- Review 3: Fernanda Lima -->
-        <div class="review-bubble-card" data-category="recentes saques">
-          <div>
-            <div class="reviewer-meta-row">
-              <div class="reviewer-identity">
-                <div class="reviewer-avatar-hex" style="background: var(--emerald-gradient);">FL</div>
-                <div>
-                  <div class="reviewer-name-tag">Fernanda Lima</div>
-                  <div class="reviewer-role-tag">Goiânia, GO • <span style="color: #e2e8f0; font-weight:700;">Líder Prata</span></div>
-                  <span class="verified-chip"><i class="fa-solid fa-circle-check"></i> Afiliado Verificado</span>
-                </div>
-              </div>
-              <div class="stars-amber" style="font-size: 11.5px;">
-                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-              </div>
-            </div>
-            <p class="review-body-text">"Nunca tinha atuado com afiliação. Compartilhei a cota de R$ 30 com amigos e 6 ativaram no mesmo dia. Bati a meta de Líder Prata e já resgatei o bônus de R$ 100 no Pix em menos de 3 minutos."</p>
-          </div>
-          <div class="review-card-footer">
-            <span style="color: var(--emerald-400); font-weight: 700; font-family: var(--font-mono);"><i class="fa-solid fa-money-bill-wave"></i> Saque Pix Rápido</span>
-            <button type="button" class="review-like-btn" onclick="toggleLike(this, 39)"><i class="fa-solid fa-heart"></i> <span>39</span></button>
-          </div>
-        </div>
-
-        <!-- Review 4: Carlos Eduardo Mendes -->
-        <div class="review-bubble-card" data-category="diamante saques">
-          <div>
-            <div class="reviewer-meta-row">
-              <div class="reviewer-identity">
-                <div class="reviewer-avatar-hex" style="background: linear-gradient(135deg, #c084fc, #9333ea);">CE</div>
-                <div>
-                  <div class="reviewer-name-tag">Carlos Eduardo Mendes</div>
-                  <div class="reviewer-role-tag">Rio de Janeiro, RJ • <span style="color: var(--amber-400); font-weight:700;">Supervisor Ouro</span></div>
-                  <span class="verified-chip"><i class="fa-solid fa-circle-check"></i> Afiliado Verificado</span>
-                </div>
-              </div>
-              <div class="stars-amber" style="font-size: 11.5px;">
-                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-              </div>
-            </div>
-            <p class="review-body-text">"A comissão em 3 níveis faz toda a diferença. Tenho hoje 22 pessoas na minha equipe e ganho comissões de cotas ativadas em cidades que nem conheço. Mais de R$ 3.820 creditados no saldo!"</p>
-          </div>
-          <div class="review-card-footer">
-            <span style="color: var(--cyan-400); font-weight: 700; font-family: var(--font-mono);"><i class="fa-solid fa-chart-line"></i> + R$ 3.820 na Rede</span>
-            <button type="button" class="review-like-btn" onclick="toggleLike(this, 54)"><i class="fa-solid fa-heart"></i> <span>54</span></button>
-          </div>
-        </div>
-
-        <!-- Review 5: Camila Vasconcelos -->
-        <div class="review-bubble-card" data-category="diamante recentes">
-          <div>
-            <div class="reviewer-meta-row">
-              <div class="reviewer-identity">
-                <div class="reviewer-avatar-hex" style="background: var(--gold-gradient);">CV</div>
-                <div>
-                  <div class="reviewer-name-tag">Camila Vasconcelos</div>
-                  <div class="reviewer-role-tag">Curitiba, PR • <span style="color: var(--cyan-400); font-weight:700;">Embaixador Diamante</span></div>
-                  <span class="verified-chip"><i class="fa-solid fa-circle-check"></i> Afiliado Verificado</span>
-                </div>
-              </div>
-              <div class="stars-amber" style="font-size: 11.5px;">
-                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-              </div>
-            </div>
-            <p class="review-body-text">"Atingi 50 membros na minha rede em 3 semanas divulgando no WhatsApp e no Instagram. Recebi o bônus de R$ 1.500 no Pix + meus rendimentos diários do Tesla Model 3. Plataforma 10/10!"</p>
-          </div>
-          <div class="review-card-footer">
-            <span style="color: var(--amber-400); font-weight: 700; font-family: var(--font-mono);"><i class="fa-solid fa-crown"></i> Bônus R$ 1.500 Pix</span>
-            <button type="button" class="review-like-btn" onclick="toggleLike(this, 79)"><i class="fa-solid fa-heart"></i> <span>79</span></button>
-          </div>
-        </div>
-
-        <!-- Review 6: Rafael Silveira -->
-        <div class="review-bubble-card" data-category="recentes">
-          <div>
-            <div class="reviewer-meta-row">
-              <div class="reviewer-identity">
-                <div class="reviewer-avatar-hex">RS</div>
-                <div>
-                  <div class="reviewer-name-tag">Rafael Silveira</div>
-                  <div class="reviewer-role-tag">Recife, PE • <span style="color: #e2e8f0; font-weight:700;">Líder Prata</span></div>
-                  <span class="verified-chip"><i class="fa-solid fa-circle-check"></i> Afiliado Verificado</span>
-                </div>
-              </div>
-              <div class="stars-amber" style="font-size: 11.5px;">
-                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-              </div>
-            </div>
-            <p class="review-body-text">"O melhor do TAXINEXO 2.0 é que a cota de R$ 30 é acessível para todo mundo. Ninguém tem medo de testar e assim que veem o saldo subindo no dia seguinte, eles mesmos já convidam mais amigos!"</p>
-          </div>
-          <div class="review-card-footer">
-            <span style="color: var(--emerald-400); font-weight: 700; font-family: var(--font-mono);"><i class="fa-solid fa-users"></i> 14 na Rede</span>
-            <button type="button" class="review-like-btn" onclick="toggleLike(this, 31)"><i class="fa-solid fa-heart"></i> <span>31</span></button>
-          </div>
-        </div>
-
-        <!-- Review 7: Juliana Costa -->
-        <div class="review-bubble-card" data-category="recentes saques">
-          <div>
-            <div class="reviewer-meta-row">
-              <div class="reviewer-identity">
-                <div class="reviewer-avatar-hex" style="background: linear-gradient(135deg, #f59e0b, #d97706);">JC</div>
-                <div>
-                  <div class="reviewer-name-tag">Juliana Costa</div>
-                  <div class="reviewer-role-tag">Porto Alegre, RS • <span style="color: #cd7f32; font-weight:700;">Operador Bronze</span></div>
-                  <span class="verified-chip"><i class="fa-solid fa-circle-check"></i> Afiliado Verificado</span>
-                </div>
-              </div>
-              <div class="stars-amber" style="font-size: 11.5px;">
-                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-              </div>
-            </div>
-            <p class="review-body-text">"Comecei com medo colocando apenas os R$ 30 do BYD Dolphin. Recebi os rendimentos diários certos e solicitei o saque Pix de teste. Caiu na conta em menos de 2 minutos! Agora vou ativar o Cybercab de R$ 600."</p>
-          </div>
-          <div class="review-card-footer">
-            <span style="color: var(--cyan-400); font-weight: 700; font-family: var(--font-mono);"><i class="fa-solid fa-shield-check"></i> Testado e Aprovado</span>
-            <button type="button" class="review-like-btn" onclick="toggleLike(this, 24)"><i class="fa-solid fa-heart"></i> <span>24</span></button>
-          </div>
-        </div>
-
-        <!-- Review 8: Bruno Henrique Faria -->
-        <div class="review-bubble-card" data-category="diamante saques">
-          <div>
-            <div class="reviewer-meta-row">
-              <div class="reviewer-identity">
-                <div class="reviewer-avatar-hex" style="background: var(--cyan-gradient);">BF</div>
-                <div>
-                  <div class="reviewer-name-tag">Bruno Henrique Faria</div>
-                  <div class="reviewer-role-tag">Campinas, SP • <span style="color: var(--amber-400); font-weight:700;">Supervisor Ouro</span></div>
-                  <span class="verified-chip"><i class="fa-solid fa-circle-check"></i> Afiliado Verificado</span>
-                </div>
-              </div>
-              <div class="stars-amber" style="font-size: 11.5px;">
-                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-              </div>
-            </div>
-            <p class="review-body-text">"Tenho 3 cotas do Cybercab ativas e mais de 30 pessoas na minha equipe. A soma dos rendimentos das viagens com as comissões do Efeito Cascata me gera mais de R$ 300 todos os dias sem falta!"</p>
-          </div>
-          <div class="review-card-footer">
-            <span style="color: var(--cyan-400); font-weight: 700; font-family: var(--font-mono);"><i class="fa-solid fa-bolt"></i> + R$ 4.190 sacados</span>
-            <button type="button" class="review-like-btn" onclick="toggleLike(this, 46)"><i class="fa-solid fa-heart"></i> <span>46</span></button>
-          </div>
-        </div>
-
-        <!-- Review 9: Larissa Albuquerque -->
-        <div class="review-bubble-card" data-category="diamante">
-          <div>
-            <div class="reviewer-meta-row">
-              <div class="reviewer-identity">
-                <div class="reviewer-avatar-hex" style="background: var(--gold-gradient);">LA</div>
-                <div>
-                  <div class="reviewer-name-tag">Larissa Albuquerque</div>
-                  <div class="reviewer-role-tag">Fortaleza, CE • <span style="color: var(--cyan-400); font-weight:700;">Embaixador Diamante</span></div>
-                  <span class="verified-chip"><i class="fa-solid fa-circle-check"></i> Afiliado Verificado</span>
-                </div>
-              </div>
-              <div class="stars-amber" style="font-size: 11.5px;">
-                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-              </div>
-            </div>
-            <p class="review-body-text">"Bati a graduação Diamante na semana passada. O suporte é rápido pelo Telegram e pelo WhatsApp, e os bônus de carreira caem direto no saldo livre para saque Pix. Recomendo de olhos fechados!"</p>
-          </div>
-          <div class="review-card-footer">
-            <span style="color: var(--amber-400); font-weight: 700; font-family: var(--font-mono);"><i class="fa-solid fa-crown"></i> Bônus R$ 1.500 Recebido</span>
-            <button type="button" class="review-like-btn" onclick="toggleLike(this, 92)"><i class="fa-solid fa-heart"></i> <span>92</span></button>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- Formulário Interativo para Novos Depoimentos -->
-      <div class="review-form-card">
-        <h3 style="font-size: 18px; font-weight: 800; font-family: var(--font-heading); color: #fff; margin-bottom: 6px;">
-          <i class="fa-solid fa-comment-dots" style="color: var(--cyan-400);"></i> Deixe sua Avaliação / Depoimento de Operador
-        </h3>
-        <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 20px;">
-          Sua avaliação é verificada e publicada em tempo real para toda a comunidade de operadores.
-        </p>
-
-        <form id="comment-form" onsubmit="submitNewReview(event)">
-          <div style="display: grid; grid-template-columns: 1fr; gap: 12px; margin-bottom: 12px;">
-            <div style="display: grid; grid-template-columns: 1fr; gap: 12px;">
-              <input type="text" id="review-author" class="review-form-input" placeholder="Seu Nome Completo ou Apelido" required>
-              <input type="text" id="review-city" class="review-form-input" placeholder="Sua Cidade / Estado (Ex: Campinas, SP)" required>
-            </div>
-          </div>
-
-          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
-            <span style="font-size: 13px; color: var(--text-secondary);">Sua Nota:</span>
-            <div class="star-picker" id="star-picker-group">
-              <i class="fa-solid fa-star" onclick="setFormStars(1)"></i>
-              <i class="fa-solid fa-star" onclick="setFormStars(2)"></i>
-              <i class="fa-solid fa-star" onclick="setFormStars(3)"></i>
-              <i class="fa-solid fa-star" onclick="setFormStars(4)"></i>
-              <i class="fa-solid fa-star" onclick="setFormStars(5)"></i>
-            </div>
-            <span id="form-stars-label" style="font-size: 12px; color: var(--amber-400); font-weight: 700; font-family: var(--font-mono);">Excelente (5/5)</span>
-          </div>
-
-          <textarea id="review-message" class="review-form-textarea" rows="3" placeholder="Conte como está sendo sua experiência com os rendimentos diários, comissões de rede ou saques Pix..." required></textarea>
-
-          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
-            <span style="font-size: 11px; color: var(--text-tertiary);"><i class="fa-solid fa-shield-check" style="color: var(--emerald-400);"></i> Avaliação pública protegida por criptografia</span>
-            <button type="submit" class="btn-3d btn-3d-cyan" style="padding: 12px 24px; font-size: 13.5px;">
-              <i class="fa-solid fa-paper-plane"></i> Publicar Avaliação
-            </button>
-          </div>
-        </form>
-
-        <div id="comment-feedback-alert" style="display: none; color: var(--emerald-400); font-size: 13px; margin-top: 16px; font-weight: 700; text-align: center; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); padding: 12px; border-radius: var(--radius-sm);">
-          🎉 Obrigado! Sua avaliação foi validada e já está visível no topo do feed de operadores!
-        </div>
-      </div>
-
-    </section>
-
-    <!-- =========================================================================
-         7. FAQ
-         ========================================================================= -->
-    <section>
-      <div class="section-header">
-        <span class="section-kicker">// DÚVIDAS FREQUENTES</span>
-        <h2 class="section-heading">Perguntas Frequentes</h2>
-      </div>
-
-      <div class="faq-accordion-list">
-        <div class="faq-clean-item active">
-          <div class="faq-clean-question" onclick="toggleFaqClean(this)">
-            <span>Como funciona o Efeito Cascata de comissões?</span>
+      <div class="faq-wrapper">
+        <div class="faq-item open">
+          <div class="faq-header" onclick="toggleFaq(this)">
+            <span>Como funciona a liquidação e o saque diário?</span>
             <i class="fa-solid fa-chevron-down"></i>
           </div>
-          <div class="faq-clean-answer">
-            Você ganha 15% no Pix sempre que um indicado direto (Nível 1) ativa uma cota. Quando esse operador indicar outras pessoas (Nível 2), você recebe 10% automaticamente. E quando eles indicarem novos membros (Nível 3), você recebe mais 5%. O sistema distribui 30% em comissões no Pix gerando renda passiva diária!
+          <div class="faq-body">
+            Ao ativar sua cota (a partir de R$ 30,00), o veículo começa a operar automaticamente na rede. Os rendimentos caem todos os dias na sua carteira e você pode solicitar saques via Pix a partir de R$ 30,00.
           </div>
         </div>
 
-        <div class="faq-clean-item">
-          <div class="faq-clean-question" onclick="toggleFaqClean(this)">
-            <span>Preciso ter carro ou carteira de motorista?</span>
+        <div class="faq-item">
+          <div class="faq-header" onclick="toggleFaq(this)">
+            <span>Como funcionam as comissões por indicação?</span>
             <i class="fa-solid fa-chevron-down"></i>
           </div>
-          <div class="faq-clean-answer">
-            Não! A infraestrutura é 100% autônoma e digital. Os veículos rodam com inteligência artificial e sensores LiDAR nas cidades e você atua como gestor do contrato e construtor de rede através da plataforma.
+          <div class="faq-body">
+            Você ganha 15% no Nível 1 (diretos), 10% no Nível 2 (indiretos) e 5% no Nível 3. O saldo de comissões de indicação é 100% liberado para saque imediato a partir de R$ 30,00.
           </div>
         </div>
 
-        <div class="faq-clean-item">
-          <div class="faq-clean-question" onclick="toggleFaqClean(this)">
-            <span>Qual o valor mínimo para começar?</span>
+        <div class="faq-item">
+          <div class="faq-header" onclick="toggleFaq(this)">
+            <span>Preciso ter carro ou experiência?</span>
             <i class="fa-solid fa-chevron-down"></i>
           </div>
-          <div class="faq-clean-answer">
-            Você pode começar com a cota inicial do BYD Dolphin por apenas R$ 30,00! É a porta de entrada perfeita para testar o sistema, receber rendimentos diários e já começar a compartilhar seu link para lucrar no Efeito Cascata.
+          <div class="faq-body">
+            Não! A operação é 100% autônoma e digital. Os veículos rodam e prestam serviços nas cidades homologadas enquanto você acompanha os ganhos pelo seu celular.
           </div>
         </div>
-
-        <div class="faq-clean-item">
-          <div class="faq-clean-question" onclick="toggleFaqClean(this)">
-            <span>Como e quando posso solicitar meus saques Pix?</span>
-            <i class="fa-solid fa-chevron-down"></i>
-          </div>
-          <div class="faq-clean-answer">
-            As comissões de rede caem instantaneamente no seu saldo e os rendimentos dos veículos são creditados diariamente às 00:00. Você pode solicitar saques via Pix para sua conta bancária a qualquer momento (mínimo de R$ 30,00).
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- =========================================================================
-         8. FINAL CONVERSION HERO
-         ========================================================================= -->
-    <section class="final-conversion-hero">
-      <h2>Pronto Para Mudar Sua Vida Financeira?</h2>
-      <p>Junte-se a centenas de operadores que já estão faturando diariamente com o Efeito Cascata e a tecnologia de ponta do TAXINEXO 2.0.</p>
-      <div class="cta-group" style="margin-bottom: 0;">
-        <a href="login.html" class="btn-3d btn-3d-cyan" style="font-size: 15.5px; padding: 18px 32px;">
-          <i class="fa-solid fa-rocket"></i> CRIAR CONTA GRATUITA & PEGAR MEU LINK
-        </a>
-        <a href="https://t.me/+VRCCsj-SJHQwNmE5" target="_blank" class="btn-3d btn-3d-secondary" style="font-size: 15.5px; padding: 18px 32px;">
-          <i class="fa-brands fa-telegram" style="color: var(--cyan-400);"></i> ENTRAR NO GRUPO VIP TELEGRAM
-        </a>
       </div>
     </section>
 
   </main>
 
-  <!-- Footer -->
-  <footer class="site-footer container">
-    <div class="footer-nav-links">
-      <a href="login.html">Login</a>
-      <a href="index.html">App</a>
-      <a href="https://t.me/+VRCCsj-SJHQwNmE5" target="_blank">Suporte Telegram</a>
-    </div>
-    <p>© 2026 TAXINEXO 2.0 Inc. Todos os direitos reservados. Plataforma de Gestão de Frotas Autônomas & Alavancagem Residual.</p>
-  </footer>
-
-  <!-- Sticky Bottom Actions for Mobile (Min Touch Target 48px) -->
-  <div class="sticky-bottom-actions">
-    <div class="sticky-actions-inner">
-      <a href="login.html" class="btn-3d btn-3d-cyan"><i class="fa-solid fa-bolt"></i> Criar Conta (R$ 30)</a>
-      <a href="https://t.me/+VRCCsj-SJHQwNmE5" target="_blank" class="btn-3d btn-3d-secondary"><i class="fa-brands fa-telegram"></i> VIP</a>
-    </div>
-  </div>
-
-  <!-- Floating WhatsApp High-Converting Widget -->
-  <a id="floating-whatsapp-link" href="https://api.whatsapp.com/send?phone=553492019122&text=Ol%C3%A1!%20Vi%20a%20apresenta%C3%A7%C3%A3o%20do%20TAXINEXO%202.0%20e%20gostaria%20de%20tirar%20d%C3%BAvidas%20sobre%20a%20cota%20de%20R%24%2030." target="_blank" class="floating-whatsapp-fintech" onclick="handleWhatsAppClick()">
-    <div class="wa-live-tooltip">
-      <span style="display:inline-block; width:8px; height:8px; background:#25D366; border-radius:50%; box-shadow: 0 0 8px #25D366;"></span>
-      Dúvidas? Fale no WhatsApp
-    </div>
-    <div class="wa-button-circle">
-      <i class="fa-brands fa-whatsapp"></i>
-      <span class="wa-unread-badge">1</span>
-    </div>
-  </a>
-
-  <!-- Social Live Notification Popup -->
-  <div id="live-social-toast" class="live-social-toast">
-    <div style="width: 34px; height: 34px; border-radius: 50%; background: var(--cyan-gradient); display: flex; align-items: center; justify-content: center; font-size: 14px; color: #030712; flex-shrink: 0;">
+  <!-- Live Toast -->
+  <div id="live-toast" class="live-toast-bar">
+    <div style="width: 24px; height: 24px; border-radius: 50%; background: var(--accent-lime); display: flex; align-items: center; justify-content: center; color: #000; font-size: 11px;">
       <i class="fa-solid fa-bolt"></i>
     </div>
-    <div id="live-toast-content">
-      <strong>Marcos S. (Campinas, SP)</strong> acabou de sacar <strong>R$ 435,00</strong> via Pix!
-    </div>
+    <span id="toast-text">Marcos S. acabou de sacar R$ 435,00 no Pix!</span>
   </div>
 
-  <!-- =========================================================================
-       12. CORE BUSINESS LOGIC, SIMULATOR & INTERACTIVE REVIEWS SCRIPTS
-       ========================================================================= -->
+  <!-- Sticky Mobile Bar -->
+  <div class="sticky-bottom-mobile">
+    <a href="/login.html" style="background: rgba(255,255,255,0.08); color: #fff; border: 1px solid var(--border-medium);">
+      <i class="fa-solid fa-arrow-right-to-bracket"></i> Acessar App
+    </a>
+    <a href="/login.html" style="background: var(--accent-lime); color: var(--bg-base);">
+      <i class="fa-solid fa-bolt"></i> Ativar R$ 30
+    </a>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer-section">
+    <div class="container">
+      <div class="footer-links">
+        <a href="#simulador">Simulador</a>
+        <a href="#frotas">Frotas</a>
+        <a href="#carreira">Carreira</a>
+        <a href="/login.html">Login</a>
+      </div>
+      <p>© 2026 TAXINEXO Mobility Protocol. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
   <script>
-    // UTM Capture, Persistence & Propagation
-    (function() {
-      const params = new URLSearchParams(window.location.search);
-      const utmKeys = ['utm_source', 'utm_campaign', 'utm_medium', 'utm_content', 'utm_term', 'src', 'sck', 'ref', 'invite', 'i'];
-      utmKeys.forEach(k => {
-        const v = params.get(k);
-        if (v) {
-          sessionStorage.setItem('tn_' + k, v);
-          localStorage.setItem('tn_' + k, v);
-        }
-      });
+    // Checkout URLs
+    const CHECKOUT_URLS = {
+      'NX-030': 'https://pay.cartpanda.com/c/taxinexo-byd-dolphin-30',
+      'NX-080': 'https://pay.cartpanda.com/c/taxinexo-gac-aion-80',
+      'NX-150': 'https://pay.cartpanda.com/c/taxinexo-geely-geometry-150',
+      'NX-350': 'https://pay.cartpanda.com/c/taxinexo-baidu-apollo-350',
+      'NX-900': 'https://pay.cartpanda.com/c/taxinexo-cruise-origin-900',
+      'NX-1800': 'https://pay.cartpanda.com/c/taxinexo-tesla-cybercab-1800',
+      'NX-3000': 'https://pay.cartpanda.com/c/taxinexo-waymo-one-3000',
+      'NX-5000': 'https://pay.cartpanda.com/c/taxinexo-nio-et9-5000'
+    };
 
-      document.addEventListener('DOMContentLoaded', () => {
-        const storedUtms = {};
-        utmKeys.forEach(k => {
-          const v = sessionStorage.getItem('tn_' + k) || localStorage.getItem('tn_' + k);
-          if (v) storedUtms[k] = v;
-        });
+    let selectedPlanVal = 30;
 
-        // Captura parâmetros da URL atual
-        const currentParams = new URLSearchParams(window.location.search);
-        currentParams.forEach((val, key) => {
-          storedUtms[key] = val;
-        });
-
-        document.querySelectorAll('a[href*="login.html"]').forEach(a => {
-          const isExplicitLogin = a.textContent.trim().toLowerCase() === 'login';
-          const p = new URLSearchParams(storedUtms);
-          if (!isExplicitLogin && !p.has('tab')) {
-            p.set('tab', 'register');
-          }
-          const baseHref = a.getAttribute('href').split('?')[0];
-          a.setAttribute('href', baseHref + (p.toString() ? '?' + p.toString() : ''));
-        });
-
-        document.querySelectorAll('a[href*="index.html"]').forEach(a => {
-          const p = new URLSearchParams(storedUtms);
-          const baseHref = a.getAttribute('href').split('?')[0];
-          a.setAttribute('href', baseHref + (p.toString() ? '?' + p.toString() : ''));
-        });
-      });
-    })();
-
-    // Dynamic Public Settings & Meta Pixel Loader
-    fetch('/api/admin/public-settings').then(r => r.json()).then(settings => {
-      if (settings.whatsappNumber) {
-        const cleanNum = settings.whatsappNumber.replace(/\D/g, '');
-        const waLink = document.getElementById('floating-whatsapp-link');
-        if (waLink) {
-          waLink.href = 'https://api.whatsapp.com/send?phone=' + cleanNum + '&text=' + encodeURIComponent('Olá! Vi a apresentação do TAXINEXO 2.0 e gostaria de entender como funciona a cota de R$ 30 do BYD Dolphin.');
-        }
-      }
-
-      if (settings.metaPixelId) {
-        initMetaPixel(settings.metaPixelId);
-      }
-    }).catch(() => {});
-
-    function initMetaPixel(pixelId) {
-      if (!pixelId || window.fbq) return;
-      !function(f,b,e,v,n,t,s)
-      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-      n.queue=[];t=b.createElement(e);t.async=!0;
-      t.src=v;s=b.getElementsByTagName(e)[0];
-      s.parentNode.insertBefore(t,s)}(window, document,'script',
-      'https://connect.facebook.net/en_US/fbevents.js');
-      fbq('init', pixelId);
-      fbq('track', 'PageView');
-    }
-
-    function handleWhatsAppClick() {
-      if (window.fbq) fbq('track', 'Contact', { content_name: 'WhatsApp Presell Float' });
-    }
-
-    function handleActivateVehicle(productId) {
-      if (window.fbq) {
-        fbq('track', 'Lead', { content_name: productId || 'Selecao de Plano Presell' });
-      }
-
-      // Preserva UTMs e parâmetros de indicação para o cadastro
-      const utmKeys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'src', 'sck', 'ref', 'invite', 'i'];
-      const params = new URLSearchParams(window.location.search);
-      utmKeys.forEach(k => {
-        const v = sessionStorage.getItem('tn_' + k) || localStorage.getItem('tn_' + k);
-        if (v && !params.has(k)) params.set(k, v);
-      });
-
-      params.set('tab', 'register');
-      if (productId) {
-        params.set('plan', productId);
-      }
-
-      window.location.href = 'login.html?' + params.toString();
-    }
-
-    // ==========================================
-    // SIMULADOR DO EFEITO CASCATA DE AFILIADOS
-    // ==========================================
-    let currentSelectedPlanVal = 150;
-
-    function selectPlanPill(val, btnEl) {
-      currentSelectedPlanVal = val;
+    function selectPlan(val, btn) {
+      selectedPlanVal = val;
       document.querySelectorAll('.plan-pill-btn').forEach(b => b.classList.remove('active'));
-      if (btnEl) btnEl.classList.add('active');
-      updateCascataSimulation();
+      btn.classList.add('active');
+      updateSim();
     }
 
-    function updateCascataSimulation() {
+    function updateSim() {
       const n1 = parseInt(document.getElementById('slider-n1').value, 10);
-      const dup = parseInt(document.getElementById('slider-duplication').value, 10);
-      const contractVal = currentSelectedPlanVal;
-
-      document.getElementById('badge-n1-count').textContent = n1 + (n1 === 1 ? ' pessoa' : ' pessoas');
-      document.getElementById('badge-duplication-count').textContent = dup + ' cada';
+      const dup = parseInt(document.getElementById('slider-dup').value, 10);
+      
+      document.getElementById('badge-n1').textContent = n1 + (n1 === 1 ? ' pessoa' : ' pessoas');
+      document.getElementById('badge-dup').textContent = dup + ' cada';
 
       const n2 = n1 * dup;
       const n3 = n2 * dup;
       const totalMembers = n1 + n2 + n3;
 
-      document.getElementById('badge-total-members').textContent = totalMembers + ' operadores na rede';
+      const commN1 = n1 * selectedPlanVal * 0.15;
+      const commN2 = n2 * selectedPlanVal * 0.10;
+      const commN3 = n3 * selectedPlanVal * 0.05;
 
-      // Comissões (N1 = 15%, N2 = 10%, N3 = 5% -> 30% Total Rede / 70% Casa)
-      const comN1 = n1 * contractVal * 0.15;
-      const comN2 = n2 * contractVal * 0.10;
-      const comN3 = n3 * contractVal * 0.05;
-
-      // Graduação & Bônus
       let rankName = '🥉 Operador Bronze';
       let rankBonus = 0;
 
@@ -2732,154 +1497,59 @@
         rankBonus = 100;
       }
 
-      const grandTotal = comN1 + comN2 + comN3 + rankBonus;
-      const format = (v) => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(v);
+      const totalEstimated = commN1 + commN2 + commN3 + rankBonus;
 
-      document.getElementById('val-com-n1').textContent = format(comN1);
-      document.getElementById('val-com-n2').textContent = format(comN2);
-      document.getElementById('val-com-n3').textContent = format(comN3);
-      document.getElementById('rank-name').textContent = rankName;
-      document.getElementById('rank-bonus').textContent = rankBonus > 0 ? '+ ' + format(rankBonus) : 'Padrão';
-      document.getElementById('val-grand-total').textContent = format(grandTotal);
+      document.getElementById('sim-rank-badge').textContent = rankName;
+      document.getElementById('sim-total-gain').textContent = 'R$ ' + totalEstimated.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      document.getElementById('sim-n1-val').textContent = 'R$ ' + commN1.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      document.getElementById('sim-n2-val').textContent = 'R$ ' + commN2.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      document.getElementById('sim-n3-val').textContent = 'R$ ' + commN3.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      
+      document.getElementById('sim-bonus-text').textContent = rankBonus > 0 
+        ? 'Bônus de Graduação: + R$ ' + rankBonus.toLocaleString('pt-BR', { minimumFractionDigits: 2 }) + ' no Pix'
+        : 'Próxima meta: Convide 5 para atingir Prata (+ R$ 100 Pix)';
     }
 
-    function toggleFaqClean(el) {
-      const item = el.parentElement;
-      item.classList.toggle('active');
+    function toggleFaq(header) {
+      const item = header.parentElement;
+      item.classList.toggle('open');
     }
 
-    // ==========================================
-    // REVIEWS INTERATIVAS & CURTIDAS & FILTROS
-    // ==========================================
-    function toggleLike(btn, initialCount) {
-      const isLiked = btn.classList.contains('liked');
-      const span = btn.querySelector('span');
-      let count = parseInt(span.textContent, 10);
-
-      if (isLiked) {
-        btn.classList.remove('liked');
-        span.textContent = count - 1;
-      } else {
-        btn.classList.add('liked');
-        span.textContent = count + 1;
-      }
+    function openPlanCheckout(productId) {
+      const baseUrl = CHECKOUT_URLS[productId] || 'https://pay.cartpanda.com/c/taxinexo-byd-dolphin-30';
+      const searchParams = new URLSearchParams(window.location.search);
+      const targetUrl = searchParams.toString() ? (baseUrl + '?' + searchParams.toString()) : baseUrl;
+      window.open(targetUrl, '_blank');
     }
 
-    function filterReviews(category, btnEl) {
-      document.querySelectorAll('.review-filter-btn').forEach(b => b.classList.remove('active'));
-      if (btnEl) btnEl.classList.add('active');
-
-      const cards = document.querySelectorAll('#reviews-feed .review-bubble-card');
-      cards.forEach(card => {
-        if (category === 'all') {
-          card.style.display = 'flex';
-        } else {
-          const cats = card.getAttribute('data-category') || '';
-          if (cats.includes(category)) {
-            card.style.display = 'flex';
-          } else {
-            card.style.display = 'none';
-          }
-        }
-      });
-    }
-
-    let currentFormRating = 5;
-    function setFormStars(stars) {
-      currentFormRating = stars;
-      const starIcons = document.querySelectorAll('#star-picker-group i');
-      starIcons.forEach((icon, index) => {
-        if (index < stars) {
-          icon.className = 'fa-solid fa-star';
-        } else {
-          icon.className = 'fa-regular fa-star';
-        }
-      });
-      const texts = ['Muito Ruim (1/5)', 'Regular (2/5)', 'Bom (3/5)', 'Muito Bom (4/5)', 'Excelente (5/5)'];
-      document.getElementById('form-stars-label').textContent = texts[stars - 1];
-    }
-
-    function submitNewReview(e) {
-      e.preventDefault();
-      const author = document.getElementById('review-author').value.trim();
-      const city = document.getElementById('review-city').value.trim();
-      const msg = document.getElementById('review-message').value.trim();
-      if (!author || !msg) return;
-
-      const feed = document.getElementById('reviews-feed');
-      const initials = author.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
-
-      const newCard = document.createElement('div');
-      newCard.className = 'review-bubble-card';
-      newCard.setAttribute('data-category', 'all recentes');
-      newCard.style.borderColor = 'var(--cyan-400)';
-      newCard.innerHTML = 
-        '<div>' +
-          '<div class="reviewer-meta-row">' +
-            '<div class="reviewer-identity">' +
-              '<div class="reviewer-avatar-hex">' + initials + '</div>' +
-              '<div>' +
-                '<div class="reviewer-name-tag">' + author + '</div>' +
-                '<div class="reviewer-role-tag">' + (city || 'Brasil') + ' • <span style="color: var(--cyan-400); font-weight:700;">Novo Operador</span></div>' +
-                '<span class="verified-chip"><i class="fa-solid fa-circle-check"></i> Avaliação Verificada</span>' +
-              '</div>' +
-            '</div>' +
-            '<div class="stars-amber" style="font-size: 11.5px;">' +
-              '<i class="fa-solid fa-star"></i>'.repeat(currentFormRating) +
-            '</div>' +
-          '</div>' +
-          '<p class="review-body-text">"' + msg + '"</p>' +
-        '</div>' +
-        '<div class="review-card-footer">' +
-          '<span style="color: var(--cyan-400); font-weight: 700; font-family: var(--font-mono);"><i class="fa-solid fa-clock"></i> Agora mesmo</span>' +
-          '<button type="button" class="review-like-btn liked" onclick="toggleLike(this, 1)"><i class="fa-solid fa-heart"></i> <span>1</span></button>' +
-        '</div>';
-
-      feed.prepend(newCard);
-      document.getElementById('comment-form').reset();
-      setFormStars(5);
-
-      const alert = document.getElementById('comment-feedback-alert');
-      alert.style.display = 'block';
-      setTimeout(() => { alert.style.display = 'none'; }, 6000);
-    }
-
-    // ==========================================
-    // NOTIFICAÇÕES LIVE TOAST (PROVA SOCIAL DINÂMICA)
-    // ==========================================
-    const LIVE_EVENTS = [
-      '<strong>Marcos S. (Campinas, SP)</strong> acabou de sacar <strong>R$ 435,00</strong> no Pix!',
-      '<strong>Vanessa T. (Curitiba, PR)</strong> atingiu <strong>Supervisor Prata (+R$ 100 no Pix)</strong>!',
-      '<strong>Lucas P. (Belo Horizonte, MG)</strong> ativou cota do <strong>BYD Dolphin (R$ 30)</strong>!',
-      '<strong>Rodrigo K. (Porto Alegre, RS)</strong> atingiu <strong>Gestor Ouro (+R$ 300 Pix + Saque Diário)</strong>!',
-      '<strong>Felipe B. (Rio de Janeiro, RJ)</strong> atingiu <strong>Diretor Rubi (+R$ 1.000 no Pix)</strong>!',
-      '<strong>Mariana F. (Fortaleza, CE)</strong> bateu <strong>Embaixador Diamante (+R$ 3.000 no Pix)</strong>!',
-      '<strong>Gabriel R. (São Paulo, SP)</strong> recebeu comissão de <strong>R$ 150,00</strong> no Nível 1!'
+    // Live Toast Simulation
+    const TOAST_MESSAGES = [
+      'Marcos S. (Campinas) acabou de sacar R$ 435,00 no Pix!',
+      'Vanessa T. (Curitiba) atingiu Supervisor Prata (+R$ 100 Pix)!',
+      'Lucas P. (Belo Horizonte) ativou cota BYD Dolphin (R$ 30)!',
+      'Rodrigo K. (Porto Alegre) atingiu Gestor Ouro (+R$ 300 Pix)!',
+      'Felipe B. (Rio de Janeiro) atingiu Diretor Rubi (+R$ 1.000 Pix)!',
+      'Mariana F. (Fortaleza) atingiu Embaixador Diamante (+R$ 3.000 Pix)!'
     ];
+    let toastIdx = 0;
 
-    let toastIndex = 0;
-    function triggerLiveToast() {
-      const toast = document.getElementById('live-social-toast');
-      const content = document.getElementById('live-toast-content');
-      if (!toast || !content) return;
-
-      content.innerHTML = LIVE_EVENTS[toastIndex % LIVE_EVENTS.length];
-      toastIndex++;
-
+    function showToast() {
+      const toast = document.getElementById('live-toast');
+      const text = document.getElementById('toast-text');
+      if (!toast || !text) return;
+      text.textContent = TOAST_MESSAGES[toastIdx % TOAST_MESSAGES.length];
+      toastIdx++;
       toast.classList.add('show');
-      setTimeout(() => {
-        toast.classList.remove('show');
-      }, 4500);
+      setTimeout(() => toast.classList.remove('show'), 4000);
     }
 
-    // Inicia toasts periódicos
     setTimeout(() => {
-      triggerLiveToast();
-      setInterval(triggerLiveToast, 12000);
-    }, 4000);
+      showToast();
+      setInterval(showToast, 11000);
+    }, 3000);
 
-    // Inicializa Simulador
-    updateCascataSimulation();
+    // Initial Sim
+    updateSim();
   </script>
 </body>
 </html>

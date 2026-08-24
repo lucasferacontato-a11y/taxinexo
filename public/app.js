@@ -498,7 +498,7 @@ function renderTeamData() {
 }
 
 function getAffiliateLink() {
-  const code = (appState.user && appState.user.inviteCode) ? appState.user.inviteCode : 'NEXO8843';
+  const code = (appState.user && appState.user.inviteCode) ? appState.user.inviteCode : (appState.user && appState.user.id ? `NEXO${appState.user.id.replace('usr_', '')}` : 'NEXO');
   const origin = window.location.origin;
   const path = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1);
   return `${origin}${path}login.html?ref=${code}`;
@@ -508,7 +508,7 @@ function renderReferralCard() {
   const container = document.getElementById('referral-box-container');
   if (!container) return;
 
-  const code = (appState.user && appState.user.inviteCode) ? appState.user.inviteCode : 'NEXO8843';
+  const code = (appState.user && appState.user.inviteCode) ? appState.user.inviteCode : (appState.user && appState.user.id ? `NEXO${appState.user.id.replace('usr_', '')}` : 'NEXO');
   const fullLink = getAffiliateLink();
 
   // ESTADO LIBERADO: Link de afiliado sempre acessível para todos os operadores

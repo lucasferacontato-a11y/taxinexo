@@ -90,6 +90,40 @@
       text-rendering: optimizeLegibility;
     }
 
+    /* Custom Selection & Themed Scrollbars */
+    ::selection {
+      background: rgba(0, 240, 255, 0.28);
+      color: #ffffff;
+    }
+    ::-moz-selection {
+      background: rgba(0, 240, 255, 0.28);
+      color: #ffffff;
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #07090e;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.16);
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(0, 240, 255, 0.45);
+    }
+
+    :focus-visible {
+      outline: 2px solid var(--cyan-400);
+      outline-offset: 3px;
+    }
+
+    .num-tabular, .stat-value, .career-cash-prize, .sim-badge-val, .fleet-card-price, .fleet-daily-income {
+      font-variant-numeric: tabular-nums;
+    }
+
     body {
       background-color: var(--bg-canvas);
       color: var(--text-primary);
@@ -199,7 +233,7 @@
       justify-content: center;
       color: var(--text-inverse);
       font-size: 16px;
-      box-shadow: 0 0 20px var(--cyan-glow), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+      box-shadow: 0 8px 24px -4px rgba(0, 240, 255, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.6);
       border: 1px solid rgba(255, 255, 255, 0.4);
       flex-shrink: 0;
     }
@@ -253,7 +287,7 @@
       background: var(--telegram-gradient);
       color: #fff;
       border-color: transparent;
-      box-shadow: 0 0 25px rgba(56, 189, 248, 0.5);
+      box-shadow: 0 8px 24px -4px rgba(56, 189, 248, 0.3);
       transform: translateY(-2px);
     }
 
@@ -282,7 +316,7 @@
       font-family: var(--font-mono);
       letter-spacing: 0.5px;
       margin-bottom: 20px;
-      box-shadow: 0 0 25px rgba(0, 240, 255, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+      box-shadow: 0 10px 28px -4px rgba(0, 240, 255, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.15);
       backdrop-filter: blur(16px);
       max-width: 100%;
     }
@@ -651,7 +685,7 @@
       height: 24px;
       border-radius: 50%;
       background: var(--cyan-500);
-      box-shadow: 0 0 18px var(--cyan-glow);
+      box-shadow: 0 8px 24px -4px rgba(0, 240, 255, 0.35);
       border: 2px solid #030712;
       cursor: pointer;
       transition: transform 0.2s;
@@ -704,7 +738,7 @@
       background: rgba(0, 240, 255, 0.15);
       border-color: var(--cyan-500);
       color: var(--cyan-400);
-      box-shadow: 0 0 20px rgba(0, 240, 255, 0.25);
+      box-shadow: 0 10px 28px -4px rgba(0, 240, 255, 0.3);
     }
     .plan-pill-btn.active span.price {
       color: var(--cyan-400);
@@ -891,9 +925,9 @@
       letter-spacing: 0.3px;
       backdrop-filter: blur(8px);
     }
-    .badge-tier-entry { background: var(--gold-gradient); color: #000; box-shadow: 0 0 15px rgba(245, 158, 11, 0.5); }
+    .badge-tier-entry { background: var(--gold-gradient); color: #000; box-shadow: 0 8px 24px -4px rgba(245, 158, 11, 0.3); }
     .badge-tier-popular { background: linear-gradient(135deg, #ef4444, #dc2626); color: #fff; box-shadow: 0 0 15px rgba(239, 68, 68, 0.5); }
-    .badge-tier-cyan { background: var(--cyan-gradient); color: #000; box-shadow: 0 0 15px var(--cyan-glow); }
+    .badge-tier-cyan { background: var(--cyan-gradient); color: #000; box-shadow: 0 8px 24px -4px rgba(0, 240, 255, 0.35); }
     .badge-tier-vip { background: var(--gold-gradient); color: #000; box-shadow: 0 0 20px var(--amber-glow); }
 
     .fleet-card-body {
@@ -987,7 +1021,7 @@
     .career-fintech-card.tier-diamond {
       border-color: var(--border-cyan);
       background: linear-gradient(165deg, rgba(14, 165, 233, 0.12) 0%, rgba(15, 23, 42, 0.95) 100%);
-      box-shadow: 0 0 35px rgba(56, 189, 248, 0.25);
+      box-shadow: 0 8px 24px -4px rgba(56, 189, 248, 0.3);
     }
 
     .career-icon-emblem {
@@ -1103,7 +1137,7 @@
       background: rgba(0, 240, 255, 0.15);
       border-color: var(--cyan-500);
       color: var(--cyan-400);
-      box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
+      box-shadow: 0 10px 28px -4px rgba(0, 240, 255, 0.3);
     }
 
     .reviews-feed-grid {
@@ -1162,7 +1196,7 @@
       font-size: 14.5px;
       font-family: var(--font-heading);
       flex-shrink: 0;
-      box-shadow: 0 0 12px rgba(0,240,255,0.3);
+      box-shadow: 0 10px 28px -4px rgba(0, 240, 255, 0.3);
     }
     .reviewer-name-tag {
       font-size: 14.5px;
@@ -1367,7 +1401,7 @@
       padding: 40px 20px;
       text-align: center;
       margin-bottom: 60px;
-      box-shadow: 0 0 60px rgba(0, 240, 255, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+      box-shadow: 0 10px 28px -4px rgba(0, 240, 255, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.15);
       position: relative;
       overflow: hidden;
     }
@@ -1856,7 +1890,7 @@
         </div>
 
         <!-- 6. Black Diamond -->
-        <div class="career-fintech-card tier-diamond" style="border-color: rgba(250, 219, 95, 0.6); box-shadow: 0 0 25px rgba(250, 219, 95, 0.2);">
+        <div class="career-fintech-card tier-diamond" style="border-color: rgba(250, 219, 95, 0.6); box-shadow: 0 12px 32px -4px rgba(245, 158, 11, 0.25);">
           <div class="career-icon-emblem">⚡</div>
           <div class="career-rank-name" style="color: var(--accent-gold);">Sócio Black Diamond</div>
           <div class="career-rank-rule">500 membros na equipe</div>
@@ -2810,11 +2844,12 @@
     // ==========================================
     const LIVE_EVENTS = [
       '<strong>Marcos S. (Campinas, SP)</strong> acabou de sacar <strong>R$ 435,00</strong> no Pix!',
-      '<strong>Vanessa T. (Curitiba, PR)</strong> bateu a meta de <strong>Líder Prata (+R$ 100)</strong>!',
+      '<strong>Vanessa T. (Curitiba, PR)</strong> atingiu <strong>Supervisor Prata (+R$ 100 no Pix)</strong>!',
       '<strong>Lucas P. (Belo Horizonte, MG)</strong> ativou cota do <strong>BYD Dolphin (R$ 30)</strong>!',
-      '<strong>Gabriel R. (São Paulo, SP)</strong> recebeu comissão de <strong>R$ 150,00</strong> no Nível 1!',
-      '<strong>Mariana F. (Fortaleza, CE)</strong> bateu <strong>Embaixador Diamante (+R$ 1.500 no Pix)</strong>!',
-      '<strong>Thiago M. (Goiânia, GO)</strong> acabou de sacar <strong>R$ 1.620,00</strong> no Pix!'
+      '<strong>Rodrigo K. (Porto Alegre, RS)</strong> atingiu <strong>Gestor Ouro (+R$ 300 Pix + Saque Diário)</strong>!',
+      '<strong>Felipe B. (Rio de Janeiro, RJ)</strong> atingiu <strong>Diretor Rubi (+R$ 1.000 no Pix)</strong>!',
+      '<strong>Mariana F. (Fortaleza, CE)</strong> bateu <strong>Embaixador Diamante (+R$ 3.000 no Pix)</strong>!',
+      '<strong>Gabriel R. (São Paulo, SP)</strong> recebeu comissão de <strong>R$ 150,00</strong> no Nível 1!'
     ];
 
     let toastIndex = 0;

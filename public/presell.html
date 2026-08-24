@@ -1242,6 +1242,94 @@
       cursor: pointer;
       margin-bottom: 8px;
     }
+
+    /* ==========================================================================
+       VIDEO SHOWCASE BENTO (NAJAF FRAMER STYLE)
+       ========================================================================== */
+    .video-bento-container {
+      background: var(--bg-card);
+      border: 1px solid var(--border-lime-subtle);
+      border-radius: 28px;
+      padding: 20px;
+      backdrop-filter: blur(18px);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 40px -15px rgba(156, 243, 91, 0.2);
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    @media (min-width: 768px) {
+      .video-bento-container {
+        padding: 32px;
+      }
+    }
+    .video-player-frame {
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid var(--border-subtle);
+      background: #000;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+      position: relative;
+    }
+    .video-responsive-wrap {
+      position: relative;
+      padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+      height: 0;
+      overflow: hidden;
+    }
+    .video-responsive-wrap iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+    .video-highlights-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      margin-top: 24px;
+    }
+    @media (min-width: 768px) {
+      .video-highlights-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+      }
+    }
+    .video-highlight-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-inner);
+      padding: 16px;
+    }
+    .vh-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: var(--accent-lime-muted);
+      border: 1px solid var(--border-lime-subtle);
+      color: var(--accent-lime);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      flex-shrink: 0;
+    }
+    .video-highlight-item strong {
+      font-size: 13.5px;
+      font-weight: 800;
+      color: #fff;
+      display: block;
+      margin-bottom: 4px;
+    }
+    .video-highlight-item p {
+      font-size: 11.5px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      margin: 0;
+    }
 </style>
 </head>
 <body>
@@ -1255,6 +1343,7 @@
       </a>
 
       <div class="nav-links">
+        <a href="#video-explicativo" class="nav-link-item">Como Funciona</a>
         <a href="#simulador" class="nav-link-item">Simulador</a>
         <a href="#frotas" class="nav-link-item">Frotas</a>
         <a href="#carreira" class="nav-link-item">Plano de Carreira</a>
@@ -1326,7 +1415,55 @@
     </section>
 
     <!-- 3. SIMULADOR DE GANHOS CASCATA -->
-    <section id="simulador" class="section-wrapper">
+    
+    <!-- 2.5 VÍDEO EXPLICATIVO OFICIAL (NAJAF BENTO SHOWCASE) -->
+    <section id="video-explicativo" class="section-wrapper" style="padding-top: 10px; margin-bottom: 60px;">
+      <div class="section-header-center">
+        <span class="section-pill-tag"><i class="fa-solid fa-play" style="color: var(--accent-lime);"></i> // VÍDEO EXPLICATIVO OFICIAL</span>
+        <h2 class="section-title">Entenda Como Funciona o <span class="highlight-lime">Ecossistema TAXINEXO</span></h2>
+        <p class="section-subtitle">Assista em 2 minutos como as frotas autônomas operam e como você recebe rendimentos diários e comissões no Pix.</p>
+      </div>
+
+      <div class="video-bento-container">
+        <div class="video-player-frame">
+          <div class="video-responsive-wrap">
+            <iframe 
+              src="https://www.youtube-nocookie.com/embed/JPGM6CM-7I8?rel=0&modestbranding=1" 
+              title="Vídeo Explicativo TAXINEXO" 
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+              allowfullscreen>
+            </iframe>
+          </div>
+        </div>
+
+        <div class="video-highlights-grid">
+          <div class="video-highlight-item">
+            <div class="vh-icon"><i class="fa-solid fa-car-side"></i></div>
+            <div>
+              <strong>1. Frotas Autônomas</strong>
+              <p>Robotaxis operando e gerando receita contínua de corridas urbanas.</p>
+            </div>
+          </div>
+
+          <div class="video-highlight-item">
+            <div class="vh-icon"><i class="fa-solid fa-bolt"></i></div>
+            <div>
+              <strong>2. Ativação Imediata</strong>
+              <p>Cotas a partir de R$ 30 com liberação no Pix e rendimento diário.</p>
+            </div>
+          </div>
+
+          <div class="video-highlight-item">
+            <div class="vh-icon"><i class="fa-solid fa-money-bill-transfer"></i></div>
+            <div>
+              <strong>3. Comissões em 3 Níveis</strong>
+              <p>Receba 15%, 10% e 5% de comissão sobre a rede com saque imediato.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+<section id="simulador" class="section-wrapper">
       <div class="section-header-center">
         <span class="section-pill-tag">// CALCULADORA INTELIGENTE</span>
         <h2 class="section-title">Simule Sua Alavancagem Financeira</h2>
@@ -1951,6 +2088,7 @@
   <footer class="footer-section">
     <div class="container">
       <div class="footer-links">
+        <a href="#video-explicativo">Como Funciona</a>
         <a href="#simulador">Simulador</a>
         <a href="#frotas">Frotas</a>
         <a href="#carreira">Carreira</a>

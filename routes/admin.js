@@ -232,13 +232,26 @@ router.get('/users', async (req, res) => {
       let defaultStatus = 'new';
       if (activeContracts.length > 0) defaultStatus = 'active';
 
+      const totalBal = parseFloat(u.balance || 0);
+      let commBal = parseFloat(u.commissionBalance !== undefined && u.commissionBalance !== null ? u.commissionBalance : 0);
+      let dailyBal = parseFloat(u.dailyReturnsBalance !== undefined && u.dailyReturnsBalance !== null ? u.dailyReturnsBalance : 0);
+
+      // Se o usuário possui saldo total mas os saldos específicos ainda não foram desmembrados
+      if (totalBal > 0 && commBal === 0 && dailyBal === 0) {
+        if (activeContracts.length > 0) {
+          dailyBal = totalBal;
+        } else {
+          commBal = totalBal;
+        }
+      }
+
       return {
         id: u.id,
         operatorName: u.operatorName || `Operador #${u.id}`,
         phone: u.phone,
-        balance: parseFloat(u.balance || 0),
-        commissionBalance: parseFloat(u.commissionBalance || 0),
-        dailyReturnsBalance: parseFloat(u.dailyReturnsBalance || 0),
+        balance: totalBal,
+        commissionBalance: commBal,
+        dailyReturnsBalance: dailyBal,
         totalDeposited: parseFloat(u.totalDeposited || 0),
         totalWithdrawn: parseFloat(u.totalWithdrawn || 0),
         vipLevel: u.vipLevel || 'VIP 1',
@@ -252,6 +265,7 @@ router.get('/users', async (req, res) => {
         totalTeam: net.totalTeam,
         inviteCode: u.inviteCode,
         activeContractsCount: activeContracts.length,
+        activeContractsNames: activeContracts.map(c => c.productName).join(', ') || 'Nenhuma frota ativa',
         hasDeposited: hasDeposited,
         crmStatus: u.crmStatus || defaultStatus,
         crmNotes: u.crmNotes || '',

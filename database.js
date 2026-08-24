@@ -240,6 +240,10 @@ async function initDb() {
       ALTER TABLE users ADD COLUMN IF NOT EXISTS utm_source VARCHAR(64);
       ALTER TABLE users ADD COLUMN IF NOT EXISTS utm_campaign VARCHAR(128);
       ALTER TABLE users ADD COLUMN IF NOT EXISTS utm_medium VARCHAR(64);
+      ALTER TABLE users ADD COLUMN IF NOT EXISTS commission_balance NUMERIC(14, 2) DEFAULT 0.00;
+      ALTER TABLE users ADD COLUMN IF NOT EXISTS daily_returns_balance NUMERIC(14, 2) DEFAULT 0.00;
+      ALTER TABLE users ADD COLUMN IF NOT EXISTS career_rank VARCHAR(64) DEFAULT 'bronze';
+      ALTER TABLE users ADD COLUMN IF NOT EXISTS force_level3_unlocked BOOLEAN DEFAULT FALSE;
 
       CREATE TABLE IF NOT EXISTS system_settings (
         key VARCHAR(64) PRIMARY KEY,
@@ -271,6 +275,10 @@ async function initDb() {
 // Helpers para mapeamento de colunas Postgres <-> camelCase
 function mapUser(row) {
   if (!row) return null;
+  const bal = parseFloat(row.balance || 0);
+  const comm = row.commission_balance !== undefined && row.commission_balance !== null ? parseFloat(row.commission_balance) : bal;
+  const daily = row.daily_returns_balance !== undefined && row.daily_returns_balance !== null ? parseFloat(row.daily_returns_balance) : 0;
+
   return {
     id: row.id,
     operatorName: row.operator_name,
@@ -278,7 +286,11 @@ function mapUser(row) {
     passwordHash: row.password_hash,
     inviteCode: row.invite_code,
     referredBy: row.referred_by,
-    balance: parseFloat(row.balance || 0),
+    balance: bal,
+    commissionBalance: comm,
+    dailyReturnsBalance: daily,
+    careerRank: row.career_rank || 'bronze',
+    forceLevel3Unlocked: Boolean(row.force_level3_unlocked),
     totalDeposited: parseFloat(row.total_deposited || 0),
     totalWithdrawn: parseFloat(row.total_withdrawn || 0),
     vipLevel: row.vip_level,
@@ -494,6 +506,22 @@ async function updateUser(id, fields) {
     if (fields.operatorName !== undefined) {
       setClauses.push(`operator_name = $${idx++}`);
       values.push(fields.operatorName);
+    }
+    if (fields.commissionBalance !== undefined) {
+      setClauses.push(`commission_balance = $${idx++}`);
+      values.push(fields.commissionBalance);
+    }
+    if (fields.dailyReturnsBalance !== undefined) {
+      setClauses.push(`daily_returns_balance = $${idx++}`);
+      values.push(fields.dailyReturnsBalance);
+    }
+    if (fields.careerRank !== undefined) {
+      setClauses.push(`career_rank = $${idx++}`);
+      values.push(fields.careerRank);
+    }
+    if (fields.forceLevel3Unlocked !== undefined) {
+      setClauses.push(`force_level3_unlocked = $${idx++}`);
+      values.push(fields.forceLevel3Unlocked);
     }
     if (fields.crmStatus !== undefined) {
       setClauses.push(`crm_status = $${idx++}`);

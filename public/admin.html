@@ -67,7 +67,7 @@
       letter-spacing: -0.03em;
     }
 
-    .admin-container { max-width: 1440px; margin: 0 auto; }
+    .admin-container { max-width: 1460px; margin: 0 auto; }
 
     /* Top Bar */
     .admin-header {
@@ -207,9 +207,9 @@
 
     /* Tables */
     .table-responsive { overflow-x: auto; }
-    .custom-table { width: 100%; border-collapse: collapse; font-size: 12.5px; text-align: left; }
+    .custom-table { width: 100%; border-collapse: collapse; font-size: 12px; text-align: left; }
     .custom-table th {
-      padding: 11px 13px;
+      padding: 11px 12px;
       color: var(--text-muted);
       font-size: 10.5px;
       font-weight: 700;
@@ -219,7 +219,7 @@
       background: rgba(0, 0, 0, 0.25);
     }
     .custom-table td {
-      padding: 13px;
+      padding: 12px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.04);
       color: var(--text-main);
       vertical-align: middle;
@@ -245,7 +245,7 @@
 
     /* Action Buttons in Rows */
     .btn-row-action {
-      padding: 5px 10px;
+      padding: 4px 8px;
       border-radius: 6px;
       font-size: 11px;
       font-weight: 700;
@@ -261,7 +261,7 @@
     .btn-row-approve:hover { background: var(--accent-green); color: #000; box-shadow: 0 0 10px var(--accent-green-glow); }
     .btn-row-reject { background: rgba(239, 68, 68, 0.15); border-color: rgba(239, 68, 68, 0.4); color: #f87171; }
     .btn-row-reject:hover { background: #ef4444; color: #fff; }
-    .btn-whatsapp { background: #25D366; color: #000; font-weight: 700; border-radius: 6px; padding: 5px 10px; font-size: 11px; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; }
+    .btn-whatsapp { background: #25D366; color: #000; font-weight: 700; border-radius: 6px; padding: 4px 8px; font-size: 11px; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; }
     .btn-whatsapp:hover { background: #1ebd5a; }
 
     /* Modal Windows */
@@ -513,7 +513,7 @@
         <div class="panel-head">
           <h2>
             <i class="fa-solid fa-users-gear" style="color: var(--primary);"></i> 
-            Base de Operadores & Controle de Saldos
+            Base de Operadores, Saldos & Frotas Ativas
             <span class="badge-count" id="users-count">0</span>
           </h2>
           <div style="display: flex; gap: 8px; flex-wrap: wrap;">
@@ -538,17 +538,19 @@
             <thead>
               <tr>
                 <th>Operador</th>
-                <th>Telefone / WhatsApp</th>
-                <th>Patente Atual</th>
+                <th>WhatsApp</th>
+                <th>Patente</th>
+                <th>Saldo Total</th>
                 <th>Saldo Livre (Comissão)</th>
                 <th>Saldo Frotas (Diário)</th>
+                <th>Frotas Ativas</th>
                 <th>Trava Nível 3</th>
                 <th>Equipe (N1 / Total)</th>
                 <th style="text-align: right;">Ações de Gestão</th>
               </tr>
             </thead>
             <tbody id="users-table-body">
-              <tr><td colspan="8" style="text-align: center; color: var(--text-muted); padding: 30px;">Carregando operadores...</td></tr>
+              <tr><td colspan="10" style="text-align: center; color: var(--text-muted); padding: 30px;">Carregando operadores...</td></tr>
             </tbody>
           </table>
         </div>
@@ -1168,7 +1170,7 @@
       document.getElementById('users-count').textContent = `${list.length} operadores`;
 
       if (list.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; color: var(--text-muted); padding: 30px;">Nenhum operador encontrado.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="10" style="text-align: center; color: var(--text-muted); padding: 30px;">Nenhum operador encontrado.</td></tr>';
         return;
       }
 
@@ -1182,29 +1184,43 @@
 
         const promoMsg = encodeURIComponent(`Parabéns ${u.operatorName}! Você conquistou a patente ${u.careerRankBadge || 'Bronze'} na TAXINEXO 2.0! Continue crescendo sua equipe! 🚀`);
 
+        const fleetBadge = (u.activeContractsCount && u.activeContractsCount > 0)
+          ? `<span class="chip chip-lime" title="${u.activeContractsNames || 'Frota em operação'}"><i class="fa-solid fa-car"></i> ${u.activeContractsCount} ${u.activeContractsCount === 1 ? 'Frota' : 'Frotas'}</span>`
+          : '<span class="chip chip-cyan" style="opacity: 0.6;">0 Frotas</span>';
+
         return `
           <tr>
             <td>
               <strong style="color: #fff;">${u.operatorName}</strong><br>
-              <small style="color: var(--text-muted);">ID: ${u.id}</small>
+              <small style="color: var(--text-muted); font-family: monospace;">ID: ${u.id}</small>
             </td>
             <td>
-              <span>${u.phone}</span>
-              <a href="https://wa.me/${waNumber}" target="_blank" class="btn-whatsapp" style="margin-left: 6px;"><i class="fa-brands fa-whatsapp"></i> Conversar</a>
+              <span>${u.phone}</span><br>
+              <a href="https://wa.me/${waNumber}" target="_blank" class="btn-whatsapp" style="margin-top: 3px;"><i class="fa-brands fa-whatsapp"></i> Chat</a>
             </td>
             <td>
               <span class="chip chip-lime">${u.careerRankBadge || '🥉 Bronze'}</span>
             </td>
-            <td><strong style="color: var(--accent-lime);">R$ ${(u.commissionBalance || 0).toFixed(2)}</strong></td>
-            <td><strong style="color: #fff;">R$ ${(u.dailyReturnsBalance || 0).toFixed(2)}</strong></td>
+            <td>
+              <strong style="color: #fff; font-size: 13px;">R$ ${(u.balance || 0).toFixed(2)}</strong>
+            </td>
+            <td>
+              <strong style="color: var(--accent-lime); font-size: 13px;">R$ ${(u.commissionBalance || 0).toFixed(2)}</strong>
+            </td>
+            <td>
+              <strong style="color: var(--accent-gold); font-size: 13px;">R$ ${(u.dailyReturnsBalance || 0).toFixed(2)}</strong>
+            </td>
+            <td>
+              ${fleetBadge}<br>
+              <small style="color: var(--text-muted); font-size: 10.5px; display: block; max-width: 140px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${u.activeContractsNames || ''}">${u.activeContractsNames || 'Nenhuma'}</small>
+            </td>
             <td>${n3Btn}</td>
             <td>
-              <span style="font-size: 11.5px; color: var(--text-muted);">N1: <strong style="color: #fff;">${u.totalDirects || 0}</strong> • Total: <strong style="color: var(--primary);">${u.totalTeam || 0}</strong></span>
+              <span style="font-size: 11.5px; color: var(--text-muted);">N1: <strong style="color: #fff;">${u.totalDirects || 0}</strong><br>Total: <strong style="color: var(--primary);">${u.totalTeam || 0}</strong></span>
             </td>
             <td style="text-align: right;">
-              <button class="btn-row-action btn-adm-secondary" style="padding: 4px 8px;" onclick="openAdjustModal('${u.id}', '${u.operatorName}')"><i class="fa-solid fa-coins"></i> Saldo</button>
-              <button class="btn-row-action btn-adm-secondary" style="padding: 4px 8px;" onclick="openPromoteModal('${u.id}', '${u.operatorName}', '${u.careerRankId || 'bronze'}')"><i class="fa-solid fa-crown"></i> Patente</button>
-              <a href="https://wa.me/${waNumber}?text=${promoMsg}" target="_blank" class="btn-row-action btn-whatsapp" title="Parabenizar"><i class="fa-brands fa-whatsapp"></i></a>
+              <button class="btn-row-action btn-adm-secondary" style="padding: 4px 7px; margin-bottom: 2px;" onclick="openAdjustModal('${u.id}', '${u.operatorName}')"><i class="fa-solid fa-coins"></i> Saldo</button><br>
+              <button class="btn-row-action btn-adm-secondary" style="padding: 4px 7px;" onclick="openPromoteModal('${u.id}', '${u.operatorName}', '${u.careerRankId || 'bronze'}')"><i class="fa-solid fa-crown"></i> Patente</button>
             </td>
           </tr>
         `;

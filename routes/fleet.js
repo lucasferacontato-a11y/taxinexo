@@ -10,6 +10,7 @@ const {
   createTransaction
 } = require('../database');
 const { authMiddleware } = require('../middleware/auth');
+const { distributeCareerCommissions } = require('../services/careerEngine');
 
 // Listar Produtos / Veículos Disponíveis
 router.get('/products', async (req, res) => {
@@ -79,42 +80,12 @@ router.post('/hire', authMiddleware, async (req, res) => {
       createdAt: new Date().toISOString()
     });
 
-    // Comissão Multinível (Se o usuário foi indicado por alguém)
-    if (user.referredBy) {
-      const level1User = await findUserById(user.referredBy);
-      if (level1User) {
-        const comm1 = product.price * 0.10; // 10%
-        await updateUser(level1User.id, { balance: level1User.balance + comm1 });
-
-        await createTransaction({
-          id: `COMM-${Date.now()}-L1`,
-          userId: level1User.id,
-          type: 'commission',
-          amount: comm1,
-          status: 'approved',
-          description: `Comissão Nível 1 (${user.operatorName}) - ${product.name}`,
-          createdAt: new Date().toISOString()
-        });
-
-        if (level1User.referredBy) {
-          const level2User = await findUserById(level1User.referredBy);
-          if (level2User) {
-            const comm2 = product.price * 0.05; // 5%
-            await updateUser(level2User.id, { balance: level2User.balance + comm2 });
-
-            await createTransaction({
-              id: `COMM-${Date.now()}-L2`,
-              userId: level2User.id,
-              type: 'commission',
-              amount: comm2,
-              status: 'approved',
-              description: `Comissão Nível 2 - ${product.name}`,
-              createdAt: new Date().toISOString()
-            });
-          }
-        }
-      }
-    }
+    // Comissão Multinível com Plano de Carreira e Desbloqueio Progressivo de 5 Níveis
+    await distributeCareerCommissions({
+      buyerUser: user,
+      amount: product.price,
+      productName: product.name
+    });
 
     res.status(201).json({
       message: 'Contrato ativado com sucesso!',

@@ -173,6 +173,9 @@ async function loadUserData() {
     appState.balance = wallet.balance || 0.00;
     appState.dailyIncome = wallet.dailyIncome || 0.00;
     appState.totalIncome = wallet.totalIncome || 0.00;
+    appState.commissionBalance = wallet.commissionBalance || 0.00;
+    appState.dailyReturnsBalance = wallet.dailyReturnsBalance || 0.00;
+    appState.isLevel3 = wallet.isLevel3 || false;
 
     const balEl = document.getElementById('user-balance');
     if (balEl && appState.balanceVisible) balEl.textContent = formatCurrency(appState.balance);
@@ -404,30 +407,90 @@ function renderActiveVehicles() {
 function renderTeamData() {
   const metricsContainer = document.getElementById('team-metrics-container');
   const levelsContainer = document.getElementById('team-levels-container');
+  const careerContainer = document.getElementById('career-progress-container');
   if (!metricsContainer || !levelsContainer) return;
 
+  const team = appState.team || { totalMembers: 0, activeMembers: 0, totalCommission: 0, levels: [] };
+  const career = team.career || {
+    currentRank: { name: 'Operador Bronze', icon: '🥉', badge: '🥉 Bronze' },
+    nextRank: { name: 'Supervisor Prata', icon: '🥈', bonus: 100 },
+    progressPercent: 0,
+    remainingDirects: 5,
+    remainingTotal: 5
+  };
+
+  // 1. Renderiza Card de Status do Plano de Carreira
+  if (careerContainer) {
+    careerContainer.innerHTML = `
+      <div style="background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 41, 59, 0.8) 100%); border: 1px solid var(--border-bright); border-radius: var(--radius-lg); padding: 18px 16px; box-shadow: 0 4px 20px rgba(0, 240, 255, 0.08);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <div style="font-size: 28px;">${career.currentRank.icon || '🥉'}</div>
+            <div>
+              <span style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px;">Sua Patente Atual</span>
+              <h4 style="color: #fff; font-size: 16px; font-weight: 800; margin-top: 2px;">${career.currentRank.name}</h4>
+            </div>
+          </div>
+          ${career.nextRank ? `
+            <div style="text-align: right;">
+              <span style="font-size: 10px; color: var(--accent-gold); font-weight: 700; background: rgba(245, 158, 11, 0.15); padding: 3px 8px; border-radius: 12px;">
+                Próximo: ${career.nextRank.icon} ${career.nextRank.name}
+              </span>
+              ${career.nextRank.bonus > 0 ? `<div style="font-size: 11px; color: var(--accent-green); font-weight: 700; margin-top: 4px;">+ R$ ${formatCurrency(career.nextRank.bonus)} Pix</div>` : ''}
+            </div>
+          ` : '<span style="font-size: 11px; color: var(--accent-gold); font-weight: 800;">🏆 Nível Máximo</span>'}
+        </div>
+
+        ${career.nextRank ? `
+          <div style="margin-top: 10px;">
+            <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-muted); margin-bottom: 6px;">
+              <span>Progresso para ${career.nextRank.name}</span>
+              <strong style="color: var(--primary);">${career.progressPercent}%</strong>
+            </div>
+            <div class="progress-bar" style="height: 8px; background: rgba(255,255,255,0.08); border-radius: 10px; overflow: hidden;">
+              <div class="progress-fill" style="width: ${career.progressPercent}%; height: 100%; background: var(--cyan-gradient); border-radius: 10px; transition: width 0.6s ease;"></div>
+            </div>
+            <div style="font-size: 11px; color: var(--text-muted); margin-top: 8px; display: flex; justify-content: space-between;">
+              <span>${career.remainingDirects > 0 ? `Faltam <strong>${career.remainingDirects}</strong> indicados diretos` : 'Diretos concluídos ✅'}</span>
+              <span>${career.remainingTotal > 0 ? `Faltam <strong>${career.remainingTotal}</strong> na equipe` : ''}</span>
+            </div>
+          </div>
+        ` : ''}
+      </div>
+    `;
+  }
+
+  // 2. Renderiza Métricas Gerais
   metricsContainer.innerHTML = `
     <div class="metric-box">
-      <span class="num">${appState.team.totalMembers}</span>
+      <span class="num">${team.totalMembers || 0}</span>
       <span class="desc">Membros Totais</span>
     </div>
     <div class="metric-box">
-      <span class="num">${appState.team.activeMembers}</span>
-      <span class="desc">Membros Ativos</span>
+      <span class="num">${team.directsCount !== undefined ? team.directsCount : (team.activeMembers || 0)}</span>
+      <span class="desc">Indicados Diretos</span>
     </div>
     <div class="metric-box">
-      <span class="num" style="color: var(--accent-green);">R$ ${formatCurrency(appState.team.totalCommission)}</span>
+      <span class="num" style="color: var(--accent-green);">R$ ${formatCurrency(team.totalCommission)}</span>
       <span class="desc">Comissão Total</span>
     </div>
   `;
 
-  levelsContainer.innerHTML = appState.team.levels.map(lvl => `
-    <div class="level-card">
-      <div class="lvl-header">
-        <span><i class="fa-solid ${lvl.icon}"></i> ${lvl.name}</span>
-        <strong style="color: var(--primary);">${lvl.percent}%</strong>
+  // 3. Renderiza os 5 Níveis com Desbloqueio Progressivo
+  levelsContainer.innerHTML = (team.levels || []).map(lvl => `
+    <div class="level-card" style="border-left: 3px solid ${lvl.unlocked ? 'var(--accent-green)' : 'rgba(255,255,255,0.15)'}; background: ${lvl.unlocked ? 'rgba(0, 240, 255, 0.03)' : 'rgba(255,255,255,0.01)'}; margin-bottom: 10px;">
+      <div class="lvl-header" style="display: flex; justify-content: space-between; align-items: center;">
+        <span style="font-weight: 700; color: #fff; font-size: 13.5px;"><i class="fa-solid ${lvl.icon}"></i> ${lvl.name}</span>
+        ${lvl.unlocked 
+          ? `<span style="font-size: 11px; background: rgba(0, 255, 136, 0.15); color: var(--accent-green); padding: 3px 8px; border-radius: 12px; font-weight: 800;"><i class="fa-solid fa-lock-open"></i> ${lvl.percent}% Liberado</span>`
+          : `<span style="font-size: 10.5px; background: rgba(245, 158, 11, 0.15); color: var(--accent-gold); padding: 3px 8px; border-radius: 12px; font-weight: 700;"><i class="fa-solid fa-lock"></i> ${lvl.percent}% Bloqueado</span>`
+        }
       </div>
-      <p>${lvl.members} membros ativos • R$ ${formatCurrency(lvl.generated)} gerados</p>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 6px; font-size: 12px; color: var(--text-muted);">
+        <span>${lvl.members} membros ativos</span>
+        <strong style="color: var(--accent-green);">+ R$ ${formatCurrency(lvl.generated)} ganhos</strong>
+      </div>
+      ${!lvl.unlocked ? `<div style="font-size: 10.5px; color: var(--text-tertiary); margin-top: 4px;"><i class="fa-solid fa-circle-info"></i> ${lvl.unlockRequirement}</div>` : ''}
     </div>
   `).join('');
 
@@ -445,57 +508,38 @@ function renderReferralCard() {
   const container = document.getElementById('referral-box-container');
   if (!container) return;
 
-  const hasActiveContract = appState.activeVehicles && appState.activeVehicles.length > 0;
   const code = (appState.user && appState.user.inviteCode) ? appState.user.inviteCode : 'NEXO8843';
   const fullLink = getAffiliateLink();
 
-  if (!hasActiveContract) {
-    // ESTADO BLOQUEADO: Usuário ainda não ativou nenhum contrato
-    container.innerHTML = `
-      <div class="referral-box locked-affiliate" style="text-align: center; border: 1px dashed rgba(250, 219, 95, 0.4); background: rgba(250, 219, 95, 0.05); padding: 24px 18px; border-radius: var(--radius-md);">
-        <div style="width: 48px; height: 48px; border-radius: 50%; background: rgba(250, 219, 95, 0.15); display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; color: var(--accent-gold); font-size: 22px;">
-          <i class="fa-solid fa-lock"></i>
-        </div>
-        <h4 style="color: #fff; font-size: 16px; margin-bottom: 6px; font-weight: 700;">Código de Afiliado Bloqueado</h4>
-        <p style="font-size: 13px; color: var(--text-muted); line-height: 1.5; margin-bottom: 16px; max-width: 340px; margin-left: auto; margin-right: auto;">
-          Para liberar seu link de indicação e receber até <strong>10% de comissão diária</strong> em 3 níveis, ative sua primeira frota autônoma.
-        </p>
-        <button class="btn btn-primary" onclick="switchTab('products')" style="padding: 10px 22px; font-size: 13px; font-weight: 700; display: inline-flex; align-items: center; gap: 8px;">
-          <i class="fa-solid fa-bolt"></i> Ativar Minha Primeira Frota
+  // ESTADO LIBERADO: Link de afiliado sempre acessível para todos os operadores
+  container.innerHTML = `
+    <div class="referral-box unlocked-affiliate" style="border: 1px solid var(--border-bright); background: rgba(0, 240, 255, 0.04); padding: 20px 16px; border-radius: var(--radius-md);">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+        <span class="ref-title" style="color: var(--primary); font-weight: 700; font-size: 13px;">
+          <i class="fa-solid fa-circle-check" style="color: var(--accent-green);"></i> Seu Link de Afiliado Oficial
+        </span>
+        <span style="font-size: 11px; background: rgba(0, 255, 136, 0.15); color: var(--accent-green); padding: 3px 8px; border-radius: 12px; font-weight: 700;">Ativo</span>
+      </div>
+      
+      <div class="copy-field" style="margin-bottom: 10px;">
+        <input type="text" id="invite-code" value="${fullLink}" readonly aria-label="Link de convite" style="font-size: 12px; font-family: monospace;">
+        <button class="btn-copy" id="btn-copy" onclick="copyInviteCode()" aria-label="Copiar link direto" style="min-width: 95px;">
+          <i class="fa-regular fa-copy"></i> <span id="copy-text">Copiar Link</span>
         </button>
       </div>
-    `;
-  } else {
-    // ESTADO LIBERADO: Usuário possui contrato ativo
-    container.innerHTML = `
-      <div class="referral-box unlocked-affiliate" style="border: 1px solid var(--border-bright); background: rgba(0, 240, 255, 0.04); padding: 20px 16px; border-radius: var(--radius-md);">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-          <span class="ref-title" style="color: var(--primary); font-weight: 700; font-size: 13px;">
-            <i class="fa-solid fa-circle-check" style="color: var(--accent-green);"></i> Seu Link de Afiliado Oficial
-          </span>
-          <span style="font-size: 11px; background: rgba(0, 255, 136, 0.15); color: var(--accent-green); padding: 3px 8px; border-radius: 12px; font-weight: 700;">Liberado</span>
-        </div>
-        
-        <div class="copy-field" style="margin-bottom: 10px;">
-          <input type="text" id="invite-code" value="${fullLink}" readonly aria-label="Link de convite" style="font-size: 12px; font-family: monospace;">
-          <button class="btn-copy" id="btn-copy" onclick="copyInviteCode()" aria-label="Copiar link direto" style="min-width: 95px;">
-            <i class="fa-regular fa-copy"></i> <span id="copy-text">Copiar Link</span>
-          </button>
-        </div>
 
-        <div style="display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--text-muted); flex-wrap: wrap; gap: 6px;">
-          <span>Código: <strong style="color: #fff; font-family: monospace;">${code}</strong></span>
-          <a href="https://api.whatsapp.com/send?text=${encodeURIComponent('🚀 Acesse o TAXINEXO comigo e receba rendimentos diários com frotas de táxis autônomos! Cadastre-se pelo meu link oficial: ' + fullLink)}" target="_blank" style="color: var(--accent-green); text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 4px;">
-            <i class="fa-brands fa-whatsapp" style="font-size: 15px;"></i> Compartilhar no WhatsApp
-          </a>
-        </div>
-        
-        <div class="copy-feedback" id="copy-feedback" style="display: none; color: var(--accent-green); font-size: 11px; margin-top: 8px; text-align: center;">
-          <i class="fa-solid fa-check"></i> Link direto com seu código de convite copiado com sucesso!
-        </div>
+      <div style="display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--text-muted); flex-wrap: wrap; gap: 6px;">
+        <span>Código: <strong style="color: #fff; font-family: monospace;">${code}</strong></span>
+        <a href="https://api.whatsapp.com/send?text=${encodeURIComponent('🚀 Acesse o TAXINEXO comigo e receba rendimentos diários com frotas de táxis autônomos! Cadastre-se pelo meu link oficial: ' + fullLink)}" target="_blank" style="color: var(--accent-green); text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 4px;">
+          <i class="fa-brands fa-whatsapp" style="font-size: 15px;"></i> Compartilhar no WhatsApp
+        </a>
       </div>
-    `;
-  }
+      
+      <div class="copy-feedback" id="copy-feedback" style="display: none; color: var(--accent-green); font-size: 11px; margin-top: 8px; text-align: center;">
+        <i class="fa-solid fa-check"></i> Link direto com seu código de convite copiado com sucesso!
+      </div>
+    </div>
+  `;
 }
 
 function copyInviteCode() {
@@ -632,9 +676,15 @@ function openModal(modalId) {
     if (withdrawAvail) withdrawAvail.textContent = `R$ ${formatCurrency(appState.balance)}`;
 
     const warnEl = document.getElementById('withdraw-cota-warning');
-    const hasContract = appState.activeVehicles && appState.activeVehicles.length > 0;
     if (warnEl) {
-      warnEl.style.display = hasContract ? 'none' : 'block';
+      if (appState.commissionBalance >= 30 || appState.isLevel3) {
+        warnEl.style.display = 'none';
+      } else if (appState.commissionBalance > 0) {
+        warnEl.style.display = 'block';
+        warnEl.innerHTML = `<i class="fa-solid fa-circle-check" style="color: var(--accent-green);"></i> <strong>Saldo de Indicação Livre:</strong> R$ ${formatCurrency(appState.commissionBalance)} (Mínimo R$ 30,00 para saque). Rendimentos de frotas liberam no Nível 3.`;
+      } else {
+        warnEl.style.display = 'none';
+      }
     }
   } else if (modalId === 'modal-deposit') {
     renderDepositPlans();
@@ -727,13 +777,17 @@ async function processWithdraw() {
     const balanceEl = document.getElementById('user-balance');
     if (balanceEl && appState.balanceVisible) balanceEl.textContent = formatCurrency(appState.balance);
     alert(`🚀 Saque de R$ ${formatCurrency(amount)} solicitado com sucesso!`);
+    closeModal('modal-withdraw');
   } else if (res && res.error) {
-    alert(`Erro no saque: ${res.error}`);
+    alert(res.error);
+    if (res.requiresLevel3) {
+      closeModal('modal-withdraw');
+      switchTab('team');
+    }
   }
 
   btn.innerHTML = 'Confirmar Saque';
   btn.disabled = false;
-  closeModal('modal-withdraw');
 }
 
 async function claimCheckin() {

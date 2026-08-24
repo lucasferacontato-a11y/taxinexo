@@ -4,6 +4,7 @@ const {
   findUserById,
   findUserByPhone,
   findUserByInviteCode,
+  getAllUsers,
   updateUser,
   getContractsByUserId,
   getTransactionsByUserId,
@@ -17,6 +18,7 @@ const {
 const { authMiddleware } = require('../middleware/auth');
 const { createCartpandaPix } = require('../services/cartpanda');
 const { notifyAdminWithdrawal, notifyAdminDeposit } = require('../services/telegramBot');
+const { distributeCareerCommissions } = require('../services/careerEngine');
 
 // Resumo da Carteira
 router.get('/summary', authMiddleware, async (req, res) => {
@@ -32,10 +34,35 @@ router.get('/summary', authMiddleware, async (req, res) => {
       .filter(t => t.type === 'income')
       .reduce((acc, t) => acc + t.amount, 0);
 
+    const totalCommissionsEarned = transactions
+      .filter(t => t.type === 'commission')
+      .reduce((acc, t) => acc + t.amount, 0);
+
+    const previousWithdrawals = transactions
+      .filter(t => t.type === 'withdraw' && t.status !== 'rejected')
+      .reduce((acc, t) => acc + Math.abs(t.amount), 0);
+
+    const currentBalance = user ? user.balance : 0;
+    const availableCommissionBalance = Math.max(0, Math.min(currentBalance, totalCommissionsEarned - previousWithdrawals));
+    const dailyReturnsBalance = Math.max(0, currentBalance - availableCommissionBalance);
+
+    const allUsers = await getAllUsers();
+    const l1Users = allUsers.filter(u => u.referredBy === req.user.id);
+    const l1Ids = l1Users.map(u => u.id);
+    const l2Users = allUsers.filter(u => l1Ids.includes(u.referredBy));
+    const l2Ids = l2Users.map(u => u.id);
+    const l3Users = allUsers.filter(u => l2Ids.includes(u.referredBy));
+    const isLevel3 = l3Users.length > 0;
+
     res.json({
-      balance: user ? user.balance : 0,
+      balance: currentBalance,
       dailyIncome: dailyIncome,
       totalIncome: totalIncome,
+      commissionBalance: availableCommissionBalance,
+      dailyReturnsBalance: dailyReturnsBalance,
+      totalCommissionsEarned: totalCommissionsEarned,
+      isLevel3: isLevel3,
+      canWithdrawCommission: availableCommissionBalance >= 30,
       activeContractsCount: myContracts.length
     });
   } catch (err) {
@@ -242,42 +269,12 @@ router.post('/webhook/cartpanda', async (req, res) => {
       autoHired = true;
       hiredProductName = matchedProduct.name;
 
-      // 9. Comissões Multinível para a Rede
-      if (user.referredBy) {
-        const level1User = await findUserById(user.referredBy);
-        if (level1User) {
-          const comm1 = matchedProduct.price * 0.10; // 10%
-          await updateUser(level1User.id, { balance: level1User.balance + comm1 });
-
-          await createTransaction({
-            id: `COMM-${Date.now()}-L1`,
-            userId: level1User.id,
-            type: 'commission',
-            amount: comm1,
-            status: 'approved',
-            description: `Comissão Nível 1 (${user.operatorName}) - ${matchedProduct.name}`,
-            createdAt: now
-          });
-
-          if (level1User.referredBy) {
-            const level2User = await findUserById(level1User.referredBy);
-            if (level2User) {
-              const comm2 = matchedProduct.price * 0.05; // 5%
-              await updateUser(level2User.id, { balance: level2User.balance + comm2 });
-
-              await createTransaction({
-                id: `COMM-${Date.now()}-L2`,
-                userId: level2User.id,
-                type: 'commission',
-                amount: comm2,
-                status: 'approved',
-                description: `Comissão Nível 2 - ${matchedProduct.name}`,
-                createdAt: now
-              });
-            }
-          }
-        }
-      }
+      // 9. Comissões Multinível com Plano de Carreira e Desbloqueio Progressivo de 5 Níveis
+      await distributeCareerCommissions({
+        buyerUser: user,
+        amount: matchedProduct.price,
+        productName: matchedProduct.name
+      });
     } else {
       // Se não corresponde a uma frota exata, credita no saldo para escolha livre
       await updateUser(user.id, {
@@ -355,16 +352,62 @@ router.post('/withdraw', authMiddleware, async (req, res) => {
       return res.status(400).json({ error: 'Saldo insuficiente para saque.' });
     }
 
-    // TRAVA DE SEGURANÇA: Verificar se o usuário possui cota ativa ou realizou depósito
-    const userContracts = await getContractsByUserId(user.id);
-    const activeContracts = userContracts.filter(c => c.status === 'Em corrida');
-    const totalDeposited = parseFloat(user.totalDeposited || 0);
+    // 1. Cálculo de saldo de indicação (Comissões) vs saldo de rendimentos diários
+    const userTx = await getTransactionsByUserId(user.id);
+    const totalCommissionsEarned = userTx
+      .filter(t => t.type === 'commission')
+      .reduce((acc, t) => acc + t.amount, 0);
 
-    if (totalDeposited < 30 && activeContracts.length === 0) {
-      console.warn(`[SECURITY ALERT] Tentativa de saque bloqueada: Operador ${user.operatorName} (${user.phone}) tentou sacar R$ ${numAmount.toFixed(2)} sem possuir cotas ativas nem depósitos.`);
-      return res.status(403).json({
-        error: 'Para solicitar saques via Pix, você precisa ter pelo menos 1 cota de veículo ativa (a partir de R$ 30,00 da cota de entrada) ou ter realizado recarga inicial.'
-      });
+    const previousWithdrawals = userTx
+      .filter(t => t.type === 'withdraw' && t.status !== 'rejected')
+      .reduce((acc, t) => acc + Math.abs(t.amount), 0);
+
+    const availableCommissionBalance = Math.max(0, Math.min(user.balance, totalCommissionsEarned - previousWithdrawals));
+
+    // Se o valor solicitado estiver 100% coberto pelo saldo de comissão de indicação (>= R$ 30,00)
+    const isFullyCoveredByCommission = (numAmount <= availableCommissionBalance);
+
+    if (!isFullyCoveredByCommission) {
+      // O valor solicitado necessita de saldo de rendimentos diários de frotas
+
+      // 2. Trava de cota ativa para saque de rendimentos diários
+      const userContracts = await getContractsByUserId(user.id);
+      const activeContracts = userContracts.filter(c => c.status === 'Em corrida');
+      const totalDeposited = parseFloat(user.totalDeposited || 0);
+
+      if (totalDeposited < 30 && activeContracts.length === 0) {
+        return res.status(403).json({
+          error: 'Para solicitar saques de rendimentos de frotas via Pix, você precisa ter pelo menos 1 cota de veículo ativa (a partir de R$ 30,00) ou ter realizado recarga inicial.'
+        });
+      }
+
+      // 3. BARREIRA OCULTA: Rendimentos diários requerem Nível 3 ativo
+      const allUsers = await getAllUsers();
+      const l1Users = allUsers.filter(u => u.referredBy === user.id);
+      const l1Ids = l1Users.map(u => u.id);
+      const l2Users = allUsers.filter(u => l1Ids.includes(u.referredBy));
+      const l2Ids = l2Users.map(u => u.id);
+      const l3Users = allUsers.filter(u => l2Ids.includes(u.referredBy));
+
+      if (l3Users.length === 0) {
+        console.warn(`[HIDDEN BARRIER] Saque retido para ${user.operatorName}. Saldo comissão: R$ ${availableCommissionBalance.toFixed(2)}, Solicitado: R$ ${numAmount.toFixed(2)}.`);
+
+        if (availableCommissionBalance >= 30) {
+          return res.status(403).json({
+            error: `Você possui R$ ${availableCommissionBalance.toFixed(2)} liberados para saque imediato de comissões de indicação! O valor adicional de R$ ${(numAmount - availableCommissionBalance).toFixed(2)} referente a rendimentos diários de frotas requer qualificação de Nível 3. Solicite até R$ ${availableCommissionBalance.toFixed(2)} agora ou compartilhe seu link de equipe para desbloquear o valor total!`,
+            requiresLevel3: true,
+            availableCommission: availableCommissionBalance,
+            l3Count: 0
+          });
+        } else {
+          return res.status(403).json({
+            error: `Liberação de Liquidação Diária: O saque dos seus rendimentos diários de frotas requer que sua conta atinja a qualificação de Nível 3 ativa na sua rede (membros até o 3º nível da equipe). Saldo de indicação livre: R$ ${availableCommissionBalance.toFixed(2)} (mínimo R$ 30,00). Acesse a aba "Equipe" e compartilhe seu link oficial para desbloquear seus saques!`,
+            requiresLevel3: true,
+            availableCommission: availableCommissionBalance,
+            l3Count: 0
+          });
+        }
+      }
     }
 
     const newBalance = user.balance - numAmount;

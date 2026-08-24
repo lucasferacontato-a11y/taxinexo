@@ -77,17 +77,22 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'online', service: 'TAXINEXO 2.0 Cloud API', timestamp: new Date().toISOString() });
 });
 
-// Rota para Nexus CRM SPA
+// 1. Rota Raiz (Landing Page / Presell Oficial)
+app.get(['/', '/presell', '/apresentacao', '/start', '/como-funciona'], (req, res) => {
+  res.sendFile(path.join(publicDir, 'presell.html'));
+});
+
+// 2. Rota para Nexus CRM SPA
 app.get(['/crm', '/crm/*', '/nexus'], (req, res) => {
   res.sendFile(path.join(crmDir, 'index.html'));
 });
 
-// Rotas Amigáveis para Landing Page / Presell (Meta Ads)
-app.get(['/presell', '/apresentacao', '/start', '/como-funciona'], (req, res) => {
-  res.sendFile(path.join(publicDir, 'presell.html'));
+// 3. Rota para o Aplicativo / Dashboard do Operador
+app.get(['/app', '/dashboard', '/painel', '/login', '/home'], (req, res) => {
+  res.sendFile(path.join(publicDir, 'index.html'));
 });
 
-// Fallback para SPA e arquivos HTML
+// 4. Fallback para SPA
 app.get('*', (req, res) => {
   res.sendFile(path.join(publicDir, 'index.html'));
 });

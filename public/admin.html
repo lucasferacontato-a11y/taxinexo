@@ -444,7 +444,7 @@
         <!-- Alertas de Webhooks / Pagamentos -->
         <div class="panel-card" style="margin-bottom: 0;">
           <div class="panel-head">
-            <h2><i class="fa-solid fa-triangle-exclamation" style="color: var(--accent-gold);"></i> Pagamentos Pendentes de Identificação</h2>
+            <h2><i class="fa-solid fa-satellite-dish" style="color: var(--primary);"></i> Últimos Webhooks Cartpanda</h2>
             <button class="btn-adm btn-adm-secondary" style="padding: 4px 10px; font-size: 11px;" onclick="switchAdminTab('cartpanda')">Ver Todos</button>
           </div>
           <div id="quick-webhooks-summary">
@@ -1035,12 +1035,19 @@
       const data = await adminFetch('/metrics');
       if (!data) return;
 
-      document.getElementById('m-total-deposited').textContent = 'R$ ' + (data.totalDeposited || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
-      document.getElementById('m-total-distributed').textContent = 'R$ ' + (data.totalDistributed || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
-      document.getElementById('m-pending-withdrawals').textContent = 'R$ ' + (data.pendingWithdrawalsAmount || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
-      document.getElementById('m-total-users').textContent = data.totalUsers || 0;
-      document.getElementById('m-active-contracts').textContent = data.activeContractsCount || 0;
-      document.getElementById('m-today-visitors').textContent = data.todayUniqueVisitors || 0;
+      const totalDep = data.totalDeposited !== undefined ? data.totalDeposited : (data.totalDeposits || 0);
+      const totalDist = data.totalDistributed !== undefined ? data.totalDistributed : (data.totalWithdrawals || 0);
+      const pendingWd = data.pendingWithdrawalsAmount !== undefined ? data.pendingWithdrawalsAmount : 0;
+      const totalUsr = data.totalUsers !== undefined ? data.totalUsers : 0;
+      const activeCont = data.activeContractsCount !== undefined ? data.activeContractsCount : (data.activeContracts || 0);
+      const uniqueVis = data.todayUniqueVisitors !== undefined ? data.todayUniqueVisitors : 0;
+
+      document.getElementById('m-total-deposited').textContent = 'R$ ' + parseFloat(totalDep).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+      document.getElementById('m-total-distributed').textContent = 'R$ ' + parseFloat(totalDist).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+      document.getElementById('m-pending-withdrawals').textContent = 'R$ ' + parseFloat(pendingWd).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+      document.getElementById('m-total-users').textContent = totalUsr;
+      document.getElementById('m-active-contracts').textContent = activeCont;
+      document.getElementById('m-today-visitors').textContent = uniqueVis;
 
       if (data.pendingWithdrawalsCount) {
         document.getElementById('badge-pending-wds').textContent = data.pendingWithdrawalsCount;
@@ -1088,7 +1095,6 @@
           : '<span class="chip chip-gold"><i class="fa-solid fa-lock"></i> Trava Diária N3 Ativa</span>';
 
         const waApproveMsg = encodeURIComponent(`Olá ${t.userName}, seu saque Pix no valor de R$ ${Math.abs(t.amount).toFixed(2)} foi APROVADO e enviado com sucesso para a chave: ${t.pixKey || t.userPhone}! 🚀`);
-        const waRejectMsg = encodeURIComponent(`Olá ${t.userName}, identificamos uma divergência na chave Pix informada para o seu saque. O saldo de R$ ${Math.abs(t.amount).toFixed(2)} foi estornado para sua conta TAXINEXO.`);
 
         return `
           <tr>
@@ -1151,13 +1157,14 @@
     // 3. Usuários & CRM
     async function loadUsers() {
       const list = await adminFetch('/users');
-      if (!list) return;
+      if (!list || !Array.isArray(list)) return;
       globalUsers = list;
       renderUsersTable(list);
     }
 
     function renderUsersTable(list) {
       const tbody = document.getElementById('users-table-body');
+      if (!tbody) return;
       document.getElementById('users-count').textContent = `${list.length} operadores`;
 
       if (list.length === 0) {
@@ -1274,6 +1281,24 @@
       globalWebhooks = logs;
 
       document.getElementById('webhooks-count').textContent = `${logs.length} eventos`;
+
+      // Quick summary no Overview
+      const quickSummary = document.getElementById('quick-webhooks-summary');
+      if (quickSummary) {
+        if (logs.length === 0) {
+          quickSummary.innerHTML = '<p style="font-size: 13px; color: var(--text-muted); text-align: center; padding: 20px;">Nenhum webhook recente.</p>';
+        } else {
+          quickSummary.innerHTML = logs.slice(0, 3).map(l => `
+            <div style="background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <strong style="color: #fff; font-size: 13px;">${l.customer_name || 'Cliente'}</strong> (${l.customer_phone || 'Sem telefone'})<br>
+                <small style="color: var(--text-muted);">${new Date(l.created_at || l.createdAt).toLocaleTimeString('pt-BR')} • <strong style="color: var(--accent-green);">R$ ${parseFloat(l.amount || 0).toFixed(2)}</strong></small>
+              </div>
+              <span class="chip ${l.status === 'processed' ? 'chip-green' : 'chip-gold'}">${(l.status || 'recebido').toUpperCase()}</span>
+            </div>
+          `).join('');
+        }
+      }
 
       if (logs.length === 0) {
         tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: var(--text-muted); padding: 30px;">Nenhum evento registrado ainda.</td></tr>';

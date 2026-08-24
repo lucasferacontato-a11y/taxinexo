@@ -27,7 +27,7 @@ const {
 const { processDailySettlement } = require('../services/settlementEngine');
 const {
   calculateUserNetwork,
-  determineUserRank,
+  evaluateUserRank,
   getUserCareerOverview,
   distributeCareerCommissions,
   RANKS
@@ -79,21 +79,32 @@ router.get('/metrics', async (req, res) => {
     const metrics = await getGlobalMetrics();
     const analytics = await getAnalyticsMetrics();
     const allUsers = await getAllUsers();
-    
+    const allTx = await getAllTransactions();
+
+    const pendingWithdrawalsAmount = allTx
+      .filter(t => t.type === 'withdraw' && t.status === 'pending')
+      .reduce((acc, t) => acc + Math.abs(parseFloat(t.amount || 0)), 0);
+
     // Contagem de liderança do plano de carreira
     const rankCounts = { bronze: 0, prata: 0, ouro: 0, rubi: 0, diamante: 0, black_diamond: 0 };
     for (const u of allUsers) {
       const net = calculateUserNetwork(u.id, allUsers);
-      const rank = u.careerRank ? RANKS.find(r => r.id === u.careerRank) || determineUserRank(net.l1.length, net.totalTeam) : determineUserRank(net.l1.length, net.totalTeam);
-      if (rankCounts[rank.id] !== undefined) rankCounts[rank.id]++;
+      const evalRank = u.careerRank ? RANKS.find(r => r.id === u.careerRank) || evaluateUserRank(net).currentRank : evaluateUserRank(net).currentRank;
+      if (evalRank && rankCounts[evalRank.id] !== undefined) rankCounts[evalRank.id]++;
     }
 
     res.json({
-      ...metrics,
-      todayUniqueVisitors: analytics.todayUniqueVisitors,
-      todayPresellViews: analytics.todayPresellViews,
-      todayAppViews: analytics.todayAppViews,
-      todayTotalViews: analytics.todayTotalViews,
+      totalDeposited: parseFloat(metrics.totalDeposits || 0),
+      totalDistributed: parseFloat(metrics.totalWithdrawals || 0),
+      pendingWithdrawalsCount: parseInt(metrics.pendingWithdrawalsCount || 0, 10),
+      pendingWithdrawalsAmount: pendingWithdrawalsAmount,
+      totalUsers: parseInt(metrics.totalUsers || 0, 10),
+      activeContractsCount: parseInt(metrics.activeContracts || 0, 10),
+      totalCustodyBalance: parseFloat(metrics.totalCustodyBalance || 0),
+      todayUniqueVisitors: analytics.todayUniqueVisitors || 0,
+      todayPresellViews: analytics.todayPresellViews || 0,
+      todayAppViews: analytics.todayAppViews || 0,
+      todayTotalViews: analytics.todayTotalViews || 0,
       rankCounts
     });
   } catch (err) {
@@ -215,7 +226,8 @@ router.get('/users', async (req, res) => {
       const hasDeposited = Boolean((u.totalDeposited && u.totalDeposited > 0) || (u.balance && u.balance > 0) || activeContracts.length > 0);
       
       const net = calculateUserNetwork(u.id, allUsers);
-      const rank = u.careerRank ? RANKS.find(r => r.id === u.careerRank) || determineUserRank(net.l1.length, net.totalTeam) : determineUserRank(net.l1.length, net.totalTeam);
+      const evalRank = u.careerRank ? RANKS.find(r => r.id === u.careerRank) || evaluateUserRank(net).currentRank : evaluateUserRank(net).currentRank;
+      const rank = evalRank || { id: 'bronze', name: 'Operador Bronze', badge: '🥉 Bronze', icon: '🥉' };
 
       let defaultStatus = 'new';
       if (activeContracts.length > 0) defaultStatus = 'active';
@@ -365,7 +377,8 @@ router.get('/career/overview', async (req, res) => {
 
     for (const u of allUsers) {
       const net = calculateUserNetwork(u.id, allUsers);
-      const rank = u.careerRank ? RANKS.find(r => r.id === u.careerRank) || determineUserRank(net.l1.length, net.totalTeam) : determineUserRank(net.l1.length, net.totalTeam);
+      const evalRank = u.careerRank ? RANKS.find(r => r.id === u.careerRank) || evaluateUserRank(net).currentRank : evaluateUserRank(net).currentRank;
+      const rank = evalRank || { id: 'bronze', name: 'Operador Bronze', badge: '🥉 Bronze', icon: '🥉' };
       if (rankCounts[rank.id] !== undefined) rankCounts[rank.id]++;
 
       if (net.totalTeam > 0 || u.careerRank) {
@@ -445,7 +458,6 @@ router.post('/webhooks/:id/reprocess', async (req, res) => {
       });
     }
 
-    // Identifica frota
     const products = await getAllProducts();
     let matchedProduct = products.find(p => Math.abs(p.price - amount) < 0.01);
     const now = new Date().toISOString();

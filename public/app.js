@@ -741,12 +741,23 @@ const CARTPANDA_CHECKOUTS = {
 
 function openProductCheckout(productId) {
   const prod = appState.products.find(p => p.id === productId);
-  const checkoutUrl = (prod && prod.checkoutUrl && prod.checkoutUrl.startsWith('http'))
+  const baseCheckoutUrl = (prod && prod.checkoutUrl && prod.checkoutUrl.startsWith('http'))
     ? prod.checkoutUrl
     : CARTPANDA_CHECKOUTS[productId];
 
-  if (checkoutUrl) {
-    window.open(checkoutUrl, '_blank');
+  if (baseCheckoutUrl) {
+    try {
+      const url = new URL(baseCheckoutUrl);
+      if (appState.user) {
+        if (appState.user.phone) url.searchParams.set('phone', appState.user.phone);
+        if (appState.user.operatorName) url.searchParams.set('name', appState.user.operatorName);
+        if (appState.user.id) url.searchParams.set('custom_field[user_id]', appState.user.id);
+        if (appState.user.inviteCode) url.searchParams.set('metadata[ref]', appState.user.inviteCode);
+      }
+      window.open(url.toString(), '_blank');
+    } catch (e) {
+      window.open(baseCheckoutUrl, '_blank');
+    }
   } else {
     alert('Checkout temporariamente indisponível.');
   }

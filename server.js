@@ -63,11 +63,18 @@ const crmDir = path.join(publicDir, 'crm');
 app.use('/crm', express.static(crmDir));
 
 // Rotas da API Backend TaxiNexo
+const walletRouter = require('./routes/wallet');
 app.use('/api/auth', require('./routes/auth'));
-app.use('/api/wallet', require('./routes/wallet'));
+app.use('/api/wallet', walletRouter);
 app.use('/api/fleet', require('./routes/fleet'));
 app.use('/api/team', require('./routes/team'));
 app.use('/api/admin', require('./routes/admin'));
+
+// Webhook Aliases (Garante que qualquer variação de URL cadastrada no Cartpanda funcione)
+app.use(['/webhook/cartpanda', '/api/webhook/cartpanda', '/cartpanda/webhook'], (req, res, next) => {
+  req.url = '/webhook/cartpanda';
+  walletRouter(req, res, next);
+});
 
 // Rotas da API Backend Nexus CRM
 app.use('/api', require('./routes/crm')(io));

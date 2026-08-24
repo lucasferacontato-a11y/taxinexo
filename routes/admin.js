@@ -222,6 +222,7 @@ router.post('/withdrawals/:id/reject', async (req, res) => {
 router.get('/users', async (req, res) => {
   try {
     const allUsers = await getAllUsers();
+    const allTx = await getAllTransactions();
     const usersList = await Promise.all(allUsers.map(async (u) => {
       const userContracts = await getContractsByUserId(u.id);
       const activeContracts = userContracts.filter(c => c.status === 'Em corrida');
@@ -237,11 +238,16 @@ router.get('/users', async (req, res) => {
       if (activeContracts.length > 0) defaultStatus = 'active';
 
       const totalBal = parseFloat(u.balance || 0);
+      const userCommTx = allTx
+        .filter(t => t.userId === u.id && t.type === 'commission' && t.status === 'approved')
+        .reduce((acc, t) => acc + Math.abs(parseFloat(t.amount || 0)), 0);
+
       let commBal = parseFloat(u.commissionBalance !== undefined && u.commissionBalance !== null ? u.commissionBalance : 0);
       let dailyBal = parseFloat(u.dailyReturnsBalance !== undefined && u.dailyReturnsBalance !== null ? u.dailyReturnsBalance : 0);
 
-      // Se o usuário possui saldo total mas os saldos específicos ainda não foram desmembrados
-      if (totalBal > 0 && commBal === 0 && dailyBal === 0) {
+      if (userCommTx > 0 && commBal === 0) {
+        commBal = userCommTx;
+      } else if (totalBal > 0 && commBal === 0 && dailyBal === 0) {
         if (activeContracts.length > 0) {
           dailyBal = totalBal;
         } else {
@@ -401,7 +407,16 @@ router.get('/career/overview', async (req, res) => {
       const rank = evalRank || { id: 'bronze', name: 'Operador Bronze', badge: '🥉 Bronze', icon: '🥉' };
       if (rankCounts[rank.id] !== undefined) rankCounts[rank.id]++;
 
-      if (net.totalTeam > 0 || net.l1.length > 0 || u.careerRank) {
+      const downlineIds = [...net.l1, ...net.l2, ...net.l3, ...net.l4, ...net.l5].map(x => x.id);
+      const teamDepositsVolume = allUsers
+        .filter(x => downlineIds.includes(x.id))
+        .reduce((acc, x) => acc + (parseFloat(x.totalDeposited) || 0), 0);
+
+      const userCommEarned = allTx
+        .filter(t => t.userId === u.id && t.type === 'commission' && t.status === 'approved')
+        .reduce((acc, t) => acc + Math.abs(parseFloat(t.amount || 0)), 0);
+
+      if (net.totalTeam > 0 || net.l1.length > 0 || u.careerRank || userCommEarned > 0) {
         leaders.push({
           id: u.id,
           name: u.operatorName || `Operador #${u.id}`,
@@ -410,7 +425,9 @@ router.get('/career/overview', async (req, res) => {
           rankId: rank.id,
           directs: net.l1.length,
           totalTeam: net.totalTeam,
-          commissionBalance: u.commissionBalance || 0
+          totalCommissionsEarned: userCommEarned,
+          teamDepositsVolume: teamDepositsVolume,
+          commissionBalance: userCommEarned > 0 ? userCommEarned : (u.commissionBalance || 0)
         });
       }
     }

@@ -585,7 +585,7 @@
                 <th>Patente</th>
                 <th>Indicados Diretos (N1)</th>
                 <th>Equipe Total (N1 a N5)</th>
-                <th>Comissões Geradas</th>
+                <th>Comissões Geradas / Volume de Depósitos</th>
                 <th style="text-align: right;">Ações Rápidas</th>
               </tr>
             </thead>
@@ -1279,7 +1279,10 @@
               <td><span class="chip chip-lime">${l.rank}</span></td>
               <td><strong style="color: #fff;">${l.directs}</strong> diretos</td>
               <td><strong style="color: var(--accent-lime); font-size: 13px;">${l.totalTeam} membros</strong></td>
-              <td><strong style="color: var(--accent-green);">R$ ${(l.commissionBalance || 0).toFixed(2)}</strong></td>
+              <td>
+                <strong style="color: var(--accent-green); font-size: 13px;">R$ ${(l.totalCommissionsEarned !== undefined ? l.totalCommissionsEarned : (l.commissionBalance || 0)).toFixed(2)}</strong><br>
+                <small style="color: var(--text-muted); font-size: 10.5px;">Vol. Equipe: <strong style="color: #fff;">R$ ${(l.teamDepositsVolume || 0).toFixed(2)}</strong></small>
+              </td>
               <td style="text-align: right;">
                 <a href="https://wa.me/${waNumber}" target="_blank" class="btn-whatsapp"><i class="fa-brands fa-whatsapp"></i> Falar com Líder</a>
               </td>

@@ -1,22 +1,6 @@
-const CACHE_NAME = 'taxinexo-v1.0.4';
-const ASSETS_TO_CACHE = [
-  './index_refatorado.html',
-  './login.html',
-  './admin.html',
-  './style_refatorado.css',
-  './app_refatorado.js',
-  './manifest.json',
-  './apple-touch-icon.png',
-  './favicon.ico'
-];
+const CACHE_NAME = 'taxinexo-najaf-v2';
 
 self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      console.log('[ServiceWorker] Pré-carregando arquivos estáticos');
-      return cache.addAll(ASSETS_TO_CACHE);
-    })
-  );
   self.skipWaiting();
 });
 
@@ -25,10 +9,7 @@ self.addEventListener('activate', (event) => {
     caches.keys().then((keyList) => {
       return Promise.all(
         keyList.map((key) => {
-          if (key !== CACHE_NAME) {
-            console.log('[ServiceWorker] Removendo cache antigo:', key);
-            return caches.delete(key);
-          }
+          return caches.delete(key);
         })
       );
     })
@@ -37,17 +18,10 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
-  // Ignora chamadas para a API (sempre busca na rede)
-  if (event.request.url.includes('/api/')) {
-    return;
-  }
-
+  // Sempre busca da rede primeiro para garantir conteúdo fresco
   event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
-      if (cachedResponse) {
-        return cachedResponse;
-      }
-      return fetch(event.request);
+    fetch(event.request).catch(() => {
+      return caches.match(event.request);
     })
   );
 });

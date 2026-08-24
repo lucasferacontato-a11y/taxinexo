@@ -953,6 +953,47 @@ async function getWebhookLogs(limit = 50) {
   return (db.webhookLogs || []).slice(0, limit);
 }
 
+async function findWebhookLogById(id) {
+  if (isPostgres) {
+    const res = await pool.query('SELECT * FROM webhook_logs WHERE id = $1', [id]);
+    return res.rows[0] || null;
+  }
+  const db = readJsonDb();
+  return (db.webhookLogs || []).find(l => String(l.id) === String(id)) || null;
+}
+
+async function updateWebhookLog(id, fields) {
+  if (isPostgres) {
+    const setClauses = [];
+    const values = [];
+    let idx = 1;
+    if (fields.status !== undefined) {
+      setClauses.push(`status = $${idx++}`);
+      values.push(fields.status);
+    }
+    if (fields.note !== undefined) {
+      setClauses.push(`note = $${idx++}`);
+      values.push(fields.note);
+    }
+    if (fields.matchedUserId !== undefined) {
+      setClauses.push(`matched_user_id = $${idx++}`);
+      values.push(fields.matchedUserId);
+    }
+    if (setClauses.length === 0) return null;
+    values.push(id);
+    const res = await pool.query(`UPDATE webhook_logs SET ${setClauses.join(', ')} WHERE id = $${idx} RETURNING *`, values);
+    return res.rows[0] || null;
+  }
+  const db = readJsonDb();
+  const item = (db.webhookLogs || []).find(l => String(l.id) === String(id));
+  if (item) {
+    Object.assign(item, fields);
+    writeJsonDb(db);
+    return item;
+  }
+  return null;
+}
+
 async function getSystemSettings() {
   const defaultSettings = {
     nexusCrmUrl: 'https://taxinexo.onrender.com/crm',
@@ -1028,6 +1069,8 @@ module.exports = {
   // Webhooks
   recordWebhookLog,
   getWebhookLogs,
+  findWebhookLogById,
+  updateWebhookLog,
   // System Settings
   getSystemSettings,
   updateSystemSetting

@@ -7,19 +7,31 @@ const {
   updateTransaction,
   getAllUsers,
   findUserById,
+  findUserByPhone,
+  createUser,
   updateUser,
   getContractsByUserId,
+  createContract,
   createTransaction,
   getAllProducts,
   findProductById,
   updateProduct,
   getAnalyticsMetrics,
   getWebhookLogs,
+  findWebhookLogById,
+  updateWebhookLog,
   getSystemSettings,
   updateSystemSetting
 } = require('../database');
 
 const { processDailySettlement } = require('../services/settlementEngine');
+const {
+  calculateUserNetwork,
+  determineUserRank,
+  getUserCareerOverview,
+  distributeCareerCommissions,
+  RANKS
+} = require('../services/careerEngine');
 
 const ADMIN_KEY = process.env.ADMIN_KEY || process.env.ADMIN_PASSWORD || 'NEXO@ADMIN2026';
 
@@ -59,17 +71,30 @@ function adminAuthMiddleware(req, res, next) {
 
 router.use(adminAuthMiddleware);
 
-// Métricas Globais da Plataforma
+// ==========================================
+// 1. MÉTRICAS & ANALYTICS
+// ==========================================
 router.get('/metrics', async (req, res) => {
   try {
     const metrics = await getGlobalMetrics();
     const analytics = await getAnalyticsMetrics();
+    const allUsers = await getAllUsers();
+    
+    // Contagem de liderança do plano de carreira
+    const rankCounts = { bronze: 0, prata: 0, ouro: 0, rubi: 0, diamante: 0, black_diamond: 0 };
+    for (const u of allUsers) {
+      const net = calculateUserNetwork(u.id, allUsers);
+      const rank = u.careerRank ? RANKS.find(r => r.id === u.careerRank) || determineUserRank(net.l1.length, net.totalTeam) : determineUserRank(net.l1.length, net.totalTeam);
+      if (rankCounts[rank.id] !== undefined) rankCounts[rank.id]++;
+    }
+
     res.json({
       ...metrics,
       todayUniqueVisitors: analytics.todayUniqueVisitors,
       todayPresellViews: analytics.todayPresellViews,
       todayAppViews: analytics.todayAppViews,
-      todayTotalViews: analytics.todayTotalViews
+      todayTotalViews: analytics.todayTotalViews,
+      rankCounts
     });
   } catch (err) {
     console.error('[ADMIN ERROR /metrics]:', err);
@@ -77,7 +102,6 @@ router.get('/metrics', async (req, res) => {
   }
 });
 
-// Analytics & Visitantes em Tempo Real
 router.get('/analytics', async (req, res) => {
   try {
     const analytics = await getAnalyticsMetrics();
@@ -88,13 +112,14 @@ router.get('/analytics', async (req, res) => {
   }
 });
 
-// Listar Solicitações de Saque
+// ==========================================
+// 2. GESTÃO DE SAQUES (PIX)
+// ==========================================
 router.get('/withdrawals', async (req, res) => {
   try {
     const allTx = await getAllTransactions();
     const withdrawals = allTx.filter(t => t.type === 'withdraw');
     
-    // Enriquece cada saque com o nome, telefone, total depositado e contratos do operador
     const enrichedWithdrawals = await Promise.all(withdrawals.map(async (t) => {
       const user = await findUserById(t.userId);
       const userContracts = user ? await getContractsByUserId(user.id) : [];
@@ -102,11 +127,17 @@ router.get('/withdrawals', async (req, res) => {
       const totalDeposited = parseFloat(user ? user.totalDeposited || 0 : 0);
       const hasDeposited = Boolean(totalDeposited > 0 || activeContracts.length > 0);
 
+      const commBal = user ? parseFloat(user.commissionBalance || 0) : 0;
+      const dailyBal = user ? parseFloat(user.dailyReturnsBalance || 0) : 0;
+
       return {
         ...t,
         userName: user ? user.operatorName : 'Operador #' + t.userId,
         userPhone: user ? user.phone : 'Não informado',
         userBalance: user ? parseFloat(user.balance || 0) : 0,
+        commissionBalance: commBal,
+        dailyReturnsBalance: dailyBal,
+        isLevel3: user ? (Boolean(user.isLevel3) || Boolean(user.forceLevel3Unlocked)) : false,
         totalDeposited: totalDeposited,
         activeContractsCount: activeContracts.length,
         hasDeposited: hasDeposited,
@@ -114,7 +145,6 @@ router.get('/withdrawals', async (req, res) => {
       };
     }));
 
-    // Ordena os pendentes primeiro e por data mais recente
     enrichedWithdrawals.sort((a, b) => {
       if (a.status === 'pending' && b.status !== 'pending') return -1;
       if (a.status !== 'pending' && b.status === 'pending') return 1;
@@ -128,16 +158,11 @@ router.get('/withdrawals', async (req, res) => {
   }
 });
 
-
-// Aprovar Saque
 router.post('/withdrawals/:id/approve', async (req, res) => {
   try {
     const { id } = req.params;
     const tx = await findTransactionById(id);
-
-    if (!tx) {
-      return res.status(404).json({ error: 'Transação não encontrada.' });
-    }
+    if (!tx) return res.status(404).json({ error: 'Transação não encontrada.' });
 
     const updatedTx = await updateTransaction(id, {
       status: 'approved',
@@ -151,28 +176,23 @@ router.post('/withdrawals/:id/approve', async (req, res) => {
   }
 });
 
-// Rejeitar Saque (Estorna saldo para o usuário)
 router.post('/withdrawals/:id/reject', async (req, res) => {
   try {
     const { id } = req.params;
     const tx = await findTransactionById(id);
-
-    if (!tx) {
-      return res.status(404).json({ error: 'Transação não encontrada.' });
-    }
+    if (!tx) return res.status(404).json({ error: 'Transação não encontrada.' });
 
     const updatedTx = await updateTransaction(id, {
       status: 'rejected',
       rejectedAt: new Date().toISOString()
     });
 
-    // Devolve o saldo ao usuário
     const user = await findUserById(tx.userId);
     if (user) {
       const refundAmount = Math.abs(tx.amount);
       await updateUser(user.id, {
-        balance: user.balance + refundAmount,
-        totalWithdrawn: Math.max(0, user.totalWithdrawn - refundAmount)
+        balance: (user.balance || 0) + refundAmount,
+        totalWithdrawn: Math.max(0, (user.totalWithdrawn || 0) - refundAmount)
       });
     }
 
@@ -183,15 +203,20 @@ router.post('/withdrawals/:id/reject', async (req, res) => {
   }
 });
 
-// Listar Usuários com Dados de CRM
+// ==========================================
+// 3. GESTÃO DE USUÁRIOS & PLANO DE CARREIRA
+// ==========================================
 router.get('/users', async (req, res) => {
   try {
-    const users = await getAllUsers();
-    const usersList = await Promise.all(users.map(async (u) => {
+    const allUsers = await getAllUsers();
+    const usersList = await Promise.all(allUsers.map(async (u) => {
       const userContracts = await getContractsByUserId(u.id);
       const activeContracts = userContracts.filter(c => c.status === 'Em corrida');
       const hasDeposited = Boolean((u.totalDeposited && u.totalDeposited > 0) || (u.balance && u.balance > 0) || activeContracts.length > 0);
       
+      const net = calculateUserNetwork(u.id, allUsers);
+      const rank = u.careerRank ? RANKS.find(r => r.id === u.careerRank) || determineUserRank(net.l1.length, net.totalTeam) : determineUserRank(net.l1.length, net.totalTeam);
+
       let defaultStatus = 'new';
       if (activeContracts.length > 0) defaultStatus = 'active';
 
@@ -200,9 +225,19 @@ router.get('/users', async (req, res) => {
         operatorName: u.operatorName || `Operador #${u.id}`,
         phone: u.phone,
         balance: parseFloat(u.balance || 0),
+        commissionBalance: parseFloat(u.commissionBalance || 0),
+        dailyReturnsBalance: parseFloat(u.dailyReturnsBalance || 0),
         totalDeposited: parseFloat(u.totalDeposited || 0),
         totalWithdrawn: parseFloat(u.totalWithdrawn || 0),
         vipLevel: u.vipLevel || 'VIP 1',
+        careerRankId: rank.id,
+        careerRankName: rank.name,
+        careerRankBadge: rank.badge,
+        careerRankIcon: rank.icon,
+        isLevel3: Boolean(u.isLevel3) || Boolean(u.forceLevel3Unlocked) || (net.l1.length >= 5 && net.totalTeam >= 15),
+        forceLevel3Unlocked: Boolean(u.forceLevel3Unlocked),
+        totalDirects: net.l1.length,
+        totalTeam: net.totalTeam,
         inviteCode: u.inviteCode,
         activeContractsCount: activeContracts.length,
         hasDeposited: hasDeposited,
@@ -212,9 +247,7 @@ router.get('/users', async (req, res) => {
       };
     }));
 
-    // Ordena cadastros mais recentes primeiro
     usersList.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-
     res.json(usersList);
   } catch (err) {
     console.error('[ADMIN ERROR /users]:', err);
@@ -222,16 +255,446 @@ router.get('/users', async (req, res) => {
   }
 });
 
-// Atualizar Status do CRM e Notas do Lead
+// Ajuste Fino de Saldo (Geral, Comissão ou Rendimento)
+router.post('/users/:id/adjust-balance', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { amount, type = 'general' } = req.body;
+    const numAmount = parseFloat(amount);
+
+    const user = await findUserById(id);
+    if (!user) return res.status(404).json({ error: 'Usuário não encontrado.' });
+
+    const newTotalBalance = (user.balance || 0) + numAmount;
+    const updatePayload = { balance: newTotalBalance };
+
+    if (type === 'commission') {
+      updatePayload.commissionBalance = Math.max(0, (user.commissionBalance || 0) + numAmount);
+    } else if (type === 'daily') {
+      updatePayload.dailyReturnsBalance = Math.max(0, (user.dailyReturnsBalance || 0) + numAmount);
+    }
+
+    await updateUser(user.id, updatePayload);
+
+    await createTransaction({
+      id: `ADJ-${Date.now()}`,
+      userId: user.id,
+      type: 'adjustment',
+      amount: numAmount,
+      status: 'approved',
+      description: `Ajuste Administrativo de Saldo (${type === 'commission' ? 'Comissão' : type === 'daily' ? 'Diário' : 'Geral'}) (${numAmount > 0 ? '+' : ''} R$ ${numAmount.toFixed(2)})`,
+      createdAt: new Date().toISOString()
+    });
+
+    res.json({ message: 'Saldo ajustado com sucesso!', newBalance: newTotalBalance });
+  } catch (err) {
+    console.error('[ADMIN ERROR /users/:id/adjust-balance]:', err);
+    res.status(500).json({ error: 'Erro ao ajustar saldo.' });
+  }
+});
+
+// Interruptor Individual da Trava Nível 3 (Liberar/Bloquear Saque Diário)
+router.post('/users/:id/toggle-level3', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await findUserById(id);
+    if (!user) return res.status(404).json({ error: 'Usuário não encontrado.' });
+
+    const currentLock = Boolean(user.forceLevel3Unlocked);
+    const newStatus = !currentLock;
+
+    await updateUser(user.id, { forceLevel3Unlocked: newStatus, isLevel3: newStatus });
+    res.json({
+      message: newStatus ? 'Trava Nível 3 LIBERADA para este operador!' : 'Trava Nível 3 ATIVADA (padrão de rede).',
+      forceLevel3Unlocked: newStatus
+    });
+  } catch (err) {
+    console.error('[ADMIN ERROR /users/:id/toggle-level3]:', err);
+    res.status(500).json({ error: 'Erro ao alterar trava Nível 3.' });
+  }
+});
+
+// Promoção / Override Manual de Patente do Plano de Carreira
+router.post('/users/:id/override-rank', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { rankId, creditBonus = false } = req.body;
+
+    const rank = RANKS.find(r => r.id === rankId);
+    if (!rank) return res.status(400).json({ error: 'Patente inválida.' });
+
+    const user = await findUserById(id);
+    if (!user) return res.status(404).json({ error: 'Usuário não encontrado.' });
+
+    const updateData = { careerRank: rank.id };
+    if (rank.id === 'ouro' || rank.id === 'rubi' || rank.id === 'diamante' || rank.id === 'black_diamond') {
+      updateData.forceLevel3Unlocked = true;
+      updateData.isLevel3 = true;
+    }
+
+    if (creditBonus && rank.bonus > 0) {
+      updateData.balance = (user.balance || 0) + rank.bonus;
+      updateData.commissionBalance = (user.commissionBalance || 0) + rank.bonus;
+      await createTransaction({
+        id: `BONUS-${rank.id.toUpperCase()}-${Date.now()}`,
+        userId: user.id,
+        type: 'bonus',
+        amount: rank.bonus,
+        status: 'approved',
+        description: `Bônus Administrativo de Promoção de Patente: ${rank.badge} (+ R$ ${rank.bonus.toFixed(2)})`,
+        createdAt: new Date().toISOString()
+      });
+    }
+
+    await updateUser(user.id, updateData);
+    res.json({ message: `Usuário promovido com sucesso para ${rank.badge}!`, rank });
+  } catch (err) {
+    console.error('[ADMIN ERROR /users/:id/override-rank]:', err);
+    res.status(500).json({ error: 'Erro ao promover usuário.' });
+  }
+});
+
+// Visão Geral do Plano de Carreira
+router.get('/career/overview', async (req, res) => {
+  try {
+    const allUsers = await getAllUsers();
+    const allTx = await getAllTransactions();
+
+    const rankCounts = { bronze: 0, prata: 0, ouro: 0, rubi: 0, diamante: 0, black_diamond: 0 };
+    const leaders = [];
+
+    for (const u of allUsers) {
+      const net = calculateUserNetwork(u.id, allUsers);
+      const rank = u.careerRank ? RANKS.find(r => r.id === u.careerRank) || determineUserRank(net.l1.length, net.totalTeam) : determineUserRank(net.l1.length, net.totalTeam);
+      if (rankCounts[rank.id] !== undefined) rankCounts[rank.id]++;
+
+      if (net.totalTeam > 0 || u.careerRank) {
+        leaders.push({
+          id: u.id,
+          name: u.operatorName || `Operador #${u.id}`,
+          phone: u.phone,
+          rank: rank.badge,
+          rankId: rank.id,
+          directs: net.l1.length,
+          totalTeam: net.totalTeam,
+          commissionBalance: u.commissionBalance || 0
+        });
+      }
+    }
+
+    const totalBonusPaid = allTx
+      .filter(t => t.type === 'bonus' && t.status === 'approved' && String(t.description || '').includes('Bônus'))
+      .reduce((acc, t) => acc + Math.abs(parseFloat(t.amount || 0)), 0);
+
+    leaders.sort((a, b) => b.totalTeam - a.totalTeam);
+
+    res.json({
+      ranks: RANKS,
+      rankCounts,
+      totalBonusPaid,
+      topLeaders: leaders.slice(0, 15)
+    });
+  } catch (err) {
+    console.error('[ADMIN ERROR /career/overview]:', err);
+    res.status(500).json({ error: 'Erro ao carregar visão de carreira.' });
+  }
+});
+
+// ==========================================
+// 4. CENTRAL DE WEBHOOKS & CARTPANDA
+// ==========================================
+router.get('/webhooks', async (req, res) => {
+  try {
+    const logs = await getWebhookLogs(100);
+    res.json(logs);
+  } catch (err) {
+    console.error('[ADMIN ERROR /webhooks]:', err);
+    res.status(500).json({ error: 'Erro ao listar webhooks.' });
+  }
+});
+
+// Reprocessar Webhook
+router.post('/webhooks/:id/reprocess', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const log = await findWebhookLogById(id);
+    if (!log) return res.status(404).json({ error: 'Log de webhook não encontrado.' });
+
+    const raw = typeof log.raw_payload === 'string' ? JSON.parse(log.raw_payload) : (log.raw_payload || {});
+    const phone = log.customer_phone || raw.phone || (raw.customer && raw.customer.phone);
+    const amount = parseFloat(log.amount || raw.amount || raw.total || 0);
+
+    if (!phone || amount <= 0) {
+      return res.status(400).json({ error: 'Webhook sem telefone ou valor válido para processamento.' });
+    }
+
+    let user = await findUserByPhone(phone);
+    if (!user) {
+      const cleanPhone = String(phone).replace(/\D/g, '');
+      const newUserId = `usr_${Math.floor(1000 + Math.random() * 9000)}`;
+      user = await createUser({
+        id: newUserId,
+        operatorName: log.customer_name && log.customer_name !== 'Cliente' ? log.customer_name : `Operador #${newUserId.replace('usr_', '')}`,
+        phone: cleanPhone,
+        password: '123',
+        balance: 0,
+        totalDeposited: 0,
+        dailyReturnsBalance: 0,
+        commissionBalance: 0,
+        pixKey: cleanPhone
+      });
+    }
+
+    // Identifica frota
+    const products = await getAllProducts();
+    let matchedProduct = products.find(p => Math.abs(p.price - amount) < 0.01);
+    const now = new Date().toISOString();
+
+    await updateUser(user.id, { totalDeposited: (user.totalDeposited || 0) + amount });
+
+    await createTransaction({
+      id: `CP-REPROC-${Date.now()}`,
+      userId: user.id,
+      type: 'deposit',
+      amount: amount,
+      status: 'approved',
+      description: `Pagamento Cartpanda Reprocessado (+ R$ ${amount.toFixed(2)})`,
+      createdAt: now
+    });
+
+    if (matchedProduct) {
+      const contractId = `CTR-${Math.floor(1000 + Math.random() * 9000)}`;
+      await createContract({
+        id: contractId,
+        userId: user.id,
+        productId: matchedProduct.id,
+        productName: matchedProduct.name,
+        dailyReturn: matchedProduct.dailyReturn,
+        totalDays: matchedProduct.periodDays,
+        daysRemaining: matchedProduct.periodDays,
+        status: 'Em corrida',
+        startDate: now,
+        lastSettlement: now
+      });
+
+      await createTransaction({
+        id: `TX-${Date.now()}`,
+        userId: user.id,
+        type: 'contract',
+        amount: -matchedProduct.price,
+        status: 'approved',
+        description: `Contratação Automática de ${matchedProduct.name}`,
+        createdAt: now
+      });
+
+      await distributeCareerCommissions({
+        buyerUser: user,
+        amount: matchedProduct.price,
+        productName: matchedProduct.name
+      });
+    } else {
+      await updateUser(user.id, { balance: (user.balance || 0) + amount });
+    }
+
+    await updateWebhookLog(id, {
+      status: 'processed',
+      matchedUserId: user.id,
+      note: `Reprocessado com sucesso para ${user.operatorName} (${user.phone}).`
+    });
+
+    res.json({ message: `Webhook reprocessado! Ativado para ${user.operatorName} (${user.phone}).`, user });
+  } catch (err) {
+    console.error('[ADMIN ERROR /webhooks/:id/reprocess]:', err);
+    res.status(500).json({ error: 'Erro ao reprocessar webhook.' });
+  }
+});
+
+// Vincular Manualmente Webhook a Qualquer Usuário
+router.post('/webhooks/:id/link-user', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { userId } = req.body;
+
+    const log = await findWebhookLogById(id);
+    if (!log) return res.status(404).json({ error: 'Log de webhook não encontrado.' });
+
+    const user = await findUserById(userId);
+    if (!user) return res.status(404).json({ error: 'Usuário não encontrado.' });
+
+    const amount = parseFloat(log.amount || 0);
+    const now = new Date().toISOString();
+
+    await updateUser(user.id, { totalDeposited: (user.totalDeposited || 0) + amount });
+
+    const products = await getAllProducts();
+    const matchedProduct = products.find(p => Math.abs(p.price - amount) < 0.01);
+
+    if (matchedProduct) {
+      const contractId = `CTR-${Math.floor(1000 + Math.random() * 9000)}`;
+      await createContract({
+        id: contractId,
+        userId: user.id,
+        productId: matchedProduct.id,
+        productName: matchedProduct.name,
+        dailyReturn: matchedProduct.dailyReturn,
+        totalDays: matchedProduct.periodDays,
+        daysRemaining: matchedProduct.periodDays,
+        status: 'Em corrida',
+        startDate: now,
+        lastSettlement: now
+      });
+
+      await createTransaction({
+        id: `TX-${Date.now()}`,
+        userId: user.id,
+        type: 'contract',
+        amount: -matchedProduct.price,
+        status: 'approved',
+        description: `Contratação Vinculada de ${matchedProduct.name}`,
+        createdAt: now
+      });
+
+      await distributeCareerCommissions({
+        buyerUser: user,
+        amount: matchedProduct.price,
+        productName: matchedProduct.name
+      });
+    } else {
+      await updateUser(user.id, { balance: (user.balance || 0) + amount });
+    }
+
+    await updateWebhookLog(id, {
+      status: 'processed',
+      matchedUserId: user.id,
+      note: `Vinculado manualmente pelo Admin ao operador ${user.operatorName} (${user.id}).`
+    });
+
+    res.json({ message: `Pagamento vinculado e ativado com sucesso para ${user.operatorName}!` });
+  } catch (err) {
+    console.error('[ADMIN ERROR /webhooks/:id/link-user]:', err);
+    res.status(500).json({ error: 'Erro ao vincular webhook ao usuário.' });
+  }
+});
+
+// Injetor de Depósito / Ativação de Frota Direta
+router.post('/inject-deposit', async (req, res) => {
+  try {
+    const { phone, amount, productId, autoHire = true } = req.body;
+    const numAmount = parseFloat(amount);
+    if (!phone || numAmount <= 0) return res.status(400).json({ error: 'Telefone e valor são obrigatórios.' });
+
+    let user = await findUserByPhone(phone);
+    if (!user) {
+      const cleanPhone = String(phone).replace(/\D/g, '');
+      const newUserId = `usr_${Math.floor(1000 + Math.random() * 9000)}`;
+      user = await createUser({
+        id: newUserId,
+        operatorName: `Operador #${newUserId.replace('usr_', '')}`,
+        phone: cleanPhone,
+        password: '123',
+        balance: 0,
+        totalDeposited: 0,
+        dailyReturnsBalance: 0,
+        commissionBalance: 0,
+        pixKey: cleanPhone
+      });
+    }
+
+    const now = new Date().toISOString();
+    await updateUser(user.id, { totalDeposited: (user.totalDeposited || 0) + numAmount });
+
+    await createTransaction({
+      id: `INJ-${Date.now()}`,
+      userId: user.id,
+      type: 'deposit',
+      amount: numAmount,
+      status: 'approved',
+      description: `Depósito Injetado pelo Administrador (+ R$ ${numAmount.toFixed(2)})`,
+      createdAt: now
+    });
+
+    const products = await getAllProducts();
+    const targetProduct = productId ? products.find(p => p.id === productId) : products.find(p => Math.abs(p.price - numAmount) < 0.01);
+
+    if (autoHire && targetProduct) {
+      const contractId = `CTR-${Math.floor(1000 + Math.random() * 9000)}`;
+      await createContract({
+        id: contractId,
+        userId: user.id,
+        productId: targetProduct.id,
+        productName: targetProduct.name,
+        dailyReturn: targetProduct.dailyReturn,
+        totalDays: targetProduct.periodDays,
+        daysRemaining: targetProduct.periodDays,
+        status: 'Em corrida',
+        startDate: now,
+        lastSettlement: now
+      });
+
+      await createTransaction({
+        id: `TX-${Date.now()}`,
+        userId: user.id,
+        type: 'contract',
+        amount: -targetProduct.price,
+        status: 'approved',
+        description: `Contratação Injetada de ${targetProduct.name}`,
+        createdAt: now
+      });
+
+      await distributeCareerCommissions({
+        buyerUser: user,
+        amount: targetProduct.price,
+        productName: targetProduct.name
+      });
+    } else {
+      await updateUser(user.id, { balance: (user.balance || 0) + numAmount });
+    }
+
+    res.json({ message: `Depósito/Frota de R$ ${numAmount.toFixed(2)} injetado com sucesso para ${user.operatorName} (${user.phone})!`, user });
+  } catch (err) {
+    console.error('[ADMIN ERROR /inject-deposit]:', err);
+    res.status(500).json({ error: 'Erro ao injetar depósito.' });
+  }
+});
+
+// ==========================================
+// 5. GESTÃO DE PRODUTOS / FROTAS
+// ==========================================
+router.get('/products', async (req, res) => {
+  try {
+    const products = await getAllProducts();
+    res.json(products);
+  } catch (err) {
+    console.error('[ADMIN ERROR /products]:', err);
+    res.status(500).json({ error: 'Erro ao listar produtos.' });
+  }
+});
+
+router.put('/products/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, checkoutUrl, price, dailyReturn, periodDays, status } = req.body;
+
+    const updated = await updateProduct(id, { name, checkoutUrl, price, dailyReturn, periodDays, status });
+    if (!updated) return res.status(404).json({ error: 'Produto não encontrado.' });
+
+    res.json({ message: 'Produto/Frota atualizado com sucesso!', product: updated });
+  } catch (err) {
+    console.error('[ADMIN ERROR /products/:id]:', err);
+    res.status(500).json({ error: 'Erro ao atualizar produto.' });
+  }
+});
+
+// ==========================================
+// 6. CRM & EXPORTAÇÃO
+// ==========================================
 router.patch('/users/:id/crm', async (req, res) => {
   try {
     const { id } = req.params;
     const { crmStatus, crmNotes } = req.body;
 
     const user = await findUserById(id);
-    if (!user) {
-      return res.status(404).json({ error: 'Usuário não encontrado.' });
-    }
+    if (!user) return res.status(404).json({ error: 'Usuário não encontrado.' });
 
     const updated = await updateUser(id, {
       crmStatus: crmStatus !== undefined ? crmStatus : user.crmStatus,
@@ -245,11 +708,10 @@ router.patch('/users/:id/crm', async (req, res) => {
   }
 });
 
-// Exportar Lista de Leads / Operadores para CSV (WhatsApp / Meta Ads)
 router.get('/users/export-csv', async (req, res) => {
   try {
     const users = await getAllUsers();
-    const headers = ['ID', 'Nome', 'Telefone', 'Telefone_WhatsApp', 'Status_CRM', 'Saldo', 'Frotas_Ativas', 'Data_Cadastro'];
+    const headers = ['ID', 'Nome', 'Telefone', 'Telefone_WhatsApp', 'Status_CRM', 'Saldo_Total', 'Saldo_Comissao', 'Saldo_Diario', 'Patente', 'Frotas_Ativas', 'Data_Cadastro'];
     const rows = await Promise.all(users.map(async (u) => {
       const contracts = await getContractsByUserId(u.id);
       const activeCount = contracts.filter(c => c.status === 'Em corrida').length;
@@ -265,6 +727,9 @@ router.get('/users/export-csv', async (req, res) => {
         `"+${waPhone}"`,
         `"${status}"`,
         (u.balance || 0).toFixed(2),
+        (u.commissionBalance || 0).toFixed(2),
+        (u.dailyReturnsBalance || 0).toFixed(2),
+        `"${u.careerRank || 'bronze'}"`,
         activeCount,
         `"${date}"`
       ].join(';');
@@ -280,68 +745,6 @@ router.get('/users/export-csv', async (req, res) => {
   }
 });
 
-// Ajustar Saldo de Usuário
-router.post('/users/:id/adjust-balance', async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { amount } = req.body;
-    const numAmount = parseFloat(amount);
-
-    const user = await findUserById(id);
-    if (!user) {
-      return res.status(404).json({ error: 'Usuário não encontrado.' });
-    }
-
-    const newBalance = user.balance + numAmount;
-    await updateUser(user.id, { balance: newBalance });
-
-    await createTransaction({
-      id: `ADJ-${Date.now()}`,
-      userId: user.id,
-      type: 'adjustment',
-      amount: numAmount,
-      status: 'approved',
-      description: `Ajuste Administrativo de Saldo (${numAmount > 0 ? '+' : ''} R$ ${numAmount.toFixed(2)})`,
-      createdAt: new Date().toISOString()
-    });
-
-    res.json({ message: 'Saldo ajustado com sucesso!', newBalance: newBalance });
-  } catch (err) {
-    console.error('[ADMIN ERROR /users/:id/adjust-balance]:', err);
-    res.status(500).json({ error: 'Erro ao ajustar saldo.' });
-  }
-});
-
-// Listar Produtos / Planos para Gestão de Links de Checkout
-router.get('/products', async (req, res) => {
-  try {
-    const products = await getAllProducts();
-    res.json(products);
-  } catch (err) {
-    console.error('[ADMIN ERROR /products]:', err);
-    res.status(500).json({ error: 'Erro ao listar produtos.' });
-  }
-});
-
-// Atualizar Link de Checkout / Preço de um Produto
-router.put('/products/:id', async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { checkoutUrl, price, dailyReturn, status } = req.body;
-
-    const updated = await updateProduct(id, { checkoutUrl, price, dailyReturn, status });
-    if (!updated) {
-      return res.status(404).json({ error: 'Produto não encontrado.' });
-    }
-
-    res.json({ message: 'Produto atualizado com sucesso!', product: updated });
-  } catch (err) {
-    console.error('[ADMIN ERROR /products/:id]:', err);
-    res.status(500).json({ error: 'Erro ao atualizar produto.' });
-  }
-});
-
-// Executar Liquidação Manual de Lucros (Disparado pelo Administrador)
 router.post('/settle', async (req, res) => {
   try {
     console.log('[ADMIN] Liquidação manual de lucros iniciada pelo Administrador...');
@@ -353,7 +756,6 @@ router.post('/settle', async (req, res) => {
   }
 });
 
-// Obter Configurações do Sistema (Nexus CRM, WhatsApp, Pixel)
 router.get('/settings', async (req, res) => {
   try {
     const settings = await getSystemSettings();
@@ -364,7 +766,6 @@ router.get('/settings', async (req, res) => {
   }
 });
 
-// Atualizar Configurações do Sistema
 router.put('/settings', async (req, res) => {
   try {
     const { nexusCrmUrl, whatsappNumber, metaPixelId } = req.body;
@@ -381,5 +782,3 @@ router.put('/settings', async (req, res) => {
 });
 
 module.exports = router;
-
-

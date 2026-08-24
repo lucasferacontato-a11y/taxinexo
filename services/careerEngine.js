@@ -84,19 +84,20 @@ const LEVEL_PERCENTS = {
 };
 
 function calculateUserNetwork(userId, allUsers) {
-  const l1Users = allUsers.filter(u => u.referredBy === userId);
-  const l1Ids = l1Users.map(u => u.id);
+  const targetUser = allUsers.find(u => u.id === userId);
 
-  const l2Users = allUsers.filter(u => l1Ids.includes(u.referredBy));
-  const l2Ids = l2Users.map(u => u.id);
+  function isReferredBy(childUser, parentUser) {
+    if (!childUser || !childUser.referredBy || !parentUser) return false;
+    if (childUser.referredBy === parentUser.id) return true;
+    if (parentUser.inviteCode && String(childUser.referredBy).toUpperCase() === String(parentUser.inviteCode).toUpperCase()) return true;
+    return false;
+  }
 
-  const l3Users = allUsers.filter(u => l2Ids.includes(u.referredBy));
-  const l3Ids = l3Users.map(u => u.id);
-
-  const l4Users = allUsers.filter(u => l3Ids.includes(u.referredBy));
-  const l4Ids = l4Users.map(u => u.id);
-
-  const l5Users = allUsers.filter(u => l4Ids.includes(u.referredBy));
+  const l1Users = allUsers.filter(u => targetUser && isReferredBy(u, targetUser));
+  const l2Users = allUsers.filter(u => l1Users.some(parent => isReferredBy(u, parent)));
+  const l3Users = allUsers.filter(u => l2Users.some(parent => isReferredBy(u, parent)));
+  const l4Users = allUsers.filter(u => l3Users.some(parent => isReferredBy(u, parent)));
+  const l5Users = allUsers.filter(u => l4Users.some(parent => isReferredBy(u, parent)));
 
   const totalMembers = l1Users.length + l2Users.length + l3Users.length + l4Users.length + l5Users.length;
 
@@ -107,12 +108,16 @@ function calculateUserNetwork(userId, allUsers) {
     l4: l4Users,
     l5: l5Users,
     totalMembers,
+    totalTeam: totalMembers,
     directsCount: l1Users.length
   };
 }
 
 function evaluateUserRank(networkData) {
-  const { directsCount, totalMembers, l3 } = networkData;
+  const { directsCount, totalMembers, totalTeam, l3 } = networkData;
+  const count = directsCount !== undefined ? directsCount : (networkData.l1 ? networkData.l1.length : 0);
+  const total = totalMembers !== undefined ? totalMembers : (totalTeam !== undefined ? totalTeam : 0);
+  const l3Count = l3 ? l3.length : 0;
 
   let currentRankIndex = 0;
 
@@ -123,11 +128,11 @@ function evaluateUserRank(networkData) {
     if (rank.id === 'bronze') {
       qualifies = true;
     } else if (rank.id === 'prata') {
-      qualifies = directsCount >= rank.minDirects;
+      qualifies = count >= rank.minDirects;
     } else if (rank.id === 'ouro') {
-      qualifies = directsCount >= rank.minDirects && totalMembers >= rank.minTotal && l3.length >= 1;
+      qualifies = count >= rank.minDirects && total >= rank.minTotal && l3Count >= 1;
     } else {
-      qualifies = directsCount >= rank.minDirects && totalMembers >= rank.minTotal;
+      qualifies = count >= rank.minDirects && total >= rank.minTotal;
     }
 
     if (qualifies) {
@@ -144,11 +149,11 @@ function evaluateUserRank(networkData) {
   let remainingTotal = 0;
 
   if (nextRank) {
-    remainingDirects = Math.max(0, nextRank.minDirects - directsCount);
-    remainingTotal = Math.max(0, nextRank.minTotal - totalMembers);
+    remainingDirects = Math.max(0, nextRank.minDirects - count);
+    remainingTotal = Math.max(0, nextRank.minTotal - total);
     
-    const directProg = nextRank.minDirects > 0 ? (directsCount / nextRank.minDirects) : 1;
-    const totalProg = nextRank.minTotal > 0 ? (totalMembers / nextRank.minTotal) : 1;
+    const directProg = nextRank.minDirects > 0 ? (count / nextRank.minDirects) : 1;
+    const totalProg = nextRank.minTotal > 0 ? (total / nextRank.minTotal) : 1;
     progressPercent = Math.min(99, Math.round(((directProg + totalProg) / 2) * 100));
   }
 

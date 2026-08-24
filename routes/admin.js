@@ -89,7 +89,9 @@ router.get('/metrics', async (req, res) => {
     const rankCounts = { bronze: 0, prata: 0, ouro: 0, rubi: 0, diamante: 0, black_diamond: 0 };
     for (const u of allUsers) {
       const net = calculateUserNetwork(u.id, allUsers);
-      const evalRank = u.careerRank ? RANKS.find(r => r.id === u.careerRank) || evaluateUserRank(net).currentRank : evaluateUserRank(net).currentRank;
+      const evalRank = (u.careerRank && u.careerRank !== 'bronze') 
+        ? (RANKS.find(r => r.id === u.careerRank) || evaluateUserRank(net).currentRank) 
+        : evaluateUserRank(net).currentRank;
       if (evalRank && rankCounts[evalRank.id] !== undefined) rankCounts[evalRank.id]++;
     }
 
@@ -226,7 +228,9 @@ router.get('/users', async (req, res) => {
       const hasDeposited = Boolean((u.totalDeposited && u.totalDeposited > 0) || (u.balance && u.balance > 0) || activeContracts.length > 0);
       
       const net = calculateUserNetwork(u.id, allUsers);
-      const evalRank = u.careerRank ? RANKS.find(r => r.id === u.careerRank) || evaluateUserRank(net).currentRank : evaluateUserRank(net).currentRank;
+      const evalRank = (u.careerRank && u.careerRank !== 'bronze') 
+        ? (RANKS.find(r => r.id === u.careerRank) || evaluateUserRank(net).currentRank) 
+        : evaluateUserRank(net).currentRank;
       const rank = evalRank || { id: 'bronze', name: 'Operador Bronze', badge: '🥉 Bronze', icon: '🥉' };
 
       let defaultStatus = 'new';
@@ -391,11 +395,13 @@ router.get('/career/overview', async (req, res) => {
 
     for (const u of allUsers) {
       const net = calculateUserNetwork(u.id, allUsers);
-      const evalRank = u.careerRank ? RANKS.find(r => r.id === u.careerRank) || evaluateUserRank(net).currentRank : evaluateUserRank(net).currentRank;
+      const evalRank = (u.careerRank && u.careerRank !== 'bronze') 
+        ? (RANKS.find(r => r.id === u.careerRank) || evaluateUserRank(net).currentRank) 
+        : evaluateUserRank(net).currentRank;
       const rank = evalRank || { id: 'bronze', name: 'Operador Bronze', badge: '🥉 Bronze', icon: '🥉' };
       if (rankCounts[rank.id] !== undefined) rankCounts[rank.id]++;
 
-      if (net.totalTeam > 0 || u.careerRank) {
+      if (net.totalTeam > 0 || net.l1.length > 0 || u.careerRank) {
         leaders.push({
           id: u.id,
           name: u.operatorName || `Operador #${u.id}`,
@@ -413,13 +419,13 @@ router.get('/career/overview', async (req, res) => {
       .filter(t => t.type === 'bonus' && t.status === 'approved' && String(t.description || '').includes('Bônus'))
       .reduce((acc, t) => acc + Math.abs(parseFloat(t.amount || 0)), 0);
 
-    leaders.sort((a, b) => b.totalTeam - a.totalTeam);
+    leaders.sort((a, b) => b.totalTeam - a.totalTeam || b.directs - a.directs);
 
     res.json({
       ranks: RANKS,
       rankCounts,
       totalBonusPaid,
-      topLeaders: leaders.slice(0, 15)
+      topLeaders: leaders
     });
   } catch (err) {
     console.error('[ADMIN ERROR /career/overview]:', err);

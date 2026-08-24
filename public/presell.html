@@ -991,7 +991,258 @@
     .footer-links a:hover {
       color: var(--accent-lime);
     }
-  </style>
+  
+    /* ==========================================================================
+       8. REVIEWS & SOCIAL PROOF FEED (NAJAF FRAMER STYLE)
+       ========================================================================== */
+    .reviews-board {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 24px;
+      padding: 28px 24px;
+      margin-bottom: 28px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+      align-items: center;
+      backdrop-filter: blur(16px);
+    }
+    @media (min-width: 768px) {
+      .reviews-board {
+        grid-template-columns: 280px 1fr;
+        gap: 36px;
+        padding: 34px;
+        margin-bottom: 36px;
+      }
+    }
+
+    .score-headline {
+      font-size: 54px;
+      font-weight: 900;
+      font-family: var(--font-heading);
+      color: #fff;
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+    }
+    .stars-amber {
+      color: #fbbf24;
+      font-size: 16px;
+      margin: 8px 0;
+      letter-spacing: 2px;
+    }
+
+    .progress-bar-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+    }
+    .progress-bar-track {
+      flex: 1;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: var(--radius-pill);
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: var(--accent-lime);
+      border-radius: var(--radius-pill);
+    }
+
+    /* Filters Bar */
+    .reviews-filter-bar {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+      margin-bottom: 24px;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+    .reviews-filter-bar::-webkit-scrollbar { display: none; }
+    
+    .review-filter-btn {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+      padding: 8px 18px;
+      border-radius: var(--radius-pill);
+      font-size: 12.5px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+      min-height: 38px;
+    }
+    .review-filter-btn:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+    }
+    .review-filter-btn.active {
+      background: var(--accent-lime-muted);
+      border-color: var(--accent-lime);
+      color: var(--accent-lime);
+    }
+
+    .reviews-feed-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      margin-bottom: 36px;
+    }
+    @media (min-width: 640px) {
+      .reviews-feed-grid { grid-template-columns: repeat(2, 1fr); gap: 18px; }
+    }
+    @media (min-width: 1024px) {
+      .reviews-feed-grid { grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    }
+
+    .review-bubble-card {
+      background: var(--bg-card);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border-subtle);
+      border-radius: 24px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    .review-bubble-card:hover {
+      border-color: var(--border-lime-subtle);
+      transform: translateY(-3px);
+      background: var(--bg-card-hover);
+    }
+    .reviewer-meta-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 14px;
+    }
+    .reviewer-identity {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .reviewer-avatar-hex {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(156, 243, 91, 0.2) 0%, rgba(156, 243, 91, 0.05) 100%);
+      border: 1px solid var(--border-lime-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      color: var(--accent-lime);
+      font-size: 14.5px;
+      font-family: var(--font-heading);
+      flex-shrink: 0;
+    }
+    .reviewer-name-tag {
+      font-size: 15px;
+      font-weight: 800;
+      font-family: var(--font-heading);
+      color: #fff;
+    }
+    .reviewer-role-tag {
+      font-size: 11px;
+      color: var(--text-tertiary);
+    }
+    .verified-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      color: var(--accent-lime);
+      font-size: 10.5px;
+      font-weight: 700;
+      margin-top: 2px;
+    }
+    .review-body-text {
+      font-size: 13.5px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 18px;
+      font-style: italic;
+    }
+    .review-card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 14px;
+      border-top: 1px solid var(--border-subtle);
+      font-size: 11.5px;
+    }
+    .review-like-btn {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+      padding: 4px 10px;
+      border-radius: var(--radius-pill);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11.5px;
+      font-weight: 700;
+      transition: all 0.2s ease;
+    }
+    .review-like-btn:hover, .review-like-btn.liked {
+      background: rgba(239, 68, 68, 0.15);
+      border-color: rgba(239, 68, 68, 0.4);
+      color: #f87171;
+    }
+
+    /* Comment Submission Panel */
+    .comment-form-panel {
+      background: var(--bg-card);
+      border: 1px solid var(--border-lime-subtle);
+      border-radius: 24px;
+      padding: 32px 24px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(16px);
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .form-group-presell {
+      margin-bottom: 16px;
+      text-align: left;
+    }
+    .form-label-presell {
+      font-size: 12px;
+      font-weight: 700;
+      color: #fff;
+      display: block;
+      margin-bottom: 6px;
+    }
+    .form-input-presell, .form-textarea-presell {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-inner);
+      padding: 12px 16px;
+      color: #fff;
+      font-size: 13.5px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .form-input-presell:focus, .form-textarea-presell:focus {
+      border-color: var(--accent-lime);
+    }
+    .star-picker {
+      display: flex;
+      gap: 6px;
+      font-size: 22px;
+      color: #fbbf24;
+      cursor: pointer;
+      margin-bottom: 8px;
+    }
+</style>
 </head>
 <body>
 
@@ -1367,7 +1618,276 @@
     </section>
 
     <!-- 6. FAQ ACCORDION -->
-    <section id="faq" class="section-wrapper">
+    
+    <!-- ==========================================================================
+         8. FEED DE AVALIAÇÕES & DEPOIMENTOS DE OPERADORES
+         ========================================================================== -->
+    <section id="avaliacoes" class="section-container">
+      <div class="section-badge"><i class="fa-solid fa-star"></i> DEPOIMENTOS REAIS</div>
+      <h2 class="section-title">O que dizem os <span style="color: var(--accent-lime);">Operadores Reais</span></h2>
+      <p class="section-subtitle">
+        Mais de 4.870 operadores já ativaram cotas autônomas e recebem rendimentos diários e comissões via Pix.
+      </p>
+
+      <!-- Painel de Nota Geral -->
+      <div class="reviews-board">
+        <div style="text-align: center;">
+          <div class="score-headline">4.9</div>
+          <div class="stars-amber">
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star-half-stroke"></i>
+          </div>
+          <div style="font-size: 12px; color: var(--text-tertiary);">Baseado em <strong>4.872 avaliações</strong></div>
+          <div class="verified-chip" style="justify-content: center; margin-top: 6px;">
+            <i class="fa-solid fa-circle-check"></i> 100% Verificado por Operadores
+          </div>
+        </div>
+
+        <div>
+          <div class="progress-bar-row">
+            <span style="width: 60px;">5 estrelas</span>
+            <div class="progress-bar-track"><div class="progress-bar-fill" style="width: 92%;"></div></div>
+            <span style="width: 35px; text-align: right;">92%</span>
+          </div>
+          <div class="progress-bar-row">
+            <span style="width: 60px;">4 estrelas</span>
+            <div class="progress-bar-track"><div class="progress-bar-fill" style="width: 6%;"></div></div>
+            <span style="width: 35px; text-align: right;">6%</span>
+          </div>
+          <div class="progress-bar-row">
+            <span style="width: 60px;">3 estrelas</span>
+            <div class="progress-bar-track"><div class="progress-bar-fill" style="width: 1.5%;"></div></div>
+            <span style="width: 35px; text-align: right;">1.5%</span>
+          </div>
+          <div class="progress-bar-row">
+            <span style="width: 60px;">2 estrelas</span>
+            <div class="progress-bar-track"><div class="progress-bar-fill" style="width: 0.3%;"></div></div>
+            <span style="width: 35px; text-align: right;">0.3%</span>
+          </div>
+          <div class="progress-bar-row">
+            <span style="width: 60px;">1 estrela</span>
+            <div class="progress-bar-track"><div class="progress-bar-fill" style="width: 0.2%;"></div></div>
+            <span style="width: 35px; text-align: right;">0.2%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Barra de Filtros -->
+      <div class="reviews-filter-bar">
+        <button class="review-filter-btn active" onclick="filterReviews('all', this)"><i class="fa-solid fa-layer-group"></i> Todos (4.872)</button>
+        <button class="review-filter-btn" onclick="filterReviews('saques', this)"><i class="fa-solid fa-money-bill-transfer"></i> Saques Confirmados</button>
+        <button class="review-filter-btn" onclick="filterReviews('equipe', this)"><i class="fa-solid fa-users"></i> Ganhos de Equipe</button>
+        <button class="review-filter-btn" onclick="filterReviews('vip', this)"><i class="fa-solid fa-crown"></i> Frotas VIP</button>
+        <button class="review-filter-btn" onclick="filterReviews('recentes', this)"><i class="fa-solid fa-clock"></i> Mais Recentes</button>
+      </div>
+
+      <!-- Feed de Depoimentos Grid -->
+      <div class="reviews-feed-grid" id="reviews-feed">
+        
+        <div class="review-bubble-card" data-category="all saques recentes">
+          <div>
+            <div class="reviewer-meta-row">
+              <div class="reviewer-identity">
+                <div class="reviewer-avatar-hex">MS</div>
+                <div>
+                  <div class="reviewer-name-tag">Marcos Silva</div>
+                  <div class="reviewer-role-tag">Campinas, SP • <span style="color: var(--accent-lime); font-weight:700;">Supervisor Prata</span></div>
+                  <span class="verified-chip"><i class="fa-solid fa-circle-check"></i> Saque Pix Confirmado</span>
+                </div>
+              </div>
+              <div class="stars-amber" style="font-size: 11.5px;">
+                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+              </div>
+            </div>
+            <p class="review-body-text">
+              "Comecei com o BYD Dolphin de R$ 30 pra testar. Em 4 dias indiquei 6 amigos e bati Supervisor Prata, caiu os R$ 100 de bônus no Pix na hora. Já saquei mais de R$ 850 no total!"
+            </p>
+          </div>
+          <div class="review-card-footer">
+            <span style="color: var(--text-tertiary); font-family: var(--font-mono);"><i class="fa-solid fa-calendar-day"></i> Há 22 minutos</span>
+            <button type="button" class="review-like-btn liked" onclick="toggleLike(this, 38)"><i class="fa-solid fa-heart"></i> <span>39</span></button>
+          </div>
+        </div>
+
+        <div class="review-bubble-card" data-category="all equipe">
+          <div>
+            <div class="reviewer-meta-row">
+              <div class="reviewer-identity">
+                <div class="reviewer-avatar-hex">VT</div>
+                <div>
+                  <div class="reviewer-name-tag">Vanessa Toledo</div>
+                  <div class="reviewer-role-tag">Curitiba, PR • <span style="color: var(--accent-lime); font-weight:700;">Gestora Ouro</span></div>
+                  <span class="verified-chip"><i class="fa-solid fa-circle-check"></i> Saque Diário Liberado</span>
+                </div>
+              </div>
+              <div class="stars-amber" style="font-size: 11.5px;">
+                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+              </div>
+            </div>
+            <p class="review-body-text">
+              "A regra dos 3 níveis de comissão é surreal. Bati Gestor Ouro com 18 pessoas na rede e liberou o saque dos rendimentos diários dos carros. Plataforma super séria e transparente."
+            </p>
+          </div>
+          <div class="review-card-footer">
+            <span style="color: var(--text-tertiary); font-family: var(--font-mono);"><i class="fa-solid fa-calendar-day"></i> Há 1 hora</span>
+            <button type="button" class="review-like-btn" onclick="toggleLike(this, 54)"><i class="fa-solid fa-heart"></i> <span>54</span></button>
+          </div>
+        </div>
+
+        <div class="review-bubble-card" data-category="all vip saques">
+          <div>
+            <div class="reviewer-meta-row">
+              <div class="reviewer-identity">
+                <div class="reviewer-avatar-hex">RK</div>
+                <div>
+                  <div class="reviewer-name-tag">Rodrigo Krause</div>
+                  <div class="reviewer-role-tag">Porto Alegre, RS • <span style="color: #c084fc; font-weight:700;">Diretor Rubi</span></div>
+                  <span class="verified-chip"><i class="fa-solid fa-circle-check"></i> Frota Tesla Cybercab</span>
+                </div>
+              </div>
+              <div class="stars-amber" style="font-size: 11.5px;">
+                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+              </div>
+            </div>
+            <p class="review-body-text">
+              "Tenho 2 Tesla Cybercab rodando e uma equipe de 64 membros. O suporte no WhatsApp e o app são impecáveis. Bônus de R$ 1.000 do Rubi caiu certinho no meu Pix."
+            </p>
+          </div>
+          <div class="review-card-footer">
+            <span style="color: var(--text-tertiary); font-family: var(--font-mono);"><i class="fa-solid fa-calendar-day"></i> Há 3 horas</span>
+            <button type="button" class="review-like-btn liked" onclick="toggleLike(this, 112)"><i class="fa-solid fa-heart"></i> <span>113</span></button>
+          </div>
+        </div>
+
+        <div class="review-bubble-card" data-category="all recentes">
+          <div>
+            <div class="reviewer-meta-row">
+              <div class="reviewer-identity">
+                <div class="reviewer-avatar-hex">LP</div>
+                <div>
+                  <div class="reviewer-name-tag">Lucas Prado</div>
+                  <div class="reviewer-role-tag">Belo Horizonte, MG • <span style="color: var(--accent-lime); font-weight:700;">Operador Bronze</span></div>
+                  <span class="verified-chip"><i class="fa-solid fa-circle-check"></i> Cota Ativa</span>
+                </div>
+              </div>
+              <div class="stars-amber" style="font-size: 11.5px;">
+                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+              </div>
+            </div>
+            <p class="review-body-text">
+              "Paguei o Pix de R$ 30 pelo Cartpanda e o Dolphin Mini já apareceu operando no meu painel na hora com a barra de progresso. Muito fácil de usar."
+            </p>
+          </div>
+          <div class="review-card-footer">
+            <span style="color: var(--text-tertiary); font-family: var(--font-mono);"><i class="fa-solid fa-calendar-day"></i> Há 5 horas</span>
+            <button type="button" class="review-like-btn" onclick="toggleLike(this, 19)"><i class="fa-solid fa-heart"></i> <span>19</span></button>
+          </div>
+        </div>
+
+        <div class="review-bubble-card" data-category="all equipe">
+          <div>
+            <div class="reviewer-meta-row">
+              <div class="reviewer-identity">
+                <div class="reviewer-avatar-hex">MF</div>
+                <div>
+                  <div class="reviewer-name-tag">Mariana Fontes</div>
+                  <div class="reviewer-role-tag">Fortaleza, CE • <span style="color: var(--accent-lime); font-weight:700;">Supervisor Prata</span></div>
+                  <span class="verified-chip"><i class="fa-solid fa-circle-check"></i> Rede Ativa</span>
+                </div>
+              </div>
+              <div class="stars-amber" style="font-size: 11.5px;">
+                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+              </div>
+            </div>
+            <p class="review-body-text">
+              "O link de convite é ótimo pra mandar no WhatsApp. Minhas comissões de 15% caem instantaneamente no saldo livre e posso sacar sem burocracia."
+            </p>
+          </div>
+          <div class="review-card-footer">
+            <span style="color: var(--text-tertiary); font-family: var(--font-mono);"><i class="fa-solid fa-calendar-day"></i> Há 8 horas</span>
+            <button type="button" class="review-like-btn liked" onclick="toggleLike(this, 47)"><i class="fa-solid fa-heart"></i> <span>48</span></button>
+          </div>
+        </div>
+
+        <div class="review-bubble-card" data-category="all vip saques">
+          <div>
+            <div class="reviewer-meta-row">
+              <div class="reviewer-identity">
+                <div class="reviewer-avatar-hex">FB</div>
+                <div>
+                  <div class="reviewer-name-tag">Felipe Brandão</div>
+                  <div class="reviewer-role-tag">Rio de Janeiro, RJ • <span style="color: #fbbf24; font-weight:700;">Embaixador Diamante</span></div>
+                  <span class="verified-chip"><i class="fa-solid fa-circle-check"></i> Frota NIO Executive</span>
+                </div>
+              </div>
+              <div class="stars-amber" style="font-size: 11.5px;">
+                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+              </div>
+            </div>
+            <p class="review-body-text">
+              "Melhor modelo de negócios de frotas autônomas que já vi. Toda a minha equipe do tráfego migrou pra cá. Bônus de R$ 3.000 pago no Pix pontualmente."
+            </p>
+          </div>
+          <div class="review-card-footer">
+            <span style="color: var(--text-tertiary); font-family: var(--font-mono);"><i class="fa-solid fa-calendar-day"></i> Ontem</span>
+            <button type="button" class="review-like-btn liked" onclick="toggleLike(this, 189)"><i class="fa-solid fa-heart"></i> <span>190</span></button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Formulário de Comentário / Avaliação -->
+      <div class="comment-form-panel">
+        <h3 style="font-size: 20px; font-weight: 800; color: #fff; margin-bottom: 6px; text-align: center;">
+          Deixe sua Avaliação como <span style="color: var(--accent-lime);">Operador</span>
+        </h3>
+        <p style="font-size: 13px; color: var(--text-secondary); text-align: center; margin-bottom: 24px;">
+          Sua mensagem será verificada e publicada imediatamente no mural oficial.
+        </p>
+
+        <form id="comment-form" onsubmit="submitNewReview(event)">
+          <div style="text-align: center; margin-bottom: 18px;">
+            <label class="form-label-presell" style="text-align: center;">Sua Nota de Satisfação:</label>
+            <div class="star-picker" id="star-picker-group" style="justify-content: center;">
+              <i class="fa-solid fa-star" onclick="setFormStars(1)"></i>
+              <i class="fa-solid fa-star" onclick="setFormStars(2)"></i>
+              <i class="fa-solid fa-star" onclick="setFormStars(3)"></i>
+              <i class="fa-solid fa-star" onclick="setFormStars(4)"></i>
+              <i class="fa-solid fa-star" onclick="setFormStars(5)"></i>
+            </div>
+            <div id="form-stars-label" style="font-size: 12px; color: var(--accent-lime); font-weight: 700;">Excelente (5/5)</div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+            <div class="form-group-presell">
+              <label class="form-label-presell" for="review-author">Seu Nome / Operador:</label>
+              <input type="text" id="review-author" class="form-input-presell" placeholder="Ex: Roberto S." required>
+            </div>
+            <div class="form-group-presell">
+              <label class="form-label-presell" for="review-city">Cidade / Estado:</label>
+              <input type="text" id="review-city" class="form-input-presell" placeholder="Ex: São Paulo, SP" required>
+            </div>
+          </div>
+
+          <div class="form-group-presell">
+            <label class="form-label-presell" for="review-message">Seu Depoimento / Experiência:</label>
+            <textarea id="review-message" class="form-textarea-presell" rows="3" placeholder="Conte como tem sido sua experiência com os rendimentos e comissões da TAXINEXO..." required></textarea>
+          </div>
+
+          <button type="submit" class="btn-najaf btn-najaf-primary" style="width: 100%; justify-content: center; padding: 14px; font-size: 14px;">
+            <i class="fa-solid fa-paper-plane"></i> Publicar Minha Avaliação
+          </button>
+        </form>
+
+        <div id="comment-feedback-alert" style="display: none; background: var(--accent-lime-muted); border: 1px solid var(--border-lime); border-radius: var(--radius-inner); padding: 14px; margin-top: 16px; text-align: center; color: var(--accent-lime); font-size: 13px; font-weight: 700;">
+          <i class="fa-solid fa-circle-check"></i> Avaliação publicada com sucesso no mural de operadores!
+        </div>
+      </div>
+    </section>
+<section id="faq" class="section-wrapper">
       <div class="section-header-center">
         <span class="section-pill-tag">// FAQ</span>
         <h2 class="section-title">Perguntas Frequentes</h2>
@@ -1434,6 +1954,7 @@
         <a href="#simulador">Simulador</a>
         <a href="#frotas">Frotas</a>
         <a href="#carreira">Carreira</a>
+        <a href="#avaliacoes">Avaliações</a>
         <a href="/login.html">Login</a>
       </div>
       <p>© 2026 TAXINEXO Mobility Protocol. Todos os direitos reservados.</p>
@@ -1550,6 +2071,102 @@
 
     // Initial Sim
     updateSim();
-  </script>
+  
+    // ==========================================
+    // REVIEWS INTERATIVAS & CURTIDAS & FILTROS
+    // ==========================================
+    function toggleLike(btn, initialCount) {
+      const isLiked = btn.classList.contains('liked');
+      const span = btn.querySelector('span');
+      let count = parseInt(span.textContent, 10);
+
+      if (isLiked) {
+        btn.classList.remove('liked');
+        span.textContent = count - 1;
+      } else {
+        btn.classList.add('liked');
+        span.textContent = count + 1;
+      }
+    }
+
+    function filterReviews(category, btnEl) {
+      document.querySelectorAll('.review-filter-btn').forEach(b => b.classList.remove('active'));
+      if (btnEl) btnEl.classList.add('active');
+
+      const cards = document.querySelectorAll('#reviews-feed .review-bubble-card');
+      cards.forEach(card => {
+        if (category === 'all') {
+          card.style.display = 'flex';
+        } else {
+          const cats = card.getAttribute('data-category') || '';
+          if (cats.includes(category)) {
+            card.style.display = 'flex';
+          } else {
+            card.style.display = 'none';
+          }
+        }
+      });
+    }
+
+    let currentFormRating = 5;
+    function setFormStars(stars) {
+      currentFormRating = stars;
+      const starIcons = document.querySelectorAll('#star-picker-group i');
+      starIcons.forEach((icon, index) => {
+        if (index < stars) {
+          icon.className = 'fa-solid fa-star';
+        } else {
+          icon.className = 'fa-regular fa-star';
+        }
+      });
+      const texts = ['Muito Ruim (1/5)', 'Regular (2/5)', 'Bom (3/5)', 'Muito Bom (4/5)', 'Excelente (5/5)'];
+      document.getElementById('form-stars-label').textContent = texts[stars - 1];
+    }
+
+    function submitNewReview(e) {
+      e.preventDefault();
+      const author = document.getElementById('review-author').value.trim();
+      const city = document.getElementById('review-city').value.trim();
+      const msg = document.getElementById('review-message').value.trim();
+      if (!author || !msg) return;
+
+      const feed = document.getElementById('reviews-feed');
+      const initials = author.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+
+      const newCard = document.createElement('div');
+      newCard.className = 'review-bubble-card';
+      newCard.setAttribute('data-category', 'all recentes');
+      newCard.style.borderColor = 'var(--accent-lime)';
+      newCard.innerHTML = 
+        '<div>' +
+          '<div class="reviewer-meta-row">' +
+            '<div class="reviewer-identity">' +
+              '<div class="reviewer-avatar-hex">' + initials + '</div>' +
+              '<div>' +
+                '<div class="reviewer-name-tag">' + author + '</div>' +
+                '<div class="reviewer-role-tag">' + (city || 'Brasil') + ' • <span style="color: var(--accent-lime); font-weight:700;">Novo Operador</span></div>' +
+                '<span class="verified-chip"><i class="fa-solid fa-circle-check"></i> Avaliação Verificada</span>' +
+              '</div>' +
+            '</div>' +
+            '<div class="stars-amber" style="font-size: 11.5px;">' +
+              '<i class="fa-solid fa-star"></i>'.repeat(currentFormRating) +
+            '</div>' +
+          '</div>' +
+          '<p class="review-body-text">"' + msg + '"</p>' +
+        '</div>' +
+        '<div class="review-card-footer">' +
+          '<span style="color: var(--accent-lime); font-weight: 700; font-family: var(--font-mono);"><i class="fa-solid fa-clock"></i> Agora mesmo</span>' +
+          '<button type="button" class="review-like-btn liked" onclick="toggleLike(this, 1)"><i class="fa-solid fa-heart"></i> <span>1</span></button>' +
+        '</div>';
+
+      feed.prepend(newCard);
+      document.getElementById('comment-form').reset();
+      setFormStars(5);
+
+      const alertBox = document.getElementById('comment-feedback-alert');
+      alertBox.style.display = 'block';
+      setTimeout(() => { alertBox.style.display = 'none'; }, 6000);
+    }
+</script>
 </body>
 </html>

@@ -1429,7 +1429,152 @@
       line-height: 1.6;
       margin: 0;
     }
-</style>
+
+    /* =========================================================
+       BOTÃO & BANNER DE SUPORTE WHATSAPP NA PRESELL (DÚVIDAS)
+       ========================================================= */
+    .floating-whatsapp-btn {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 99999;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+      color: #ffffff;
+      padding: 12px 18px;
+      border-radius: var(--radius-pill);
+      text-decoration: none;
+      box-shadow: 0 10px 30px rgba(37, 211, 102, 0.4), 0 0 20px rgba(37, 211, 102, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      font-weight: 800;
+      font-size: 13px;
+      letter-spacing: -0.2px;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      animation: wa-pulse 2.5s infinite;
+    }
+
+    .floating-whatsapp-btn:hover {
+      transform: translateY(-4px) scale(1.04);
+      box-shadow: 0 16px 40px rgba(37, 211, 102, 0.6), 0 0 30px rgba(37, 211, 102, 0.4);
+      color: #ffffff;
+    }
+
+    .floating-whatsapp-btn i {
+      font-size: 22px;
+    }
+
+    @keyframes wa-pulse {
+      0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.6); }
+      70% { box-shadow: 0 0 0 16px rgba(37, 211, 102, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+    }
+
+    .wa-support-card {
+      background: linear-gradient(145deg, rgba(18, 30, 24, 0.85) 0%, rgba(9, 16, 12, 0.95) 100%);
+      border: 1px solid rgba(37, 211, 102, 0.35);
+      border-top: 1px solid rgba(37, 211, 102, 0.7);
+      border-radius: var(--radius-card);
+      padding: 28px;
+      margin: 40px auto;
+      max-width: 920px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(37, 211, 102, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .wa-support-info {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex: 1;
+      min-width: 280px;
+    }
+
+    .wa-support-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      background: rgba(37, 211, 102, 0.15);
+      border: 1px solid rgba(37, 211, 102, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #25D366;
+      font-size: 28px;
+      box-shadow: 0 0 20px rgba(37, 211, 102, 0.3);
+      flex-shrink: 0;
+    }
+
+    .wa-support-text h4 {
+      font-size: 17px;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 4px;
+      line-height: 1.3;
+    }
+
+    .wa-support-text p {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+
+    .btn-wa-cta {
+      background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+      color: #ffffff;
+      padding: 14px 24px;
+      border-radius: var(--radius-pill);
+      font-size: 13.5px;
+      font-weight: 800;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 10px 25px rgba(37, 211, 102, 0.35);
+      transition: all 0.25s ease;
+      white-space: nowrap;
+    }
+
+    .btn-wa-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 35px rgba(37, 211, 102, 0.5);
+      color: #ffffff;
+    }
+
+    @media (max-width: 768px) {
+      .floating-whatsapp-btn {
+        bottom: 16px;
+        right: 16px;
+        padding: 10px 14px;
+        font-size: 12px;
+      }
+      .floating-whatsapp-btn span {
+        display: none;
+      }
+      .floating-whatsapp-btn {
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        padding: 0;
+        justify-content: center;
+      }
+      .wa-support-card {
+        padding: 20px 16px;
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .btn-wa-cta {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+
+  </style>
 </head>
 <body>
 
@@ -2348,6 +2493,30 @@
     </div>
   </footer>
 
+  
+    <!-- Card de Atendimento WhatsApp (Dúvidas) -->
+    <div class="wa-support-card">
+      <div class="wa-support-info">
+        <div class="wa-support-icon">
+          <i class="fa-brands fa-whatsapp"></i>
+        </div>
+        <div class="wa-support-text">
+          <h4>Ainda tem dúvidas sobre as cotas ou rendimentos?</h4>
+          <p>Converse diretamente com nosso consultor oficial no WhatsApp <strong>(34) 99201-9122</strong> e tire todas as suas dúvidas antes de começar.</p>
+        </div>
+      </div>
+      <a
+        href="https://wa.me/5534992019122?text=Ol%C3%A1!%20Vi%20a%20apresenta%C3%A7%C3%A3o%20da%20TAXINEXO%20e%20gostaria%20de%20tirar%20algumas%20d%C3%BAvidas%20sobre%20as%20frotas."
+        target="_blank"
+        rel="noopener noreferrer"
+        class="btn-wa-cta"
+      >
+        <i class="fa-brands fa-whatsapp"></i>
+        <span>Chamar no WhatsApp</span>
+      </a>
+    </div>
+
+
   <script>
     // Checkout URLs Reais do Cartpanda Pay
     const CHECKOUT_URLS = {
@@ -2566,5 +2735,19 @@
       setTimeout(() => { alertBox.style.display = 'none'; }, 6000);
     }
 </script>
+
+  <!-- Botão Flutuante de Suporte / Dúvidas no WhatsApp -->
+  <a
+    href="https://wa.me/5534992019122?text=Ol%C3%A1!%20Vi%20a%20apresenta%C3%A7%C3%A3o%20da%20TAXINEXO%20e%20gostaria%20de%20tirar%20algumas%20d%C3%BAvidas%20sobre%20as%20frotas."
+    target="_blank"
+    rel="noopener noreferrer"
+    class="floating-whatsapp-btn"
+    title="Fale conosco no WhatsApp (34) 99201-9122"
+    aria-label="Tirar dúvidas no WhatsApp"
+  >
+    <i class="fa-brands fa-whatsapp"></i>
+    <span>Dúvidas? Fale no WhatsApp</span>
+  </a>
+
 </body>
 </html>

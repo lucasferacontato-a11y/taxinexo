@@ -257,44 +257,28 @@ module.exports = function(io) {
 
       // Se a mensagem veio do cliente (!fromMe) e o bot NÃO está pausado
       if (!fromMe && messageContent && !lead.botPaused) {
-        const lower = messageContent.toLowerCase();
-        const firstName = (lead.name || '').split(' ')[0] || 'amigo';
-        let replyText = null;
-        let nextStage = null;
+        const aiSdrEngine = require('../services/aiSdrEngine');
+        const history = db.getMessages(lead.id);
+        const result = aiSdrEngine.processMessage({ text: messageContent, lead, history });
 
-        // 1. Pedido de Atendente Humano
-        if (lower.includes('humano') || lower.includes('atendente') || lower.includes('pessoa') || lower.includes('falar com alguém')) {
+        console.log(`[AI SDR INTENT DETECTED] Lead: ${cleanPhone} | Intent: ${result.intent}`);
+
+        if (result.pauseBot) {
           db.updateLead(lead.id, { botPaused: true });
-          replyText = `Entendido, ${firstName}! Pausei nosso assistente automático 👨‍💼. Um consultor oficial TAXINEXO vai assumir seu atendimento em instantes.`;
           if (io) io.emit('leads:human_requested', { lead });
         }
-        // 2. Tabela, Cotas e Rendimentos
-        else if (lower.includes('tabela') || lower.includes('quanto custa') || lower.includes('rendimento') || lower.includes('cota') || lower.includes('preço') || lower.includes('valor') || lower.includes('cybercab') || lower.includes('lucro') || lower.includes('ganho')) {
-          nextStage = 'qualificado';
-          replyText = `📊 *Frotas Disponíveis para Ativação TAXINEXO:*\n\n🟢 *Entrada:*\n• *BYD Dolphin:* Cota R$ 30,00 ➔ R$ 2,80/dia (15 dias)\n• *Tesla Model 3:* Cota R$ 150,00 ➔ R$ 14,50/dia (30 dias)\n\n🟡 *Popular & Alta Demanda:*\n• *Baidu Apollo RT6:* Cota R$ 350,00 ➔ R$ 36,00/dia (45 dias)\n• *Tesla Cybercab:* Cota R$ 600,00 ➔ R$ 68,00/dia (40 dias)\n• *Cruise Origin:* Cota R$ 900,00 ➔ R$ 105,00/dia (45 dias)\n\n🟣 *VIP & Executivo:*\n• *Waymo Van:* Cota R$ 1.500,00 ➔ R$ 185,00/dia (60 dias)\n• *Zoox 4x4:* Cota R$ 2.800,00 ➔ R$ 360,00/dia (60 dias)\n• *NIO Executive:* Cota R$ 5.000,00 ➔ R$ 720,00/dia (90 dias)\n\n⚡ Saques liberados todo dia via Pix!\n👉 Qual dessas frotas você gostaria de ativar para eu te orientar no passo a passo?`;
-        }
-        // 3. Pix, Cadastro e Ativação
-        else if (lower.includes('pix') || lower.includes('pagar') || lower.includes('como ativo') || lower.includes('como cadastro') || lower.includes('link') || lower.includes('site') || lower.includes('cadastrar') || lower.includes('recarga')) {
-          nextStage = 'proposta';
-          replyText = `Perfeito, ${firstName}! O processo de ativação é 100% automático:\n\n1️⃣ Acesse nosso aplicativo: https://taxinexo.onrender.com/login.html\n2️⃣ Crie sua conta e clique no botão *Recarga Pix*.\n3️⃣ Pague o Pix do valor da cota escolhida.\n4️⃣ Na aba *Frotas*, clique em *Alugar / Ativar Cota*.\n\nAssim que pagar, seu rendimento começa a contar na mesma hora! Qualquer dúvida me avise aqui.`;
-        }
-        // 4. Primeiro Contato / Dúvidas Gerais (Mensagem Padrão de Boas-Vindas)
-        else {
-          nextStage = 'contato';
-          replyText = `Olá ${firstName}! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossas frotas de robotáxis elétricos autônomos operam 24/7 gerando rendimentos diários com saque via Pix a partir de *R$ 30,00*.\n\n📱 *Acesse o Aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Instagram:* https://www.instagram.com/taxinexoofficial/\n💬 *Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nVocê gostaria de ver a *tabela completa de cotas e rendimentos* ou tirar alguma dúvida específica?`;
-        }
 
-        if (nextStage && lead.stage !== 'ganho') {
-          db.updateLead(lead.id, { stage: nextStage });
-          if (io) io.emit('leads:update', db.getLeads());
+        if (result.nextStage && lead.stage !== 'ganho') {
+          db.updateLead(lead.id, { stage: result.nextStage });
         }
+        if (io) io.emit('leads:update', db.getLeads());
 
-        if (replyText) {
-          console.log(`[AUTO-RESPONDER DISPATCH] Disparando resposta para ${cleanPhone}...`);
+        if (result.reply) {
+          console.log(`[AI SDR DISPATCH] Disparando resposta (${result.intent}) para ${cleanPhone}...`);
           whatsappQueue.enqueue({
             leadId: lead.id,
             phone: cleanPhone,
-            text: replyText,
+            text: result.reply,
             instanceName: instance || 'bot_principal'
           });
         }

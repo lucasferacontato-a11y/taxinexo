@@ -155,14 +155,40 @@
       <!-- ================= ABA 2: FROTAS & PRODUTOS ================= -->
       <section id="tab-products" class="tab-pane" role="tabpanel">
         <div class="pane-header">
-          <h3>Frotas Disponíveis</h3>
-          <p>Selecione um veículo autônomo para iniciar seu contrato.</p>
+          <h3>Catálogo de Operação</h3>
+          <p>Selecione um ativo autônomo para iniciar seu contrato com liquidação diária.</p>
         </div>
 
-        <!-- Barra de Filtros (Chips com Contadores) -->
-        <div class="filter-scroll" role="toolbar" aria-label="Filtrar categorias">
+        <!-- Seletor Superior: Veículos vs Pontos de Carregamento -->
+        <div class="product-type-toggle">
+          <button class="type-toggle-btn active" id="toggle-type-vehicles" onclick="switchProductType('vehicles')">
+            <i class="fa-solid fa-car-side"></i> Veículos Autônomos
+          </button>
+          <button class="type-toggle-btn" id="toggle-type-chargers" onclick="switchProductType('chargers')">
+            <i class="fa-solid fa-charging-station"></i> Pontos de Carregamento
+          </button>
+        </div>
+
+        <!-- Barra de Filtro por Cidades (Austin, Miami, New York) -->
+        <div class="city-filter-bar" id="city-filter-bar">
+          <button class="city-chip active" onclick="filterByCity('all', this)">
+            <i class="fa-solid fa-globe"></i> Todas as Cidades
+          </button>
+          <button class="city-chip" onclick="filterByCity('Austin', this)">
+            <i class="fa-solid fa-location-dot"></i> Austin, TX
+          </button>
+          <button class="city-chip" onclick="filterByCity('Miami', this)">
+            <i class="fa-solid fa-location-dot"></i> Miami, FL
+          </button>
+          <button class="city-chip" onclick="filterByCity('New York', this)">
+            <i class="fa-solid fa-location-dot"></i> New York, NY
+          </button>
+        </div>
+
+        <!-- Barra de Filtros por Categoria -->
+        <div class="filter-scroll" id="category-filter-scroll" role="toolbar" aria-label="Filtrar categorias">
           <button class="filter-chip active" onclick="filterProducts('all')">
-            <i class="fa-solid fa-layer-group"></i> Todos (<span id="count-all">7</span>)
+            <i class="fa-solid fa-layer-group"></i> Todos (<span id="count-all">8</span>)
           </button>
           <button class="filter-chip" onclick="filterProducts('popular')">
             <i class="fa-solid fa-fire"></i> Alta Demanda (<span id="count-popular">3</span>)
@@ -171,7 +197,7 @@
             <i class="fa-solid fa-crown"></i> VIP Elite (<span id="count-vip">3</span>)
           </button>
           <button class="filter-chip" onclick="filterProducts('economy')">
-            <i class="fa-solid fa-leaf"></i> Econômicos (<span id="count-economy">1</span>)
+            <i class="fa-solid fa-leaf"></i> Entrada (<span id="count-economy">2</span>)
           </button>
         </div>
 
@@ -298,6 +324,20 @@
       </div>
       <button id="btn-pwa-install" class="btn-pwa-action" onclick="triggerPWAInstall()">Instalar</button>
       <button class="btn-pwa-close" onclick="dismissPWAInstall()">&times;</button>
+    </div>
+
+    
+    <!-- Widgets Flutuantes na Lateral Direita (Suporte Online 24/7 + Bônus Diário) -->
+    <div class="floating-widgets-container">
+      <a href="https://t.me/+VRCCsj-SJHQwNmE5" target="_blank" rel="noopener noreferrer" class="floating-widget-btn widget-support" title="Suporte Online 24/7">
+        <i class="fa-solid fa-headset"></i>
+        <span>Online</span>
+        <span class="widget-pulse-badge"></span>
+      </a>
+      <button class="floating-widget-btn widget-bonus" onclick="openModal('modal-checkin')" title="Resgatar Bônus Diário">
+        <i class="fa-solid fa-gift"></i>
+        <span>Bônus</span>
+      </button>
     </div>
 
     <!-- Bottom Navigation Bar -->

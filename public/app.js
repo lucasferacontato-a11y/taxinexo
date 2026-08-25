@@ -18,6 +18,8 @@ const appState = {
   balanceVisible: true,
   theme: 'dark',
   currentFilter: 'all',
+  productType: 'vehicles',
+  currentCity: 'all',
   activeVehicles: [],
   transactions: [],
   currentHistoryFilter: 'all',
@@ -276,22 +278,130 @@ function switchTab(tabId) {
   if (activeBtn) activeBtn.classList.add('active');
 }
 
+const CITY_MAPPING = {
+  'NX-030': 'Austin, TX',
+  'NX-101': 'Miami, FL',
+  'NX-202': 'Austin, TX',
+  'NX-707': 'New York, NY',
+  'NX-404': 'Miami, FL',
+  'NX-303': 'Austin, TX',
+  'NX-505': 'New York, NY',
+  'NX-606': 'New York, NY',
+  'CH-050': 'Austin, TX',
+  'CH-200': 'Miami, FL',
+  'CH-500': 'Austin, TX',
+  'CH-1200': 'New York, NY'
+};
+
+const CHARGER_PRODUCTS = [
+  {
+    id: 'CH-050',
+    name: 'Estação Solar Urbana 50kW',
+    category: 'economy',
+    status: 'Disponível',
+    price: 50.00,
+    dailyReturn: 4.50,
+    periodDays: 15,
+    city: 'Austin, TX',
+    checkoutUrl: 'https://pagamento.pricipiaskins.site/checkout/212260809:1',
+    description: 'Ponto de recarga solar fotovoltaica para frotas urbanas compactas.'
+  },
+  {
+    id: 'CH-200',
+    name: 'Supercharger Hub 250kW',
+    category: 'popular',
+    status: 'Alta Demanda',
+    price: 200.00,
+    dailyReturn: 19.00,
+    periodDays: 30,
+    city: 'Miami, FL',
+    checkoutUrl: 'https://pagamento.pricipiaskins.site/checkout/212187584:1',
+    description: 'Estação de recarga ultrarrápida refrigerada a líquido para táxis elétricos.'
+  },
+  {
+    id: 'CH-500',
+    name: 'Estação de Troca de Bateria Automática',
+    category: 'popular',
+    status: 'Alta Demanda',
+    price: 500.00,
+    dailyReturn: 52.00,
+    periodDays: 45,
+    city: 'Austin, TX',
+    checkoutUrl: 'https://pagamento.pricipiaskins.site/checkout/212187589:1',
+    description: 'Swap station robótica com troca total de pack de bateria em 3 minutos.'
+  },
+  {
+    id: 'CH-1200',
+    name: 'Hub Grid Central Metropolitano',
+    category: 'vip',
+    status: 'VIP',
+    price: 1200.00,
+    dailyReturn: 140.00,
+    periodDays: 60,
+    city: 'New York, NY',
+    checkoutUrl: 'https://pagamento.pricipiaskins.site/checkout/212187598:1',
+    description: 'Terminal de alimentação de alta densidade para frotas autônomas corporativas.'
+  }
+];
+
+function switchProductType(type) {
+  appState.productType = type;
+  document.getElementById('toggle-type-vehicles')?.classList.toggle('active', type === 'vehicles');
+  document.getElementById('toggle-type-chargers')?.classList.toggle('active', type === 'chargers');
+
+  const catFilter = document.getElementById('category-filter-scroll');
+  if (catFilter) {
+    catFilter.style.display = 'flex';
+  }
+
+  updateCategoryCounts();
+  renderProducts(appState.currentFilter || 'all');
+}
+
+function filterByCity(city, btn) {
+  appState.currentCity = city;
+  document.querySelectorAll('.city-chip').forEach(c => c.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  renderProducts(appState.currentFilter || 'all');
+}
+
 function renderProducts(filter = 'all') {
   const container = document.getElementById('product-list-container');
   if (!container) return;
 
   appState.currentFilter = filter;
 
-  let filteredProducts = appState.products;
+  let baseList = appState.productType === 'chargers' ? CHARGER_PRODUCTS : appState.products;
+
+  // Filtro por Categoria
+  let filtered = baseList;
   if (filter === 'popular') {
-    filteredProducts = appState.products.filter(p => p.category === 'popular');
+    filtered = baseList.filter(p => p.category === 'popular');
   } else if (filter === 'vip') {
-    filteredProducts = appState.products.filter(p => p.category === 'vip');
+    filtered = baseList.filter(p => p.category === 'vip');
   } else if (filter === 'economy') {
-    filteredProducts = appState.products.filter(p => p.category === 'economy');
+    filtered = baseList.filter(p => p.category === 'economy');
   }
 
-  container.innerHTML = filteredProducts.map(prod => {
+  // Filtro por Cidade
+  if (appState.currentCity && appState.currentCity !== 'all') {
+    filtered = filtered.filter(p => {
+      const city = p.city || CITY_MAPPING[p.id] || '';
+      return city.toLowerCase().includes(appState.currentCity.toLowerCase());
+    });
+  }
+
+  if (filtered.length === 0) {
+    container.innerHTML = `
+      <div style="text-align: center; padding: 30px 16px; color: var(--text-muted); grid-column: 1 / -1;">
+        <i class="fa-solid fa-car-burst" style="font-size: 28px; margin-bottom: 8px; display: block;"></i>
+        <span>Nenhum ativo encontrado para esta combinação de filtros.</span>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = filtered.map(prod => {
     let statusClass = 'available';
     if (prod.status === 'Alta Demanda') statusClass = 'hot';
     if (prod.status === 'VIP') statusClass = 'vip';
@@ -299,6 +409,7 @@ function renderProducts(filter = 'all') {
     const totalReturn = prod.dailyReturn * prod.periodDays;
     const profit = totalReturn - prod.price;
     const roiPercent = Math.round((profit / prod.price) * 100);
+    const assignedCity = prod.city || CITY_MAPPING[prod.id] || 'Austin, TX';
 
     return `
       <article class="vehicle-card" data-category="${prod.category}">
@@ -309,6 +420,16 @@ function renderProducts(filter = 'all') {
           </div>
           <span class="status-badge ${statusClass}">${prod.status}</span>
         </div>
+
+        <!-- Tags e Urgência do Lote -->
+        <div class="batch-info-row">
+          <span class="batch-tag">
+            <i class="fa-solid fa-location-dot"></i> ${assignedCity}
+          </span>
+          <span class="batch-countdown-badge">
+            <i class="fa-regular fa-clock"></i> Lote encerra em: <strong class="product-batch-timer">01:56:38</strong>
+          </span>
+        </div>
         
         <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 12px; line-height: 1.3;">
           ${prod.description}
@@ -316,7 +437,7 @@ function renderProducts(filter = 'all') {
 
         <div class="vehicle-metrics">
           <div class="metric">
-            <span class="m-title">Preço Contrato</span>
+            <span class="m-title">Preço Cota</span>
             <span class="m-val">R$ ${formatCurrency(prod.price)}</span>
           </div>
           <div class="metric">
@@ -335,7 +456,7 @@ function renderProducts(filter = 'all') {
         </div>
 
         <button class="btn btn-primary btn-block" onclick="hireVehicle('${prod.id}')">
-          <i class="fa-solid fa-key"></i> Contratar Veículo
+          <i class="fa-solid fa-bolt"></i> Alugar / Ativar Cota
         </button>
       </article>
     `;
@@ -943,8 +1064,13 @@ function startSettlementTimer() {
     const secs = Math.floor((diff / 1000) % 60);
 
     const formatted = `${String(hours).padStart(2, '0')}h ${String(mins).padStart(2, '0')}m ${String(secs).padStart(2, '0')}s`;
+    const batchFormatted = `${String(hours).padStart(2, '0')}:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+    
     document.querySelectorAll('.live-settlement-timer').forEach(el => {
       el.textContent = formatted;
+    });
+    document.querySelectorAll('.product-batch-timer').forEach(el => {
+      el.textContent = batchFormatted;
     });
   }
 

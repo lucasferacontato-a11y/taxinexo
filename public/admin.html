@@ -1574,7 +1574,7 @@
       if (elPresellToday) elPresellToday.textContent = data.todayPresellViews || 0;
       if (elAppToday) elAppToday.textContent = data.todayAppViews || 0;
 
-      const views = data.recentPageViews || [];
+      const views = data.recentViews || data.recentPageViews || [];
       if (views.length === 0) {
         tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: var(--text-muted); padding: 30px;">Nenhum acesso registrado ainda.</td></tr>';
         return;

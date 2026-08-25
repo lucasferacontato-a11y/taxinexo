@@ -373,6 +373,8 @@ function renderActiveVehicles() {
   container.innerHTML = appState.activeVehicles.map((vehicle, idx) => {
     const progressPct = Math.round(((vehicle.totalDays - vehicle.daysLeft) / vehicle.totalDays) * 100);
     const simulatedRuns = 12 + (idx * 5) + Math.floor(Math.random() * 4);
+    const CITIES = ['Austin, TX', 'Miami, FL', 'New York, NY'];
+    const activeCity = CITIES[idx % CITIES.length];
     
     return `
       <div class="vehicle-card active-item">
@@ -388,7 +390,7 @@ function renderActiveVehicles() {
         <div class="telemetry-row">
           <div class="telemetry-tag">
             <span class="telemetry-dot pulse"></span>
-            <span>Operação Autônoma • SP / Campinas</span>
+            <span>Operação Autônoma • ${activeCity}</span>
           </div>
           <div class="settlement-badge">
             <i class="fa-solid fa-route"></i> ${simulatedRuns} corridas hoje

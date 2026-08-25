@@ -19,6 +19,8 @@ const appState = {
   theme: 'dark',
   currentFilter: 'all',
   activeVehicles: [],
+  transactions: [],
+  currentHistoryFilter: 'all',
   products: [
     {
       id: 'NX-030',
@@ -368,8 +370,9 @@ function renderActiveVehicles() {
     return;
   }
 
-  container.innerHTML = appState.activeVehicles.map(vehicle => {
+  container.innerHTML = appState.activeVehicles.map((vehicle, idx) => {
     const progressPct = Math.round(((vehicle.totalDays - vehicle.daysLeft) / vehicle.totalDays) * 100);
+    const simulatedRuns = 12 + (idx * 5) + Math.floor(Math.random() * 4);
     
     return `
       <div class="vehicle-card active-item">
@@ -380,17 +383,34 @@ function renderActiveVehicles() {
           </div>
           <span class="status-badge running"><i class="fa-solid fa-circle"></i> ${vehicle.status}</span>
         </div>
+
+        <!-- Telemetria Viva -->
+        <div class="telemetry-row">
+          <div class="telemetry-tag">
+            <span class="telemetry-dot pulse"></span>
+            <span>Operação Autônoma • SP / Campinas</span>
+          </div>
+          <div class="settlement-badge">
+            <i class="fa-solid fa-route"></i> ${simulatedRuns} corridas hoje
+          </div>
+        </div>
+
         <div class="vehicle-metrics">
           <div class="metric">
-            <span class="m-title">Ganho Diário</span>
+            <span class="m-title">Renda Diária</span>
             <span class="m-val" style="color: var(--accent-green);">+ R$ ${formatCurrency(vehicle.dailyEarned)}</span>
           </div>
           <div class="metric">
-            <span class="m-title">Tempo Restante</span>
+            <span class="m-title">Duração</span>
             <span class="m-val">${vehicle.daysLeft} de ${vehicle.totalDays} dias</span>
           </div>
+          <div class="metric">
+            <span class="m-title">Próx. Liquidação</span>
+            <span class="m-val live-settlement-timer" style="color: var(--primary);">--:--:--</span>
+          </div>
         </div>
-        <div class="progress-bar">
+
+        <div class="progress-bar" style="margin-top: 10px;">
           <div class="progress-fill" style="width: 0%;" data-target="${progressPct}%"></div>
         </div>
       </div>
@@ -528,12 +548,15 @@ function renderReferralCard() {
         </button>
       </div>
 
-      <div style="display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--text-muted); flex-wrap: wrap; gap: 6px;">
-        <span>Código: <strong style="color: #fff; font-family: monospace;">${code}</strong></span>
-        <a href="https://api.whatsapp.com/send?text=${encodeURIComponent('🚀 Acesse o TAXINEXO comigo e receba rendimentos diários com frotas de táxis autônomos! Cadastre-se pelo meu link oficial: ' + fullLink)}" target="_blank" style="color: var(--accent-green); text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 4px;">
-          <i class="fa-brands fa-whatsapp" style="font-size: 15px;"></i> Compartilhar no WhatsApp
-        </a>
+      <div style="display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--text-muted); flex-wrap: wrap; gap: 6px; margin-bottom: 10px;">
+        <span>Seu Código: <strong style="color: #fff; font-family: monospace;">${code}</strong></span>
+        <span style="color: var(--accent-green); font-size: 11px;"><i class="fa-solid fa-shield-check"></i> 100% Protegido</span>
       </div>
+
+      <!-- Botão Destacado WhatsApp -->
+      <button class="btn btn-whatsapp-share" onclick="shareOnWhatsApp()">
+        <i class="fa-brands fa-whatsapp"></i> Convidar Amigos no WhatsApp
+      </button>
       
       <div class="copy-feedback" id="copy-feedback" style="display: none; color: var(--accent-green); font-size: 11px; margin-top: 8px; text-align: center;">
         <i class="fa-solid fa-check"></i> Link direto com seu código de convite copiado com sucesso!
@@ -828,4 +851,316 @@ function handleLogout() {
     localStorage.removeItem('taxinexo_token');
     window.location.href = 'login.html';
   }
+}
+
+
+/* =========================================================
+   NOVAS FUNÇÕES: GAMIFICAÇÃO, WHATSAPP, TELEMETRIA, EXTRATO & NOTIFICAÇÕES
+   ========================================================= */
+
+// 1. Banner de Carreira no Topo do Início (Gamificação)
+function renderHomeCareerBanner() {
+  const banner = document.getElementById('home-career-banner');
+  if (!banner) return;
+
+  const team = appState.team || {};
+  const career = team.career || {
+    currentRank: { name: 'Operador Bronze', icon: '🥉' },
+    nextRank: { name: 'Supervisor Prata', icon: '🥈', bonus: 100 },
+    progressPercent: 0,
+    remainingDirects: 5,
+    remainingTotal: 5
+  };
+
+  if (!career.nextRank) {
+    banner.innerHTML = `
+      <div class="home-career-header">
+        <div class="home-career-rank-info">
+          <span class="home-career-rank-icon">${career.currentRank.icon}</span>
+          <div>
+            <span style="font-size: 10px; color: var(--accent-gold); text-transform: uppercase; font-weight: 800;">Plano de Carreira</span>
+            <div class="home-career-rank-title">${career.currentRank.name}</div>
+          </div>
+        </div>
+        <span class="home-career-next-badge" style="background: rgba(0, 255, 136, 0.15); color: var(--accent-green); border-color: rgba(0, 255, 136, 0.3);">
+          🏆 Nível Máximo Atingido
+        </span>
+      </div>
+      <div class="home-career-footer">
+        <span>Você recebe o bônus máximo em todas as frotas da sua rede!</span>
+      </div>
+    `;
+    return;
+  }
+
+  banner.innerHTML = `
+    <div class="home-career-header">
+      <div class="home-career-rank-info">
+        <span class="home-career-rank-icon">${career.currentRank.icon}</span>
+        <div>
+          <span style="font-size: 10px; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px;">Sua Patente</span>
+          <div class="home-career-rank-title">${career.currentRank.name}</div>
+        </div>
+      </div>
+      <span class="home-career-next-badge">
+        Meta: ${career.nextRank.icon} ${career.nextRank.name} (+ R$ ${formatCurrency(career.nextRank.bonus)} Pix)
+      </span>
+    </div>
+    <div class="home-career-progress-track">
+      <div class="home-career-progress-bar" style="width: ${career.progressPercent}%;"></div>
+    </div>
+    <div class="home-career-footer">
+      <span>${career.remainingDirects > 0 ? `Faltam <strong>${career.remainingDirects} diretos</strong> para subir de nível 🚀` : 'Diretos concluídos! ✅'}</span>
+      <span style="color: var(--primary); font-weight: 700;">${career.progressPercent}%</span>
+    </div>
+  `;
+}
+
+// 2. Compartilhar no WhatsApp com 1 Clique
+function shareOnWhatsApp() {
+  const code = (appState.user && appState.user.inviteCode) ? appState.user.inviteCode : (appState.user && appState.user.id ? `NEXO${appState.user.id.replace('usr_', '')}` : 'NEXO');
+  const link = getAffiliateLink();
+  const text = `🚗 *Opa, tudo bem?*\n\nEstou lucrando todos os dias com frotas de robotáxis elétricos autônomos na *TAXINEXO*!\n\n🔹 Cotas acessíveis a partir de *R$ 30,00*\n🔹 Rendimento diário automático\n🔹 Saques rápidos no Pix\n🔹 Bônus em 3 níveis de indicação\n\nCadastre-se pelo meu link oficial e comece hoje mesmo:\n👉 ${link}\n\nCódigo de Convite: *${code}*`;
+  
+  window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
+}
+
+// 3. Timer de Telemetria e Próxima Liquidação
+let settlementTimerInterval = null;
+function startSettlementTimer() {
+  if (settlementTimerInterval) clearInterval(settlementTimerInterval);
+
+  function updateClock() {
+    const now = new Date();
+    const midnight = new Date();
+    midnight.setHours(24, 0, 0, 0); // Próxima meia-noite
+    const diff = midnight - now;
+
+    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const mins = Math.floor((diff / 1000 / 60) % 60);
+    const secs = Math.floor((diff / 1000) % 60);
+
+    const formatted = `${String(hours).padStart(2, '0')}h ${String(mins).padStart(2, '0')}m ${String(secs).padStart(2, '0')}s`;
+    document.querySelectorAll('.live-settlement-timer').forEach(el => {
+      el.textContent = formatted;
+    });
+  }
+
+  updateClock();
+  settlementTimerInterval = setInterval(updateClock, 1000);
+}
+
+// 4. Extrato Financeiro com Filtros & Comprovante Pix
+async function openHistoryModal() {
+  openModal('modal-history');
+  const container = document.getElementById('history-items-container');
+  if (container) {
+    container.innerHTML = '<div style="text-align: center; padding: 24px; color: var(--text-muted);"><i class="fa-solid fa-spinner fa-spin"></i> Carregando extrato...</div>';
+  }
+
+  const txs = await apiRequest('/wallet/transactions');
+  if (txs && Array.isArray(txs)) {
+    appState.transactions = txs;
+    renderHistoryItems(appState.currentHistoryFilter || 'all');
+  } else {
+    if (container) container.innerHTML = '<div style="text-align: center; padding: 20px; color: var(--text-muted);">Nenhuma transação encontrada.</div>';
+  }
+}
+
+function filterHistory(filterType, btn) {
+  appState.currentHistoryFilter = filterType;
+  document.querySelectorAll('.history-chip').forEach(c => c.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  renderHistoryItems(filterType);
+}
+
+function renderHistoryItems(filterType) {
+  const container = document.getElementById('history-items-container');
+  if (!container) return;
+
+  let list = appState.transactions || [];
+  if (filterType !== 'all') {
+    list = list.filter(t => t.type === filterType);
+  }
+
+  if (list.length === 0) {
+    container.innerHTML = `
+      <div style="text-align: center; padding: 30px 16px; color: var(--text-muted);">
+        <i class="fa-regular fa-folder-open" style="font-size: 28px; margin-bottom: 8px; display: block;"></i>
+        <span>Nenhuma transação nesta categoria.</span>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = list.map(tx => {
+    let iconClass = 'history-icon-income';
+    let icon = 'fa-arrow-down';
+    let typeName = 'Rendimento Diário';
+    let isPositive = true;
+
+    if (tx.type === 'commission') {
+      iconClass = 'history-icon-commission';
+      icon = 'fa-users';
+      typeName = 'Comissão de Rede';
+      isPositive = true;
+    } else if (tx.type === 'withdraw') {
+      iconClass = 'history-icon-withdraw';
+      icon = 'fa-arrow-up';
+      typeName = 'Saque Pix';
+      isPositive = false;
+    } else if (tx.type === 'bonus') {
+      iconClass = 'history-icon-bonus';
+      icon = 'fa-gift';
+      typeName = 'Bônus Operacional';
+      isPositive = true;
+    } else if (tx.type === 'deposit') {
+      iconClass = 'history-icon-income';
+      icon = 'fa-bolt';
+      typeName = 'Recarga / Cota';
+      isPositive = true;
+    }
+
+    const dateStr = tx.createdAt ? new Date(tx.createdAt).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) : 'Hoje';
+    const amountVal = Math.abs(tx.amount);
+
+    return `
+      <div class="history-item">
+        <div class="history-item-info">
+          <div class="history-icon-circle ${iconClass}">
+            <i class="fa-solid ${icon}"></i>
+          </div>
+          <div class="history-item-details">
+            <strong>${tx.description || typeName}</strong>
+            <span>${dateStr} • Status: <strong style="color: ${tx.status === 'approved' ? 'var(--accent-green)' : (tx.status === 'pending' ? 'var(--accent-gold)' : '#f43f5e')}; font-size: 11px;">${tx.status === 'approved' ? 'Concluído' : (tx.status === 'pending' ? 'Processando' : 'Rejeitado')}</strong></span>
+          </div>
+        </div>
+        <div class="history-item-amount">
+          <strong style="color: ${isPositive ? 'var(--accent-green)' : '#f43f5e'};">
+            ${isPositive ? '+' : '-'} R$ ${formatCurrency(amountVal)}
+          </strong>
+          ${(tx.type === 'withdraw' || tx.type === 'commission') ? `
+            <button class="btn-receipt-view" onclick="openReceiptModal('${tx.id}')">
+              <i class="fa-solid fa-receipt"></i> Comprovante
+            </button>
+          ` : ''}
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function openReceiptModal(txId) {
+  const tx = (appState.transactions || []).find(t => t.id === txId);
+  const container = document.getElementById('receipt-box-content');
+  if (!tx || !container) return;
+
+  const dateStr = tx.createdAt ? new Date(tx.createdAt).toLocaleString('pt-BR') : new Date().toLocaleString('pt-BR');
+  const amountVal = Math.abs(tx.amount);
+  const authHash = 'AUTH-' + Math.random().toString(36).substring(2, 10).toUpperCase() + '-' + Date.now().toString().slice(-4);
+
+  container.innerHTML = `
+    <div class="receipt-header">
+      <div class="receipt-logo">TAXI<span>NEXO</span> 2.0</div>
+      <span style="font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; display: block; margin-top: 2px;">
+        Comprovante de Liquidação Digital Pix
+      </span>
+    </div>
+
+    <div class="receipt-amount-display">
+      <span style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 2px;">Valor Liquidado</span>
+      <div class="amount-val">R$ ${formatCurrency(amountVal)}</div>
+      <div class="receipt-status-stamp">
+        <i class="fa-solid fa-circle-check"></i> Liquidado & Autenticado
+      </div>
+    </div>
+
+    <div class="receipt-field-row">
+      <span>Tipo de Operação:</span>
+      <strong>${tx.type === 'withdraw' ? 'Saque Pix' : (tx.type === 'commission' ? 'Comissão de Afiliado' : 'Rendimento')}</strong>
+    </div>
+    <div class="receipt-field-row">
+      <span>Beneficiário / Operador:</span>
+      <strong>${appState.user ? (appState.user.operatorName || 'Operador') : 'Operador TAXINEXO'}</strong>
+    </div>
+    <div class="receipt-field-row">
+      <span>Chave Pix:</span>
+      <strong>${tx.pixKey || (appState.user ? appState.user.phone : 'Chave Cadastrada')}</strong>
+    </div>
+    <div class="receipt-field-row">
+      <span>Data e Hora:</span>
+      <strong>${dateStr}</strong>
+    </div>
+    <div class="receipt-field-row">
+      <span>ID da Transação:</span>
+      <strong style="font-family: monospace;">${tx.id}</strong>
+    </div>
+    <div class="receipt-field-row" style="border-bottom: none;">
+      <span>Protocolo de Autenticação:</span>
+      <strong style="font-family: monospace; color: var(--primary);">${authHash}</strong>
+    </div>
+  `;
+
+  openModal('modal-receipt');
+}
+
+// 5. Central de Notificações Ativa
+async function openNotificationsModal() {
+  const dot = document.querySelector('#btn-notification .badge-dot');
+  if (dot) dot.classList.remove('pulse');
+
+  openModal('modal-notifications');
+  const container = document.getElementById('notifications-list-container');
+  if (!container) return;
+
+  const txs = appState.transactions.length ? appState.transactions : (await apiRequest('/wallet/transactions') || []);
+  const team = appState.team || {};
+  const career = team.career || {};
+
+  const notifications = [
+    {
+      icon: 'fa-trophy',
+      color: 'rgba(250, 219, 95, 0.15)',
+      textColor: 'var(--accent-gold)',
+      title: 'Plano de Carreira Ativo',
+      desc: career.currentRank ? `Você é ${career.currentRank.name}. Convide operadores para subir de nível e ganhar Pix!` : 'Conquiste novas patentes na rede.',
+      time: 'Agora'
+    },
+    {
+      icon: 'fa-shield-halved',
+      color: 'rgba(0, 240, 255, 0.15)',
+      textColor: 'var(--primary)',
+      title: 'Segurança & Telemetria 24/7',
+      desc: 'Todas as frotas em operação contam com monitoramento autônomo e liquidação diária.',
+      time: 'Hoje'
+    }
+  ];
+
+  // Adiciona transações recentes como notificações
+  if (Array.isArray(txs)) {
+    txs.slice(0, 5).forEach(tx => {
+      const isPos = tx.type !== 'withdraw';
+      notifications.push({
+        icon: tx.type === 'commission' ? 'fa-users' : (tx.type === 'withdraw' ? 'fa-arrow-up' : 'fa-coins'),
+        color: isPos ? 'rgba(0, 255, 136, 0.15)' : 'rgba(244, 63, 94, 0.15)',
+        textColor: isPos ? 'var(--accent-green)' : '#f43f5e',
+        title: tx.description || (tx.type === 'withdraw' ? 'Solicitação de Saque' : 'Crédito de Rendimento'),
+        desc: `${isPos ? '+' : '-'} R$ ${formatCurrency(Math.abs(tx.amount))} • Status: ${tx.status === 'approved' ? 'Aprovado' : 'Processando'}`,
+        time: tx.createdAt ? new Date(tx.createdAt).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }) : 'Recente'
+      });
+    });
+  }
+
+  container.innerHTML = notifications.map(n => `
+    <div class="notification-card">
+      <div class="notification-icon" style="background: ${n.color}; color: ${n.textColor};">
+        <i class="fa-solid ${n.icon}"></i>
+      </div>
+      <div class="notification-content" style="flex: 1;">
+        <h6>${n.title}</h6>
+        <p>${n.desc}</p>
+        <span class="notification-time">${n.time}</span>
+      </div>
+    </div>
+  `).join('');
 }

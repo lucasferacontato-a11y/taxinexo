@@ -41,7 +41,7 @@
         <a href="/presell" target="_blank" class="icon-btn" title="Ver Apresentação Oficial / Presell" style="text-decoration: none; color: var(--primary);">
           <i class="fa-solid fa-rocket"></i>
         </a>
-        <button class="icon-btn" id="btn-notification" aria-label="Ver Notificações">
+        <button class="icon-btn" id="btn-notification" onclick="openNotificationsModal()" aria-label="Ver Notificações">
           <i class="fa-regular fa-bell"></i>
           <span class="badge-dot pulse"></span>
         </button>
@@ -87,6 +87,11 @@
               <i class="fa-solid fa-arrow-up-from-bracket"></i> Saque
             </button>
           </div>
+        </div>
+
+        <!-- Banner de Carreira & Gamificação (Início) -->
+        <div id="home-career-banner" class="home-career-banner" onclick="switchTab('team')" title="Clique para ver seu Plano de Carreira">
+          <!-- Renderizado dinamicamente pelo JS -->
         </div>
 
         <!-- Ações Rápidas -->
@@ -377,6 +382,64 @@
           <button id="btn-process-checkin" class="btn btn-primary btn-block" onclick="claimCheckin()">
             Resgatar Bônus
           </button>
+        </div>
+      </div>
+    </div>
+
+  
+    <!-- Modal Extrato Financeiro com Filtros -->
+    <div id="modal-history" class="modal" role="dialog" aria-modal="true" onclick="closeModalOutside(event, 'modal-history')">
+      <div class="modal-content" style="max-height: 85vh; display: flex; flex-direction: column;">
+        <div class="modal-header">
+          <h4><i class="fa-solid fa-receipt" style="color: var(--primary);"></i> Extrato de Transações</h4>
+          <button class="btn-close" onclick="closeModal('modal-history')" aria-label="Fechar">&times;</button>
+        </div>
+        <div class="modal-body" style="overflow-y: auto; padding-right: 4px;">
+          <!-- Filtros de Categoria -->
+          <div class="history-filters">
+            <button class="history-chip active" onclick="filterHistory('all', this)">Todos</button>
+            <button class="history-chip" onclick="filterHistory('commission', this)">Comissões</button>
+            <button class="history-chip" onclick="filterHistory('income', this)">Rendimentos</button>
+            <button class="history-chip" onclick="filterHistory('withdraw', this)">Saques Pix</button>
+            <button class="history-chip" onclick="filterHistory('bonus', this)">Bônus</button>
+          </div>
+          <!-- Lista de Transações -->
+          <div id="history-items-container">
+            <div style="text-align: center; padding: 20px; color: var(--text-muted);">Carregando transações...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Comprovante Digital Pix Oficial -->
+    <div id="modal-receipt" class="modal" role="dialog" aria-modal="true" onclick="closeModalOutside(event, 'modal-receipt')">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4><i class="fa-solid fa-circle-check" style="color: var(--accent-green);"></i> Comprovante Oficial</h4>
+          <button class="btn-close" onclick="closeModal('modal-receipt')" aria-label="Fechar">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="receipt-box" id="receipt-box-content">
+            <!-- Renderizado dinamicamente -->
+          </div>
+          <button class="btn btn-primary btn-block" style="margin-top: 14px;" onclick="closeModal('modal-receipt')">
+            <i class="fa-solid fa-check"></i> Fechar Comprovante
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Central de Notificações -->
+    <div id="modal-notifications" class="modal" role="dialog" aria-modal="true" onclick="closeModalOutside(event, 'modal-notifications')">
+      <div class="modal-content" style="max-height: 85vh; display: flex; flex-direction: column;">
+        <div class="modal-header">
+          <h4><i class="fa-solid fa-bell" style="color: var(--primary);"></i> Central de Notificações</h4>
+          <button class="btn-close" onclick="closeModal('modal-notifications')" aria-label="Fechar">&times;</button>
+        </div>
+        <div class="modal-body" style="overflow-y: auto; padding-right: 4px;">
+          <div id="notifications-list-container">
+            <!-- Renderizado dinamicamente -->
+          </div>
         </div>
       </div>
     </div>

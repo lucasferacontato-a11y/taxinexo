@@ -298,49 +298,49 @@ const CHARGER_PRODUCTS = [
     id: 'CH-050',
     name: 'Estação Solar Urbana 50kW',
     category: 'economy',
-    status: 'Disponível',
+    status: '100% Esgotado',
+    isSoldOut: true,
     price: 50.00,
     dailyReturn: 4.50,
     periodDays: 15,
     city: 'Austin, TX',
-    checkoutUrl: 'https://pagamento.pricipiaskins.site/checkout/212260809:1',
-    description: 'Ponto de recarga solar fotovoltaica para frotas urbanas compactas.'
+    description: 'Ponto de recarga solar fotovoltaica para frotas urbanas compactas. Todas as cotas deste lote foram preenchidas.'
   },
   {
     id: 'CH-200',
     name: 'Supercharger Hub 250kW',
     category: 'popular',
-    status: 'Alta Demanda',
+    status: '100% Esgotado',
+    isSoldOut: true,
     price: 200.00,
     dailyReturn: 19.00,
     periodDays: 30,
     city: 'Miami, FL',
-    checkoutUrl: 'https://pagamento.pricipiaskins.site/checkout/212187584:1',
-    description: 'Estação de recarga ultrarrápida refrigerada a líquido para táxis elétricos.'
+    description: 'Estação de recarga ultrarrápida refrigerada a líquido para táxis elétricos. Lote 100% preenchido.'
   },
   {
     id: 'CH-500',
     name: 'Estação de Troca de Bateria Automática',
     category: 'popular',
-    status: 'Alta Demanda',
+    status: '100% Esgotado',
+    isSoldOut: true,
     price: 500.00,
     dailyReturn: 52.00,
     periodDays: 45,
     city: 'Austin, TX',
-    checkoutUrl: 'https://pagamento.pricipiaskins.site/checkout/212187589:1',
-    description: 'Swap station robótica com troca total de pack de bateria em 3 minutos.'
+    description: 'Swap station robótica com troca total de pack de bateria em 3 minutos. Todas as cotas alocadas.'
   },
   {
     id: 'CH-1200',
     name: 'Hub Grid Central Metropolitano',
     category: 'vip',
-    status: 'VIP',
+    status: '100% Esgotado',
+    isSoldOut: true,
     price: 1200.00,
     dailyReturn: 140.00,
     periodDays: 60,
     city: 'New York, NY',
-    checkoutUrl: 'https://pagamento.pricipiaskins.site/checkout/212187598:1',
-    description: 'Terminal de alimentação de alta densidade para frotas autônomas corporativas.'
+    description: 'Terminal de alimentação de alta densidade para frotas autônomas corporativas. Cotas esgotadas.'
   }
 ];
 
@@ -411,14 +411,19 @@ function renderProducts(filter = 'all') {
     const roiPercent = Math.round((profit / prod.price) * 100);
     const assignedCity = prod.city || CITY_MAPPING[prod.id] || 'Austin, TX';
 
+    const isSoldOut = prod.isSoldOut || appState.productType === 'chargers';
+
     return `
-      <article class="vehicle-card" data-category="${prod.category}">
+      <article class="vehicle-card ${isSoldOut ? 'sold-out-card' : ''}" data-category="${prod.category}">
         <div class="vehicle-header">
           <div>
             <h5>${prod.name}</h5>
             <span class="contract-id">Código: #${prod.id} • ${prod.periodDays} Dias</span>
           </div>
-          <span class="status-badge ${statusClass}">${prod.status}</span>
+          ${isSoldOut 
+            ? '<span class="status-badge" style="background: rgba(244,63,94,0.15); color: #f43f5e; border: 1px solid rgba(244,63,94,0.35); font-weight: 800;"><i class="fa-solid fa-lock"></i> 100% ESGOTADO</span>'
+            : `<span class="status-badge ${statusClass}">${prod.status}</span>`
+          }
         </div>
 
         <!-- Tags e Urgência do Lote -->
@@ -426,9 +431,10 @@ function renderProducts(filter = 'all') {
           <span class="batch-tag">
             <i class="fa-solid fa-location-dot"></i> ${assignedCity}
           </span>
-          <span class="batch-countdown-badge">
-            <i class="fa-regular fa-clock"></i> Lote encerra em: <strong class="product-batch-timer">01:56:38</strong>
-          </span>
+          ${isSoldOut 
+            ? '<span class="batch-countdown-badge" style="background: rgba(244,63,94,0.1); color: #f43f5e; border-color: rgba(244,63,94,0.25);"><i class="fa-solid fa-circle-xmark"></i> Lote Encerrado</span>'
+            : '<span class="batch-countdown-badge"><i class="fa-regular fa-clock"></i> Lote encerra em: <strong class="product-batch-timer">01:56:38</strong></span>'
+          }
         </div>
         
         <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 12px; line-height: 1.3;">
@@ -455,9 +461,14 @@ function renderProducts(filter = 'all') {
           <strong style="color: var(--accent-green); font-size: 12px;">+ R$ ${formatCurrency(profit)} (+${roiPercent}%)</strong>
         </div>
 
-        <button class="btn btn-primary btn-block" onclick="hireVehicle('${prod.id}')">
-          <i class="fa-solid fa-bolt"></i> Alugar / Ativar Cota
-        </button>
+        ${isSoldOut 
+          ? `<button class="btn btn-secondary btn-block" onclick="alert('⚠️ Todas as cotas deste Ponto de Carregamento estão 100% ESGOTADAS no momento.\n\nUm novo lote será liberado na próxima expansão de rede. Acompanhe os avisos no grupo oficial.')" style="opacity: 0.7; cursor: not-allowed; background: rgba(255,255,255,0.04); border: 1px dashed rgba(244,63,94,0.35); color: #f87171; font-weight: 700;">
+              <i class="fa-solid fa-lock"></i> Cotas Esgotadas (Aguarde Novo Lote)
+            </button>`
+          : `<button class="btn btn-primary btn-block" onclick="hireVehicle('${prod.id}')">
+              <i class="fa-solid fa-bolt"></i> Alugar / Ativar Cota
+            </button>`
+        }
       </article>
     `;
   }).join('');

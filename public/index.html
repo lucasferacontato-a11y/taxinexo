@@ -53,6 +53,14 @@
       </div>
     </header>
 
+    <!-- Barra de Atividades Globais ao Vivo -->
+    <div class="global-live-ticker">
+      <i class="fa-solid fa-bolt ticker-icon"></i>
+      <span class="ticker-text" id="ticker-live-text">
+        🚗 Operador #4064 atingiu Supervisor Prata (+R$ 100 Pix) • ⚡ Baidu Apollo #NX-202 em Austin completou 22 corridas hoje • 💰 Saque de R$ 435,00 liquidado via Pix • 📍 Frota em Miami com 100% de operação autônoma
+      </span>
+    </div>
+
     <!-- Main Content Area -->
     <main class="app-content">
 
@@ -158,8 +166,29 @@
             </div>
           </div>
 
-          <!-- Viewport do Mapa Leaflet -->
-          <div id="gps-telemetry-map" class="gps-map-viewport"></div>
+          <!-- Viewport do Mapa Leaflet Interativo com Controles -->
+          <div class="gps-map-container-rel">
+            <div id="gps-telemetry-map" class="gps-map-viewport"></div>
+            <div class="radar-sweep-effect"></div>
+
+            <!-- Controles Inteligentes do Mapa -->
+            <div class="map-control-overlay">
+              <button class="map-ctrl-btn focus-car" onclick="focusUserOrBestCar()" title="Focar no Veículo">
+                <i class="fa-solid fa-crosshairs"></i>
+              </button>
+              <button class="map-ctrl-btn" onclick="zoomInMap()" title="Aumentar Zoom">
+                <i class="fa-solid fa-plus"></i>
+              </button>
+              <button class="map-ctrl-btn" onclick="zoomOutMap()" title="Diminuir Zoom">
+                <i class="fa-solid fa-minus"></i>
+              </button>
+            </div>
+
+            <!-- HUD Flutuante da Corrida Selecionada -->
+            <div id="live-ride-hud" class="live-ride-hud" style="display: none;">
+              <!-- Renderizado dinamicamente via JS -->
+            </div>
+          </div>
 
           <!-- HUD de Telemetria no Rodapé do Mapa -->
           <div class="gps-hud-bar">

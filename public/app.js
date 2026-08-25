@@ -1320,7 +1320,7 @@ async function openNotificationsModal() {
 
 
 /* =========================================================
-   MAPA DE TELEMETRIA GPS AO VIVO COM LEAFLET & RASTREAMENTO
+   MAPA DE TELEMETRIA GPS 2.0 INTELIGENTE & INTERATIVO
    ========================================================= */
 
 const GPS_CITIES = {
@@ -1329,29 +1329,45 @@ const GPS_CITIES = {
     center: [30.2672, -97.7431],
     zoom: 13,
     connected: '1.482 ativas',
-    trips: '18.940 corridas'
+    trips: '18.940 corridas',
+    routes: [
+      { from: 'Downtown Austin', to: 'Austin-Bergstrom Airport (ABIA)', coords: [[30.2672, -97.7431], [30.2520, -97.7280], [30.2300, -97.6950], [30.1975, -97.6664]] },
+      { from: 'University of Texas', to: 'Domain Tech Hub', coords: [[30.2849, -97.7341], [30.3200, -97.7200], [30.3650, -97.7150], [30.4020, -97.7258]] },
+      { from: 'South Congress (SoCo)', to: 'Zilker Metropolitan Park', coords: [[30.2450, -97.7510], [30.2550, -97.7600], [30.2669, -97.7729]] }
+    ]
   },
   miami: {
     name: 'Miami, FL',
     center: [25.7617, -80.1918],
     zoom: 13,
     connected: '2.140 ativas',
-    trips: '27.810 corridas'
+    trips: '27.810 corridas',
+    routes: [
+      { from: 'Brickell Financial', to: 'Miami Beach / Ocean Dr', coords: [[25.7617, -80.1918], [25.7780, -80.1850], [25.7850, -80.1400], [25.7820, -80.1310]] },
+      { from: 'Wynwood Arts District', to: 'Miami Intl Airport (MIA)', coords: [[25.8000, -80.1990], [25.7950, -80.2400], [25.7959, -80.2870]] },
+      { from: 'Design District', to: 'Downtown Miami Port', coords: [[25.8130, -80.1920], [25.7900, -80.1870], [25.7760, -80.1750]] }
+    ]
   },
   ny: {
     name: 'New York, NY',
     center: [40.7128, -74.0060],
     zoom: 13,
     connected: '3.650 ativas',
-    trips: '46.290 corridas'
+    trips: '46.290 corridas',
+    routes: [
+      { from: 'Wall Street / Financial', to: 'Times Square Midtown', coords: [[40.7070, -74.0090], [40.7250, -73.9980], [40.7480, -73.9850], [40.7580, -73.9855]] },
+      { from: 'Brooklyn Bridge', to: 'SoHo Metropolitan', coords: [[40.7061, -73.9969], [40.7180, -73.9990], [40.7233, -74.0030]] },
+      { from: 'Hudson Yards', to: 'Central Park South', coords: [[40.7538, -74.0022], [40.7600, -73.9900], [40.7660, -73.9770]] }
+    ]
   }
 };
 
 let gpsMap = null;
 let mapVehicleMarkers = [];
+let mapActivePolylines = [];
 let currentMapCityKey = 'austin';
-
 let mapInitAttempts = 0;
+
 function initGpsTelemetryMap() {
   const mapEl = document.getElementById('gps-telemetry-map');
   if (!mapEl) return;
@@ -1372,15 +1388,16 @@ function initGpsTelemetryMap() {
   const city = GPS_CITIES[currentMapCityKey];
 
   try {
-    // Cria o mapa Leaflet
     gpsMap = L.map('gps-telemetry-map', {
       center: city.center,
       zoom: city.zoom,
       zoomControl: false,
-      attributionControl: false
+      attributionControl: false,
+      scrollWheelZoom: false,
+      touchZoom: true,
+      tap: false
     });
 
-    // Camada Dark Matter CartoDB Ultra Rápida
     L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png', {
       maxZoom: 19,
       subdomains: ['a', 'b', 'c', 'd']
@@ -1388,16 +1405,35 @@ function initGpsTelemetryMap() {
 
     populateMapVehicles();
     startMapVehiclesMotion();
+    startTickerRotation();
 
-    // Garante que o mapa renderize todas as tiles
-    setTimeout(() => {
-      if (gpsMap) gpsMap.invalidateSize();
-    }, 300);
-    setTimeout(() => {
-      if (gpsMap) gpsMap.invalidateSize();
-    }, 1000);
+    setTimeout(() => { if (gpsMap) gpsMap.invalidateSize(); }, 300);
+    setTimeout(() => { if (gpsMap) gpsMap.invalidateSize(); }, 1000);
   } catch (err) {
     console.error('[GPS MAP INIT ERROR]:', err);
+  }
+}
+
+function zoomInMap() {
+  if (gpsMap) gpsMap.zoomIn();
+}
+
+function zoomOutMap() {
+  if (gpsMap) gpsMap.zoomOut();
+}
+
+function focusUserOrBestCar() {
+  if (!gpsMap) return;
+  const userCar = mapVehicleMarkers.find(m => m.isUser);
+  if (userCar) {
+    gpsMap.flyTo([userCar.lat, userCar.lng], 15, { duration: 1 });
+    userCar.marker.openPopup();
+    showRideHud(userCar.carData);
+  } else if (mapVehicleMarkers.length > 0) {
+    const first = mapVehicleMarkers[0];
+    gpsMap.flyTo([first.lat, first.lng], 15, { duration: 1 });
+    first.marker.openPopup();
+    showRideHud(first.carData);
   }
 }
 
@@ -1423,19 +1459,32 @@ function switchMapCity(cityKey, btn) {
 function populateMapVehicles() {
   if (!gpsMap) return;
 
-  // Limpa marcadores anteriores
+  // Limpa marcadores e rotas anteriores
   mapVehicleMarkers.forEach(m => gpsMap.removeLayer(m.marker));
+  mapActivePolylines.forEach(p => gpsMap.removeLayer(p));
   mapVehicleMarkers = [];
+  mapActivePolylines = [];
 
   const city = GPS_CITIES[currentMapCityKey];
   const centerLat = city.center[0];
   const centerLng = city.center[1];
 
-  // 1. Veículos do Usuário (se houver)
+  // 1. Desenha rotas neon no mapa
+  (city.routes || []).forEach((r, idx) => {
+    const poly = L.polyline(r.coords, {
+      color: idx === 0 ? '#00F0FF' : (idx === 1 ? '#00FF88' : '#FADB5F'),
+      weight: 2.5,
+      opacity: 0.7,
+      dashArray: '5, 8'
+    }).addTo(gpsMap);
+    mapActivePolylines.push(poly);
+  });
+
+  // 2. Veículos do Usuário
   const userCars = appState.activeVehicles || [];
   userCars.forEach((car, i) => {
-    const lat = centerLat + (Math.sin(i * 1.5) * 0.012) + (Math.random() * 0.004);
-    const lng = centerLng + (Math.cos(i * 1.5) * 0.015) + (Math.random() * 0.004);
+    const lat = centerLat + (Math.sin(i * 1.5) * 0.012) + (Math.random() * 0.003);
+    const lng = centerLng + (Math.cos(i * 1.5) * 0.014) + (Math.random() * 0.003);
 
     const iconHtml = `
       <div class="vehicle-marker-wrap">
@@ -1447,43 +1496,42 @@ function populateMapVehicles() {
     const customIcon = L.divIcon({ html: iconHtml, className: 'custom-car-icon', iconSize: [32, 32], iconAnchor: [16, 16] });
     const marker = L.marker([lat, lng], { icon: customIcon }).addTo(gpsMap);
 
-    const popupContent = `
-      <div>
-        <div style="display: flex; align-items: center; justify-content: space-between; gap: 6px; margin-bottom: 4px;">
-          <strong style="color: #fff; font-size: 12.5px;">${car.name}</strong>
-          <span style="font-size: 9px; background: rgba(0,255,136,0.18); color: #00FF88; padding: 2px 6px; border-radius: 6px; font-weight: 800;">SEU VEÍCULO</span>
-        </div>
-        <div style="font-size: 11px; color: #94A3B8; margin-bottom: 6px;">
-          <i class="fa-solid fa-satellite" style="color: var(--primary);"></i> Contrato #${car.id} • ${city.name}
-        </div>
-        <div style="display: flex; gap: 8px; font-size: 10.5px; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 5px;">
-          <span>⚡ <strong>44 km/h</strong></span>
-          <span>🔋 <strong>89%</strong></span>
-          <span style="color: #00FF88;">💰 <strong>+ R$ ${formatCurrency(car.dailyEarned)}/dia</strong></span>
-        </div>
-      </div>
-    `;
-    marker.bindPopup(popupContent);
-    mapVehicleMarkers.push({ marker, lat, lng, isUser: true });
+    const carData = {
+      name: car.name,
+      code: `Contrato #${car.id}`,
+      city: city.name,
+      speed: 44,
+      battery: 89,
+      dailyReturn: car.dailyEarned,
+      isUser: true,
+      routeFrom: city.routes[0]?.from || 'Ponto de Partida',
+      routeTo: city.routes[0]?.to || 'Destino Corporativo',
+      tripFare: (car.dailyEarned / 3).toFixed(2)
+    };
+
+    marker.on('click', () => showRideHud(carData));
+    mapVehicleMarkers.push({ marker, lat, lng, isUser: true, carData });
   });
 
-  // 2. Frotas Gerais Conectadas da Rede (Simulação Realista de Alta Densidade)
+  // 3. Frotas Conectadas da Rede
   const fleetModels = [
-    { name: 'BYD Dolphin Autonomous', code: 'NX-030', returnVal: 2.80 },
-    { name: 'Tesla Robotaxi Model 3', code: 'NX-101', returnVal: 14.50 },
-    { name: 'Baidu Apollo RT6', code: 'NX-202', returnVal: 36.00 },
-    { name: 'Tesla Cybercab Next-Gen', code: 'NX-707', returnVal: 68.00 },
-    { name: 'Cruise Origin Shuttle', code: 'NX-404', returnVal: 105.00 },
-    { name: 'Waymo Autonomous Van', code: 'NX-303', returnVal: 185.00 }
+    { name: 'BYD Dolphin Autonomous', code: 'NX-030', returnVal: 2.80, routeIdx: 0 },
+    { name: 'Tesla Robotaxi Model 3', code: 'NX-101', returnVal: 14.50, routeIdx: 1 },
+    { name: 'Baidu Apollo RT6', code: 'NX-202', returnVal: 36.00, routeIdx: 2 },
+    { name: 'Tesla Cybercab Next-Gen', code: 'NX-707', returnVal: 68.00, routeIdx: 0 },
+    { name: 'Cruise Origin Shuttle', code: 'NX-404', returnVal: 105.00, routeIdx: 1 },
+    { name: 'Waymo Autonomous Van', code: 'NX-303', returnVal: 185.00, routeIdx: 2 }
   ];
 
-  const count = userCars.length ? 6 : 8;
+  const count = userCars.length ? 5 : 7;
   for (let i = 0; i < count; i++) {
     const model = fleetModels[i % fleetModels.length];
-    const angle = (i / count) * Math.PI * 2;
-    const dist = 0.008 + (Math.random() * 0.016);
-    const lat = centerLat + Math.sin(angle) * dist;
-    const lng = centerLng + Math.cos(angle) * dist;
+    const rIdx = model.routeIdx || (i % 3);
+    const assignedRoute = city.routes[rIdx] || city.routes[0];
+    const routeCoord = assignedRoute.coords[i % assignedRoute.coords.length];
+
+    const lat = routeCoord[0] + (Math.random() - 0.5) * 0.003;
+    const lng = routeCoord[1] + (Math.random() - 0.5) * 0.003;
 
     const iconHtml = `
       <div class="vehicle-marker-wrap">
@@ -1495,31 +1543,69 @@ function populateMapVehicles() {
     const customIcon = L.divIcon({ html: iconHtml, className: 'custom-car-icon', iconSize: [28, 28], iconAnchor: [14, 14] });
     const marker = L.marker([lat, lng], { icon: customIcon }).addTo(gpsMap);
 
-    const speed = 32 + Math.floor(Math.random() * 20);
-    const battery = 75 + Math.floor(Math.random() * 23);
+    const speed = 36 + Math.floor(Math.random() * 18);
+    const battery = 78 + Math.floor(Math.random() * 20);
 
-    const popupContent = `
-      <div>
-        <div style="display: flex; align-items: center; justify-content: space-between; gap: 6px; margin-bottom: 4px;">
-          <strong style="color: #fff; font-size: 12.5px;">${model.name}</strong>
-          <span style="font-size: 9px; background: rgba(0,240,255,0.15); color: #00F0FF; padding: 2px 6px; border-radius: 6px; font-weight: 800;">FROTA ATIVA</span>
-        </div>
-        <div style="font-size: 11px; color: #94A3B8; margin-bottom: 6px;">
-          <i class="fa-solid fa-location-dot" style="color: var(--primary);"></i> ${city.name} • Corrida em Andamento
-        </div>
-        <div style="display: flex; gap: 8px; font-size: 10.5px; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 5px;">
-          <span>⚡ <strong>${speed} km/h</strong></span>
-          <span>🔋 <strong>${battery}%</strong></span>
-          <span style="color: #00FF88;">💰 <strong>+ R$ ${formatCurrency(model.returnVal)}/dia</strong></span>
-        </div>
-      </div>
-    `;
-    marker.bindPopup(popupContent);
-    mapVehicleMarkers.push({ marker, lat, lng, isUser: false });
+    const carData = {
+      name: model.name,
+      code: model.code,
+      city: city.name,
+      speed: speed,
+      battery: battery,
+      dailyReturn: model.returnVal,
+      isUser: false,
+      routeFrom: assignedRoute.from,
+      routeTo: assignedRoute.to,
+      tripFare: (model.returnVal / 4 + 4.5).toFixed(2)
+    };
+
+    marker.on('click', () => showRideHud(carData));
+    mapVehicleMarkers.push({ marker, lat, lng, isUser: false, carData });
+  }
+
+  // Abre automaticamente o HUD do primeiro carro
+  if (mapVehicleMarkers.length > 0) {
+    showRideHud(mapVehicleMarkers[0].carData);
   }
 }
 
-// Animação de Micro-Movimento Suave nos Marcadores
+function showRideHud(carData) {
+  const hud = document.getElementById('live-ride-hud');
+  if (!hud || !carData) return;
+
+  hud.style.display = 'block';
+  hud.innerHTML = `
+    <div class="ride-hud-header">
+      <div class="ride-car-name">
+        <i class="fa-solid ${carData.isUser ? 'fa-car-side' : 'fa-bolt'}" style="color: ${carData.isUser ? 'var(--accent-green)' : 'var(--primary)'};"></i>
+        <span>${carData.name}</span>
+      </div>
+      <span class="ride-status-pill">${carData.isUser ? '⭐ SEU VEÍCULO' : 'EM CORRIDA'}</span>
+    </div>
+
+    <div class="ride-route-text">
+      <i class="fa-solid fa-route" style="color: var(--primary);"></i>
+      <span>${carData.routeFrom} ➔ <strong>${carData.routeTo}</strong></span>
+    </div>
+
+    <div class="ride-metrics-grid">
+      <div class="ride-metric-item">
+        <span>Velocidade</span>
+        <strong>${carData.speed} km/h</strong>
+      </div>
+      <div class="ride-metric-item">
+        <span>Bateria / LiDAR</span>
+        <strong>${carData.battery}% (Nível 4)</strong>
+      </div>
+      <div class="ride-metric-item">
+        <span>Rendimento</span>
+        <strong style="color: var(--accent-green);">+ R$ ${formatCurrency(carData.dailyReturn)}/dia</strong>
+      </div>
+    </div>
+  `;
+}
+
+// Movimento ao Vivo
 let mapMotionInterval = null;
 function startMapVehiclesMotion() {
   if (mapMotionInterval) clearInterval(mapMotionInterval);
@@ -1528,13 +1614,18 @@ function startMapVehiclesMotion() {
     if (!gpsMap) return;
 
     mapVehicleMarkers.forEach(item => {
-      const deltaLat = (Math.random() - 0.5) * 0.0006;
-      const deltaLng = (Math.random() - 0.5) * 0.0006;
+      const deltaLat = (Math.random() - 0.5) * 0.0007;
+      const deltaLng = (Math.random() - 0.5) * 0.0007;
       item.lat += deltaLat;
       item.lng += deltaLng;
       item.marker.setLatLng([item.lat, item.lng]);
+
+      // Oscila ligeiramente a velocidade
+      if (item.carData) {
+        item.carData.speed = Math.max(25, Math.min(58, item.carData.speed + Math.floor(Math.random() * 5 - 2)));
+      }
     });
-  }, 3500);
+  }, 3200);
 }
 
 function trackActiveVehicle(contractId, vehicleName) {
@@ -1550,12 +1641,33 @@ function trackActiveVehicle(contractId, vehicleName) {
       gpsMap.invalidateSize();
       const userMarker = mapVehicleMarkers.find(m => m.isUser);
       if (userMarker) {
-        gpsMap.setView([userMarker.lat, userMarker.lng], 15, { animate: true });
+        gpsMap.flyTo([userMarker.lat, userMarker.lng], 15, { duration: 1 });
         userMarker.marker.openPopup();
+        showRideHud(userMarker.carData);
       } else {
         const city = GPS_CITIES[currentMapCityKey];
-        gpsMap.setView(city.center, 14, { animate: true });
+        gpsMap.flyTo(city.center, 14, { duration: 1 });
       }
     }
   }, 400);
+}
+
+// Ticker de Atividades Globais
+const TICKER_MESSAGES = [
+  '🚗 Operador #4064 atingiu 🥈 Supervisor Prata (+ R$ 100 Pix)',
+  '⚡ Baidu Apollo #NX-202 em Austin completou 22 corridas hoje',
+  '💰 Saque de R$ 435,00 liquidado com sucesso via Pix',
+  '📍 Frota em Miami com 100% de operação autônoma Nível 4',
+  '🔥 Vanessa T. ativou cota Tesla Model 3 (R$ 150) em New York',
+  '🎁 Bônus de check-in diário resgatado por mais de 340 operadores hoje'
+];
+let tickerIdx = 0;
+function startTickerRotation() {
+  const tickerEl = document.getElementById('ticker-live-text');
+  if (!tickerEl) return;
+
+  setInterval(() => {
+    tickerIdx++;
+    tickerEl.textContent = TICKER_MESSAGES[tickerIdx % TICKER_MESSAGES.length];
+  }, 7000);
 }

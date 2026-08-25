@@ -20,3 +20,7 @@ services:
         value: "-1003951417929"
       - key: APP_URL
         value: https://taxinexo.onrender.com
+      - key: EVOLUTION_API_URL
+        value: http://95.182.89.102:8080
+      - key: GLOBAL_API_KEY
+        value: tartaruga-1-.

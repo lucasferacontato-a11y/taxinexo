@@ -825,6 +825,30 @@
          TAB 7: TRÁFEGO & PRESELL NAJAF
          ========================================== -->
     <div id="tab-analytics" class="admin-tab-pane">
+      <!-- Cards de Métricas de Tráfego -->
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-icon"><i class="fa-solid fa-users"></i></div>
+          <span class="metric-label">Visitantes Únicos Hoje</span>
+          <div class="metric-val cyan" id="stat-traffic-today-uniq">0</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-icon"><i class="fa-solid fa-earth-americas"></i></div>
+          <span class="metric-label">Total Visitantes Únicos</span>
+          <div class="metric-val gold" id="stat-traffic-total-uniq">0</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-icon"><i class="fa-solid fa-bolt"></i></div>
+          <span class="metric-label">Acessos Presell Najaf Hoje</span>
+          <div class="metric-val lime" id="stat-traffic-presell-today">0</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-icon"><i class="fa-solid fa-mobile-screen"></i></div>
+          <span class="metric-label">Acessos App / Login Hoje</span>
+          <div class="metric-val green" id="stat-traffic-app-today">0</div>
+        </div>
+      </div>
+
       <div class="panel-card">
         <div class="panel-head">
           <h2><i class="fa-solid fa-chart-line" style="color: var(--accent-purple);"></i> Tráfego em Tempo Real & Presell Najaf</h2>
@@ -840,7 +864,7 @@
                 <th>Horário</th>
                 <th>Página / Seção</th>
                 <th>Dispositivo</th>
-                <th>Origem / UTM</th>
+                <th>Origem / Campanha / UTM</th>
               </tr>
             </thead>
             <tbody id="traffic-table-body">
@@ -1539,19 +1563,37 @@
       const tbody = document.getElementById('traffic-table-body');
       if (!data || !tbody) return;
 
-      if (!data.recentPageViews || data.recentPageViews.length === 0) {
+      // Atualiza Cards de Métricas
+      const elTodayUniq = document.getElementById('stat-traffic-today-uniq');
+      const elTotalUniq = document.getElementById('stat-traffic-total-uniq');
+      const elPresellToday = document.getElementById('stat-traffic-presell-today');
+      const elAppToday = document.getElementById('stat-traffic-app-today');
+
+      if (elTodayUniq) elTodayUniq.textContent = data.todayUniqueVisitors || 0;
+      if (elTotalUniq) elTotalUniq.textContent = data.totalUniqueVisitors || 0;
+      if (elPresellToday) elPresellToday.textContent = data.todayPresellViews || 0;
+      if (elAppToday) elAppToday.textContent = data.todayAppViews || 0;
+
+      const views = data.recentPageViews || [];
+      if (views.length === 0) {
         tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: var(--text-muted); padding: 30px;">Nenhum acesso registrado ainda.</td></tr>';
         return;
       }
 
-      tbody.innerHTML = data.recentPageViews.map(v => {
-        const timeFormatted = new Date(v.created_at || v.timestamp).toLocaleTimeString('pt-BR');
+      tbody.innerHTML = views.map(v => {
+        const timeFormatted = new Date(v.created_at || v.timestamp || Date.now()).toLocaleTimeString('pt-BR');
+        const pagePath = v.path || v.page_path || '/';
+        const isPresell = pagePath.includes('presell') || pagePath.includes('apresentacao') || pagePath.includes('start');
+        
+        const badgeClass = isPresell ? 'chip-lime' : 'chip-cyan';
+        const badgeLabel = isPresell ? '⚡ Presell Najaf' : (pagePath.includes('login') ? '📱 Login / App' : pagePath);
+
         return `
           <tr>
             <td><strong style="color: #fff;">${timeFormatted}</strong></td>
-            <td><span class="chip chip-cyan">${v.page_path || v.path || '/'}</span></td>
-            <td>${v.device_type || 'Mobile/Desktop'}</td>
-            <td><small style="color: var(--text-muted);">${v.utm_source ? `UTM: ${v.utm_source}` : (v.referrer || 'Direto')}</small></td>
+            <td><span class="chip ${badgeClass}">${badgeLabel}</span> <small style="color: var(--text-muted); margin-left: 6px; font-family: monospace;">${pagePath}</small></td>
+            <td><strong>${v.device || '💻 Desktop'}</strong></td>
+            <td><span style="color: var(--accent-lime); font-size: 11.5px; font-weight: 600;">${v.referrer || 'Direto'}</span></td>
           </tr>
         `;
       }).join('');

@@ -21,32 +21,42 @@ app.use(cors());
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
-// Middleware de Rastreamento de Visitantes Reais (Analytics)
+// Middleware de Rastreamento de Visitantes Reais (Analytics & Presell Najaf)
 app.use((req, res, next) => {
   const p = (req.path || '/').toLowerCase();
   const isStaticAsset = /\.(jpg|jpeg|png|gif|ico|svg|css|js|map|json|woff|woff2|ttf|txt)$/i.test(p);
-  const isApi = p.startsWith('/api/');
+  const isApi = p.startsWith('/api/') || p.startsWith('/webhook');
 
   if (!isStaticAsset && !isApi && req.method === 'GET') {
     const userAgent = (req.headers['user-agent'] || '').toLowerCase();
-    const isBot = /bot|spider|crawl|curl|uptime|ping|render|headless|postman/i.test(userAgent);
+    const isSearchBot = /googlebot|bingbot|yandex|duckduckbot/i.test(userAgent);
 
-    if (!isBot) {
+    if (!isSearchBot) {
       const forwarded = req.headers['x-forwarded-for'];
       const clientIp = (forwarded ? forwarded.split(',')[0] : req.socket.remoteAddress) || '127.0.0.1';
       const ipHash = crypto.createHash('sha256').update(clientIp + '_taxinexo_salt').digest('hex').substring(0, 16);
       const isMobile = /mobile|iphone|android|ipad|phone/i.test(userAgent);
-      const device = isMobile ? 'mobile' : 'desktop';
-      const referrer = req.headers['referer'] || req.headers['referrer'] || 'Direto / Tráfego';
+      const device = isMobile ? '📱 Mobile' : '💻 Desktop';
+      
+      let refText = 'Direto';
+      if (req.query && req.query.utm_source) {
+        refText = `UTM: ${req.query.utm_source}` + (req.query.utm_campaign ? ` (${req.query.utm_campaign})` : '');
+      } else if (req.headers['referer']) {
+        try {
+          refText = `Ref: ${new URL(req.headers['referer']).hostname}`;
+        } catch (e) {
+          refText = 'Referrer Externo';
+        }
+      }
 
       let cleanPath = req.path;
-      if (cleanPath === '' || cleanPath === '/index.html') cleanPath = '/';
+      if (cleanPath === '' || cleanPath === '/' || cleanPath === '/index.html') cleanPath = '/presell.html';
 
       recordPageView({
         path: cleanPath,
         ipHash: ipHash,
         device: device,
-        referrer: String(referrer).substring(0, 255)
+        referrer: String(refText).substring(0, 255)
       }).catch(err => console.error('[ANALYTICS ERROR]:', err.message));
     }
   }
@@ -88,6 +98,8 @@ app.use('/api', crmRouter);
 app.get('/api/health', (req, res) => {
   res.json({ status: 'online', service: 'TAXINEXO 2.0 Cloud API', timestamp: new Date().toISOString() });
 });
+
+
 
 // 1. Rota Raiz (Landing Page / Presell Oficial)
 app.get(['/', '/presell', '/apresentacao', '/start', '/como-funciona'], (req, res) => {

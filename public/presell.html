@@ -2424,11 +2424,22 @@
     }
 
     function openPlanCheckout(productId) {
-      const baseUrl = CHECKOUT_URLS[productId] || 'https://pay.cartpanda.com/c/taxinexo-byd-dolphin-30';
       const searchParams = new URLSearchParams(window.location.search);
-      const targetUrl = searchParams.toString() ? (baseUrl + '?' + searchParams.toString()) : baseUrl;
-      window.open(targetUrl, '_blank');
+      if (productId) {
+        searchParams.set('plan', productId);
+      }
+      const targetUrl = '/login.html' + (searchParams.toString() ? ('?' + searchParams.toString()) : '');
+      window.location.href = targetUrl;
     }
+
+    // Preserva parâmetros de indicação e UTMs nos links de login
+    document.addEventListener('DOMContentLoaded', () => {
+      if (window.location.search) {
+        document.querySelectorAll('a[href="/login.html"]').forEach(a => {
+          a.href = '/login.html' + window.location.search;
+        });
+      }
+    });
 
     // Live Toast Simulation
     const TOAST_MESSAGES = [

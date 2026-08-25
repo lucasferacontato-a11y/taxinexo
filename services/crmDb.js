@@ -198,15 +198,29 @@ const db = {
   createLead: (leadData) => {
     const data = readDb();
     const cleanPhone = String(leadData.phone || '').replace(/\D/g, '');
+    if (!cleanPhone) return { lead: null, created: false };
+
     const existing = data.leads.find(l => l.phone === cleanPhone);
     if (existing) {
       existing.updatedAt = new Date().toISOString();
-      if (leadData.name) existing.name = leadData.name;
+      if (leadData.name && leadData.name !== 'Operador #Lead') existing.name = leadData.name;
       if (leadData.email) existing.email = leadData.email;
       if (leadData.campaign) existing.campaign = leadData.campaign;
-      if (leadData.value) existing.value = leadData.value;
+      if (leadData.value) existing.value = Math.max(Number(existing.value || 0), Number(leadData.value));
+      if (leadData.stage) {
+        // Se já está ganho, não rebaixa para novo
+        if (existing.stage !== 'ganho' || leadData.stage === 'ganho') {
+          existing.stage = leadData.stage;
+        }
+      }
+      if (leadData.utm_source) existing.utm_source = leadData.utm_source;
+      if (leadData.utm_campaign) existing.utm_campaign = leadData.utm_campaign;
+      if (leadData.utm_content) existing.utm_content = leadData.utm_content;
       if (leadData.tags) {
         existing.tags = Array.from(new Set([...(existing.tags || []), ...leadData.tags]));
+      }
+      if (leadData.notes) {
+        existing.notes = (existing.notes ? existing.notes + ' | ' : '') + leadData.notes;
       }
       writeDb(data);
       return { lead: existing, created: false };
@@ -224,6 +238,8 @@ const db = {
       utm_source: leadData.utm_source || 'meta_ads',
       utm_campaign: leadData.utm_campaign || 'frotas_escala',
       utm_medium: leadData.utm_medium || 'cpc',
+      utm_content: leadData.utm_content || '',
+      utm_term: leadData.utm_term || '',
       notes: leadData.notes || 'Lead capturado automaticamente via anúncio Taxi Nexo.',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),

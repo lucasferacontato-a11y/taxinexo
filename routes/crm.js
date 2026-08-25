@@ -360,5 +360,53 @@ module.exports = function(io) {
     return res.send(csv);
   });
 
+  
+  // ---------------- Exportação de Leads (CSV & Lookalike Meta Ads) ----------------
+  router.get('/leads/export/csv', (req, res) => {
+    try {
+      const leads = db.getLeads();
+      let csv = '\uFEFFNome,Telefone,Email,Etapa,Valor,Campanha,UTM_Source,UTM_Campaign,Data_Cadastro\n';
+      leads.forEach(l => {
+        const phone = l.phone ? `+${l.phone}` : '';
+        const name = (l.name || '').replace(/,/g, ' ');
+        const email = l.email || '';
+        const stage = l.stage || '';
+        const value = l.value || 0;
+        const campaign = (l.campaign || '').replace(/,/g, ' ');
+        const source = l.utm_source || '';
+        const utmCamp = (l.utm_campaign || '').replace(/,/g, ' ');
+        const date = l.createdAt ? new Date(l.createdAt).toLocaleDateString('pt-BR') : '';
+        csv += `"${name}","${phone}","${email}","${stage}",${value},"${campaign}","${source}","${utmCamp}","${date}"\n`;
+      });
+
+      res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+      res.setHeader('Content-Disposition', 'attachment; filename="leads_taxinexo_export.csv"');
+      return res.send(csv);
+    } catch (err) {
+      return res.status(500).json({ error: 'Erro ao exportar leads.' });
+    }
+  });
+
+  router.get('/leads/export/lookalike', (req, res) => {
+    try {
+      const leads = db.getLeads();
+      // Formato otimizado para o Gerenciador de Anúncios do Facebook (Lookalike)
+      let csv = 'phone,fn,email,value\n';
+      leads.forEach(l => {
+        if (l.phone) {
+          const cleanPhone = l.phone.replace(/\D/g, '');
+          const firstName = (l.name || '').split(' ')[0] || '';
+          csv += `55${cleanPhone},${firstName},${l.email || ''},${l.value || 0}\n`;
+        }
+      });
+
+      res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+      res.setHeader('Content-Disposition', 'attachment; filename="meta_lookalike_audiences.csv"');
+      return res.send(csv);
+    } catch (err) {
+      return res.status(500).json({ error: 'Erro ao exportar público Lookalike.' });
+    }
+  });
+
   return router;
 };

@@ -1692,3 +1692,169 @@ h1, h2, h3, h4, h5,
   border-radius: 50%;
   box-shadow: 0 0 8px var(--accent-green);
 }
+
+
+/* =========================================================
+   MAPA DE TELEMETRIA GPS AO VIVO & RADAR HIGH-TECH
+   ========================================================= */
+.gps-radar-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-bottom: 20px;
+  box-shadow: 0 8px 32px rgba(0, 240, 255, 0.12);
+  position: relative;
+}
+
+.gps-radar-header {
+  padding: 12px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.gps-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.gps-title-wrap h5 {
+  font-size: 13px;
+  font-weight: 800;
+  color: #fff;
+  margin: 0;
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.live-tag {
+  background: rgba(244, 63, 94, 0.2);
+  border: 1px solid rgba(244, 63, 94, 0.45);
+  color: #fb7185;
+  font-size: 9px;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: 10px;
+  animation: pulse 1.8s infinite;
+}
+
+.gps-city-pills {
+  display: flex;
+  gap: 4px;
+}
+
+.gps-pill {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-muted);
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.gps-pill.active {
+  background: var(--primary-gradient);
+  color: #000;
+  border-color: transparent;
+  font-weight: 800;
+}
+
+.gps-map-viewport {
+  width: 100%;
+  height: 250px;
+  background: #060912;
+  position: relative;
+  z-index: 1;
+}
+
+/* Custom Leaflet Controls & Popups */
+.leaflet-container {
+  background: #060912 !important;
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+}
+
+.leaflet-popup-content-wrapper {
+  background: rgba(11, 17, 30, 0.95) !important;
+  backdrop-filter: blur(14px) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: var(--radius-md) !important;
+  color: #fff !important;
+  box-shadow: 0 8px 30px rgba(0, 240, 255, 0.25) !important;
+  padding: 4px !important;
+}
+
+.leaflet-popup-tip {
+  background: #0b111e !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+.leaflet-popup-content {
+  margin: 8px 10px !important;
+  line-height: 1.4 !important;
+}
+
+.vehicle-marker-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vehicle-marker-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(11, 15, 28, 0.92);
+  border: 2px solid #00F0FF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #00F0FF;
+  font-size: 13px;
+  box-shadow: 0 0 16px rgba(0, 240, 255, 0.65);
+  transition: transform 0.3s ease;
+}
+
+.vehicle-marker-icon.user-car {
+  border-color: var(--accent-green);
+  color: var(--accent-green);
+  box-shadow: 0 0 20px rgba(0, 255, 136, 0.85);
+  background: rgba(0, 255, 136, 0.15);
+}
+
+.gps-hud-bar {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  background: rgba(0, 0, 0, 0.5);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 8px 12px;
+  gap: 6px;
+}
+
+.hud-item {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.hud-label {
+  font-size: 9.5px;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.hud-val {
+  font-size: 11.5px;
+  font-family: 'Space Grotesk', sans-serif;
+  color: #fff;
+  font-weight: 700;
+  margin-top: 2px;
+}

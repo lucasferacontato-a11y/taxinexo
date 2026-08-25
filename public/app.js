@@ -547,6 +547,10 @@ function renderActiveVehicles() {
         <div class="progress-bar" style="margin-top: 10px;">
           <div class="progress-fill" style="width: 0%;" data-target="${progressPct}%"></div>
         </div>
+
+        <button class="btn-receipt-view" onclick="trackActiveVehicle('${vehicle.id}', '${vehicle.name}')" style="margin-top: 10px; width: 100%; justify-content: center; padding: 7px; font-size: 11px; background: rgba(0, 240, 255, 0.08); border: 1px solid rgba(0, 240, 255, 0.25);">
+          <i class="fa-solid fa-satellite-dish" style="color: var(--primary);"></i> Rastrear Veículo no Radar GPS
+        </button>
       </div>
     `;
   }).join('');
@@ -1302,4 +1306,225 @@ async function openNotificationsModal() {
       </div>
     </div>
   `).join('');
+}
+
+
+/* =========================================================
+   MAPA DE TELEMETRIA GPS AO VIVO COM LEAFLET & RASTREAMENTO
+   ========================================================= */
+
+const GPS_CITIES = {
+  austin: {
+    name: 'Austin, TX',
+    center: [30.2672, -97.7431],
+    zoom: 13,
+    connected: '1.482 ativas',
+    trips: '18.940 corridas'
+  },
+  miami: {
+    name: 'Miami, FL',
+    center: [25.7617, -80.1918],
+    zoom: 13,
+    connected: '2.140 ativas',
+    trips: '27.810 corridas'
+  },
+  ny: {
+    name: 'New York, NY',
+    center: [40.7128, -74.0060],
+    zoom: 13,
+    connected: '3.650 ativas',
+    trips: '46.290 corridas'
+  }
+};
+
+let gpsMap = null;
+let mapVehicleMarkers = [];
+let currentMapCityKey = 'austin';
+
+function initGpsTelemetryMap() {
+  const mapEl = document.getElementById('gps-telemetry-map');
+  if (!mapEl || typeof L === 'undefined') return;
+
+  if (gpsMap) {
+    gpsMap.invalidateSize();
+    return;
+  }
+
+  const city = GPS_CITIES[currentMapCityKey];
+
+  // Cria o mapa Leaflet
+  gpsMap = L.map('gps-telemetry-map', {
+    center: city.center,
+    zoom: city.zoom,
+    zoomControl: false,
+    attributionControl: false
+  });
+
+  // Camada Dark Matter CartoDB
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    maxZoom: 19,
+    subdomains: 'abcd'
+  }).addTo(gpsMap);
+
+  populateMapVehicles();
+  startMapVehiclesMotion();
+}
+
+function switchMapCity(cityKey, btn) {
+  currentMapCityKey = cityKey;
+  document.querySelectorAll('.gps-pill').forEach(p => p.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+
+  const city = GPS_CITIES[cityKey];
+  if (!city) return;
+
+  const connectedEl = document.getElementById('hud-connected-count');
+  const tripsEl = document.getElementById('hud-trips-count');
+  if (connectedEl) connectedEl.textContent = city.connected;
+  if (tripsEl) tripsEl.textContent = city.trips;
+
+  if (gpsMap) {
+    gpsMap.flyTo(city.center, city.zoom, { duration: 1.2 });
+    setTimeout(populateMapVehicles, 600);
+  }
+}
+
+function populateMapVehicles() {
+  if (!gpsMap) return;
+
+  // Limpa marcadores anteriores
+  mapVehicleMarkers.forEach(m => gpsMap.removeLayer(m.marker));
+  mapVehicleMarkers = [];
+
+  const city = GPS_CITIES[currentMapCityKey];
+  const centerLat = city.center[0];
+  const centerLng = city.center[1];
+
+  // 1. Veículos do Usuário (se houver)
+  const userCars = appState.activeVehicles || [];
+  userCars.forEach((car, i) => {
+    const lat = centerLat + (Math.sin(i * 1.5) * 0.012) + (Math.random() * 0.004);
+    const lng = centerLng + (Math.cos(i * 1.5) * 0.015) + (Math.random() * 0.004);
+
+    const iconHtml = `
+      <div class="vehicle-marker-wrap">
+        <div class="vehicle-marker-icon user-car" title="SEU VEÍCULO: ${car.name}">
+          <i class="fa-solid fa-car-side"></i>
+        </div>
+      </div>
+    `;
+    const customIcon = L.divIcon({ html: iconHtml, className: 'custom-car-icon', iconSize: [32, 32], iconAnchor: [16, 16] });
+    const marker = L.marker([lat, lng], { icon: customIcon }).addTo(gpsMap);
+
+    const popupContent = `
+      <div>
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 6px; margin-bottom: 4px;">
+          <strong style="color: #fff; font-size: 12.5px;">${car.name}</strong>
+          <span style="font-size: 9px; background: rgba(0,255,136,0.18); color: #00FF88; padding: 2px 6px; border-radius: 6px; font-weight: 800;">SEU VEÍCULO</span>
+        </div>
+        <div style="font-size: 11px; color: #94A3B8; margin-bottom: 6px;">
+          <i class="fa-solid fa-satellite" style="color: var(--primary);"></i> Contrato #${car.id} • ${city.name}
+        </div>
+        <div style="display: flex; gap: 8px; font-size: 10.5px; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 5px;">
+          <span>⚡ <strong>44 km/h</strong></span>
+          <span>🔋 <strong>89%</strong></span>
+          <span style="color: #00FF88;">💰 <strong>+ R$ ${formatCurrency(car.dailyEarned)}/dia</strong></span>
+        </div>
+      </div>
+    `;
+    marker.bindPopup(popupContent);
+    mapVehicleMarkers.push({ marker, lat, lng, isUser: true });
+  });
+
+  // 2. Frotas Gerais Conectadas da Rede (Simulação Realista de Alta Densidade)
+  const fleetModels = [
+    { name: 'BYD Dolphin Autonomous', code: 'NX-030', returnVal: 2.80 },
+    { name: 'Tesla Robotaxi Model 3', code: 'NX-101', returnVal: 14.50 },
+    { name: 'Baidu Apollo RT6', code: 'NX-202', returnVal: 36.00 },
+    { name: 'Tesla Cybercab Next-Gen', code: 'NX-707', returnVal: 68.00 },
+    { name: 'Cruise Origin Shuttle', code: 'NX-404', returnVal: 105.00 },
+    { name: 'Waymo Autonomous Van', code: 'NX-303', returnVal: 185.00 }
+  ];
+
+  const count = userCars.length ? 6 : 8;
+  for (let i = 0; i < count; i++) {
+    const model = fleetModels[i % fleetModels.length];
+    const angle = (i / count) * Math.PI * 2;
+    const dist = 0.008 + (Math.random() * 0.016);
+    const lat = centerLat + Math.sin(angle) * dist;
+    const lng = centerLng + Math.cos(angle) * dist;
+
+    const iconHtml = `
+      <div class="vehicle-marker-wrap">
+        <div class="vehicle-marker-icon">
+          <i class="fa-solid fa-bolt"></i>
+        </div>
+      </div>
+    `;
+    const customIcon = L.divIcon({ html: iconHtml, className: 'custom-car-icon', iconSize: [28, 28], iconAnchor: [14, 14] });
+    const marker = L.marker([lat, lng], { icon: customIcon }).addTo(gpsMap);
+
+    const speed = 32 + Math.floor(Math.random() * 20);
+    const battery = 75 + Math.floor(Math.random() * 23);
+
+    const popupContent = `
+      <div>
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 6px; margin-bottom: 4px;">
+          <strong style="color: #fff; font-size: 12.5px;">${model.name}</strong>
+          <span style="font-size: 9px; background: rgba(0,240,255,0.15); color: #00F0FF; padding: 2px 6px; border-radius: 6px; font-weight: 800;">FROTA ATIVA</span>
+        </div>
+        <div style="font-size: 11px; color: #94A3B8; margin-bottom: 6px;">
+          <i class="fa-solid fa-location-dot" style="color: var(--primary);"></i> ${city.name} • Corrida em Andamento
+        </div>
+        <div style="display: flex; gap: 8px; font-size: 10.5px; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 5px;">
+          <span>⚡ <strong>${speed} km/h</strong></span>
+          <span>🔋 <strong>${battery}%</strong></span>
+          <span style="color: #00FF88;">💰 <strong>+ R$ ${formatCurrency(model.returnVal)}/dia</strong></span>
+        </div>
+      </div>
+    `;
+    marker.bindPopup(popupContent);
+    mapVehicleMarkers.push({ marker, lat, lng, isUser: false });
+  }
+}
+
+// Animação de Micro-Movimento Suave nos Marcadores
+let mapMotionInterval = null;
+function startMapVehiclesMotion() {
+  if (mapMotionInterval) clearInterval(mapMotionInterval);
+
+  mapMotionInterval = setInterval(() => {
+    if (!gpsMap) return;
+
+    mapVehicleMarkers.forEach(item => {
+      const deltaLat = (Math.random() - 0.5) * 0.0006;
+      const deltaLng = (Math.random() - 0.5) * 0.0006;
+      item.lat += deltaLat;
+      item.lng += deltaLng;
+      item.marker.setLatLng([item.lat, item.lng]);
+    });
+  }, 3500);
+}
+
+function trackActiveVehicle(contractId, vehicleName) {
+  switchTab('home');
+
+  const mapEl = document.getElementById('gps-telemetry-map');
+  if (mapEl) {
+    mapEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  setTimeout(() => {
+    if (gpsMap) {
+      gpsMap.invalidateSize();
+      const userMarker = mapVehicleMarkers.find(m => m.isUser);
+      if (userMarker) {
+        gpsMap.setView([userMarker.lat, userMarker.lng], 15, { animate: true });
+        userMarker.marker.openPopup();
+      } else {
+        const city = GPS_CITIES[currentMapCityKey];
+        gpsMap.setView(city.center, 14, { animate: true });
+      }
+    }
+  }, 400);
 }

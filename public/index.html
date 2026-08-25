@@ -18,6 +18,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 <body>
 
@@ -139,6 +141,41 @@
             <p>Contratos de inteligência automotiva com liquidação diária.</p>
           </div>
           <i class="fa-solid fa-microchip banner-bg-icon float-anim"></i>
+        </div>
+
+        <!-- Radar de Telemetria GPS ao Vivo -->
+        <div class="gps-radar-card">
+          <div class="gps-radar-header">
+            <div class="gps-title-wrap">
+              <span class="telemetry-dot pulse"></span>
+              <h5>Radar de Telemetria GPS</h5>
+              <span class="live-tag">AO VIVO</span>
+            </div>
+            <div class="gps-city-pills">
+              <button class="gps-pill active" onclick="switchMapCity('austin', this)">Austin</button>
+              <button class="gps-pill" onclick="switchMapCity('miami', this)">Miami</button>
+              <button class="gps-pill" onclick="switchMapCity('ny', this)">New York</button>
+            </div>
+          </div>
+
+          <!-- Viewport do Mapa Leaflet -->
+          <div id="gps-telemetry-map" class="gps-map-viewport"></div>
+
+          <!-- HUD de Telemetria no Rodapé do Mapa -->
+          <div class="gps-hud-bar">
+            <div class="hud-item">
+              <span class="hud-label"><i class="fa-solid fa-satellite-dish"></i> Frotas Conectadas</span>
+              <strong class="hud-val" id="hud-connected-count">1.482 ativas</strong>
+            </div>
+            <div class="hud-item">
+              <span class="hud-label"><i class="fa-solid fa-route"></i> Viagens Hoje</span>
+              <strong class="hud-val" id="hud-trips-count">18.940 corridas</strong>
+            </div>
+            <div class="hud-item">
+              <span class="hud-label"><i class="fa-solid fa-bolt"></i> Status Rede</span>
+              <strong class="hud-val" style="color: var(--accent-green);">100% Nível 4</strong>
+            </div>
+          </div>
         </div>
 
         <!-- Resumo dos Veículos em Operação -->

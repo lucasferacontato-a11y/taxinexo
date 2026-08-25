@@ -123,6 +123,10 @@ async function startServer() {
       console.log(`📊 Painel Operador: http://localhost:${PORT}`);
       console.log(`🛰️ Nexus CRM 24/7: http://localhost:${PORT}/crm`);
       console.log(`=================================================`);
+
+      // Inicia o Watchdog de Alta Disponibilidade 24/7 (Anti-Sleep & Auto-Cura)
+      const watchdog = require('./services/keepAliveWatchdog');
+      watchdog.start();
     });
   } catch (err) {
     console.error('Falha crítica ao iniciar o servidor:', err);

@@ -273,6 +273,11 @@ const db = {
 
   getMessages: (leadId) => {
     const data = readDb();
+    const lead = data.leads.find(l => l.id === leadId || l.phone === leadId);
+    if (lead) {
+      const msgs = data.messages[lead.id] || data.messages[lead.phone] || [];
+      return msgs;
+    }
     return data.messages[leadId] || [];
   },
 

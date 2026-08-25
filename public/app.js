@@ -129,6 +129,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   setupEventListeners();
   
   // Inicializa o mapa de telemetria GPS
+  startSettlementTimer();
   setTimeout(initGpsTelemetryMap, 150);
 
   // Se não estiver logado, redireciona para login.html
@@ -453,7 +454,7 @@ function renderProducts(filter = 'all') {
           </span>
           ${isSoldOut 
             ? '<span class="batch-countdown-badge" style="background: rgba(244,63,94,0.1); color: #f43f5e; border-color: rgba(244,63,94,0.25);"><i class="fa-solid fa-circle-xmark"></i> Lote Encerrado</span>'
-            : '<span class="batch-countdown-badge"><i class="fa-regular fa-clock"></i> Lote encerra em: <strong class="product-batch-timer">01:56:38</strong></span>'
+            : '<span class="batch-countdown-badge"><i class="fa-regular fa-clock"></i> Lote encerra em: <strong class="product-batch-timer">${getLiveBatchTime()}</strong></span>'
           }
         </div>
         
@@ -1083,35 +1084,55 @@ function shareOnWhatsApp() {
   window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
 }
 
-// 3. Timer de Telemetria e Próxima Liquidação
+
+function getLiveBatchTime() {
+  const now = new Date();
+  const midnight = new Date();
+  midnight.setHours(24, 0, 0, 0);
+  const diff = Math.max(0, midnight - now);
+
+  const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+  const mins = Math.floor((diff / (1000 * 60)) % 60);
+  const secs = Math.floor((diff / 1000) % 60);
+
+  return `${String(hours).padStart(2, '0')}:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+}
+
+function getLiveSettlementTimeFormatted() {
+  const now = new Date();
+  const midnight = new Date();
+  midnight.setHours(24, 0, 0, 0);
+  const diff = Math.max(0, midnight - now);
+
+  const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+  const mins = Math.floor((diff / (1000 * 60)) % 60);
+  const secs = Math.floor((diff / 1000) % 60);
+
+  return `${String(hours).padStart(2, '0')}h ${String(mins).padStart(2, '0')}m ${String(secs).padStart(2, '0')}s`;
+}
+
+function updateAllClocks() {
+  const batchFormatted = getLiveBatchTime();
+  const formatted = getLiveSettlementTimeFormatted();
+
+  document.querySelectorAll('.live-settlement-timer').forEach(el => {
+    el.textContent = formatted;
+  });
+  document.querySelectorAll('.product-batch-timer').forEach(el => {
+    el.textContent = batchFormatted;
+  });
+}
+
 let settlementTimerInterval = null;
 function startSettlementTimer() {
   if (settlementTimerInterval) clearInterval(settlementTimerInterval);
-
-  function updateClock() {
-    const now = new Date();
-    const midnight = new Date();
-    midnight.setHours(24, 0, 0, 0); // Próxima meia-noite
-    const diff = midnight - now;
-
-    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-    const mins = Math.floor((diff / 1000 / 60) % 60);
-    const secs = Math.floor((diff / 1000) % 60);
-
-    const formatted = `${String(hours).padStart(2, '0')}h ${String(mins).padStart(2, '0')}m ${String(secs).padStart(2, '0')}s`;
-    const batchFormatted = `${String(hours).padStart(2, '0')}:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-    
-    document.querySelectorAll('.live-settlement-timer').forEach(el => {
-      el.textContent = formatted;
-    });
-    document.querySelectorAll('.product-batch-timer').forEach(el => {
-      el.textContent = batchFormatted;
-    });
-  }
-
-  updateClock();
-  settlementTimerInterval = setInterval(updateClock, 1000);
+  updateAllClocks();
+  settlementTimerInterval = setInterval(updateAllClocks, 1000);
 }
+
+// Inicia imediatamente o loop do relógio
+startSettlementTimer();
+
 
 // 4. Extrato Financeiro com Filtros & Comprovante Pix
 async function openHistoryModal() {

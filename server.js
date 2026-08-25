@@ -78,7 +78,7 @@ app.use(['/webhook/cartpanda', '/api/webhook/cartpanda', '/cartpanda/webhook'], 
 
 // Rotas da API Backend Nexus CRM & Webhooks Diretos
 const crmRouter = require('./routes/crm')(io);
-app.use(['/webhook/evolution', '/evolution/webhook', '/api/webhook/evolution'], (req, res, next) => {
+app.all(['/webhook/evolution', '/evolution/webhook', '/api/webhook/evolution'], (req, res, next) => {
   req.url = '/webhook/evolution';
   crmRouter(req, res, next);
 });

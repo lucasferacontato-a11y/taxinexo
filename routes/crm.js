@@ -193,7 +193,8 @@ module.exports = function(io) {
   });
 
   // ---------------- Webhook Evolution & Funil Automático de Atendimento ----------------
-  router.post(['/webhook/evolution', '/api/webhook/evolution'], async (req, res) => {
+  router.post(['/webhook/evolution', '/api/webhook/evolution', '/webhook/evolution/*', '*'], async (req, res, next) => {
+    if (req.method !== 'POST' && req.url.includes('webhook')) return next();
     const { event, instance, data } = req.body || {};
     const whatsappQueue = require('../services/whatsappQueue');
 

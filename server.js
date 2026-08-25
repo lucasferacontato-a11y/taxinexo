@@ -76,8 +76,13 @@ app.use(['/webhook/cartpanda', '/api/webhook/cartpanda', '/cartpanda/webhook'], 
   walletRouter(req, res, next);
 });
 
-// Rotas da API Backend Nexus CRM
-app.use('/api', require('./routes/crm')(io));
+// Rotas da API Backend Nexus CRM & Webhooks Diretos
+const crmRouter = require('./routes/crm')(io);
+app.use(['/webhook/evolution', '/evolution/webhook', '/api/webhook/evolution'], (req, res, next) => {
+  req.url = '/webhook/evolution';
+  crmRouter(req, res, next);
+});
+app.use('/api', crmRouter);
 
 // Healthcheck
 app.get('/api/health', (req, res) => {

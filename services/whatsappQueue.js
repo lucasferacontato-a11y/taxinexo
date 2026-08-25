@@ -28,13 +28,13 @@ class WhatsAppQueue {
       try {
         await this.sendMessageWithEvo(item);
       } catch (err) {
-        console.error(`[WHATSAPP QUEUE ERROR] Falha ao enviar para ${item.phone}:`, err.message);
+        console.error(`[WHATSAPP QUEUE ERROR] Falha ao enviar para ${item.phone}:`, err.response?.data || err.message);
       }
 
-      // Delay humanizado aleatório entre 4 e 8 segundos para proteção anti-ban
+      // Delay humanizado aleatório entre 2 e 4 segundos para proteção anti-ban
       if (this.queue.length > 0) {
-        const randomDelay = Math.floor(Math.random() * 4000) + 4000;
-        console.log(`[WHATSAPP QUEUE] Aguardando ${randomDelay}ms (Anti-Ban) antes do próximo envio...`);
+        const randomDelay = Math.floor(Math.random() * 2000) + 2000;
+        console.log(`[WHATSAPP QUEUE] Aguardando ${randomDelay}ms (Anti-Ban)...`);
         await new Promise(res => setTimeout(res, randomDelay));
       }
     }
@@ -44,12 +44,11 @@ class WhatsAppQueue {
 
   async sendMessageWithEvo({ leadId, phone, text, instanceName }) {
     const settings = crmDb.getSettings();
-    const baseURL = process.env.EVOLUTION_API_URL || settings.evolutionApiUrl || 'http://localhost:8080';
+    const baseURL = process.env.EVOLUTION_API_URL || settings.evolutionApiUrl || 'http://95.182.89.102:8080';
     const apiKey = settings.globalApiKey || process.env.GLOBAL_API_KEY || 'tartaruga-1-.';
     const inst = instanceName || settings.defaultInstance || 'bot_principal';
 
     const cleanPhone = String(phone).replace(/\D/g, '');
-    const jidPhone = cleanPhone.includes('@') ? cleanPhone : `${cleanPhone}@s.whatsapp.net`;
 
     const client = axios.create({
       baseURL,
@@ -57,11 +56,15 @@ class WhatsAppQueue {
       timeout: 12000
     });
 
+    console.log(`[EVOLUTION V2 SEND] Enviando para ${cleanPhone} via ${baseURL}/message/sendText/${inst}...`);
+
     const response = await client.post(`/message/sendText/${inst}`, {
-      number: jidPhone,
-      options: { delay: 1200, presence: 'composing' },
-      textMessage: { text }
+      number: cleanPhone,
+      text: text,
+      delay: 1200
     });
+
+    console.log(`[EVOLUTION V2 SUCCESS] Enviado para ${cleanPhone}:`, response.data?.key?.id || 'OK');
 
     if (leadId) {
       crmDb.addMessage(leadId, {

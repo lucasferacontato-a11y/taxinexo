@@ -197,8 +197,13 @@ module.exports = function(io) {
     const { event, instance, data } = req.body || {};
     const whatsappQueue = require('../services/whatsappQueue');
 
-    if ((event === 'messages.upsert' || event === 'MESSAGES_UPSERT') && data) {
-      const key = data.key || {};
+    console.log(`[WEBHOOK EVOLUTION RECEIVED] Event: ${event}, Instance: ${instance}`);
+
+    // Trata mensagens (Evolution envia como messages.upsert ou array de data)
+    const msgObj = Array.isArray(data) ? data[0] : data;
+
+    if ((event === 'messages.upsert' || event === 'MESSAGES_UPSERT') && msgObj) {
+      const key = msgObj.key || {};
       const fromMe = Boolean(key.fromMe);
       const remoteJid = key.remoteJid || '';
       
@@ -209,16 +214,18 @@ module.exports = function(io) {
       const cleanPhone = remoteJid.split('@')[0].replace(/\D/g, '');
       if (!cleanPhone) return res.json({ received: true });
 
-      const messageContent = data.message?.conversation ||
-        data.message?.extendedTextMessage?.text ||
-        data.message?.imageMessage?.caption ||
+      const messageContent = msgObj.message?.conversation ||
+        msgObj.message?.extendedTextMessage?.text ||
+        msgObj.message?.imageMessage?.caption ||
         '';
+
+      console.log(`[WHATSAPP MSG INCOMING] De: ${cleanPhone} | fromMe: ${fromMe} | Texto: "${messageContent}"`);
 
       let lead = db.getLead(cleanPhone);
       let isNewLead = false;
 
       if (!lead) {
-        const pushName = data.pushName || ('Operador #' + cleanPhone.slice(-4));
+        const pushName = msgObj.pushName || ('Operador #' + cleanPhone.slice(-4));
         const created = db.createLead({
           phone: cleanPhone,
           name: pushName,
@@ -282,15 +289,13 @@ module.exports = function(io) {
         }
 
         if (replyText) {
-          // Dispara resposta pelo WhatsApp via fila inteligente
-          setTimeout(() => {
-            whatsappQueue.enqueue({
-              leadId: lead.id,
-              phone: cleanPhone,
-              text: replyText,
-              instanceName: instance || 'bot_principal'
-            });
-          }, 2000);
+          console.log(`[AUTO-RESPONDER DISPATCH] Disparando resposta para ${cleanPhone}...`);
+          whatsappQueue.enqueue({
+            leadId: lead.id,
+            phone: cleanPhone,
+            text: replyText,
+            instanceName: instance || 'bot_principal'
+          });
         }
       }
     }

@@ -8,7 +8,7 @@ module.exports = function(io) {
   // Helper Evolution API client
   function getEvoClient() {
     const settings = db.getSettings();
-    const baseURL = process.env.EVOLUTION_API_URL || settings.evolutionApiUrl || 'http://localhost:8080';
+    const baseURL = process.env.EVOLUTION_API_URL || settings.evolutionApiUrl || 'http://95.182.89.102:8080';
     return axios.create({
       baseURL: baseURL,
       headers: {
@@ -69,28 +69,39 @@ module.exports = function(io) {
     const evo = getEvoClient();
 
     try {
-      // Tenta conectar ou criar a instância caso não exista
       let response;
+      const url = number ? `/instance/connect/${inst}?number=${number}` : `/instance/connect/${inst}`;
       try {
-        const url = number ? `/instance/connect/${inst}?number=${number}` : `/instance/connect/${inst}`;
         response = await evo.get(url);
       } catch (connectErr) {
         if (connectErr.response?.status === 404 || connectErr.response?.data?.status === 404) {
           // Instância não existe -> cria automaticamente
-          response = await evo.post('/instance/create', {
+          await evo.post('/instance/create', {
             instanceName: inst,
+            token: 'taxinexo_token_2026',
             qrcode: true,
             integration: 'WHATSAPP-BAILEYS'
           });
+          response = await evo.get(url);
         } else {
           throw connectErr;
         }
       }
 
-      const qrCodeData = response.data?.qrcode || response.data?.base64 || response.data;
-      if (io && qrCodeData) io.emit('whatsapp:qrcode', qrCodeData);
-      return res.json({ success: true, data: response.data, qrcode: qrCodeData });
+      const resData = response.data || {};
+      const base64 = resData.base64 || resData.qrcode?.base64 || (typeof resData.qrcode === 'string' ? resData.qrcode : null);
+      const pairingCode = resData.pairingCode || resData.code;
+
+      if (io && base64) io.emit('whatsapp:qrcode', base64);
+      return res.json({
+        success: true,
+        data: resData,
+        qrcode: base64 ? { base64 } : resData.qrcode,
+        base64: base64,
+        pairingCode: pairingCode
+      });
     } catch (err) {
+      console.error('[WHATSAPP CONNECT ERROR]:', err.response?.data || err.message);
       return res.status(500).json({ success: false, error: err.response?.data || err.message });
     }
   });

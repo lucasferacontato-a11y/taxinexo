@@ -4,13 +4,13 @@
       "name": "Boas-Vindas Meta Ads Frotas TAXINEXO 2.0",
       "id": "auto-1",
       "trigger": "new_lead_meta",
-      "actionValue": "Olá {{primeiro_nome}}! Bem-vindo à TAXINEXO 2.0 🚕. Recebi seu cadastro pelo anúncio da {{campanha}}. Nossas frotas de Robotaxi operam 24/7 gerando rendimentos diários automáticos com saque via Pix. Qual veículo você deseja simular hoje?",
+      "actionValue": "Ol\u00e1 {{primeiro_nome}}! Bem-vindo \u00e0 TAXINEXO 2.0 \ud83d\ude95. Recebi seu cadastro pelo an\u00fancio da {{campanha}}. Nossas frotas de Robotaxi operam 24/7 gerando rendimentos di\u00e1rios autom\u00e1ticos com saque via Pix. Qual ve\u00edculo voc\u00ea deseja simular hoje?",
       "action": "send_whatsapp",
       "enabled": true,
       "delaySeconds": 5
     },
     {
-      "name": "Auto-Qualificação por Palavras (PIX / COTA / SAQUE / TESLA)",
+      "name": "Auto-Qualifica\u00e7\u00e3o por Palavras (PIX / COTA / SAQUE / TESLA)",
       "id": "auto-2",
       "enabled": true,
       "trigger": "keyword",
@@ -19,10 +19,10 @@
       "triggerValue": "pix,cota,tesla,saque,rendimento,comprar,ativar"
     },
     {
-      "name": "Recuperação de Depósito Pix Não Pago (24h)",
+      "name": "Recupera\u00e7\u00e3o de Dep\u00f3sito Pix N\u00e3o Pago (24h)",
       "id": "auto-3",
       "trigger": "no_reply_24h",
-      "actionValue": "Oi {{primeiro_nome}}, passando para avisar que sua cota da frota TAXINEXO 2.0 está reservada por mais 12 horas. Precisa de ajuda para concluir a ativação?",
+      "actionValue": "Oi {{primeiro_nome}}, passando para avisar que sua cota da frota TAXINEXO 2.0 est\u00e1 reservada por mais 12 horas. Precisa de ajuda para concluir a ativa\u00e7\u00e3o?",
       "action": "send_whatsapp",
       "enabled": true,
       "delaySeconds": 86400
@@ -38,17 +38,17 @@
       "stage": "contato",
       "value": 350,
       "tags": [
-        "WhatsApp Orgânico"
+        "WhatsApp Org\u00e2nico"
       ],
-      "campaign": "Meta Ads - Frotas Autônomas",
+      "campaign": "Meta Ads - Frotas Aut\u00f4nomas",
       "utm_source": "meta_ads",
       "utm_campaign": "frotas_escala",
       "utm_medium": "cpc",
-      "notes": "Lead capturado automaticamente via anúncio Taxi Nexo.",
+      "notes": "Lead capturado automaticamente via an\u00fancio Taxi Nexo.",
       "createdAt": "2026-08-22T16:30:29.981Z",
       "updatedAt": "2026-08-22T21:08:47.771Z",
       "unreadCount": 0,
-      "lastMessage": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+      "lastMessage": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
       "temperature": "morno"
     },
     {
@@ -70,7 +70,7 @@
       "createdAt": "2026-08-22T02:42:45.563Z",
       "updatedAt": "2026-08-22T18:26:46.273Z",
       "unreadCount": 0,
-      "lastMessage": "Olá Operador #7059! Vi que você concluiu seu cadastro no TAXINEXO hoje. �� Liberamos para você uma vaga na frota de entrada *BYD Dolphin* por apenas *R$ 30,00* com rendimento diário de *R$ 2,80 no Pix*! Gostaria que eu te ajudasse a ativar sua frota agora?"
+      "lastMessage": "Ol\u00e1 Operador #7059! Vi que voc\u00ea concluiu seu cadastro no TAXINEXO hoje. \ufffd\ufffd Liberamos para voc\u00ea uma vaga na frota de entrada *BYD Dolphin* por apenas *R$ 30,00* com rendimento di\u00e1rio de *R$ 2,80 no Pix*! Gostaria que eu te ajudasse a ativar sua frota agora?"
     },
     {
       "id": "lead-53e0feaf",
@@ -83,15 +83,15 @@
         "TAXINEXO_APP",
         "Novo Lead"
       ],
-      "campaign": "Meta Ads - Conversão",
+      "campaign": "Meta Ads - Convers\u00e3o",
       "utm_source": "taxinexo_app",
-      "utm_campaign": "Meta Ads - Conversão",
+      "utm_campaign": "Meta Ads - Convers\u00e3o",
       "utm_medium": "cpc",
-      "notes": "Lead recebido via webhook em 21/08/2026, 22:43:49. Campanha: Meta Ads - Conversão",
+      "notes": "Lead recebido via webhook em 21/08/2026, 22:43:49. Campanha: Meta Ads - Convers\u00e3o",
       "createdAt": "2026-08-22T01:43:49.234Z",
       "updatedAt": "2026-08-22T18:26:26.828Z",
       "unreadCount": 0,
-      "lastMessage": "Lead capturado via anúncio Meta Ads - Conversão"
+      "lastMessage": "Lead capturado via an\u00fancio Meta Ads - Convers\u00e3o"
     },
     {
       "id": "lead-c43cba3c",
@@ -104,15 +104,15 @@
         "TAXINEXO_APP",
         "Novo Lead"
       ],
-      "campaign": "Meta Ads - Conversão",
+      "campaign": "Meta Ads - Convers\u00e3o",
       "utm_source": "taxinexo_app",
-      "utm_campaign": "Meta Ads - Conversão",
+      "utm_campaign": "Meta Ads - Convers\u00e3o",
       "utm_medium": "cpc",
-      "notes": "Lead recebido via webhook em 21/08/2026, 22:43:48. Campanha: Meta Ads - Conversão",
+      "notes": "Lead recebido via webhook em 21/08/2026, 22:43:48. Campanha: Meta Ads - Convers\u00e3o",
       "createdAt": "2026-08-22T01:43:48.865Z",
       "updatedAt": "2026-08-22T01:43:49.037Z",
       "unreadCount": 0,
-      "lastMessage": "Lead capturado via anúncio Meta Ads - Conversão"
+      "lastMessage": "Lead capturado via an\u00fancio Meta Ads - Convers\u00e3o"
     },
     {
       "id": "lead-8206434c",
@@ -125,15 +125,15 @@
         "TAXINEXO_APP",
         "Novo Lead"
       ],
-      "campaign": "Meta Ads - Conversão",
+      "campaign": "Meta Ads - Convers\u00e3o",
       "utm_source": "taxinexo_app",
-      "utm_campaign": "Meta Ads - Conversão",
+      "utm_campaign": "Meta Ads - Convers\u00e3o",
       "utm_medium": "cpc",
-      "notes": "Lead recebido via webhook em 21/08/2026, 22:43:48. Campanha: Meta Ads - Conversão",
+      "notes": "Lead recebido via webhook em 21/08/2026, 22:43:48. Campanha: Meta Ads - Convers\u00e3o",
       "createdAt": "2026-08-22T01:43:48.514Z",
       "updatedAt": "2026-08-22T01:43:48.648Z",
       "unreadCount": 0,
-      "lastMessage": "Lead capturado via anúncio Meta Ads - Conversão"
+      "lastMessage": "Lead capturado via an\u00fancio Meta Ads - Convers\u00e3o"
     },
     {
       "id": "lead-61e82b08",
@@ -146,15 +146,15 @@
         "TAXINEXO_APP",
         "Novo Lead"
       ],
-      "campaign": "Meta Ads - Conversão",
+      "campaign": "Meta Ads - Convers\u00e3o",
       "utm_source": "taxinexo_app",
-      "utm_campaign": "Meta Ads - Conversão",
+      "utm_campaign": "Meta Ads - Convers\u00e3o",
       "utm_medium": "cpc",
-      "notes": "Lead recebido via webhook em 21/08/2026, 22:43:48. Campanha: Meta Ads - Conversão",
+      "notes": "Lead recebido via webhook em 21/08/2026, 22:43:48. Campanha: Meta Ads - Convers\u00e3o",
       "createdAt": "2026-08-22T01:43:48.142Z",
       "updatedAt": "2026-08-22T01:43:48.300Z",
       "unreadCount": 0,
-      "lastMessage": "Lead capturado via anúncio Meta Ads - Conversão"
+      "lastMessage": "Lead capturado via an\u00fancio Meta Ads - Convers\u00e3o"
     },
     {
       "id": "lead-6b653927",
@@ -167,15 +167,15 @@
         "TAXINEXO_APP",
         "Novo Lead"
       ],
-      "campaign": "Meta Ads - Conversão",
+      "campaign": "Meta Ads - Convers\u00e3o",
       "utm_source": "taxinexo_app",
-      "utm_campaign": "Meta Ads - Conversão",
+      "utm_campaign": "Meta Ads - Convers\u00e3o",
       "utm_medium": "cpc",
-      "notes": "Lead recebido via webhook em 21/08/2026, 22:43:47. Campanha: Meta Ads - Conversão",
+      "notes": "Lead recebido via webhook em 21/08/2026, 22:43:47. Campanha: Meta Ads - Convers\u00e3o",
       "createdAt": "2026-08-22T01:43:47.421Z",
       "updatedAt": "2026-08-22T01:43:47.591Z",
       "unreadCount": 0,
-      "lastMessage": "Lead capturado via anúncio Meta Ads - Conversão"
+      "lastMessage": "Lead capturado via an\u00fancio Meta Ads - Convers\u00e3o"
     },
     {
       "id": "lead-8b46a0ac",
@@ -188,15 +188,15 @@
         "TAXINEXO_APP",
         "Novo Lead"
       ],
-      "campaign": "Meta Ads - Conversão",
+      "campaign": "Meta Ads - Convers\u00e3o",
       "utm_source": "taxinexo_app",
-      "utm_campaign": "Meta Ads - Conversão",
+      "utm_campaign": "Meta Ads - Convers\u00e3o",
       "utm_medium": "cpc",
-      "notes": "Lead recebido via webhook em 21/08/2026, 22:43:47. Campanha: Meta Ads - Conversão",
+      "notes": "Lead recebido via webhook em 21/08/2026, 22:43:47. Campanha: Meta Ads - Convers\u00e3o",
       "createdAt": "2026-08-22T01:43:47.014Z",
       "updatedAt": "2026-08-22T01:43:47.180Z",
       "unreadCount": 0,
-      "lastMessage": "Lead capturado via anúncio Meta Ads - Conversão"
+      "lastMessage": "Lead capturado via an\u00fancio Meta Ads - Convers\u00e3o"
     },
     {
       "id": "lead-574007c5",
@@ -209,15 +209,15 @@
         "TAXINEXO_APP",
         "Novo Lead"
       ],
-      "campaign": "Meta Ads - Conversão",
+      "campaign": "Meta Ads - Convers\u00e3o",
       "utm_source": "taxinexo_app",
-      "utm_campaign": "Meta Ads - Conversão",
+      "utm_campaign": "Meta Ads - Convers\u00e3o",
       "utm_medium": "cpc",
-      "notes": "Lead recebido via webhook em 21/08/2026, 22:43:46. Campanha: Meta Ads - Conversão",
+      "notes": "Lead recebido via webhook em 21/08/2026, 22:43:46. Campanha: Meta Ads - Convers\u00e3o",
       "createdAt": "2026-08-22T01:43:46.648Z",
       "updatedAt": "2026-08-22T01:43:46.790Z",
       "unreadCount": 0,
-      "lastMessage": "Lead capturado via anúncio Meta Ads - Conversão"
+      "lastMessage": "Lead capturado via an\u00fancio Meta Ads - Convers\u00e3o"
     },
     {
       "id": "lead-c3b3f3bb",
@@ -230,15 +230,15 @@
         "TAXINEXO_APP",
         "Novo Lead"
       ],
-      "campaign": "Meta Ads - Conversão",
+      "campaign": "Meta Ads - Convers\u00e3o",
       "utm_source": "taxinexo_app",
-      "utm_campaign": "Meta Ads - Conversão",
+      "utm_campaign": "Meta Ads - Convers\u00e3o",
       "utm_medium": "cpc",
-      "notes": "Lead recebido via webhook em 21/08/2026, 22:43:46. Campanha: Meta Ads - Conversão",
+      "notes": "Lead recebido via webhook em 21/08/2026, 22:43:46. Campanha: Meta Ads - Convers\u00e3o",
       "createdAt": "2026-08-22T01:43:46.299Z",
       "updatedAt": "2026-08-22T01:43:46.484Z",
       "unreadCount": 0,
-      "lastMessage": "Lead capturado via anúncio Meta Ads - Conversão"
+      "lastMessage": "Lead capturado via an\u00fancio Meta Ads - Convers\u00e3o"
     },
     {
       "id": "lead-b5292863",
@@ -251,15 +251,15 @@
         "TAXINEXO_APP",
         "Novo Lead"
       ],
-      "campaign": "Meta Ads - Conversão",
+      "campaign": "Meta Ads - Convers\u00e3o",
       "utm_source": "taxinexo_app",
-      "utm_campaign": "Meta Ads - Conversão",
+      "utm_campaign": "Meta Ads - Convers\u00e3o",
       "utm_medium": "cpc",
-      "notes": "Lead recebido via webhook em 21/08/2026, 22:43:45. Campanha: Meta Ads - Conversão",
+      "notes": "Lead recebido via webhook em 21/08/2026, 22:43:45. Campanha: Meta Ads - Convers\u00e3o",
       "createdAt": "2026-08-22T01:43:45.956Z",
       "updatedAt": "2026-08-22T01:43:46.074Z",
       "unreadCount": 0,
-      "lastMessage": "Lead capturado via anúncio Meta Ads - Conversão"
+      "lastMessage": "Lead capturado via an\u00fancio Meta Ads - Convers\u00e3o"
     },
     {
       "id": "lead-25dfb640",
@@ -272,15 +272,15 @@
         "TAXINEXO_APP",
         "Novo Lead"
       ],
-      "campaign": "Meta Ads - Conversão",
+      "campaign": "Meta Ads - Convers\u00e3o",
       "utm_source": "taxinexo_app",
-      "utm_campaign": "Meta Ads - Conversão",
+      "utm_campaign": "Meta Ads - Convers\u00e3o",
       "utm_medium": "cpc",
-      "notes": "Lead recebido via webhook em 21/08/2026, 22:43:45. Campanha: Meta Ads - Conversão",
+      "notes": "Lead recebido via webhook em 21/08/2026, 22:43:45. Campanha: Meta Ads - Convers\u00e3o",
       "createdAt": "2026-08-22T01:43:45.551Z",
       "updatedAt": "2026-08-22T01:43:45.748Z",
       "unreadCount": 0,
-      "lastMessage": "Lead capturado via anúncio Meta Ads - Conversão"
+      "lastMessage": "Lead capturado via an\u00fancio Meta Ads - Convers\u00e3o"
     },
     {
       "id": "lead-f5f4f2db",
@@ -293,15 +293,15 @@
         "TAXINEXO_APP",
         "Novo Lead"
       ],
-      "campaign": "Meta Ads - Conversão",
+      "campaign": "Meta Ads - Convers\u00e3o",
       "utm_source": "taxinexo_app",
-      "utm_campaign": "Meta Ads - Conversão",
+      "utm_campaign": "Meta Ads - Convers\u00e3o",
       "utm_medium": "cpc",
-      "notes": "Lead recebido via webhook em 21/08/2026, 22:43:45. Campanha: Meta Ads - Conversão",
+      "notes": "Lead recebido via webhook em 21/08/2026, 22:43:45. Campanha: Meta Ads - Convers\u00e3o",
       "createdAt": "2026-08-22T01:43:45.141Z",
       "updatedAt": "2026-08-22T22:50:37.004Z",
       "unreadCount": 0,
-      "lastMessage": "Olá Operador #7850! Vi que você concluiu seu cadastro no TAXINEXO hoje. �� Liberamos para você uma vaga na frota de entrada *BYD Dolphin* por apenas *R$ 30,00* com rendimento diário de *R$ 2,80 no Pix*! Gostaria que eu te ajudasse a ativar sua frota agora?"
+      "lastMessage": "Ol\u00e1 Operador #7850! Vi que voc\u00ea concluiu seu cadastro no TAXINEXO hoje. \ufffd\ufffd Liberamos para voc\u00ea uma vaga na frota de entrada *BYD Dolphin* por apenas *R$ 30,00* com rendimento di\u00e1rio de *R$ 2,80 no Pix*! Gostaria que eu te ajudasse a ativar sua frota agora?"
     },
     {
       "id": "lead-65afd6d0",
@@ -314,35 +314,35 @@
         "TAXINEXO_APP",
         "Novo Lead"
       ],
-      "campaign": "Meta Ads - Conversão",
+      "campaign": "Meta Ads - Convers\u00e3o",
       "utm_source": "taxinexo_app",
-      "utm_campaign": "Meta Ads - Conversão",
+      "utm_campaign": "Meta Ads - Convers\u00e3o",
       "utm_medium": "cpc",
-      "notes": "Lead recebido via webhook em 21/08/2026, 22:43:33. Campanha: Meta Ads - Conversão",
+      "notes": "Lead recebido via webhook em 21/08/2026, 22:43:33. Campanha: Meta Ads - Convers\u00e3o",
       "createdAt": "2026-08-22T01:43:33.329Z",
       "updatedAt": "2026-08-22T01:43:47.927Z",
       "unreadCount": 0,
-      "lastMessage": "Lead capturado via anúncio Meta Ads - Conversão"
+      "lastMessage": "Lead capturado via an\u00fancio Meta Ads - Convers\u00e3o"
     },
     {
       "id": "lead-3bae78ef",
-      "name": "Rafael Cristovão",
+      "name": "Rafael Cristov\u00e3o",
       "phone": "553491666527",
       "email": "",
       "stage": "contato",
       "value": 350,
       "tags": [
-        "WhatsApp Orgânico"
+        "WhatsApp Org\u00e2nico"
       ],
-      "campaign": "Meta Ads - Frotas Autônomas",
+      "campaign": "Meta Ads - Frotas Aut\u00f4nomas",
       "utm_source": "meta_ads",
       "utm_campaign": "frotas_escala",
       "utm_medium": "cpc",
-      "notes": "Lead capturado automaticamente via anúncio Taxi Nexo.",
+      "notes": "Lead capturado automaticamente via an\u00fancio Taxi Nexo.",
       "createdAt": "2026-08-22T01:23:50.670Z",
       "updatedAt": "2026-08-22T01:41:28.265Z",
       "unreadCount": 0,
-      "lastMessage": "Olá Rafael! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+      "lastMessage": "Ol\u00e1 Rafael! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
       "temperature": "morno"
     }
   ],
@@ -350,13 +350,13 @@
     {
       "order": 1,
       "id": "novo",
-      "title": "Novos Leads (Anúncios)",
+      "title": "Novos Leads (An\u00fancios)",
       "color": "#38bdf8"
     },
     {
       "order": 2,
       "id": "contato",
-      "title": "Primeiro Contato / Simulação",
+      "title": "Primeiro Contato / Simula\u00e7\u00e3o",
       "color": "#818cf8"
     },
     {
@@ -446,10 +446,10 @@
     "webhookToken": "taxinexo_lead_token_2026",
     "aiEnabled": true,
     "autoReplyNewLeads": true,
-    "evolutionApiUrl": "http://localhost:8080",
+    "evolutionApiUrl": "http://95.182.89.102:8080",
     "defaultInstance": "bot_principal",
     "aiModel": "gpt-4o-mini",
-    "welcomeMessageTemplate": "Olá {{primeiro_nome}}! Seja muito bem-vindo à TAXINEXO 2.0 🚕. Recebi seu cadastro pelo anúncio da {{campanha}}. Nossas frotas de Robotaxi operam 24/7 gerando rendimentos diários automáticos com saque via Pix. Qual cota você deseja simular hoje?",
+    "welcomeMessageTemplate": "Ol\u00e1 {{primeiro_nome}}! Seja muito bem-vindo \u00e0 TAXINEXO 2.0 \ud83d\ude95. Recebi seu cadastro pelo an\u00fancio da {{campanha}}. Nossas frotas de Robotaxi operam 24/7 gerando rendimentos di\u00e1rios autom\u00e1ticos com saque via Pix. Qual cota voc\u00ea deseja simular hoje?",
     "globalApiKey": "tartaruga-1-."
   },
   "messages": {
@@ -466,7 +466,7 @@
       {
         "id": "msg-ac93163f",
         "fromMe": true,
-        "text": "Olá Rafael! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Rafael! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T01:23:59.616Z",
@@ -486,7 +486,7 @@
       {
         "id": "msg-b6496483",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:30:36.525Z",
@@ -504,7 +504,7 @@
       {
         "id": "msg-baa183ea",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:30:44.894Z",
@@ -513,7 +513,7 @@
       {
         "id": "DD24002E13048846D9",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:30:47.354Z",
@@ -522,7 +522,7 @@
       {
         "id": "msg-c311b685",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:30:52.608Z",
@@ -531,7 +531,7 @@
       {
         "id": "712D5611AE454A03C8",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:30:54.945Z",
@@ -540,7 +540,7 @@
       {
         "id": "msg-ad7f148a",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:31:00.084Z",
@@ -549,7 +549,7 @@
       {
         "id": "F80346D6A774701F86",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:31:02.343Z",
@@ -558,7 +558,7 @@
       {
         "id": "msg-47d85b81",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:31:07.397Z",
@@ -567,7 +567,7 @@
       {
         "id": "EB5C13908B87AFC6C8",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:31:09.947Z",
@@ -576,7 +576,7 @@
       {
         "id": "msg-f965b9d3",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:31:15.296Z",
@@ -585,7 +585,7 @@
       {
         "id": "3FFF310073C6957A4A",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:31:17.662Z",
@@ -594,7 +594,7 @@
       {
         "id": "msg-fc70a4a8",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:31:23.094Z",
@@ -603,7 +603,7 @@
       {
         "id": "61E8D6277C52F22135",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:31:25.532Z",
@@ -612,7 +612,7 @@
       {
         "id": "msg-7822adfa",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:31:30.666Z",
@@ -621,7 +621,7 @@
       {
         "id": "17A678C41C31E036E4",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:31:33.076Z",
@@ -630,7 +630,7 @@
       {
         "id": "msg-7172c3c5",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:31:38.527Z",
@@ -639,7 +639,7 @@
       {
         "id": "3DC63FC0E7EAC49CD3",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:31:41.069Z",
@@ -648,7 +648,7 @@
       {
         "id": "msg-41c81926",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:31:46.542Z",
@@ -657,7 +657,7 @@
       {
         "id": "BB54EB9CF224BFFB54",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:31:49.260Z",
@@ -666,7 +666,7 @@
       {
         "id": "msg-82eec0dd",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:31:54.405Z",
@@ -675,7 +675,7 @@
       {
         "id": "70636F0560E8F5A15D",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:31:56.743Z",
@@ -684,7 +684,7 @@
       {
         "id": "msg-08dda049",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:32:02.731Z",
@@ -693,7 +693,7 @@
       {
         "id": "724B81D0158E3993AA",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:32:05.451Z",
@@ -702,7 +702,7 @@
       {
         "id": "msg-c99df169",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:32:10.619Z",
@@ -711,7 +711,7 @@
       {
         "id": "7B2B46B1A43FDABD0B",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:32:13.049Z",
@@ -720,7 +720,7 @@
       {
         "id": "msg-a870b809",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:32:18.931Z",
@@ -729,7 +729,7 @@
       {
         "id": "F727AD49D8D91BB999",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:32:21.331Z",
@@ -738,7 +738,7 @@
       {
         "id": "msg-38b64ee5",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:32:26.825Z",
@@ -747,7 +747,7 @@
       {
         "id": "EB0562E6AF1000B1B4",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:32:29.293Z",
@@ -756,7 +756,7 @@
       {
         "id": "msg-eeb286f1",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:32:34.479Z",
@@ -765,7 +765,7 @@
       {
         "id": "C48FF43631E76E15C3",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:32:37.000Z",
@@ -774,7 +774,7 @@
       {
         "id": "msg-0fb8f8a1",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:32:42.729Z",
@@ -783,7 +783,7 @@
       {
         "id": "4682DD648A645FB71F",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:32:45.758Z",
@@ -792,7 +792,7 @@
       {
         "id": "msg-e323d0f5",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:32:51.077Z",
@@ -801,7 +801,7 @@
       {
         "id": "0B591A2AA5900A8E0E",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:32:53.431Z",
@@ -810,7 +810,7 @@
       {
         "id": "msg-302447d4",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:32:58.431Z",
@@ -819,7 +819,7 @@
       {
         "id": "CB9E0C2D7EE94EE91A",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:33:00.884Z",
@@ -828,7 +828,7 @@
       {
         "id": "msg-a765791d",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:33:06.129Z",
@@ -837,7 +837,7 @@
       {
         "id": "5E25CD9296899A534E",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:33:08.671Z",
@@ -846,7 +846,7 @@
       {
         "id": "msg-1527cbaa",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:33:13.845Z",
@@ -855,7 +855,7 @@
       {
         "id": "2E4A134C0CE0432B1C",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:33:16.349Z",
@@ -864,7 +864,7 @@
       {
         "id": "msg-68e14ccc",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:33:21.177Z",
@@ -873,7 +873,7 @@
       {
         "id": "1FECC35D0DEDD03E80",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:33:23.561Z",
@@ -882,7 +882,7 @@
       {
         "id": "msg-832fac10",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:33:29.209Z",
@@ -891,7 +891,7 @@
       {
         "id": "07824F66A02629F814",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:33:31.760Z",
@@ -900,7 +900,7 @@
       {
         "id": "msg-fcbb7f24",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:33:37.157Z",
@@ -909,7 +909,7 @@
       {
         "id": "64AEF0B8E59C62316D",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:33:39.833Z",
@@ -918,7 +918,7 @@
       {
         "id": "msg-cfbf0960",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:33:45.090Z",
@@ -927,7 +927,7 @@
       {
         "id": "B3FAE9BBA4622C8E4B",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:33:47.868Z",
@@ -936,7 +936,7 @@
       {
         "id": "msg-e9bfc0b8",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:33:52.992Z",
@@ -945,7 +945,7 @@
       {
         "id": "92D7404F007A851D2B",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:33:55.220Z",
@@ -954,7 +954,7 @@
       {
         "id": "msg-2418f80b",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:34:00.648Z",
@@ -963,7 +963,7 @@
       {
         "id": "23A9D75E44037C6C72",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:34:02.997Z",
@@ -972,7 +972,7 @@
       {
         "id": "msg-b1e46f47",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:34:08.160Z",
@@ -981,7 +981,7 @@
       {
         "id": "795B5DB6170F277ABD",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:34:10.582Z",
@@ -990,7 +990,7 @@
       {
         "id": "msg-f143c9d0",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:34:15.813Z",
@@ -999,7 +999,7 @@
       {
         "id": "89C9A49C7CD0E8148E",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:34:18.083Z",
@@ -1008,7 +1008,7 @@
       {
         "id": "msg-9689601a",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:34:24.194Z",
@@ -1017,7 +1017,7 @@
       {
         "id": "82A05418A38A107F51",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:34:27.979Z",
@@ -1026,7 +1026,7 @@
       {
         "id": "msg-88355ede",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:34:35.164Z",
@@ -1035,7 +1035,7 @@
       {
         "id": "9A3155EE99FECAD03A",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:34:37.516Z",
@@ -1044,7 +1044,7 @@
       {
         "id": "msg-3fb17a77",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:34:42.807Z",
@@ -1053,7 +1053,7 @@
       {
         "id": "52429E51782C553672",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:34:45.205Z",
@@ -1062,7 +1062,7 @@
       {
         "id": "msg-0e9c1691",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:34:50.242Z",
@@ -1071,7 +1071,7 @@
       {
         "id": "41CF5A1250E2C8C8CD",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:34:52.942Z",
@@ -1080,7 +1080,7 @@
       {
         "id": "msg-a9a88b7d",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:34:57.926Z",
@@ -1089,7 +1089,7 @@
       {
         "id": "DE6D07CFE2296BC506",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:35:00.430Z",
@@ -1098,7 +1098,7 @@
       {
         "id": "msg-e8b85d1e",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:35:06.168Z",
@@ -1107,7 +1107,7 @@
       {
         "id": "DC5FF8515147B45F7B",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:35:09.753Z",
@@ -1116,7 +1116,7 @@
       {
         "id": "msg-32d5bb4b",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:35:14.805Z",
@@ -1125,7 +1125,7 @@
       {
         "id": "BA7C55AC47C81A39CB",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:35:17.213Z",
@@ -1134,7 +1134,7 @@
       {
         "id": "msg-f91f0c8c",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:35:23.444Z",
@@ -1143,7 +1143,7 @@
       {
         "id": "A3FEC39E9D26310993",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:35:25.714Z",
@@ -1152,7 +1152,7 @@
       {
         "id": "msg-a3fcf2b8",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:35:30.623Z",
@@ -1161,7 +1161,7 @@
       {
         "id": "6D4CD18BA5B939095D",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:35:33.159Z",
@@ -1170,7 +1170,7 @@
       {
         "id": "msg-b24e7ab3",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:35:38.356Z",
@@ -1179,7 +1179,7 @@
       {
         "id": "212F8C2B2A508E7242",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:35:40.730Z",
@@ -1188,7 +1188,7 @@
       {
         "id": "msg-9a15b1e2",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:35:45.937Z",
@@ -1197,7 +1197,7 @@
       {
         "id": "AB7EEAE6C1E42C05F9",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:35:48.449Z",
@@ -1206,7 +1206,7 @@
       {
         "id": "msg-b1890c1e",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:35:54.347Z",
@@ -1215,7 +1215,7 @@
       {
         "id": "DDC66968D9F0DCF4E5",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:35:56.732Z",
@@ -1224,7 +1224,7 @@
       {
         "id": "msg-25a18362",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:36:02.102Z",
@@ -1233,7 +1233,7 @@
       {
         "id": "12E4CAD5AC86700541",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:36:04.392Z",
@@ -1242,7 +1242,7 @@
       {
         "id": "msg-1a8202c0",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:36:09.536Z",
@@ -1251,7 +1251,7 @@
       {
         "id": "E040D5401D23A8D19A",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:36:11.840Z",
@@ -1260,7 +1260,7 @@
       {
         "id": "msg-2012fbee",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:36:17.087Z",
@@ -1269,7 +1269,7 @@
       {
         "id": "D041779F3792D83D5E",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:36:19.401Z",
@@ -1278,7 +1278,7 @@
       {
         "id": "msg-98b6ebcc",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:36:24.686Z",
@@ -1287,7 +1287,7 @@
       {
         "id": "578EC4FD5346E0B855",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:36:27.244Z",
@@ -1296,7 +1296,7 @@
       {
         "id": "msg-de644eae",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:36:33.366Z",
@@ -1305,7 +1305,7 @@
       {
         "id": "AA24034DCBE13FB6BF",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:36:35.845Z",
@@ -1314,7 +1314,7 @@
       {
         "id": "msg-9538f548",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:36:41.230Z",
@@ -1323,7 +1323,7 @@
       {
         "id": "122D6B1516F7CD7137",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:36:44.128Z",
@@ -1332,7 +1332,7 @@
       {
         "id": "msg-4c282320",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:36:49.465Z",
@@ -1341,7 +1341,7 @@
       {
         "id": "990B16B4793B75961D",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:36:51.662Z",
@@ -1350,7 +1350,7 @@
       {
         "id": "msg-8c3ff2dc",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:36:57.025Z",
@@ -1359,7 +1359,7 @@
       {
         "id": "CBA0C428D4E5348BE9",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:36:59.462Z",
@@ -1368,7 +1368,7 @@
       {
         "id": "msg-c9709f71",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:37:05.146Z",
@@ -1377,7 +1377,7 @@
       {
         "id": "800E16C5454B03E98A",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:37:08.551Z",
@@ -1386,7 +1386,7 @@
       {
         "id": "msg-956a2eb8",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:37:13.921Z",
@@ -1395,7 +1395,7 @@
       {
         "id": "1EF12CF9EC29C0000D",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:37:19.913Z",
@@ -1404,7 +1404,7 @@
       {
         "id": "msg-91944e14",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:37:24.866Z",
@@ -1413,7 +1413,7 @@
       {
         "id": "113CA402149F81036C",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:37:33.170Z",
@@ -1422,7 +1422,7 @@
       {
         "id": "msg-e88aaf2f",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:37:38.642Z",
@@ -1431,7 +1431,7 @@
       {
         "id": "7B1A89C48D3FDE54CD",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:37:41.019Z",
@@ -1440,7 +1440,7 @@
       {
         "id": "msg-dd211af2",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:37:46.134Z",
@@ -1449,7 +1449,7 @@
       {
         "id": "6A947F2479A58BD32A",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:37:48.479Z",
@@ -1458,7 +1458,7 @@
       {
         "id": "msg-ae16e088",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:37:54.158Z",
@@ -1467,7 +1467,7 @@
       {
         "id": "06977E96FA1D223E0D",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:37:56.655Z",
@@ -1476,7 +1476,7 @@
       {
         "id": "msg-0b1535bb",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:38:02.396Z",
@@ -1485,7 +1485,7 @@
       {
         "id": "99EC334368DAE7DE8A",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:38:06.253Z",
@@ -1494,7 +1494,7 @@
       {
         "id": "msg-3dae5839",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:38:11.711Z",
@@ -1503,7 +1503,7 @@
       {
         "id": "DCFC7BC3747D9F3A9A",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:38:14.075Z",
@@ -1512,7 +1512,7 @@
       {
         "id": "msg-6b883218",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:38:20.026Z",
@@ -1521,7 +1521,7 @@
       {
         "id": "67D6B3863EB5BC0961",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:38:22.388Z",
@@ -1530,7 +1530,7 @@
       {
         "id": "msg-f6fa7c7f",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:38:27.754Z",
@@ -1539,7 +1539,7 @@
       {
         "id": "8DA3AD3CE251C31714",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:38:30.053Z",
@@ -1548,7 +1548,7 @@
       {
         "id": "msg-644d8d23",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:38:35.358Z",
@@ -1557,7 +1557,7 @@
       {
         "id": "AEFE462191638F7034",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:39:13.930Z",
@@ -1566,7 +1566,7 @@
       {
         "id": "msg-fee46ea2",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:39:19.320Z",
@@ -1575,7 +1575,7 @@
       {
         "id": "EF6798235FF6CA8D29",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:39:21.769Z",
@@ -1584,7 +1584,7 @@
       {
         "id": "msg-add032c3",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:39:27.116Z",
@@ -1593,7 +1593,7 @@
       {
         "id": "9CEC9437B7798D189E",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:39:29.615Z",
@@ -1602,7 +1602,7 @@
       {
         "id": "msg-c8ce6e28",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:39:35.105Z",
@@ -1611,7 +1611,7 @@
       {
         "id": "06C7818DC95D1FDC34",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:39:37.439Z",
@@ -1620,7 +1620,7 @@
       {
         "id": "msg-7d8bcb1e",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:39:42.731Z",
@@ -1629,7 +1629,7 @@
       {
         "id": "C96EDA2A3C9CC1EECE",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:39:45.088Z",
@@ -1638,7 +1638,7 @@
       {
         "id": "msg-3f5d01be",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:39:50.645Z",
@@ -1647,7 +1647,7 @@
       {
         "id": "E3ECFBE4BF7862AB12",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:39:52.977Z",
@@ -1656,7 +1656,7 @@
       {
         "id": "msg-8fb1b21f",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:39:58.675Z",
@@ -1665,7 +1665,7 @@
       {
         "id": "936C30BBE64241CD2F",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:40:00.992Z",
@@ -1674,7 +1674,7 @@
       {
         "id": "msg-61094b24",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:40:05.943Z",
@@ -1683,7 +1683,7 @@
       {
         "id": "E479335B4473A33E23",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:40:08.504Z",
@@ -1692,7 +1692,7 @@
       {
         "id": "msg-d011a527",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:40:14.020Z",
@@ -1701,7 +1701,7 @@
       {
         "id": "22E78A183528CDFD52",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:40:16.389Z",
@@ -1710,7 +1710,7 @@
       {
         "id": "msg-dd42e369",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:40:23.252Z",
@@ -1719,7 +1719,7 @@
       {
         "id": "5B1363373E15D22786",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:40:25.654Z",
@@ -1728,7 +1728,7 @@
       {
         "id": "msg-da9b29a7",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:40:31.331Z",
@@ -1737,7 +1737,7 @@
       {
         "id": "8CB9AE32E7868D111E",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:40:33.804Z",
@@ -1746,7 +1746,7 @@
       {
         "id": "msg-e84dd621",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:40:39.785Z",
@@ -1755,7 +1755,7 @@
       {
         "id": "C304974FD1EDF24913",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:40:42.590Z",
@@ -1764,7 +1764,7 @@
       {
         "id": "msg-3af5d218",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:40:47.752Z",
@@ -1773,7 +1773,7 @@
       {
         "id": "5A61D0B9BDA9605399",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:40:50.131Z",
@@ -1782,7 +1782,7 @@
       {
         "id": "msg-9e665fc9",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:40:56.031Z",
@@ -1791,7 +1791,7 @@
       {
         "id": "47EAADFBCAEFCADED7",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:40:58.369Z",
@@ -1800,7 +1800,7 @@
       {
         "id": "msg-f05c35c5",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:41:06.020Z",
@@ -1809,7 +1809,7 @@
       {
         "id": "6D437EE95F91C58B70",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:41:08.654Z",
@@ -1818,7 +1818,7 @@
       {
         "id": "msg-12dc4ffd",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:41:13.886Z",
@@ -1827,7 +1827,7 @@
       {
         "id": "B1DC01A76F225E2BAD",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:41:16.272Z",
@@ -1836,7 +1836,7 @@
       {
         "id": "msg-7706437d",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:41:21.323Z",
@@ -1845,7 +1845,7 @@
       {
         "id": "7EA7F38BC954CCCD92",
         "fromMe": false,
-        "text": "Olá! Este canal é automático e não interativo.\nPara mais informações, acesse nosso site ou ligue para *144.",
+        "text": "Ol\u00e1! Este canal \u00e9 autom\u00e1tico e n\u00e3o interativo.\nPara mais informa\u00e7\u00f5es, acesse nosso site ou ligue para *144.",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:41:23.607Z",
@@ -1854,7 +1854,7 @@
       {
         "id": "msg-38874c1c",
         "fromMe": true,
-        "text": "Olá Lead! Seja muito bem-vindo à *TAXINEXO* 🚕.\n\nNossa infraestrutura de táxis autônomos opera 24/7 gerando lucros diários que você recebe direto na sua conta via Pix.\n\n👉 *Acesse nossa página oficial:* https://taxinexo.onrender.com/presell\n👉 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n📸 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n💬 *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
+        "text": "Ol\u00e1 Lead! Seja muito bem-vindo \u00e0 *TAXINEXO* \ud83d\ude95.\n\nNossa infraestrutura de t\u00e1xis aut\u00f4nomos opera 24/7 gerando lucros di\u00e1rios que voc\u00ea recebe direto na sua conta via Pix.\n\n\ud83d\udc49 *Acesse nossa p\u00e1gina oficial:* https://taxinexo.onrender.com/presell\n\ud83d\udc49 *Crie sua conta no aplicativo:* https://taxinexo.onrender.com/login.html\n\ud83d\udcf8 *Siga nosso Instagram Oficial:* https://www.instagram.com/taxinexoofficial/\n\ud83d\udcac *Entre no Grupo VIP Telegram:* https://t.me/+VRCCsj-SJHQwNmE5\n\nComo posso te ajudar a escolher sua primeira frota hoje?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T16:41:28.837Z",
@@ -1865,7 +1865,7 @@
       {
         "id": "msg-29493c2d",
         "fromMe": true,
-        "text": "Olá Operador #7059! Vi que você concluiu seu cadastro no TAXINEXO hoje. �� Liberamos para você uma vaga na frota de entrada *BYD Dolphin* por apenas *R$ 30,00* com rendimento diário de *R$ 2,80 no Pix*! Gostaria que eu te ajudasse a ativar sua frota agora?",
+        "text": "Ol\u00e1 Operador #7059! Vi que voc\u00ea concluiu seu cadastro no TAXINEXO hoje. \ufffd\ufffd Liberamos para voc\u00ea uma vaga na frota de entrada *BYD Dolphin* por apenas *R$ 30,00* com rendimento di\u00e1rio de *R$ 2,80 no Pix*! Gostaria que eu te ajudasse a ativar sua frota agora?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T18:24:17.218Z",
@@ -1876,7 +1876,7 @@
       {
         "id": "msg-17adbdbd",
         "fromMe": true,
-        "text": "Olá Operador #7850! Vi que você concluiu seu cadastro no TAXINEXO hoje. �� Liberamos para você uma vaga na frota de entrada *BYD Dolphin* por apenas *R$ 30,00* com rendimento diário de *R$ 2,80 no Pix*! Gostaria que eu te ajudasse a ativar sua frota agora?",
+        "text": "Ol\u00e1 Operador #7850! Vi que voc\u00ea concluiu seu cadastro no TAXINEXO hoje. \ufffd\ufffd Liberamos para voc\u00ea uma vaga na frota de entrada *BYD Dolphin* por apenas *R$ 30,00* com rendimento di\u00e1rio de *R$ 2,80 no Pix*! Gostaria que eu te ajudasse a ativar sua frota agora?",
         "mediaType": null,
         "mediaUrl": null,
         "timestamp": "2026-08-22T18:26:15.066Z",

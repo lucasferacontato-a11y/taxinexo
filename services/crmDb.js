@@ -6,7 +6,7 @@ const DB_FILE = path.join(__dirname, '..', 'crm_data.json');
 
 const INITIAL_DATA = {
   settings: {
-    evolutionApiUrl: 'http://localhost:8080',
+    evolutionApiUrl: 'http://95.182.89.102:8080',
     globalApiKey: 'tartaruga-1-.',
     defaultInstance: 'bot_principal',
     aiEnabled: true,

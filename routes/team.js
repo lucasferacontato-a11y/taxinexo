@@ -14,12 +14,13 @@ router.get('/overview', authMiddleware, async (req, res) => {
   try {
     const allUsers = await getAllUsers();
     const currentUserId = req.user.id;
+    const currentUser = allUsers.find(u => u.id === currentUserId) || req.user;
 
     // Avalia promoção se houver
     await checkAndPromoteUser(currentUserId, allUsers);
 
     const network = calculateUserNetwork(currentUserId, allUsers);
-    const careerInfo = evaluateUserRank(network);
+    const careerInfo = evaluateUserRank(network, currentUser);
 
     // Total de comissões ganhas
     const userTx = await getTransactionsByUserId(currentUserId);

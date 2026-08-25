@@ -245,6 +245,14 @@ function updateUserHeader(user) {
     greetingEl.innerHTML = `${greeting}, <br><strong>${user.operatorName}</strong>`;
   }
 
+  const levelBadge = document.getElementById('user-level-badge');
+  if (levelBadge) {
+    const rankTitle = (appState.team && appState.team.career && appState.team.career.currentRank) 
+      ? (appState.team.career.currentRank.badge || appState.team.career.currentRank.name)
+      : (user.vipLevel || 'Operador Bronze');
+    levelBadge.innerHTML = `<i class="fa-solid fa-bolt"></i> ${rankTitle}`;
+  }
+
   const profileTitle = document.getElementById('profile-operator-title');
   if (profileTitle) profileTitle.textContent = user.operatorName;
 

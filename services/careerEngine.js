@@ -113,7 +113,7 @@ function calculateUserNetwork(userId, allUsers) {
   };
 }
 
-function evaluateUserRank(networkData) {
+function evaluateUserRank(networkData, userParam = null) {
   const { directsCount, totalMembers, totalTeam, l3 } = networkData;
   const count = directsCount !== undefined ? directsCount : (networkData.l1 ? networkData.l1.length : 0);
   const total = totalMembers !== undefined ? totalMembers : (totalTeam !== undefined ? totalTeam : 0);
@@ -141,6 +141,14 @@ function evaluateUserRank(networkData) {
     }
   }
 
+  // Se o usuário possui patente definida manualmente no painel admin (override)
+  if (userParam && userParam.careerRank) {
+    const manualIdx = RANKS.findIndex(r => r.id === userParam.careerRank);
+    if (manualIdx > currentRankIndex) {
+      currentRankIndex = manualIdx;
+    }
+  }
+
   const currentRank = RANKS[currentRankIndex];
   const nextRank = currentRankIndex < RANKS.length - 1 ? RANKS[currentRankIndex + 1] : null;
 
@@ -164,7 +172,7 @@ function evaluateUserRank(networkData) {
     remainingDirects,
     remainingTotal,
     unlockedLevels: currentRank.unlockedLevels,
-    isLevel3Unlocked: currentRank.unlockedLevels.includes(3)
+    isLevel3Unlocked: currentRank.unlockedLevels.includes(3) || Boolean(userParam && userParam.forceLevel3Unlocked)
   };
 }
 
@@ -175,7 +183,7 @@ async function checkAndPromoteUser(userId, allUsersParam = null) {
     if (!user) return null;
 
     const network = calculateUserNetwork(userId, allUsers);
-    const { currentRank } = evaluateUserRank(network);
+    const { currentRank } = evaluateUserRank(network, user);
 
     const userTx = await getTransactionsByUserId(userId);
     const awardedBonuses = userTx

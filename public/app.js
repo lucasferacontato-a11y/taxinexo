@@ -128,6 +128,9 @@ const appState = {
 document.addEventListener('DOMContentLoaded', async () => {
   setupEventListeners();
   
+  // Inicializa o mapa de telemetria GPS
+  setTimeout(initGpsTelemetryMap, 150);
+
   // Se não estiver logado, redireciona para login.html
   if (!appState.token) {
     window.location.href = 'login.html';
@@ -271,6 +274,13 @@ function switchTab(tabId) {
 
   const targetPane = document.getElementById(`tab-${tabId}`);
   if (targetPane) targetPane.classList.add('active');
+
+  if (tabId === 'home') {
+    setTimeout(() => {
+      if (gpsMap) gpsMap.invalidateSize();
+      else initGpsTelemetryMap();
+    }, 120);
+  }
 
   const activeBtn = Array.from(document.querySelectorAll('.nav-btn')).find(b => 
     b.getAttribute('onclick')?.includes(tabId)
@@ -1341,9 +1351,18 @@ let gpsMap = null;
 let mapVehicleMarkers = [];
 let currentMapCityKey = 'austin';
 
+let mapInitAttempts = 0;
 function initGpsTelemetryMap() {
   const mapEl = document.getElementById('gps-telemetry-map');
-  if (!mapEl || typeof L === 'undefined') return;
+  if (!mapEl) return;
+
+  if (typeof L === 'undefined') {
+    if (mapInitAttempts < 15) {
+      mapInitAttempts++;
+      setTimeout(initGpsTelemetryMap, 200);
+    }
+    return;
+  }
 
   if (gpsMap) {
     gpsMap.invalidateSize();
@@ -1352,22 +1371,34 @@ function initGpsTelemetryMap() {
 
   const city = GPS_CITIES[currentMapCityKey];
 
-  // Cria o mapa Leaflet
-  gpsMap = L.map('gps-telemetry-map', {
-    center: city.center,
-    zoom: city.zoom,
-    zoomControl: false,
-    attributionControl: false
-  });
+  try {
+    // Cria o mapa Leaflet
+    gpsMap = L.map('gps-telemetry-map', {
+      center: city.center,
+      zoom: city.zoom,
+      zoomControl: false,
+      attributionControl: false
+    });
 
-  // Camada Dark Matter CartoDB
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-    maxZoom: 19,
-    subdomains: 'abcd'
-  }).addTo(gpsMap);
+    // Camada Dark Matter CartoDB Ultra Rápida
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      subdomains: ['a', 'b', 'c', 'd']
+    }).addTo(gpsMap);
 
-  populateMapVehicles();
-  startMapVehiclesMotion();
+    populateMapVehicles();
+    startMapVehiclesMotion();
+
+    // Garante que o mapa renderize todas as tiles
+    setTimeout(() => {
+      if (gpsMap) gpsMap.invalidateSize();
+    }, 300);
+    setTimeout(() => {
+      if (gpsMap) gpsMap.invalidateSize();
+    }, 1000);
+  } catch (err) {
+    console.error('[GPS MAP INIT ERROR]:', err);
+  }
 }
 
 function switchMapCity(cityKey, btn) {

@@ -1765,12 +1765,14 @@ h1, h2, h3, h4, h5,
   font-weight: 800;
 }
 
-.gps-map-viewport {
-  width: 100%;
-  height: 250px;
-  background: #060912;
-  position: relative;
-  z-index: 1;
+.gps-map-viewport, #gps-telemetry-map {
+  width: 100% !important;
+  height: 260px !important;
+  min-height: 260px !important;
+  background: #060912 radial-gradient(circle at center, rgba(0, 240, 255, 0.08) 0%, #060912 75%) !important;
+  position: relative !important;
+  z-index: 1 !important;
+  display: block !important;
 }
 
 /* Custom Leaflet Controls & Popups */

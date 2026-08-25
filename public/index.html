@@ -99,6 +99,27 @@
           </div>
         </div>
 
+        <!-- Card de Extrato de Depósitos & Entradas (Abaixo do Saldo) -->
+        <div class="home-statement-card">
+          <div class="statement-card-header">
+            <div class="statement-title-wrap">
+              <i class="fa-solid fa-receipt statement-icon-glow"></i>
+              <div>
+                <h5>Extrato de Depósitos & Entradas</h5>
+                <span class="statement-subtitle">Créditos diários, recargas e comissões</span>
+              </div>
+            </div>
+            <button class="btn-statement-all" onclick="openHistoryModal()">
+              Ver Tudo <i class="fa-solid fa-chevron-right"></i>
+            </button>
+          </div>
+
+          <!-- Container Dinâmico das Últimas Entradas -->
+          <div class="statement-recent-list" id="home-recent-deposits-list">
+            <!-- Renderizado dinamicamente pelo JS -->
+          </div>
+        </div>
+
         <!-- Banner de Carreira & Gamificação (Início) -->
         <div id="home-career-banner" class="home-career-banner" onclick="switchTab('team')" title="Clique para ver seu Plano de Carreira">
           <!-- Renderizado dinamicamente pelo JS -->

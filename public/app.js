@@ -220,6 +220,7 @@ async function loadUserData() {
   renderReferralCard();
   renderDepositPlans();
   updateCategoryCounts();
+  renderHomeRecentDeposits();
 
 
   // Verifica parâmetro de contratação direta (?hire=NX-101)
@@ -373,6 +374,7 @@ function switchProductType(type) {
   }
 
   updateCategoryCounts();
+  renderHomeRecentDeposits();
   renderProducts(appState.currentFilter || 'all');
 }
 
@@ -1678,4 +1680,108 @@ function startTickerRotation() {
     tickerIdx++;
     tickerEl.textContent = TICKER_MESSAGES[tickerIdx % TICKER_MESSAGES.length];
   }, 7000);
+}
+
+
+/* =========================================================
+   EXTRATO DE DEPÓSITOS & ENTRADAS ABAIXO DO SALDO (HOME)
+   ========================================================= */
+
+async function renderHomeRecentDeposits() {
+  const container = document.getElementById('home-recent-deposits-list');
+  if (!container) return;
+
+  // Busca transações se ainda não estiverem em memória
+  if (!appState.transactions || appState.transactions.length === 0) {
+    const txs = await apiRequest('/wallet/transactions');
+    if (txs && Array.isArray(txs)) {
+      appState.transactions = txs;
+    }
+  }
+
+  const allTx = appState.transactions || [];
+  // Filtra apenas entradas (depósitos, rendimentos, comissões, bônus)
+  const incomingTx = allTx.filter(t => t.type !== 'withdraw' && parseFloat(t.amount || 0) > 0);
+
+  if (incomingTx.length === 0) {
+    // Se o usuário tem veículos ativos, mostra a previsão de crédito
+    if (appState.activeVehicles && appState.activeVehicles.length > 0) {
+      const activeCar = appState.activeVehicles[0];
+      container.innerHTML = `
+        <div class="statement-entry-item">
+          <div class="entry-left-col">
+            <div class="entry-icon-badge entry-icon-income">
+              <i class="fa-solid fa-car-side"></i>
+            </div>
+            <div class="entry-details">
+              <h6>Rendimento Programado: ${activeCar.name}</h6>
+              <span>Liquidação automática na próxima meia-noite</span>
+            </div>
+          </div>
+          <div class="entry-right-col">
+            <span class="entry-amount-val">+ R$ ${formatCurrency(activeCar.dailyEarned)}</span>
+            <span style="font-size: 9.5px; color: var(--accent-green); font-weight: 700;">🟢 Ativo</span>
+          </div>
+        </div>
+      `;
+      return;
+    }
+
+    container.innerHTML = `
+      <div style="text-align: center; padding: 18px 12px; background: rgba(255,255,255,0.02); border: 1px dashed rgba(255,107,0,0.25); border-radius: var(--radius-sm);">
+        <i class="fa-solid fa-clock-rotate-left" style="font-size: 22px; color: var(--text-muted); margin-bottom: 6px; display: block;"></i>
+        <span style="font-size: 11.5px; color: var(--text-muted);">Nenhum crédito recente registrado ainda.</span>
+        <button class="btn btn-primary" onclick="openModal('modal-deposit')" style="margin-top: 10px; padding: 7px 14px; font-size: 11px; width: auto; display: inline-flex;">
+          <i class="fa-solid fa-bolt"></i> Fazer Recarga Pix
+        </button>
+      </div>
+    `;
+    return;
+  }
+
+  // Pega as últimas 3 transações de entrada
+  const recentEntries = incomingTx.slice(0, 3);
+
+  container.innerHTML = recentEntries.map(tx => {
+    let iconClass = 'entry-icon-income';
+    let icon = 'fa-coins';
+    let title = tx.description || 'Rendimento Diário de Frota';
+
+    if (tx.type === 'deposit') {
+      iconClass = 'entry-icon-deposit';
+      icon = 'fa-arrow-down-to-bracket';
+      title = tx.description || 'Recarga Pix Confirmada';
+    } else if (tx.type === 'commission') {
+      iconClass = 'entry-icon-commission';
+      icon = 'fa-users';
+      title = tx.description || 'Comissão de Afiliado';
+    } else if (tx.type === 'bonus' || tx.type === 'adjustment') {
+      iconClass = 'entry-icon-bonus';
+      icon = 'fa-gift';
+      title = tx.description || 'Bônus de Carreira';
+    }
+
+    const txDate = tx.createdAt ? new Date(tx.createdAt) : new Date();
+    const dateFormatted = `${String(txDate.getDate()).padStart(2, '0')}/${String(txDate.getMonth() + 1).padStart(2, '0')} às ${String(txDate.getHours()).padStart(2, '0')}:${String(txDate.getMinutes()).padStart(2, '0')}`;
+
+    return `
+      <div class="statement-entry-item">
+        <div class="entry-left-col">
+          <div class="entry-icon-badge ${iconClass}">
+            <i class="fa-solid ${icon}"></i>
+          </div>
+          <div class="entry-details">
+            <h6>${title}</h6>
+            <span>${dateFormatted} • ID #${tx.id}</span>
+          </div>
+        </div>
+        <div class="entry-right-col">
+          <span class="entry-amount-val">+ R$ ${formatCurrency(Math.abs(tx.amount))}</span>
+          <button class="btn-entry-receipt" onclick="viewReceipt('${tx.id}')">
+            <i class="fa-solid fa-file-invoice"></i> Comprovante
+          </button>
+        </div>
+      </div>
+    `;
+  }).join('');
 }

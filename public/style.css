@@ -2156,3 +2156,193 @@ h1, h2, h3, h4, h5,
 .btn-track-gps:hover i {
   transform: scale(1.2);
 }
+
+
+/* =========================================================
+   CARD DE EXTRATO DETALHADO ABAIXO DO SALDO (HOME STATEMENT)
+   ========================================================= */
+.home-statement-card {
+  background: linear-gradient(145deg, rgba(16, 23, 40, 0.82) 0%, rgba(10, 15, 26, 0.95) 100%);
+  border: 1px solid rgba(255, 107, 0, 0.22);
+  border-top: 1px solid rgba(255, 160, 64, 0.45);
+  border-radius: var(--radius-lg);
+  padding: 16px 18px;
+  margin-bottom: 18px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45), 0 0 20px rgba(255, 107, 0, 0.08);
+  position: relative;
+  overflow: hidden;
+}
+
+.statement-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.statement-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.statement-icon-glow {
+  font-size: 18px;
+  color: var(--primary);
+  background: rgba(255, 107, 0, 0.12);
+  border: 1px solid rgba(255, 107, 0, 0.3);
+  padding: 8px;
+  border-radius: 10px;
+  box-shadow: 0 0 12px rgba(255, 107, 0, 0.25);
+}
+
+.statement-title-wrap h5 {
+  font-size: 13.5px;
+  font-weight: 800;
+  color: #fff;
+  margin: 0;
+  font-family: 'Space Grotesk', sans-serif;
+  letter-spacing: -0.2px;
+}
+
+.statement-subtitle {
+  font-size: 10.5px;
+  color: var(--text-muted);
+  display: block;
+  margin-top: 2px;
+}
+
+.btn-statement-all {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--primary);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 5px 10px;
+  border-radius: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.2s ease;
+}
+
+.btn-statement-all:hover, .btn-statement-all:active {
+  background: rgba(255, 107, 0, 0.15);
+  border-color: var(--primary);
+  color: #fff;
+  transform: translateX(2px);
+}
+
+.statement-recent-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.statement-entry-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+}
+
+.statement-entry-item:hover {
+  background: rgba(255, 107, 0, 0.06);
+  border-color: rgba(255, 107, 0, 0.25);
+  transform: translateX(3px);
+}
+
+.entry-left-col {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.entry-icon-badge {
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.entry-icon-deposit {
+  background: rgba(0, 230, 118, 0.15);
+  color: var(--accent-green);
+  border: 1px solid rgba(0, 230, 118, 0.35);
+}
+
+.entry-icon-income {
+  background: rgba(0, 240, 255, 0.15);
+  color: var(--accent-cyan);
+  border: 1px solid rgba(0, 240, 255, 0.35);
+}
+
+.entry-icon-commission {
+  background: rgba(250, 219, 95, 0.15);
+  color: var(--accent-gold);
+  border: 1px solid rgba(250, 219, 95, 0.35);
+}
+
+.entry-icon-bonus {
+  background: rgba(255, 107, 0, 0.15);
+  color: var(--primary);
+  border: 1px solid rgba(255, 107, 0, 0.35);
+}
+
+.entry-details h6 {
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 2px 0;
+}
+
+.entry-details span {
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+.entry-right-col {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 3px;
+}
+
+.entry-amount-val {
+  font-size: 13px;
+  font-weight: 800;
+  font-family: 'Space Grotesk', sans-serif;
+  color: var(--accent-green);
+}
+
+.btn-entry-receipt {
+  background: none;
+  border: none;
+  color: var(--text-tertiary);
+  font-size: 9.5px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  padding: 2px 4px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.btn-entry-receipt:hover {
+  color: var(--primary);
+  background: rgba(255, 107, 0, 0.1);
+}

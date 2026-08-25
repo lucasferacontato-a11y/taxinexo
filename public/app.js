@@ -558,8 +558,8 @@ function renderActiveVehicles() {
           <div class="progress-fill" style="width: 0%;" data-target="${progressPct}%"></div>
         </div>
 
-        <button class="btn-receipt-view" onclick="trackActiveVehicle('${vehicle.id}', '${vehicle.name}')" style="margin-top: 10px; width: 100%; justify-content: center; padding: 7px; font-size: 11px; background: rgba(0, 240, 255, 0.08); border: 1px solid rgba(0, 240, 255, 0.25);">
-          <i class="fa-solid fa-satellite-dish" style="color: var(--primary);"></i> Rastrear Veículo no Radar GPS
+        <button class="btn-track-gps" onclick="trackActiveVehicle('${vehicle.id}', '${vehicle.name}')">
+          <i class="fa-solid fa-satellite-dish"></i> Rastrear Veículo no Radar GPS
         </button>
       </div>
     `;
